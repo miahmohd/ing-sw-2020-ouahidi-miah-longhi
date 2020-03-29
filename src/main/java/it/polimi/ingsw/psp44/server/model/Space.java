@@ -43,4 +43,13 @@ public class Space {
     public void setWorker(Worker worker) {
         this.worker = worker;
     }
+
+    public boolean isComplete(){
+        return this.isFinalLevel() && this.isDome();
+    }
+
+    public boolean isFinalLevel(){
+        return this.level==3;
+    }
+
 }
