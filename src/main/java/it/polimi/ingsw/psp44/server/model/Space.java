@@ -7,7 +7,7 @@ public class Space {
     private Worker worker;
 
 
-    public Space(){
+    public Space() {
         this.level = 0;
         this.dome = false;
         this.worker = null;
@@ -44,12 +44,16 @@ public class Space {
         this.worker = worker;
     }
 
-    public boolean isComplete(){
+    public boolean isComplete() {
         return this.isFinalLevel() && this.isDome();
     }
 
-    public boolean isFinalLevel(){
-        return this.level==3;
+    public boolean isFinalLevel() {
+        return this.level == 3;
+    }
+
+    public boolean isGroundLevel() {
+        return this.level == 0;
     }
 
 }

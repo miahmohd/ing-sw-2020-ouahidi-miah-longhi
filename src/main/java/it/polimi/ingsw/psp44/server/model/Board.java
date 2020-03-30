@@ -27,16 +27,15 @@ public class Board {
         if(position==null)
             throw new IllegalArgumentException("Position null");
         if(!isPositionInBounds(position))
-            throw  new  IllegalArgumentException("Position out of bounds");
+            throw new IllegalArgumentException("Position out of bounds");
         if(isDome(position))
-            throw  new  IllegalArgumentException("Position is dome");
+            throw new IllegalArgumentException("Position is dome");
 
         Space targetSpace=this.board[position.getRow()][position.getColumn()];
         if(targetSpace.isFinalLevel())
-            targetSpace.setLevel(targetSpace.getLevel()+1);
-        else
-            throw  new  IllegalArgumentException("Can't build anymore on this position");
+            throw new IllegalArgumentException("Can't build anymore on this position");
 
+        targetSpace.setLevel(targetSpace.getLevel()+1);
 
     }
 
@@ -46,7 +45,18 @@ public class Board {
      * @throws IllegalArgumentException if position is null or if <code>isDome() == true</code> or outside the board.
      */
     public void buildDown(Position position) {
+        if(position==null)
+            throw new IllegalArgumentException("Position null");
+        if(!isPositionInBounds(position))
+            throw new IllegalArgumentException("Position out of bounds");
+        if(isDome(position))
+            throw new IllegalArgumentException("Position is dome");
 
+        Space targetSpace=this.board[position.getRow()][position.getColumn()];
+        if(targetSpace.isGroundLevel())
+            throw new IllegalArgumentException("You are already on the ground level");
+
+        targetSpace.setLevel(targetSpace.getLevel()-1);
     }
 
     /**
@@ -55,7 +65,14 @@ public class Board {
      * @throws IllegalArgumentException if position is null or outside the board.
      */
     public int getLevel(Position position) {
-        return 1;
+        if(position==null)
+            throw new IllegalArgumentException("Position null");
+        if(!isPositionInBounds(position))
+            throw  new  IllegalArgumentException("Position out of bounds");
+
+        Space targetSpace=this.board[position.getRow()][position.getColumn()];
+
+        return targetSpace.getLevel();
     }
 
     /**
@@ -64,7 +81,15 @@ public class Board {
      * @throws IllegalArgumentException if position is null or if <code>isDome() == true</code> or outside the board.
      */
     public void buildDome(Position position) {
+        if(position==null)
+            throw new IllegalArgumentException("Position null");
+        if(!isPositionInBounds(position))
+            throw new IllegalArgumentException("Position out of bounds");
+        if(isDome(position))
+            throw new IllegalArgumentException("Position is dome");
 
+        Space targetSpace=this.board[position.getRow()][position.getColumn()];
+        targetSpace.setDome(true);
     }
     /**
      * Remove a dome at the specified position
@@ -72,12 +97,25 @@ public class Board {
      * @throws IllegalArgumentException if position is null or if <code>isDome() == false</code> or outside the board.
      */
     public void removeDome(Position position) {
+        if(position==null)
+            throw new IllegalArgumentException("Position null");
+        if(!isPositionInBounds(position))
+            throw new IllegalArgumentException("Position out of bounds");
+        if(!isDome(position))
+            throw new IllegalArgumentException("Position is not dome");
 
+        Space targetSpace=this.board[position.getRow()][position.getColumn()];
+        targetSpace.setDome(false);
     }
 
-
     public boolean isDome(Position position) {
-        return false;
+        if(position==null)
+            throw new IllegalArgumentException("Position null");
+        if(!isPositionInBounds(position))
+            throw new IllegalArgumentException("Position out of bounds");
+
+        Space targetSpace=this.board[position.getRow()][position.getColumn()];
+        return targetSpace.isDome();
     }
 
     public void setWorker(Position position, Worker worker) {
