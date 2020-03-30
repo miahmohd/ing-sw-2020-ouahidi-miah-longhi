@@ -10,9 +10,10 @@ public class Board {
 
     public Board() {
         this.board = new Space[DIMENSION][DIMENSION];
-        for (int i=0;i<DIMENSION;++i){
-            for(int j=0;j<DIMENSION;++j){
-                this.board[i][j]=new Space();
+
+        for (int row=0;row<DIMENSION;++row){
+            for(int column=0;column<DIMENSION;++column){
+                this.board[row][column]=new Space();
             }
         }
     }
@@ -119,19 +120,56 @@ public class Board {
     }
 
     public void setWorker(Position position, Worker worker) {
+        if(position==null)
+            throw new IllegalArgumentException("Position null");
+        if(!isPositionInBounds(position))
+            throw new IllegalArgumentException("Position out of bounds");
+        if(isDome(position))
+            throw new IllegalArgumentException("Position is dome");
 
+        Space targetSpace=this.board[position.getRow()][position.getColumn()];
+        targetSpace.setWorker(worker);
     }
 
     public Worker getWorker(Position position) {
-        return null;
+        if(position==null)
+            throw new IllegalArgumentException("Position null");
+        if(!isPositionInBounds(position))
+            throw new IllegalArgumentException("Position out of bounds");
+        if(isDome(position))
+            throw new IllegalArgumentException("Position is dome");
+
+        Space targetSpace=this.board[position.getRow()][position.getColumn()];
+        return targetSpace.getWorker();
     }
 
     /**
      * @param position
-     * @return adiacent positions of the specified position
+     * @return adjacent positions of the specified position
      */
     public List<Position> getNeighbouringPositions(Position position) {
-        return new ArrayList<Position>();
+        if(position==null)
+            throw new IllegalArgumentException("Position null");
+        if(!isPositionInBounds(position))
+            throw new IllegalArgumentException("Position out of bounds");
+
+        List<Position> neighbouringPositions = new ArrayList<>();
+
+        int row = position.getRow();
+        int column = position.getColumn();
+        Position neighbourPosition;
+        for(int r = -1; r < 2; r++){
+            for(int c = -1; c < 2; c++){
+
+                neighbourPosition = new Position(row+r, column+c);
+
+                if(isPositionInBounds(neighbourPosition) && !position.equals(neighbourPosition))
+                    neighbouringPositions.add(neighbourPosition);
+
+            }
+        }
+
+        return neighbouringPositions;
     }
 
     /**
@@ -139,7 +177,20 @@ public class Board {
      * @return all player's worker positions
      */
     public List<Position> getPlayerWorkersPositions(String nickname) {
-        return new ArrayList<Position>();
+        List<Position> playerWorkerPositions = new ArrayList<>();
+        Worker selectedWorker;
+        Position selectedPosition;
+        for (int row = 0; row < DIMENSION; row++){
+            for (int column = 0; column < DIMENSION; column++){
+                selectedPosition = new Position(row, column);
+                selectedWorker = this.getWorker(selectedPosition);
+
+                if(selectedWorker != null && nickname.equals(selectedWorker.getPlayerNickname()))
+                    playerWorkerPositions.add(selectedPosition);
+            }
+        }
+
+        return playerWorkerPositions;
     }
 
 

@@ -4,6 +4,10 @@ import it.polimi.ingsw.psp44.util.Position;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class BoardTest {
@@ -116,10 +120,89 @@ public class BoardTest {
 
     @Test
     public void getNeighbouringPositions() {
+        Position edge=new Position(0,0);
+        Position side=new Position(4,2);
+        Position middle=new Position(2,2);
+
+        List<Position> edgeNeighbouringPositionsExpected = new ArrayList<Position>(Arrays.asList(
+                new Position(1,0),
+                new Position(1,1),
+                new Position(0,1)
+        ));
+
+
+        List<Position> sideNeighbouringPositionsExpected = new ArrayList<Position>(Arrays.asList(
+                new Position(3,2),
+                new Position(3,1),
+                new Position(3,3),
+                new Position(4,1),
+                new Position(4,3)
+        ));
+
+        List<Position> middleNeighbouringPositionsExpected = new ArrayList<Position>(Arrays.asList(
+                new Position(1,1),
+                new Position(1,2),
+                new Position(1,3),
+                new Position(2,3),
+                new Position(3,3),
+                new Position(3,2),
+                new Position(3,1),
+                new Position(2,1)
+                ));
+
+        List<Position> edgeNeighbouringPositionsActual = boardTest.getNeighbouringPositions(edge);
+        List<Position> sideNeighbouringPositionsActual = boardTest.getNeighbouringPositions(side);
+        List<Position> middleNeighbouringPositionsActual = boardTest.getNeighbouringPositions(middle);
+
+        assertEquals(edgeNeighbouringPositionsActual.size(), edgeNeighbouringPositionsExpected.size());
+        assertEquals(sideNeighbouringPositionsActual.size(), sideNeighbouringPositionsExpected.size());
+        assertEquals(middleNeighbouringPositionsActual.size(), middleNeighbouringPositionsExpected.size());
+
+        assertTrue(edgeNeighbouringPositionsActual.containsAll(edgeNeighbouringPositionsExpected));
+        assertTrue(sideNeighbouringPositionsActual.containsAll(sideNeighbouringPositionsExpected));
+        assertTrue(middleNeighbouringPositionsActual.containsAll(middleNeighbouringPositionsExpected));
+
 
     }
 
     @Test
     public void getPlayerWorkersPositions() {
+        Position level0=new Position(0,0);
+        Position level1=new Position(0,1);
+        Position level2=new Position(0,2);
+        Position level3=new Position(0,3);
+
+        List<Position> workersTestExpected = new ArrayList<>(Arrays.asList(level0, level1));
+        List<Position> workersAnotherTestsExpected = new ArrayList<>(Arrays.asList(level2, level3));
+
+        boardTest.buildUp(level1);
+        boardTest.buildUp(level2);
+        boardTest.buildUp(level2);
+        boardTest.buildUp(level3);
+        boardTest.buildUp(level3);
+        boardTest.buildUp(level3);
+
+        Player testPlayer = new Player("test");
+        Player anotherTestPlayer = new Player("another test");
+
+        Worker testWorkerMale = new Worker(testPlayer.getNickname(), Worker.Sex.Male);
+        Worker testWorkerFemale = new Worker(testPlayer.getNickname(), Worker.Sex.Female);
+
+        Worker anotherTestWorkerMale = new Worker(anotherTestPlayer.getNickname(), Worker.Sex.Male);
+        Worker anotherTestWorkerFemale = new Worker(anotherTestPlayer.getNickname(), Worker.Sex.Female);
+
+        boardTest.setWorker(level0, testWorkerMale);
+        boardTest.setWorker(level1, testWorkerFemale);
+
+        List<Position> workersTestActual = boardTest.getPlayerWorkersPositions(testPlayer.getNickname());
+        assertEquals(workersTestExpected.size(), workersTestActual.size());
+        assertTrue(workersTestActual.containsAll(workersTestExpected));
+
+        boardTest.setWorker(level2, anotherTestWorkerMale);
+        boardTest.setWorker(level3, anotherTestWorkerFemale);
+        List<Position> workersAnotherTestActual = boardTest.getPlayerWorkersPositions(anotherTestPlayer.getNickname());
+        assertEquals(workersAnotherTestsExpected.size(), workersAnotherTestActual.size());
+        assertTrue(workersAnotherTestActual.containsAll(workersAnotherTestsExpected));
+
     }
 }
