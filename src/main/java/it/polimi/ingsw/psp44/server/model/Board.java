@@ -1,6 +1,13 @@
 package it.polimi.ingsw.psp44.server.model;
 
+import it.polimi.ingsw.psp44.util.AppProperties;
 import it.polimi.ingsw.psp44.util.Position;
+import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +25,6 @@ public class Board {
         }
     }
 
-
     /**
      * Builds the next block at the specified position.
      * @param position
@@ -26,11 +32,11 @@ public class Board {
      */
     public void buildUp(Position position) {
         if(position==null)
-            throw new IllegalArgumentException("Position null");
+            throw new IllegalArgumentException(MessageFormat.format(AppProperties.getInstance().getErrorMessage(ErrorCodes.NULL_ARG), "Position"));
         if(!isPositionInBounds(position))
             throw new IllegalArgumentException("Position out of bounds");
         if(isDome(position))
-            throw new IllegalArgumentException("Position is dome");
+            throw new IllegalArgumentException(AppProperties.getInstance().getErrorMessage(ErrorCodes.DOME_PRESENT));
 
         Space targetSpace=this.board[position.getRow()][position.getColumn()];
         if(targetSpace.isFinalLevel())
