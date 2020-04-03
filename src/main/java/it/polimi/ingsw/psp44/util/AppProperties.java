@@ -1,31 +1,35 @@
 package it.polimi.ingsw.psp44.util;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class AppProperties {
-    private Properties prop;
     private static AppProperties instance;
+    private Properties prop;
 
-    private AppProperties()  {
+    private AppProperties() {
         this.prop = new Properties();
-        try {
-            prop.load(new FileInputStream("src/main/resources/app.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        InputStream in = AppProperties.class.getResourceAsStream("/app.properties");
+        if (in != null) {
+            try {
+                prop.load(in);
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
+            }
         }
+
     }
 
-    public static AppProperties getInstance(){
-        if(instance == null){
+    public static AppProperties getInstance() {
+        if (instance == null) {
             instance = new AppProperties();
         }
         return instance;
     }
 
-    public String getErrorMessage(String code){
+    public String getMessage(String code) {
         return this.prop.getProperty(code);
     }
 }
