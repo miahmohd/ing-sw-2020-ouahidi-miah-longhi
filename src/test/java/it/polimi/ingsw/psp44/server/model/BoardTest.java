@@ -1,6 +1,7 @@
 package it.polimi.ingsw.psp44.server.model;
 
 import it.polimi.ingsw.psp44.util.Position;
+import it.polimi.ingsw.psp44.util.exception.ConstructionException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,12 +42,14 @@ public class BoardTest {
                 () -> boardTest.buildUp(null));
         assertThrows(IllegalArgumentException.class,
                 () -> boardTest.buildUp(new Position(20, 20)));
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ConstructionException.class,
                 () -> {
                     Position p = new Position(1, 0);
                     boardTest.buildDome(p);
                     boardTest.buildUp(p);
                 });
+        assertThrows(ConstructionException.class,
+                () -> boardTest.buildUp(level3));
 
     }
 
@@ -78,13 +81,13 @@ public class BoardTest {
                 () -> boardTest.buildDown(null));
         assertThrows(IllegalArgumentException.class,
                 () -> boardTest.buildDown(new Position(20, 20)));
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ConstructionException.class,
                 () -> {
                     Position p = new Position(1, 0);
                     boardTest.buildDome(p);
                     boardTest.buildDown(p);
                 });
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ConstructionException.class,
                 () -> boardTest.buildDown(level0));
 
     }
@@ -117,7 +120,7 @@ public class BoardTest {
                 () -> boardTest.buildDome(null));
         assertThrows(IllegalArgumentException.class,
                 () -> boardTest.buildDome(new Position(20, 20)));
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ConstructionException.class,
                 () -> {
                     Position p = new Position(1, 0);
                     boardTest.buildDome(p);
@@ -157,7 +160,7 @@ public class BoardTest {
                 () -> boardTest.removeDome(null));
         assertThrows(IllegalArgumentException.class,
                 () -> boardTest.removeDome(new Position(20, 20)));
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ConstructionException.class,
                 () -> {
                     Position p = new Position(1, 0);
                     boardTest.removeDome(p);

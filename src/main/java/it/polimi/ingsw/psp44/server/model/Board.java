@@ -2,6 +2,7 @@ package it.polimi.ingsw.psp44.server.model;
 
 import it.polimi.ingsw.psp44.util.AppProperties;
 import it.polimi.ingsw.psp44.util.Position;
+import it.polimi.ingsw.psp44.util.exception.ConstructionException;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 
 import java.util.ArrayList;
@@ -34,11 +35,11 @@ public class Board {
         if (!isPositionInBounds(position))
             throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.OUT_OF_BOUNDS));
         if (isDome(position))
-            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.DOME_PRESENT));
+            throw new ConstructionException(AppProperties.getInstance().getMessage(ErrorCodes.DOME_PRESENT));
 
         Space targetSpace = this.field[position.getRow()][position.getColumn()];
         if (targetSpace.isFinalLevel())
-            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.CAN_NOT_BUILD));
+            throw new ConstructionException(AppProperties.getInstance().getMessage(ErrorCodes.CAN_NOT_BUILD));
 
         targetSpace.setLevel(targetSpace.getLevel() + 1);
 
@@ -56,11 +57,11 @@ public class Board {
         if (!isPositionInBounds(position))
             throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.OUT_OF_BOUNDS));
         if (isDome(position))
-            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.DOME_PRESENT));
+            throw new ConstructionException(AppProperties.getInstance().getMessage(ErrorCodes.DOME_PRESENT));
 
         Space targetSpace = this.field[position.getRow()][position.getColumn()];
         if (targetSpace.isGroundLevel())
-            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.CAN_NOT_UNBUILD));
+            throw new ConstructionException(AppProperties.getInstance().getMessage(ErrorCodes.CAN_NOT_UNBUILD));
 
         targetSpace.setLevel(targetSpace.getLevel() - 1);
     }
@@ -93,7 +94,7 @@ public class Board {
         if (!isPositionInBounds(position))
             throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.OUT_OF_BOUNDS));
         if (isDome(position))
-            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.DOME_PRESENT));
+            throw new ConstructionException(AppProperties.getInstance().getMessage(ErrorCodes.DOME_PRESENT));
 
         Space targetSpace = this.field[position.getRow()][position.getColumn()];
         targetSpace.setDome(true);
@@ -111,7 +112,7 @@ public class Board {
         if (!isPositionInBounds(position))
             throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.OUT_OF_BOUNDS));
         if (!isDome(position))
-            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.CAN_NOT_UNBUILD));
+            throw new ConstructionException(AppProperties.getInstance().getMessage(ErrorCodes.CAN_NOT_UNBUILD));
 
         Space targetSpace = this.field[position.getRow()][position.getColumn()];
         targetSpace.setDome(false);
@@ -133,7 +134,7 @@ public class Board {
         if (!isPositionInBounds(position))
             throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.OUT_OF_BOUNDS));
         if (isDome(position))
-            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.DOME_PRESENT));
+            throw new ConstructionException(AppProperties.getInstance().getMessage(ErrorCodes.DOME_PRESENT));
 
         Space targetSpace = this.field[position.getRow()][position.getColumn()];
         targetSpace.setWorker(worker);
@@ -145,7 +146,7 @@ public class Board {
         if (!isPositionInBounds(position))
             throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.OUT_OF_BOUNDS));
         if (isDome(position))
-            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.DOME_PRESENT));
+            throw new ConstructionException(AppProperties.getInstance().getMessage(ErrorCodes.DOME_PRESENT));
 
         Space targetSpace = this.field[position.getRow()][position.getColumn()];
         return targetSpace.getWorker();
