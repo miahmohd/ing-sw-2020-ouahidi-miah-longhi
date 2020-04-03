@@ -1,19 +1,23 @@
 package it.polimi.ingsw.psp44.server.model;
 
+import it.polimi.ingsw.psp44.util.AppProperties;
 import it.polimi.ingsw.psp44.util.Position;
+import it.polimi.ingsw.psp44.util.exception.ConstructionException;
+import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-    private final int DIMENSION=5;
-    private Space[][] board;
+    private static final int DIMENSION = 5;
+    private Space[][] field;
 
     public Board() {
-        this.board = new Space[DIMENSION][DIMENSION];
+        this.field = new Space[DIMENSION][DIMENSION];
 
-        for (int row=0;row<DIMENSION;++row){
-            for(int column=0;column<DIMENSION;++column){
-                this.board[row][column]=new Space();
+        for (int row = 0; row < DIMENSION; ++row) {
+            for (int column = 0; column < DIMENSION; ++column) {
+                this.field[row][column] = new Space();
             }
         }
     }
@@ -21,43 +25,45 @@ public class Board {
 
     /**
      * Builds the next block at the specified position.
+     *
      * @param position
      * @throws IllegalArgumentException if position is null or if <code>isDome() == true</code> or outside the board.
      */
     public void buildUp(Position position) {
-        if(position==null)
-            throw new IllegalArgumentException("Position null");
-        if(!isPositionInBounds(position))
-            throw new IllegalArgumentException("Position out of bounds");
-        if(isDome(position))
-            throw new IllegalArgumentException("Position is dome");
+        if (position == null)
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.NULL_POS));
+        if (!isPositionInBounds(position))
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.OUT_OF_BOUNDS));
+        if (isDome(position))
+            throw new ConstructionException(AppProperties.getInstance().getMessage(ErrorCodes.DOME_PRESENT));
 
-        Space targetSpace=this.board[position.getRow()][position.getColumn()];
-        if(targetSpace.isFinalLevel())
-            throw new IllegalArgumentException("Can't build anymore on this position");
+        Space targetSpace = this.field[position.getRow()][position.getColumn()];
+        if (targetSpace.isFinalLevel())
+            throw new ConstructionException(AppProperties.getInstance().getMessage(ErrorCodes.CAN_NOT_BUILD));
 
-        targetSpace.setLevel(targetSpace.getLevel()+1);
+        targetSpace.setLevel(targetSpace.getLevel() + 1);
 
     }
 
     /**
      * Removes the last block at the specified position.
+     *
      * @param position
      * @throws IllegalArgumentException if position is null or if <code>isDome() == true</code> or outside the board.
      */
     public void buildDown(Position position) {
-        if(position==null)
-            throw new IllegalArgumentException("Position null");
-        if(!isPositionInBounds(position))
-            throw new IllegalArgumentException("Position out of bounds");
-        if(isDome(position))
-            throw new IllegalArgumentException("Position is dome");
+        if (position == null)
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.NULL_POS));
+        if (!isPositionInBounds(position))
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.OUT_OF_BOUNDS));
+        if (isDome(position))
+            throw new ConstructionException(AppProperties.getInstance().getMessage(ErrorCodes.DOME_PRESENT));
 
-        Space targetSpace=this.board[position.getRow()][position.getColumn()];
-        if(targetSpace.isGroundLevel())
-            throw new IllegalArgumentException("You are already on the ground level");
+        Space targetSpace = this.field[position.getRow()][position.getColumn()];
+        if (targetSpace.isGroundLevel())
+            throw new ConstructionException(AppProperties.getInstance().getMessage(ErrorCodes.CAN_NOT_UNBUILD));
 
-        targetSpace.setLevel(targetSpace.getLevel()-1);
+        targetSpace.setLevel(targetSpace.getLevel() - 1);
     }
 
     /**
@@ -66,80 +72,83 @@ public class Board {
      * @throws IllegalArgumentException if position is null or outside the board.
      */
     public int getLevel(Position position) {
-        if(position==null)
-            throw new IllegalArgumentException("Position null");
-        if(!isPositionInBounds(position))
-            throw  new  IllegalArgumentException("Position out of bounds");
+        if (position == null)
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.NULL_POS));
+        if (!isPositionInBounds(position))
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.OUT_OF_BOUNDS));
 
-        Space targetSpace=this.board[position.getRow()][position.getColumn()];
+        Space targetSpace = this.field[position.getRow()][position.getColumn()];
 
         return targetSpace.getLevel();
     }
 
     /**
      * Builds a dome at the specified position
+     *
      * @param position
      * @throws IllegalArgumentException if position is null or if <code>isDome() == true</code> or outside the board.
      */
     public void buildDome(Position position) {
-        if(position==null)
-            throw new IllegalArgumentException("Position null");
-        if(!isPositionInBounds(position))
-            throw new IllegalArgumentException("Position out of bounds");
-        if(isDome(position))
-            throw new IllegalArgumentException("Position is dome");
+        if (position == null)
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.NULL_POS));
+        if (!isPositionInBounds(position))
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.OUT_OF_BOUNDS));
+        if (isDome(position))
+            throw new ConstructionException(AppProperties.getInstance().getMessage(ErrorCodes.DOME_PRESENT));
 
-        Space targetSpace=this.board[position.getRow()][position.getColumn()];
+        Space targetSpace = this.field[position.getRow()][position.getColumn()];
         targetSpace.setDome(true);
     }
+
     /**
      * Remove a dome at the specified position
+     *
      * @param position
      * @throws IllegalArgumentException if position is null or if <code>isDome() == false</code> or outside the board.
      */
     public void removeDome(Position position) {
-        if(position==null)
-            throw new IllegalArgumentException("Position null");
-        if(!isPositionInBounds(position))
-            throw new IllegalArgumentException("Position out of bounds");
-        if(!isDome(position))
-            throw new IllegalArgumentException("Position is not dome");
+        if (position == null)
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.NULL_POS));
+        if (!isPositionInBounds(position))
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.OUT_OF_BOUNDS));
+        if (!isDome(position))
+            throw new ConstructionException(AppProperties.getInstance().getMessage(ErrorCodes.CAN_NOT_UNBUILD));
 
-        Space targetSpace=this.board[position.getRow()][position.getColumn()];
+        Space targetSpace = this.field[position.getRow()][position.getColumn()];
         targetSpace.setDome(false);
     }
 
     public boolean isDome(Position position) {
-        if(position==null)
-            throw new IllegalArgumentException("Position null");
-        if(!isPositionInBounds(position))
-            throw new IllegalArgumentException("Position out of bounds");
+        if (position == null)
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.NULL_POS));
+        if (!isPositionInBounds(position))
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.OUT_OF_BOUNDS));
 
-        Space targetSpace=this.board[position.getRow()][position.getColumn()];
+        Space targetSpace = this.field[position.getRow()][position.getColumn()];
         return targetSpace.isDome();
     }
 
     public void setWorker(Position position, Worker worker) {
-        if(position==null)
-            throw new IllegalArgumentException("Position null");
-        if(!isPositionInBounds(position))
-            throw new IllegalArgumentException("Position out of bounds");
-        if(isDome(position))
-            throw new IllegalArgumentException("Position is dome");
+        if (position == null)
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.NULL_POS));
+        if (!isPositionInBounds(position))
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.OUT_OF_BOUNDS));
+        if (isDome(position))
+            throw new ConstructionException(AppProperties.getInstance().getMessage(ErrorCodes.DOME_PRESENT));
 
-        Space targetSpace=this.board[position.getRow()][position.getColumn()];
+        Space targetSpace = this.field[position.getRow()][position.getColumn()];
         targetSpace.setWorker(worker);
     }
 
     public Worker getWorker(Position position) {
-        if(position==null)
-            throw new IllegalArgumentException("Position null");
-        if(!isPositionInBounds(position))
-            throw new IllegalArgumentException("Position out of bounds");
-        if(isDome(position))
-            throw new IllegalArgumentException("Position is dome");
+        if (position == null)
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.NULL_POS));
+        if (!isPositionInBounds(position))
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.OUT_OF_BOUNDS));
+        if (isDome(position))
+            throw new ConstructionException(AppProperties.getInstance().getMessage(ErrorCodes.DOME_PRESENT));
 
-        Space targetSpace=this.board[position.getRow()][position.getColumn()];
+        Space targetSpace = this.field[position.getRow()][position.getColumn()];
         return targetSpace.getWorker();
     }
 
@@ -148,22 +157,20 @@ public class Board {
      * @return adjacent positions of the specified position
      */
     public List<Position> getNeighbouringPositions(Position position) {
-        if(position==null)
-            throw new IllegalArgumentException("Position null");
-        if(!isPositionInBounds(position))
-            throw new IllegalArgumentException("Position out of bounds");
+        if (position == null)
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.NULL_POS));
+        if (!isPositionInBounds(position))
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.OUT_OF_BOUNDS));
 
         List<Position> neighbouringPositions = new ArrayList<>();
 
         int row = position.getRow();
         int column = position.getColumn();
         Position neighbourPosition;
-        for(int r = -1; r < 2; r++){
-            for(int c = -1; c < 2; c++){
-
-                neighbourPosition = new Position(row+r, column+c);
-
-                if(isPositionInBounds(neighbourPosition) && !position.equals(neighbourPosition))
+        for (int r = -1; r < 2; r++) {
+            for (int c = -1; c < 2; c++) {
+                neighbourPosition = new Position(row + r, column + c);
+                if (isPositionInBounds(neighbourPosition) && !position.equals(neighbourPosition))
                     neighbouringPositions.add(neighbourPosition);
 
             }
@@ -180,12 +187,12 @@ public class Board {
         List<Position> playerWorkerPositions = new ArrayList<>();
         Worker selectedWorker;
         Position selectedPosition;
-        for (int row = 0; row < DIMENSION; row++){
-            for (int column = 0; column < DIMENSION; column++){
+        for (int row = 0; row < DIMENSION; row++) {
+            for (int column = 0; column < DIMENSION; column++) {
                 selectedPosition = new Position(row, column);
                 selectedWorker = this.getWorker(selectedPosition);
 
-                if(selectedWorker != null && nickname.equals(selectedWorker.getPlayerNickname()))
+                if (selectedWorker != null && nickname.equals(selectedWorker.getPlayerNickname()))
                     playerWorkerPositions.add(selectedPosition);
             }
         }
@@ -195,8 +202,8 @@ public class Board {
 
 
     private boolean isPositionInBounds(Position position) {
-        return position.getRow()>=0 && position.getRow()<DIMENSION
-                && position.getColumn()>=0 && position.getColumn()<DIMENSION;
+        return position.getRow() >= 0 && position.getRow() < DIMENSION
+                && position.getColumn() >= 0 && position.getColumn() < DIMENSION;
     }
 
 
