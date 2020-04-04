@@ -3,8 +3,8 @@ package it.polimi.ingsw.psp44.util;
 import java.util.Objects;
 
 public class Position {
-    private int row;
-    private int column;
+    private final int row;
+    private final int column;
 
     public Position(int row, int column) {
         this.row = row;
