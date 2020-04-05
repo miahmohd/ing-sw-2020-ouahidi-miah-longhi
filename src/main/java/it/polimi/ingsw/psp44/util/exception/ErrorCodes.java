@@ -12,6 +12,11 @@ public final class ErrorCodes {
     public static final String PLAYER_NOT_IN_GAME = "PLAYER_NOT_IN_GAME";
     public static final String NO_PLAYERS_IN_GAME = "NO_PLAYERS_IN_GAME";
 
+    public static final String NULL_FILTER = "NULL_FILTER";
+    public static final String FILTER_IN_COLLECTION = "FILTER_IN_COLLECTION";
+    public static final String FILTER_NOT_IN_COLLECTION = "FILTER_NOT_IN_COLLECTION";
+    public static final String NO_FILTER_IN_COLLECTION = "NO_FILTER_IN_COLLECTION";
+
     private ErrorCodes() {
     }
 }
