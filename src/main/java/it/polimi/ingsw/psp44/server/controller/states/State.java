@@ -1,11 +1,8 @@
 package it.polimi.ingsw.psp44.server.controller.states;
-
-
 import it.polimi.ingsw.psp44.server.model.Board;
-import it.polimi.ingsw.psp44.server.model.GameModel;
-import it.polimi.ingsw.psp44.server.model.Worker;
+import it.polimi.ingsw.psp44.server.model.actions.Action;
+import it.polimi.ingsw.psp44.util.Position;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,5 +30,5 @@ public abstract class State {
      * @param selectedWorker worker selected from the player
      * @return list of available actions
      */
-    public List<Action> getAviableActions(Board board, Worker selectedWorker);
+    public abstract List<Action> getAvailableActions(Board board, Position selectedWorker);
 }

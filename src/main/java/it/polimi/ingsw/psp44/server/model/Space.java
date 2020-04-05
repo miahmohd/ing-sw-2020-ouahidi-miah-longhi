@@ -1,9 +1,23 @@
 package it.polimi.ingsw.psp44.server.model;
 
+/**
+ * The atomic part of the board
+ */
 public class Space {
-
+    /**
+     * Contains information about what is built in the specific Space
+     * his range is from 0 (ground) to 3 (maximum number of block that can be placed in a space)
+     */
     private int level;
+
+    /**
+     * indicate presence of a dome in a space
+     */
     private boolean dome;
+
+    /**
+     * if isn't null indicate the worker in a space
+     */
     private Worker worker;
 
 
@@ -44,14 +58,26 @@ public class Space {
         this.worker = worker;
     }
 
+    /**
+     * checks if the building in this space is complate
+     * @return true if there are 3 block and the dome, false otherwise
+     */
     public boolean isComplete() {
         return this.isFinalLevel() && this.isDome();
     }
 
+    /**
+     * checks if all the three blocks have been built in a space
+     * @return true if level 3 have been reached, false otherwise
+     */
     public boolean isFinalLevel() {
         return this.level == 3;
     }
 
+    /**
+     * checks if no blocks have been built in a space
+     * @return true if no blocks have been built, false otherwise
+     */
     public boolean isGroundLevel() {
         return this.level == 0;
     }

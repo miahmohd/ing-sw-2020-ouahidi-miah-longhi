@@ -8,6 +8,9 @@ import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * the playground of the match, it keep information about buildings and workers positions
+ */
 public class Board {
     private static final int DIMENSION = 5;
     private Space[][] field;
@@ -26,7 +29,7 @@ public class Board {
     /**
      * Builds the next block at the specified position.
      *
-     * @param position
+     * @param position to build
      * @throws IllegalArgumentException if position is null or if <code>isDome() == true</code> or outside the board.
      */
     public void buildUp(Position position) {
@@ -48,7 +51,7 @@ public class Board {
     /**
      * Removes the last block at the specified position.
      *
-     * @param position
+     * @param position to remove a block
      * @throws IllegalArgumentException if position is null or if <code>isDome() == true</code> or outside the board.
      */
     public void buildDown(Position position) {
@@ -67,7 +70,7 @@ public class Board {
     }
 
     /**
-     * @param position
+     * @param position to check the building height
      * @return the level of the building at the specified position
      * @throws IllegalArgumentException if position is null or outside the board.
      */
@@ -85,7 +88,7 @@ public class Board {
     /**
      * Builds a dome at the specified position
      *
-     * @param position
+     * @param position to build the dome
      * @throws IllegalArgumentException if position is null or if <code>isDome() == true</code> or outside the board.
      */
     public void buildDome(Position position) {
@@ -103,7 +106,7 @@ public class Board {
     /**
      * Remove a dome at the specified position
      *
-     * @param position
+     * @param position to remove the dome
      * @throws IllegalArgumentException if position is null or if <code>isDome() == false</code> or outside the board.
      */
     public void removeDome(Position position) {
@@ -153,7 +156,7 @@ public class Board {
     }
 
     /**
-     * @param position
+     * @param position to check neighbouring spaces
      * @return adjacent positions of the specified position
      */
     public List<Position> getNeighbouringPositions(Position position) {
@@ -180,7 +183,7 @@ public class Board {
     }
 
     /**
-     * @param nickname
+     * @param nickname of the player whose workers have to search for
      * @return all player's worker positions
      */
     public List<Position> getPlayerWorkersPositions(String nickname) {
