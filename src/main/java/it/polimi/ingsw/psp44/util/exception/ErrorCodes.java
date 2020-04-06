@@ -17,6 +17,10 @@ public final class ErrorCodes {
     public static final String FILTER_NOT_IN_COLLECTION = "FILTER_NOT_IN_COLLECTION";
     public static final String NO_FILTER_IN_COLLECTION = "NO_FILTER_IN_COLLECTION";
 
+    public static final String NULL_STATE = "NULL_STATE";
+    public static final String STATE_NOT_IN_COLLECTION = "STATE_NOT_IN_COLLECTION";
+    public static final String NO_STATE_IN_COLLECTION = "NO_STATE_IN_COLLECTION";
+
     private ErrorCodes() {
     }
 }

@@ -4,10 +4,13 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class SimpleBuildStateTest {
+public class StateTest {
 
     @Test
-    public void getAvailableActions() {
+    public void setActiveMoveFilters() {
     }
 
+    @Test
+    public void setActiveBuildFilters() {
+    }
 }

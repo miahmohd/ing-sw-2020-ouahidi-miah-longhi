@@ -1,4 +1,6 @@
 package it.polimi.ingsw.psp44.server.controller.states;
+import it.polimi.ingsw.psp44.server.controller.filters.Filter;
+import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.util.Position;
@@ -10,18 +12,40 @@ import java.util.List;
  * phase of the game
  */
 public abstract class State {
-    private List<Filter> activeFilters;
+    /**
+     * filters that will be applied to move actions
+     */
+    protected FilterCollection activeMoveFilters;
+
+    /**
+     * filters that will be applied to build actions
+     */
+    protected FilterCollection activeBuildFilters;
 
     public State(){
-        this.activeFilters=new ArrayList<Filter>();
+        this.activeMoveFilters=new FilterCollection();
+        this.activeBuildFilters=new FilterCollection();
     }
 
     /**
-     * Set the list of filters tu use for decide which action are aviable
-     * @param activeFilters the list of filters
+     * Populates the list of filters to decide which move action are available
+     * @param newFilter the list of filters
      */
-    public void setActiveFilters(List<Filter> activeFilters) {
-        this.activeFilters = activeFilters;
+    public void setActiveMoveFilters(List<Filter> newFilter) {
+        //activeMoveFilters.empty();
+        for (Filter f: newFilter){
+            activeMoveFilters.add(f);
+        }
+    }
+
+    /** Populates the list of filters to decide which build action are available
+     * @param newFilter the list of filters
+     */
+    public void setActiveBuildFilters(List<Filter> newFilter) {
+        //activeBuildFilters.empty();
+        for (Filter f: newFilter){
+            activeBuildFilters.add(f);
+        }
     }
 
     /**
