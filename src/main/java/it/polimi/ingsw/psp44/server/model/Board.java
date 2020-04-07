@@ -193,10 +193,13 @@ public class Board {
         for (int row = 0; row < DIMENSION; row++) {
             for (int column = 0; column < DIMENSION; column++) {
                 selectedPosition = new Position(row, column);
-                selectedWorker = this.getWorker(selectedPosition);
-
-                if (selectedWorker != null && nickname.equals(selectedWorker.getPlayerNickname()))
-                    playerWorkerPositions.add(selectedPosition);
+                try {
+                    selectedWorker = this.getWorker(selectedPosition);
+                    if (selectedWorker != null && nickname.equals(selectedWorker.getPlayerNickname()))
+                        playerWorkerPositions.add(selectedPosition);
+                } catch (ConstructionException e){
+                    continue;
+                }
             }
         }
 

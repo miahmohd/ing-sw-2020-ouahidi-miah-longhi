@@ -1,8 +1,6 @@
 package it.polimi.ingsw.psp44.server.controller.filters;
 
 import it.polimi.ingsw.psp44.server.model.Board;
-import it.polimi.ingsw.psp44.server.model.Player;
-import it.polimi.ingsw.psp44.server.model.Worker;
 import it.polimi.ingsw.psp44.util.Position;
 import org.junit.Before;
 import org.junit.Test;

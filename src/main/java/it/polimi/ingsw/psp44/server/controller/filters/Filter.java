@@ -29,9 +29,7 @@ public abstract class Filter {
             return true;
         if (obj == null)
             return false;
-        if (getClass() == obj.getClass())
-            return true;
-        return false;
+        return getClass() == obj.getClass();
     }
 
     @Override
