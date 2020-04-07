@@ -5,14 +5,17 @@ package it.polimi.ingsw.psp44.server.model;
  * Two players with the same nickname in the same Game are the same Player
  */
 public class Player {
-
+    /**
+     * player identifier
+     */
     private final String nickname;
-    private String cardName;
 
     /**
-     *
-     * @param nickname identifies the player
+     * the god card choose by the player
      */
+    private String cardName;
+
+
     public Player(String nickname) {
         this.nickname = nickname;
     }

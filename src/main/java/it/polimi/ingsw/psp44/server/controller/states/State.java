@@ -1,11 +1,8 @@
 package it.polimi.ingsw.psp44.server.controller.states;
-
-import it.polimi.ingsw.psp44.server.controller.filters.Filter;
 import it.polimi.ingsw.psp44.server.model.Board;
-import it.polimi.ingsw.psp44.server.model.Worker;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
+import it.polimi.ingsw.psp44.util.Position;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,8 +10,6 @@ import java.util.List;
  * phase of the game
  */
 public abstract class State {
-    //TODO Leo se ti piace puoi usare FilterCollection che ha la lista di filtri, altrimenti vedi tu fra
-    //Io rimango dell'idea che allo stato devo passare le due collection ma la scelta la lascio a te
     private List<Filter> activeFilters;
 
     public State(){
@@ -35,5 +30,5 @@ public abstract class State {
      * @param selectedWorker worker selected from the player
      * @return list of available actions
      */
-    public abstract List<Action> getAviableActions(Board board, Worker selectedWorker);
+    public abstract List<Action> getAvailableActions(Board board, Position selectedWorker);
 }
