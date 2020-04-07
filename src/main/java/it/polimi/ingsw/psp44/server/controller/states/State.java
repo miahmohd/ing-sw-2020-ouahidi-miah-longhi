@@ -49,6 +49,22 @@ public abstract class State {
     }
 
     /**
+     * Get the list of active move filters
+     * @return list of filters
+     */
+    public FilterCollection getActiveMoveFilters() {
+        return activeMoveFilters;
+    }
+
+    /**
+     * Get the list of active build filters
+     * @return list of filters
+     */
+    public FilterCollection getActiveBuildFilters() {
+        return activeBuildFilters;
+    }
+
+    /**
      * Compute the available actions that the player can perform
      * @param board representation of the playing field
      * @param selectedWorker worker selected from the player

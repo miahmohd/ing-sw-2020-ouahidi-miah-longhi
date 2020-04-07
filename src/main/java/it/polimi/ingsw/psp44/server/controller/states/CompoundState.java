@@ -60,9 +60,16 @@ public class CompoundState extends State {
      * Removes all the states from the list of states
      */
      public void empty(){
-        simpleStates=new ArrayList<>();
+        simpleStates.clear();
      }
 
+    /**
+     * Get the list of simple state in this compound state
+     * @return a list of State
+     */
+    public List<State> getSimpleStates() {
+        return simpleStates;
+    }
 
     /**
      * Populates the list of filters to decide which move action are available

@@ -10,4 +10,8 @@ public abstract class Movement extends Action {
         super(targetPosition);
         this.sourcePosition = sourcePosition;
     }
+
+    public Position getSourcePosition() {
+        return sourcePosition;
+    }
 }

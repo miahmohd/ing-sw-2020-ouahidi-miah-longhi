@@ -51,6 +51,21 @@ public class FilterCollection extends Filter {
         filters.remove(filter);
     }
 
+    /**
+     * Removes all the filters from the list
+     */
+    public void empty(){
+        filters.clear();
+    }
+
+    /**
+     * return the filters of the collection
+     * @return a list of the filters in the collection
+     */
+    public List<Filter> getFilters(){
+        return filters;
+    }
+
     
     /**
      * calls filter method on all its Filter collection
