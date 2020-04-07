@@ -19,12 +19,12 @@ public class FilterCollection extends Filter {
     private List<Filter> filters;
 
     public FilterCollection(){
-        this.filters = new ArrayList<Filter>();
+        this.filters = new ArrayList<>();
     }
 
     /**
      * Adds a filter to the list of filters in the collection
-     * @param filter 
+     * @param filter is the filter to be added to the collection
      * @throws IllegalArgumentException if Filter is null
      * @throws FilterException if filter is already in the list
      */
@@ -39,7 +39,7 @@ public class FilterCollection extends Filter {
 
     /**
      * Removes a filter form the list of filters
-     * @param filter
+     * @param filter is the filter to be removed from the collection
      * @throws IllegalArgumentException if Filter is null
      * @throws FilterException if filter is not in the list
      */
@@ -54,7 +54,7 @@ public class FilterCollection extends Filter {
     
     /**
      * calls filter method on all its Filter collection
-     * @throws FilterException if filter is not in the list
+     * @throws IllegalStateException if the filter list is empty
     */
     @Override
     public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard) {
@@ -66,5 +66,34 @@ public class FilterCollection extends Filter {
         }
 
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((filters == null) ? 0 : filters.hashCode());
+        return result;
+    }
+
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        FilterCollection other = (FilterCollection) obj;
+        if (filters == null) {
+            if (other.filters != null)
+                return false;
+        } else if (!filters.equals(other.filters))
+            return false;
+        return true;
+    }
+
+
+    
 
 }
