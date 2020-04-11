@@ -26,7 +26,7 @@ public class Controller {
             if (currentPlayer.isTurnEnded()) {
                 model.nextTurn();
                 currentPlayer = players.get(model.getCurrentPlayerNickname());
-                currentPlayer.startTrun();
+                currentPlayer.startTurn();
                 currentPlayer.getWorkers(model.getBoard(), model.getCurrentPlayerNickname());
                 selectedWorkerPosition = sendWorker();
             }

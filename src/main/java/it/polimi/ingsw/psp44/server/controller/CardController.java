@@ -120,7 +120,7 @@ public class CardController {
     /**
      * initialize the player's turn. set the first state and set turn status to running
      */
-    public void startTrun() {
+    public void startTurn() {
         turnStatus=Status.RUN;
         currentState=initialState;
     }
