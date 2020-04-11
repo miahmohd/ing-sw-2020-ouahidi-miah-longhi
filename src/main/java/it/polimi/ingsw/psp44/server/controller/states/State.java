@@ -13,6 +13,11 @@ import java.util.List;
  */
 public abstract class State {
     /**
+     * if set to true the player can decide to end the turn without performing actions
+     */
+    protected boolean finalState;
+
+    /**
      * filters that will be applied to move actions
      */
     protected FilterCollection activeMoveFilters;
@@ -25,6 +30,29 @@ public abstract class State {
     public State(){
         this.activeMoveFilters=new FilterCollection();
         this.activeBuildFilters=new FilterCollection();
+        this.finalState=false;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        return getClass() == obj.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    public boolean isFinalState() {
+        return finalState;
+    }
+
+    public void setFinalState(boolean finalState) {
+        this.finalState = finalState;
     }
 
     /**
