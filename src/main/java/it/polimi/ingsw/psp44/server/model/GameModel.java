@@ -3,6 +3,7 @@ package it.polimi.ingsw.psp44.server.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.util.AppProperties;
 import it.polimi.ingsw.psp44.util.IObservable;
 import it.polimi.ingsw.psp44.util.IObserver;
@@ -10,9 +11,10 @@ import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 import it.polimi.ingsw.psp44.util.exception.PlayerException;
 
-public class GameModel implements IObservable {
-    private Board gameBoard;
-    private LinkedList<Player> players;
+// TODO implementare observable
+public class GameModel {
+    private final Board gameBoard;
+    private final LinkedList<Player> players;
 
     public GameModel(Board gameBoard, LinkedList<Player> players) {
         this.gameBoard = gameBoard;
@@ -24,9 +26,13 @@ public class GameModel implements IObservable {
         this.players = new LinkedList<>();
     }
 
+    public void applyAction(Action action){
+        action.execute(this.gameBoard);
+    }
+
     /**
      * Adds a player to the list of players in the game
-     * @param player
+     * @param player the player to add
      * @throws IllegalArgumentException if player is null
      * @throws PlayerException if player is already in the game
      */
