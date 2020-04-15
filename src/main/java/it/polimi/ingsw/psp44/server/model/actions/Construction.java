@@ -36,7 +36,7 @@ public abstract class Construction extends Action {
      * @return true if it is a movement action false otherwise
      */
     @Override
-    public boolean isCostruction() {
+    public boolean isConstruction() {
         return true;
     }
 

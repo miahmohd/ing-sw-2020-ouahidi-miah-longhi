@@ -41,8 +41,11 @@ public class Transition {
     public boolean isUnconditional() {
         return condition==null;
     }
-    public Class<? extends Action> getCondition() {
-        return condition.getClass();
-    }
 
+    public boolean checkCondition(Action lastAction) {
+        if (condition.isMovement())
+            return lastAction.isMovement();
+        else
+            return lastAction.isConstruction();
+    }
 }

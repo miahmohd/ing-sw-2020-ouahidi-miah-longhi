@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class SimpleMovement extends Action {
+public class SimpleMovement extends Movement {
 
 
     /**

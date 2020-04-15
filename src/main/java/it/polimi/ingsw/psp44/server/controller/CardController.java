@@ -79,7 +79,7 @@ public class CardController {
 
         Transition activeTransition= transitionsList.stream()
                 .filter((t)-> currentState.equals(t.getCurrentState())
-                        && ( t.isUnconditional() || t.getCondition().isAssignableFrom(lastAction.getClass())))
+                        && ( t.isUnconditional() || t.checkCondition(lastAction)))
                 .findFirst()
                 .orElse(null);
 
@@ -109,8 +109,8 @@ public class CardController {
      */
     public boolean checkVictory(Action lastAction, Board board) {
         return victoryConditionsList.stream()
-                .filter((condition)->lastAction.isCostruction()?condition.isAfterBuildCheck():
-                        !condition.isAfterBuildCheck())
+                .filter((condition)->lastAction.isConstruction()?condition.isAfterBuild():
+                        !condition.isAfterBuild())
                 .anyMatch((condition)-> condition.check(lastAction,board));
 
     }

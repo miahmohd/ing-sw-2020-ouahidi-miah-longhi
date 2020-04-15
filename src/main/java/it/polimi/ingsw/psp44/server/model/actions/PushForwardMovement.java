@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class PushForwardMovement extends Action {
+public class PushForwardMovement extends Movement {
 
     private Position forwardPosition;
 

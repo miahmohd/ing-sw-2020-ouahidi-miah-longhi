@@ -2,9 +2,6 @@ package it.polimi.ingsw.psp44.server.controller.VictoryCondition;
 
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
-import it.polimi.ingsw.psp44.util.Position;
-
-import java.util.List;
 
 /**
  * Abstract Class that defines the model for a Victory Condition class
@@ -15,14 +12,14 @@ public abstract class VictoryCondition {
      * Victory condition are usually checked after move actions.
      * if there is an exception and a victory condition must be checked
      */
-    protected boolean afterBuildCheck;
+    protected boolean afterBuild;
 
     public VictoryCondition(){
-        this.afterBuildCheck=false;
+        this.afterBuild =false;
     }
 
-    public boolean isAfterBuildCheck() {
-        return afterBuildCheck;
+    public boolean isAfterBuild() {
+        return afterBuild;
     }
 
     /**
