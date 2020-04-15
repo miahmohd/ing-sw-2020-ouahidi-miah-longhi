@@ -31,7 +31,6 @@ public class SimpleMoveStateTest {
         filtersTest.add(new FilterDome());
         filtersTest.add(new FilterUpByTwo());
         moveStateTest= new SimpleMoveState();
-        moveStateTest.setActiveMoveFilters(filtersTest);
         boardTest = new Board();
         Position level1 = new Position(0, 1);
         Position level2 = new Position(0, 2);
@@ -57,7 +56,6 @@ public class SimpleMoveStateTest {
     @Test
     public void getAvailableActions() {
         List<Position> computedPositions=new ArrayList<>();
-        assertTrue(moveStateTest.getActiveMoveFilters().getFilters().containsAll(filtersTest));
         for(Action a: moveStateTest.getAvailableActions(boardTest,workerPosition)){
             assertTrue(a instanceof SimpleMovement);
             computedPositions.add(a.getTargetPosition());

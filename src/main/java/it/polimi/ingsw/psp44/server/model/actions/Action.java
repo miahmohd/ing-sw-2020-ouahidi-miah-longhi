@@ -11,10 +11,20 @@ import java.util.List;
 public abstract class Action {
 
     protected Position targetPosition;
+    protected Position sourcePosition;
 
+    public Action(Position sourcePosition, Position targetPosition) {
+        this.sourcePosition = sourcePosition;
+        this.targetPosition = targetPosition;
+    }
 
     public Action(Position target) {
+        this.sourcePosition=null;
         this.targetPosition = target;
+    }
+
+    public Position getSourcePosition() {
+        return sourcePosition;
     }
 
     public Position getTargetPosition() {
@@ -33,5 +43,16 @@ public abstract class Action {
      */
     public abstract List<Position> getModifiedPositions();
 
+    /**
+     * Indicate the type of action
+     * @return true if it is a movement action false otherwise
+     */
+    public abstract boolean isMovement();
+
+    /**
+     * Indicate the type of action
+     * @return true if it is a movement action false otherwise
+     */
+    public abstract boolean isCostruction();
 }
 

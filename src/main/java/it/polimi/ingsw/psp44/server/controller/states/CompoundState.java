@@ -1,6 +1,5 @@
 package it.polimi.ingsw.psp44.server.controller.states;
-
-import it.polimi.ingsw.psp44.server.controller.filters.Filter;
+import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.util.AppProperties;
@@ -22,6 +21,25 @@ public class CompoundState extends State {
 
     public CompoundState(){
         this.simpleStates=new ArrayList<>();
+    }
+
+    /**
+     * Compute the available actions that the player can perform
+     *
+     * @param board          representation of the playing field
+     * @param selectedWorker worker selected from the player
+     * @param moveFilter     filter to apply to move actions
+     * @param buildFilter    filter to apply to build actions
+     * @return list of available actions
+     */
+    @Override
+    public List<Action> getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
+        ArrayList<Action> availableActions=new ArrayList<>();
+        if(simpleStates.isEmpty())
+            throw new StateException(AppProperties.getInstance().getMessage(ErrorCodes.NO_STATE_IN_COLLECTION));
+        for (State s:simpleStates)
+            availableActions.addAll(s.getAvailableActions(board,selectedWorker, moveFilter, buildFilter));
+        return availableActions;
     }
 
     public CompoundState(State... states){
@@ -71,48 +89,9 @@ public class CompoundState extends State {
         return simpleStates;
     }
 
-    /**
-     * Populates the list of filters to decide which move action are available
-     * for each simple state
-     * @param newFilter the list of filters
-     * @throws StateException if tries to add filters to empty list of states
-     */
-    @Override
-    public void setActiveMoveFilters(List<Filter> newFilter) {
-        if(simpleStates.isEmpty())
-            throw new StateException(AppProperties.getInstance().getMessage(ErrorCodes.NO_STATE_IN_COLLECTION));
-        for (State s:simpleStates)
-            s.setActiveMoveFilters(newFilter);
-    }
 
-    /**
-     * Populates the list of filters to decide which build action are available
-     * for each simple state
-     * @param newFilter the list of filters
-     * @throws StateException if tries to add filters to empty list of states
-     */
-    @Override
-    public void setActiveBuildFilters(List<Filter> newFilter) {
-        if(simpleStates.isEmpty())
-            throw new StateException(AppProperties.getInstance().getMessage(ErrorCodes.NO_STATE_IN_COLLECTION));
-        for (State s:simpleStates)
-            s.setActiveBuildFilters(newFilter);
-    }
 
-    /**
-     * Get all'available actions from its simple state
-     * @param board representation of the playing field
-     * @param selectedWorker worker selected from the player
-     * @return list of all available actions
-     * @throws StateException if there are no states
-     */
-    @Override
-    public List<Action> getAvailableActions(Board board, Position selectedWorker) {
-        ArrayList<Action> availableActions=new ArrayList<>();
-        if(simpleStates.isEmpty())
-            throw new StateException(AppProperties.getInstance().getMessage(ErrorCodes.NO_STATE_IN_COLLECTION));
-        for (State s:simpleStates)
-            availableActions.addAll(s.getAvailableActions(board,selectedWorker));
-        return availableActions;
-    }
+
+
+
 }

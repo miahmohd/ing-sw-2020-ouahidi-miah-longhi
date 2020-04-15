@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SwapMovement extends Movement {
+public class SwapMovement extends Action {
 
     /**
      * Create a movement that swap worker in target with th worker in source

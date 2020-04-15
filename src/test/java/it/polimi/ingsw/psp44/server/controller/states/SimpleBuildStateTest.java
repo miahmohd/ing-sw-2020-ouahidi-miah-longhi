@@ -19,17 +19,13 @@ public class SimpleBuildStateTest {
 
     private Board boardTest;
     private SimpleBuildState buildStateTest;
-    private List<Filter> filtersTest;
     private List<Position> expectedPosition;
     private Position workerPosition;
 
     @Before
     public void setUp() {
         workerPosition= new Position(1,2);
-        filtersTest=new ArrayList<>();
-        filtersTest.add(new FilterDome());
         buildStateTest= new SimpleBuildState();
-        buildStateTest.setActiveBuildFilters(filtersTest);
         boardTest = new Board();
         Position level1 = new Position(0, 1);
         Position level2 = new Position(0, 2);
@@ -54,7 +50,6 @@ public class SimpleBuildStateTest {
     @Test
     public void getAvailableActions() {
         List<Position> computedPositions=new ArrayList<>();
-        assertTrue(buildStateTest.getActiveBuildFilters().getFilters().containsAll(filtersTest));
         for(Action a: buildStateTest.getAvailableActions(boardTest,workerPosition)){
             assertTrue(a instanceof SimpleBuild);
             computedPositions.add(a.getTargetPosition());

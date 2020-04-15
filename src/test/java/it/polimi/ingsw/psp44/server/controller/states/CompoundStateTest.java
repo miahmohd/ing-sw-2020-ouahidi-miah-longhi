@@ -70,35 +70,15 @@ public class CompoundStateTest {
         assertTrue(compoundStateTest.getSimpleStates().isEmpty());
     }
 
-    @Test
-    public void setActiveMoveFilters() {
-        compoundStateTest.addState(moveStateTest);
-        compoundStateTest.addState(buildStateTest);
 
-        compoundStateTest.setActiveMoveFilters(moveFiltersTest);
-        assertTrue((buildStateTest.getActiveMoveFilters().getFilters().get(0) instanceof FilterUpByTwo)||
-                (buildStateTest.getActiveMoveFilters().getFilters().get(0) instanceof FilterDome));
-        assertTrue((moveStateTest.getActiveMoveFilters().getFilters().get(0) instanceof FilterUpByTwo)||
-                (moveStateTest.getActiveMoveFilters().getFilters().get(0) instanceof FilterDome));
-    }
 
-    @Test
-    public void setActiveBuildFilters() {
-        compoundStateTest.addState(moveStateTest);
-        compoundStateTest.addState(buildStateTest);
 
-        compoundStateTest.setActiveBuildFilters(buildFiltersTest);
-        assertTrue(buildStateTest.getActiveBuildFilters().getFilters().get(0) instanceof FilterDome);
-        assertTrue(moveStateTest.getActiveBuildFilters().getFilters().get(0) instanceof FilterDome);
-    }
 
     @Test
     public void getAvailableActions() {
         boardTest = new Board();
         compoundStateTest.addState(moveStateTest);
         compoundStateTest.addState(buildStateTest);
-        compoundStateTest.setActiveMoveFilters(moveFiltersTest);
-        compoundStateTest.setActiveBuildFilters(buildFiltersTest);
         Position level1 = new Position(0, 1);
         Position level2 = new Position(0, 2);
         Position level3 = new Position(0, 3);

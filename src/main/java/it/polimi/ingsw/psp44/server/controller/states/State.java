@@ -17,19 +17,8 @@ public abstract class State {
      */
     protected boolean finalState;
 
-    /**
-     * filters that will be applied to move actions
-     */
-    protected FilterCollection activeMoveFilters;
-
-    /**
-     * filters that will be applied to build actions
-     */
-    protected FilterCollection activeBuildFilters;
 
     public State(){
-        this.activeMoveFilters=new FilterCollection();
-        this.activeBuildFilters=new FilterCollection();
         this.finalState=false;
     }
 
@@ -55,48 +44,14 @@ public abstract class State {
         this.finalState = finalState;
     }
 
-    /**
-     * Populates the list of filters to decide which move action are available
-     * @param newFilter the list of filters
-     */
-    public void setActiveMoveFilters(List<Filter> newFilter) {
-        //activeMoveFilters.empty();
-        for (Filter f: newFilter){
-            activeMoveFilters.add(f);
-        }
-    }
-
-    /** Populates the list of filters to decide which build action are available
-     * @param newFilter the list of filters
-     */
-    public void setActiveBuildFilters(List<Filter> newFilter) {
-        //activeBuildFilters.empty();
-        for (Filter f: newFilter){
-            activeBuildFilters.add(f);
-        }
-    }
-
-    /**
-     * Get the list of active move filters
-     * @return list of filters
-     */
-    public FilterCollection getActiveMoveFilters() {
-        return activeMoveFilters;
-    }
-
-    /**
-     * Get the list of active build filters
-     * @return list of filters
-     */
-    public FilterCollection getActiveBuildFilters() {
-        return activeBuildFilters;
-    }
 
     /**
      * Compute the available actions that the player can perform
      * @param board representation of the playing field
      * @param selectedWorker worker selected from the player
+     * @param moveFilter filter to apply to move actions
+     * @param buildFilter filter to apply to build actions
      * @return list of available actions
      */
-    public abstract List<Action> getAvailableActions(Board board, Position selectedWorker);
+    public abstract List<Action> getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter);
 }

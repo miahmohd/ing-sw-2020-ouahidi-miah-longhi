@@ -1,10 +1,13 @@
 package it.polimi.ingsw.psp44.server.controller;
 
+import it.polimi.ingsw.psp44.server.controller.VictoryCondition.VictoryCondition;
+import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.controller.states.State;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.util.Position;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,35 +16,23 @@ import java.util.List;
  * with the actions that the player can perform.
  */
 public class CardController {
-    /**
-     * The turn status is a signal that report particular condition of the turn:
-     * - RUN: the turn is running
-     * - WON: current player has won the match
-     * - LOST: current player has lost the match
-     * - END: the turn is ended
-     */
-    private enum Status{
-        RUN,
-        WON,
-        LOST,
-        END
-    }
 
-    /**
-     *  The status of the turn
-     */
-    private Status turnStatus;
     /**
      * A list of the possible states transitions for the card
      */
     private List<Transition> transitionsList;
-
+    /**
+     * filters to apply when computing build actions
+     */
+    private FilterCollection activeBuildFilter;
+    /**
+     * filters to apply when computing move actions
+     */
+    private FilterCollection activeMoveFilter;
     /**
      * A list of victory condition for the card
      */
-    //TODO
-   // private List<VictoryCondition> victoryConditionsList;
-
+    private List<VictoryCondition> victoryConditionsList;
     /**
      * The current state of the player turn
      */
@@ -59,9 +50,8 @@ public class CardController {
      * @return a list with the available actions
      */
     public List<Action> getAction(Board board, Position selectedWorker){
-        //TODO gestire la fine del turno --> se lo stato è finale aggiungi la mossa end turn
-        //TODO gestione della assenza di mosse disponibili
-        return currentState.getAvailableActions(board,selectedWorker);
+        List<Action> availableActions=currentState.getAvailableActions(board,selectedWorker,activeMoveFilter,activeBuildFilter);
+        return availableActions;
     }
 
     /**
@@ -71,19 +61,21 @@ public class CardController {
      * @return a list with the positions of the player's worker
      */
     public List<Position> getWorkers(Board board, String playerNickname){
-        //TODO gestione worker che non si possono muovere
-        return board.getPlayerWorkersPositions(playerNickname);
+        List<Position> availableWorkers=new ArrayList<>();
+        for(Position p : board.getPlayerWorkersPositions(playerNickname))
+            if(!currentState.getAvailableActions(board,p,activeMoveFilter,activeBuildFilter).isEmpty())
+                availableWorkers.add(p);
+        return availableWorkers;
     }
+
 
     /**
      * After that an action is performed menage the transition to the next status
+     * if there are no transition active means that the turn is ended
      * @param lastAction the last action performed
+     * @return true if there is a new state, false if the turn is ended
      */
-    public void nextState(Action lastAction){
-        //TODO gestione della vittoria
-
-        if(this.turnStatus==Status.WON)
-            return;
+    public boolean nextState(Action lastAction){
 
         Transition activeTransition= transitionsList.stream()
                 .filter((t)-> currentState.equals(t.getCurrentState())
@@ -92,36 +84,34 @@ public class CardController {
                 .orElse(null);
 
         if(activeTransition==null){
-            this.turnStatus=Status.END;
-            return;
+            return false;
         }
             currentState = activeTransition.getNextState();
-            currentState.setActiveBuildFilters(activeTransition.getBuildFilter());
-            currentState.setActiveMoveFilters(activeTransition.getMoveFilter());
+            activeBuildFilter.empty();
+            activeMoveFilter.empty();
+            activeTransition.getBuildFilter().forEach(filter -> activeBuildFilter.add(filter) );
+            activeTransition.getMoveFilter().forEach(filter -> activeMoveFilter.add(filter));
+            return true;
 
     }
 
     /**
-     * reports that the player has won during the current turn
-     * @return true if the player has won, false otherwise
-     */
-    public boolean hasWon() {
-        return turnStatus==Status.WON;
-    }
-
-    /**
-     * check whether the turn i ended
-     * @return true if the turn is ended, false otherwise
-     */
-    public boolean isTurnEnded() {
-        return this.turnStatus==Status.END;
-    }
-
-    /**
-     * initialize the player's turn. set the first state and set turn status to running
+     * initialize the player's turn. set the first state
      */
     public void startTurn() {
-        turnStatus=Status.RUN;
         currentState=initialState;
+    }
+
+    /**
+     * check victory conditions, set status to WON is a condition is proved
+     * @param lastAction last action performed
+     * @param board the playing field
+     */
+    public boolean checkVictory(Action lastAction, Board board) {
+        return victoryConditionsList.stream()
+                .filter((condition)->lastAction.isCostruction()?condition.isAfterBuildCheck():
+                        !condition.isAfterBuildCheck())
+                .anyMatch((condition)-> condition.check(lastAction,board));
+
     }
 }

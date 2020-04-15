@@ -20,6 +20,26 @@ public abstract class Construction extends Action {
         this.isUnbuild = isUnbuild;
     }
 
+    /**
+     * Indicate the type of action
+     *
+     * @return true if it is a movement action false otherwise
+     */
+    @Override
+    public boolean isMovement() {
+        return false;
+    }
+
+    /**
+     * Indicate the type of action
+     *
+     * @return true if it is a movement action false otherwise
+     */
+    @Override
+    public boolean isCostruction() {
+        return true;
+    }
+
     @Override
     public List<Position> getModifiedPositions() {
         return new ArrayList<>(Arrays.asList(this.targetPosition));
