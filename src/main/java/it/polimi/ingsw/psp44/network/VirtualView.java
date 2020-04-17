@@ -53,7 +53,7 @@ public class VirtualView implements Runnable {
     /**
      * Resets the interface and prepare for the start of the game/turn.
      */
-    public void start() {
+    public void startTurn() {
         // superfluo potrebbe bastare selectWorkerFrom
     }
 
@@ -71,6 +71,7 @@ public class VirtualView implements Runnable {
      * @param actions the list of actions to choose from.
      */
     public void selectActionFrom(List<Action> actions) {
+
     }
 
     /**
@@ -87,6 +88,25 @@ public class VirtualView implements Runnable {
     }
 
 
+    /**
+     * Send a list containing all the cards, and a number indicating how many to chose
+     */
+    public void chooseCardsFrom() {
+
+    }
+
+    /**
+     * Allow the player to choose a card .
+     */
+    public void chooseCardFrom() {
+    }
+
+    /**
+     * Permette al giocatore di scegliere le posizioni iniziali del player
+     */
+    public void chooseWorkersInitialPosition(){
+
+    }
 }
 
 
