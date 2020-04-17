@@ -81,7 +81,7 @@ public class Server {
         // todo see todos in this::newGameMessageHandler
         if (message.getHeader() == "join game") {
             String nickname = message.getBody();
-            if (this.game == null || this.game.containsPlayer(nickname) || this.game.isFull())
+            if (this.game == null /*|| this.game.containsPlayer(nickname) */|| this.game.isFull())
                 throw new IllegalStateException();
 
             this.game.addPlayer(nickname, view);

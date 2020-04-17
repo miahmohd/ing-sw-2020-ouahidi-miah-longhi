@@ -9,7 +9,7 @@ import it.polimi.ingsw.psp44.util.Position;
 public class FilterMyWorkers extends Filter {
 
     @Override
-    public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard) {
+    public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard, boolean external) {
         Worker myWorker = gameBoard.getWorker(startingPosition);
         String myNickname = myWorker.getPlayerNickname();
         List<Position> myWorkerPositions = gameBoard.getPlayerWorkersPositions(myNickname);

@@ -30,11 +30,13 @@ public class Transition {
         return nextState;
     }
 
-    public List<Filter> getBuildFilter() {
+    public List<Filter> getBuildFilter(Action lastAction) {
+        buildFilters.stream().forEach((filter)->filter.setLastAction(lastAction));
         return buildFilters;
     }
 
-    public List<Filter> getMoveFilter() {
+    public List<Filter> getMoveFilter(Action lastAction) {
+        buildFilters.stream().forEach((filter)->filter.setLastAction(lastAction));
         return moveFilters;
     }
 

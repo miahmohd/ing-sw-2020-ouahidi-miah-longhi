@@ -111,7 +111,7 @@ public class FilterCollectionTest {
         filterCollection.add(myWorkers);
 
         List<Position> actualPositions = gameBoard.getNeighbouringPositions(startingPosition);
-        filterCollection.filter(startingPosition, actualPositions, gameBoard);
+        filterCollection.filter(startingPosition, actualPositions, gameBoard, false);
 
         assertEquals(expectedPositions.size(), actualPositions.size());
         assertTrue(expectedPositions.containsAll(actualPositions));
@@ -129,9 +129,9 @@ public class FilterCollectionTest {
         ));
 
         actualPositions = gameBoard.getNeighbouringPositions(startingPosition);
-        filterCollection.filter(startingPosition, actualPositions, gameBoard);
+        filterCollection.filter(startingPosition, actualPositions, gameBoard, false);
 
-        filterCollection.filter(startingPosition, actualPositions, gameBoard);
+        filterCollection.filter(startingPosition, actualPositions, gameBoard, false);
 
         assertEquals(expectedPositions.size(), actualPositions.size());
         assertTrue(expectedPositions.containsAll(actualPositions));

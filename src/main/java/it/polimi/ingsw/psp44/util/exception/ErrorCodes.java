@@ -21,6 +21,8 @@ public final class ErrorCodes {
     public static final String STATE_NOT_IN_COLLECTION = "STATE_NOT_IN_COLLECTION";
     public static final String NO_STATE_IN_COLLECTION = "NO_STATE_IN_COLLECTION";
 
+    public static final String TRANSITION_SCHEMA_ERROR = "TRANSITION_IS_NULL";
+
     private ErrorCodes() {
     }
 }

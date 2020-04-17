@@ -5,7 +5,9 @@ import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.controller.states.State;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
+import it.polimi.ingsw.psp44.util.AppProperties;
 import it.polimi.ingsw.psp44.util.Position;
+import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +18,19 @@ import java.util.List;
  * with the actions that the player can perform.
  */
 public class CardController {
-
+    private Controller context;
+    /**
+     * The initial state of the turn
+     */
+    private State initialState;
     /**
      * A list of the possible states transitions for the card
      */
     private List<Transition> transitionsList;
+    /**
+     * A list of victory condition for the card
+     */
+    private List<VictoryCondition> victoryConditionsList;
     /**
      * filters to apply when computing build actions
      */
@@ -30,27 +40,33 @@ public class CardController {
      */
     private FilterCollection activeMoveFilter;
     /**
-     * A list of victory condition for the card
-     */
-    private List<VictoryCondition> victoryConditionsList;
-    /**
      * The current state of the player turn
      */
     private State currentState;
-    /**
-     * The initial state of the turn
-     */
-    private State initialState;
 
-   
+
+    public CardController(State initialState, List<Transition> transitionsList, List<VictoryCondition> victoryConditionsList, Controller context) {
+        this.context=context;
+        this.initialState = initialState;
+        this.transitionsList = transitionsList;
+        this.victoryConditionsList = victoryConditionsList;
+        Transition loopBackTransition= transitionsList.stream()
+                .filter((t)-> initialState.equals(t.getNextState()))
+                .findFirst()
+                .orElse(null);
+        executeTransition(loopBackTransition, null);
+    }
+
     /**
      * Compute all the action that a worker can do
      * @param board the playground of the match, used to check the available actions
      * @param selectedWorker the worker that the player wants to move
      * @return a list with the available actions
      */
-    public List<Action> getAction(Board board, Position selectedWorker){
+    public List<Action> getAvailableAction(Board board, Position selectedWorker){
         List<Action> availableActions=currentState.getAvailableActions(board,selectedWorker,activeMoveFilter,activeBuildFilter);
+        activeBuildFilter.empty();
+        activeMoveFilter.empty();
         return availableActions;
     }
 
@@ -74,6 +90,7 @@ public class CardController {
      * if there are no transition active means that the turn is ended
      * @param lastAction the last action performed
      * @return true if there is a new state, false if the turn is ended
+     * @throws IllegalArgumentException there aren't active transitions
      */
     public boolean nextState(Action lastAction){
 
@@ -82,24 +99,8 @@ public class CardController {
                         && ( t.isUnconditional() || t.checkCondition(lastAction)))
                 .findFirst()
                 .orElse(null);
-
-        if(activeTransition==null){
-            return false;
-        }
-            currentState = activeTransition.getNextState();
-            activeBuildFilter.empty();
-            activeMoveFilter.empty();
-            activeTransition.getBuildFilter().forEach(filter -> activeBuildFilter.add(filter) );
-            activeTransition.getMoveFilter().forEach(filter -> activeMoveFilter.add(filter));
-            return true;
-
-    }
-
-    /**
-     * initialize the player's turn. set the first state
-     */
-    public void startTurn() {
-        currentState=initialState;
+        executeTransition(activeTransition, lastAction );
+        return !currentState.equals(initialState);
     }
 
     /**
@@ -112,6 +113,32 @@ public class CardController {
                 .filter((condition)->lastAction.isConstruction()?condition.isAfterBuild():
                         !condition.isAfterBuild())
                 .anyMatch((condition)-> condition.check(lastAction,board));
+    }
 
+    /**
+     * set next status and activate filters
+     * @param transition transition that must be performed
+     * @param lastAction last action performed
+     * @throws IllegalArgumentException if transition is null
+     */
+    private void executeTransition(Transition transition, Action lastAction) {
+        if(currentState==null)
+            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.TRANSITION_SCHEMA_ERROR));
+
+        currentState = transition.getNextState();
+
+        transition.getBuildFilter(lastAction).forEach((filter) ->{
+            if(filter.isExternal())
+                context.dispatchBuildFilter(filter);
+            else
+                activeBuildFilter.add(filter);
+        } );
+
+        transition.getMoveFilter(lastAction).forEach((filter) ->{
+            if(filter.isExternal())
+                context.dispatchMoveFilter(filter);
+            else
+                activeMoveFilter.add(filter);
+        } );
     }
 }

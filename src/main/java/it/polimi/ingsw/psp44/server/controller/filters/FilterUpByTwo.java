@@ -9,7 +9,7 @@ public class FilterUpByTwo extends Filter {
 
 
     @Override
-    public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard) {
+    public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard, boolean external) {
         positionsToFilter.removeIf(position -> {
             int startingLevel = gameBoard.getLevel(startingPosition);
             int arrivingLevel = gameBoard.getLevel(position);
