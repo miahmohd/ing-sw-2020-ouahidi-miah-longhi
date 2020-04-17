@@ -14,11 +14,10 @@ import java.util.*;
 /**
  * A class representing a single game. It is self-sustained.
  */
-public class Game {
+public class Game{
 
     private int maxPlayers;
     private long idMatch;
-    private Controller controller;
     private SetupController setupController;
 
 
@@ -27,7 +26,6 @@ public class Game {
         this.maxPlayers = maxPlayers;
         this.idMatch= new Date().getTime();
         this.setupController=new SetupController();
-        this.controller=new Controller();
     }
 
 
@@ -38,10 +36,10 @@ public class Game {
      */
     //TODO this must be syncronized
     public void addPlayer(String nickname, VirtualView view) {
-        setHandler(view);
-        controller.addPlayer(nickname, view);
+        setupController.addPlayer(nickname,view);
+
         if (this.isFull())
-            setupController.setup(controller);
+            setupController.setup(playerViews);
     }
 
     //TODO this must be synchronized
@@ -52,13 +50,6 @@ public class Game {
 
 
 
-    /**
-     * Arranges the message handlers for the turn management
-     */
-    private void setHandler(VirtualView view) {
-       view.addMessageHandler(controller::getWorkerMessageHandler);
-       view.addMessageHandler(setupController::getCardMessageHandler);
-       //...dopo tutti gli handler
-        }
+
 
     }

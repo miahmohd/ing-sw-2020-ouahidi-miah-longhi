@@ -4,7 +4,20 @@ import it.polimi.ingsw.psp44.network.VirtualView;
 import it.polimi.ingsw.psp44.util.network.Message;
 
 public class SetupController {
-    public void setup(Controller controller) {
+    private Controller controller;
+
+
+    public SetupController() {
+        this.controller = new Controller();
+    }
+
+    public SetupController(Controller controller) {
+        this.controller = controller;
+    }
+
+
+    public void setup() {
+
 
     }
 
@@ -21,6 +34,19 @@ public class SetupController {
             return true;
         }
         return false;
+    }
+
+    public void addPlayer(String nickname, VirtualView view) {
+        setHandler(view);
+
+    }
+    /**
+     * Arranges the message handlers for the turn management
+     */
+    private void setHandler(VirtualView view) {
+        view.addMessageHandler(controller::getWorkerMessageHandler);
+        view.addMessageHandler(setupController::getCardMessageHandler);
+        //...dopo tutti gli handler
     }
 
 }
