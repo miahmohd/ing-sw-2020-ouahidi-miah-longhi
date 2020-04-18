@@ -38,9 +38,9 @@ public class GameModel {
      */
     public void addPlayer(Player player){
         if(player == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.NULL_PLAYER));
+            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_PLAYER));
         if(players.contains(player))
-            throw new PlayerException(AppProperties.getInstance().getMessage(ErrorCodes.PLAYER_IN_GAME));
+            throw new PlayerException(AppProperties.getInstance().getProperty(ErrorCodes.PLAYER_IN_GAME));
         this.players.addFirst(player);
     }
 
@@ -52,9 +52,9 @@ public class GameModel {
      */
     public void removePlayer(Player player){
         if(player == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.NULL_PLAYER));
+            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_PLAYER));
         if(!players.contains(player))
-            throw new PlayerException(AppProperties.getInstance().getMessage(ErrorCodes.PLAYER_NOT_IN_GAME));
+            throw new PlayerException(AppProperties.getInstance().getProperty(ErrorCodes.PLAYER_NOT_IN_GAME));
         
         List<Position> playerWorkers = gameBoard.getPlayerWorkersPositions(player.getNickname());
         
@@ -72,7 +72,7 @@ public class GameModel {
      */
     public void nextTurn(){
         if(players.isEmpty())
-            throw new IllegalStateException(AppProperties.getInstance().getMessage(ErrorCodes.NO_PLAYERS_IN_GAME));
+            throw new IllegalStateException(AppProperties.getInstance().getProperty(ErrorCodes.NO_PLAYERS_IN_GAME));
         Player currentPlayer = players.removeFirst();
         players.addLast(currentPlayer);
     }
@@ -83,7 +83,7 @@ public class GameModel {
      */
     public String getCurrentPlayerNickname() {
         if(players.isEmpty())
-            throw new IllegalStateException(AppProperties.getInstance().getMessage(ErrorCodes.NO_PLAYERS_IN_GAME));
+            throw new IllegalStateException(AppProperties.getInstance().getProperty(ErrorCodes.NO_PLAYERS_IN_GAME));
         Player currentPlayer = players.getFirst();
         return currentPlayer.getNickname();
     }

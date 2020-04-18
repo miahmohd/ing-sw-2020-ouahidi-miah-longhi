@@ -1,35 +1,17 @@
 package it.polimi.ingsw.psp44.util;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
-public class AppProperties {
+public class AppProperties extends Property {
     private static AppProperties instance;
-    private Properties prop;
+    private static String propertyPath = "/app.properties";
 
-    private AppProperties() {
-        this.prop = new Properties();
-
-        InputStream in = AppProperties.class.getResourceAsStream("/app.properties");
-        if (in != null) {
-            try {
-                prop.load(in);
-            } catch (IOException e) {
-                System.err.println(e.getMessage());
-            }
-        }
-
+    private AppProperties(String path) {
+        super(path);
     }
 
     public static AppProperties getInstance() {
         if (instance == null) {
-            instance = new AppProperties();
+            instance = new AppProperties(propertyPath);
         }
         return instance;
-    }
-
-    public String getMessage(String code) {
-        return this.prop.getProperty(code);
     }
 }
