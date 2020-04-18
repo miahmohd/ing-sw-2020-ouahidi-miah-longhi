@@ -1,7 +1,5 @@
 package it.polimi.ingsw.psp44.network;
 
-import it.polimi.ingsw.psp44.util.network.Message;
-
 import java.util.function.BiFunction;
 
 /**

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.psp44.network;
 
-import it.polimi.ingsw.psp44.util.network.Message;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,7 +15,7 @@ public class Server {
     private int port;
 
     //TODO servono?
-    private List<Connection> connections = Collections.synchronizedList(new ArrayList<>());
+    private List<SocketConnection> connections = Collections.synchronizedList(new ArrayList<>());
 
     private Game game;
 
@@ -33,7 +31,7 @@ public class Server {
             while (true) {
                 Socket socket = server.accept();
 
-                Connection connection = new Connection(socket);
+                SocketConnection connection = new SocketConnection(socket);
                 this.connections.add(connection);
 
                 VirtualView view = new VirtualView(connection);
@@ -58,7 +56,7 @@ public class Server {
      */
     private boolean newGameMessageHandler(VirtualView view, Message message) {
         //todo definire header come costanti e/o file
-        if (message.getHeader() == "new game") {
+        if (message.getCode() == "new game") {
             //todo gestire il ritenta al posto dell'errore
             if (this.game != null)// ricavare il numero da nickname.
                 throw new IllegalStateException();
@@ -79,7 +77,7 @@ public class Server {
      */
     private boolean joinGameMessageHandler(VirtualView view, Message message) {
         // todo see todos in this::newGameMessageHandler
-        if (message.getHeader() == "join game") {
+        if (message.getCode() == "join game") {
             String nickname = message.getBody();
             if (this.game == null /*|| this.game.containsPlayer(nickname) */|| this.game.isFull())
                 throw new IllegalStateException();

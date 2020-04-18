@@ -2,7 +2,6 @@ package it.polimi.ingsw.psp44.network;
 
 import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.util.Position;
-import it.polimi.ingsw.psp44.util.network.Message;
 
 import java.util.List;
 
@@ -11,10 +10,10 @@ import java.util.List;
  */
 public class VirtualView implements Runnable {
 
-    private Connection connection;
+    private SocketConnection connection;
     private MessageHandler handlers;
 
-    public VirtualView(Connection connection) {
+    public VirtualView(SocketConnection connection) {
         this.connection = connection;
     }
 
@@ -44,7 +43,7 @@ public class VirtualView implements Runnable {
     }
 
     public void sendMessage(String message) {
-        this.connection.write(message);
+        this.connection.writeLine(message);
     }
 
     //todo utilizzare oggetti specifici per la trasmissione TBD

@@ -1,50 +1,22 @@
 package it.polimi.ingsw.psp44.network;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-
 /**
- * Represents a communication channel with the client.
+ * This class establishes a connection between the user (of the class) and a remote host.
+ * It's an abstract class purely for testing
  */
-public class Connection {
-
-    private Socket socket;
-
-    private PrintWriter writer;
-    private BufferedReader reader;
+public abstract class Connection<T> {
 
 
-    public Connection(Socket socket) {
-        this.socket = socket;
+    /**
+     * Reads form the chosen connection
+     * @return the message just read
+     */
+    public abstract T readLine();
+    
 
-        try {
-
-            this.writer = new PrintWriter(socket.getOutputStream(), true);
-            this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public String readLine() {
-        try {
-            return this.reader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "Errore";
-    }
-
-    public void write(String msg) {
-        this.writer.println(msg);
-    }
-
-
-
+    /**
+     * Writes the message into the chosen connection
+     */
+    public abstract void writeLine(T message);
 
 }

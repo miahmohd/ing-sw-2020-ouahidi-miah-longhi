@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import it.polimi.ingsw.psp44.util.network.IVirtual;
-import it.polimi.ingsw.psp44.util.network.Message;
-import it.polimi.ingsw.psp44.util.network.Connection;
+import it.polimi.ingsw.psp44.network.Connection;
+import it.polimi.ingsw.psp44.network.Message;
 
 public class VirtualServer implements IVirtual<Message>, Runnable {
 
@@ -24,10 +24,9 @@ public class VirtualServer implements IVirtual<Message>, Runnable {
     @Override
     public void run() {
         //FIXME: Doesn't work, just an example
-        connection.connect();
-        Message message = connection.read();
-        String header = message.getHeader();
-        router.get(header).run();
+        Message message = connection.readLine();
+        String code = message.getCode();
+        router.get(code).run();
     }
 
     @Override

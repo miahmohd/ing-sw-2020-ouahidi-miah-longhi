@@ -3,8 +3,8 @@ package it.polimi.ingsw.psp44.client.cli;
 import java.util.Scanner;
 
 import it.polimi.ingsw.psp44.client.IView;
+import it.polimi.ingsw.psp44.network.Message;
 import it.polimi.ingsw.psp44.util.network.IVirtual;
-import it.polimi.ingsw.psp44.util.network.Message;
 
 
 public class CLIView implements IView<Message> {

@@ -1,10 +1,10 @@
 package it.polimi.ingsw.psp44.server.controller;
 //TODO
 
+import it.polimi.ingsw.psp44.network.Message;
 import it.polimi.ingsw.psp44.network.VirtualView;
 import it.polimi.ingsw.psp44.server.controller.filters.Filter;
 import it.polimi.ingsw.psp44.server.model.GameModel;
-import it.polimi.ingsw.psp44.util.network.Message;
 
 import java.util.HashMap;
 

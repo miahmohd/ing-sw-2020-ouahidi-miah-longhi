@@ -1,9 +1,5 @@
 package it.polimi.ingsw.psp44.network;
 
-
-import it.polimi.ingsw.psp44.util.network.Message;
-
-
 /**
  * Class implementing the chain of responsibility pattern in order to handle a Message.
  * see https://refactoring.guru/design-patterns/chain-of-responsibility
