@@ -182,6 +182,10 @@ public class Board {
         return neighbouringPositions;
     }
 
+    public List<Position> getUnoccupiedPosition(){
+        return new ArrayList<>(); // todo da implementare
+    }
+
     /**
      * @param nickname of the player whose workers have to search for
      * @return all player's worker positions
