@@ -2,20 +2,27 @@ package it.polimi.ingsw.psp44.util;
 
 import com.google.gson.Gson;
 
-import java.util.List;
-
 public final class JsonConvert {
 
-    private static Gson gson = new Gson();
+    private static JsonConvert instance;
+    private final Gson gson;
 
     private JsonConvert() {
+        this.gson = new Gson();
     }
 
-    public static <T> T fromJson(String json, Class<T> classOfT) {
+    public static JsonConvert getInstance() {
+        if (instance == null) {
+            instance = new JsonConvert();
+        }
+        return instance;
+    }
+
+    public <T> T fromJson(String json, Class<T> classOfT) {
         return gson.fromJson(json, classOfT);
     }
 
-    public static <T> String toJson(T obj, Class<T> classOfT) {
+    public <T> String toJson(T obj, Class<T> classOfT) {
         return gson.toJson(obj, classOfT);
     }
 

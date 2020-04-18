@@ -30,7 +30,7 @@ public class VirtualView implements Runnable {
 
         while (true) {
             String rawJson = this.connection.readLine();
-            Message message = JsonConvert.fromJson(rawJson, Message.class);
+            Message message = JsonConvert.getInstance().fromJson(rawJson, Message.class);
             this.router.route(this, message);
         }
     }

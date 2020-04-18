@@ -39,9 +39,6 @@ public class Server {
 
                 VirtualView view = new VirtualView(connection);
 
-//                todo quale versione? enums o file?
-//                view.addMessageHandler(AppProperties.getInstance().getProperty(MessageCodes.NEW_GAME), this::newGameMessageHandler);
-//                view.addMessageHandler(MessageCodes.JOIN_GAME, this::joinGameMessageHandler);
                 view.addMessageHandler(Message.Code.NEW_GAME, this::newGameMessageHandler);
                 view.addMessageHandler(Message.Code.JOIN_GAME, this::joinGameMessageHandler);
 
