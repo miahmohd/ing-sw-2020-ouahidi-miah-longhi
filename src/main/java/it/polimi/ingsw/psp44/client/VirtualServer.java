@@ -5,7 +5,7 @@ import java.util.Map;
 
 import it.polimi.ingsw.psp44.util.network.IVirtual;
 import it.polimi.ingsw.psp44.network.Connection;
-import it.polimi.ingsw.psp44.network.Message;
+import it.polimi.ingsw.psp44.network.message.Message;
 
 public class VirtualServer implements IVirtual<Message>, Runnable {
 
@@ -25,7 +25,7 @@ public class VirtualServer implements IVirtual<Message>, Runnable {
     public void run() {
         //FIXME: Doesn't work, just an example
         Message message = connection.readLine();
-        String code = message.getCode();
+        Message.Code code = message.getCode();
         router.get(code).run();
     }
 

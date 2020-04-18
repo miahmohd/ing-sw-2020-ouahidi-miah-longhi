@@ -1,6 +1,10 @@
 package it.polimi.ingsw.psp44.network;
 
+import it.polimi.ingsw.psp44.network.message.Message;
+import it.polimi.ingsw.psp44.network.message.MessageHandlerFunction;
+import it.polimi.ingsw.psp44.network.message.MessageRouter;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
+import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.Position;
 
 import java.util.List;
@@ -10,40 +14,29 @@ import java.util.List;
  */
 public class VirtualView implements Runnable {
 
-    private SocketConnection connection;
-    private MessageHandler handlers;
+    private final SocketConnection connection;
+    private final MessageRouter router;
 
     public VirtualView(SocketConnection connection) {
         this.connection = connection;
+        this.router = new MessageRouter();
     }
 
     @Override
     public void run() {
-
         //TODO da aggiungere:
         // - definire Message
-        // - mettere in loop
+        // - sistemare in loop
 
-        // il server/controller selezionano la vista del client (cosa il client può fare) e la virtualview rimane in attesa della risposta.
-        // alla risposta il server/contoller vengono notificati con il messaggio che hanno ricevuto, loro sanno come gestirlo non la virtualview.
-        // see dispensa lab_20200407
-        String rawJson = this.connection.readLine();
-        //todo usare GSON
-        Message message = new Message(rawJson, rawJson);
-        // mando la notifica
-        this.handlers.handle(this, message);
+        while (true) {
+            String rawJson = this.connection.readLine();
+            Message message = JsonConvert.fromJson(rawJson, Message.class);
+            this.router.route(this, message);
+        }
     }
 
-    public void addMessageHandler(MessageHandlerFunction handler) {
-        MessageHandler newHandler = new MessageHandler(handler);
-        if (this.handlers == null)
-            this.handlers = newHandler;
-        else
-            this.handlers.setNext(newHandler);
-    }
-
-    public void sendMessage(String message) {
-        this.connection.writeLine(message);
+    public void addMessageHandler(Message.Code code, MessageHandlerFunction handler) {
+        this.router.addRoute(code, handler);
     }
 
     //todo utilizzare oggetti specifici per la trasmissione TBD
@@ -103,7 +96,7 @@ public class VirtualView implements Runnable {
     /**
      * Permette al giocatore di scegliere le posizioni iniziali del player
      */
-    public void chooseWorkersInitialPosition(){
+    public void chooseWorkersInitialPosition() {
 
     }
 }

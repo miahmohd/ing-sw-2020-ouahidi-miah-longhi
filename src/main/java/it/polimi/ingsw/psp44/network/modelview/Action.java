@@ -1,4 +1,4 @@
-package it.polimi.ingsw.psp44.network.ModelView;
+package it.polimi.ingsw.psp44.network.modelview;
 
 import it.polimi.ingsw.psp44.util.Position;
 

@@ -23,6 +23,8 @@ public final class ErrorCodes {
 
     public static final String TRANSITION_SCHEMA_ERROR = "TRANSITION_IS_NULL";
 
+    public static final String MESSAGE_HANDLER_NOT_FOUND = "MESSAGE_HANDLER_NOT_FOUND";
+
     private ErrorCodes() {
     }
 }

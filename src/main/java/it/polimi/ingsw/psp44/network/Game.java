@@ -7,43 +7,35 @@ import java.util.Date;
 /**
  * A class representing a single game. It is self-sustained.
  */
-public class Game{
+public class Game {
 
-    private int maxPlayers;
-    private long idMatch;
-    private SetupController setupController;
-
+    private final int maxPlayers;
+    private final long id;
+    private final SetupController setupController;
 
 
     public Game(int maxPlayers) {
         this.maxPlayers = maxPlayers;
-        this.idMatch= new Date().getTime();
-        this.setupController=new SetupController();
+        this.id = new Date().getTime();
+        this.setupController = new SetupController();
     }
 
 
     /**
      * Add a new player to the game. When the game reaches full capacity it starts automatically.
-     * @param nickname
-     * @param view
+     *
+     * @param nickname a unique string tha identify a player
+     * @param view     the virtual-view bounded to the player
      */
-    //TODO this must be syncronized
     public synchronized void addPlayer(String nickname, VirtualView view) {
-        synchronized (setupController){
-            setupController.addPlayer(nickname, view);
-            if (this.isFull())
-                setupController.start();
-        }
+        setupController.addPlayer(nickname, view);
+        if (this.isFull())
+            setupController.start();
     }
 
-    //TODO this must be synchronized
-    public boolean isFull() {
+    public synchronized boolean isFull() {
         return setupController.getRegisteredPlayer() == maxPlayers;
     }
 
 
-
-
-
-
-    }
+}

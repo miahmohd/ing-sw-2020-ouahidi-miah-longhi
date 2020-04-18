@@ -1,4 +1,4 @@
-package it.polimi.ingsw.psp44.network;
+package it.polimi.ingsw.psp44.network.message;
 
 /**
  * Header of message, contains information for understanding the message

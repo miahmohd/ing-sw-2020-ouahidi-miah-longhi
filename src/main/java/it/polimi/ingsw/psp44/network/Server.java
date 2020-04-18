@@ -1,5 +1,7 @@
 package it.polimi.ingsw.psp44.network;
 
+import it.polimi.ingsw.psp44.network.message.Message;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,8 +13,8 @@ import java.util.concurrent.Executors;
 
 public class Server {
 
-    private ExecutorService executor = Executors.newFixedThreadPool(100);
-    private int port;
+    private final ExecutorService executor;
+    private final int port;
 
     //TODO servono?
     private List<SocketConnection> connections = Collections.synchronizedList(new ArrayList<>());
@@ -21,6 +23,7 @@ public class Server {
 
     public Server(int port) {
         this.port = port;
+        this.executor = Executors.newFixedThreadPool(100);
     }
 
     /**
@@ -35,8 +38,12 @@ public class Server {
                 this.connections.add(connection);
 
                 VirtualView view = new VirtualView(connection);
-                view.addMessageHandler(this::newGameMessageHandler);
-                view.addMessageHandler(this::joinGameMessageHandler);
+
+//                todo quale versione? enums o file?
+//                view.addMessageHandler(AppProperties.getInstance().getProperty(MessageCodes.NEW_GAME), this::newGameMessageHandler);
+//                view.addMessageHandler(MessageCodes.JOIN_GAME, this::joinGameMessageHandler);
+                view.addMessageHandler(Message.Code.NEW_GAME, this::newGameMessageHandler);
+                view.addMessageHandler(Message.Code.JOIN_GAME, this::joinGameMessageHandler);
 
                 executor.execute(view);
             }
@@ -52,20 +59,15 @@ public class Server {
      *
      * @param view    the VirtualView that sended the message
      * @param message the message containing information for creating a new game
-     * @return <code>true</code> if the message does not require further processing, <code>false</code>  otherwise.
      */
-    private boolean newGameMessageHandler(VirtualView view, Message message) {
+    private void newGameMessageHandler(VirtualView view, Message message) {
         //todo definire header come costanti e/o file
-        if (message.getCode() == "new game") {
-            //todo gestire il ritenta al posto dell'errore
-            if (this.game != null)// ricavare il numero da nickname.
-                throw new IllegalStateException();
+        //todo gestire il ritenta al posto dell'errore
+        if (this.game != null)// ricavare il numero da nickname.
+            throw new IllegalStateException();
 
-            this.game = new Game(Integer.parseInt(message.getBody())); // ricavare il numero da message.
-            this.game.addPlayer(message.getBody(), view); // ricavare il nickname da message
-            return true;
-        }
-        return false;
+        this.game = new Game(Integer.parseInt(message.getBody())); // ricavare il numero da message.
+        this.game.addPlayer(message.getBody(), view); // ricavare il nickname da message
     }
 
     /**
@@ -73,19 +75,14 @@ public class Server {
      *
      * @param view    the VirtualView that sended the message
      * @param message the message containing information for joining an existing game
-     * @return <code>true</code> if the message does not require further processing, <code>false</code>  otherwise.
      */
-    private boolean joinGameMessageHandler(VirtualView view, Message message) {
+    private void joinGameMessageHandler(VirtualView view, Message message) {
         // todo see todos in this::newGameMessageHandler
-        if (message.getCode() == "join game") {
-            String nickname = message.getBody();
-            if (this.game == null /*|| this.game.containsPlayer(nickname) */|| this.game.isFull())
-                throw new IllegalStateException();
+        String nickname = message.getBody();
+        if (this.game == null /*|| this.game.containsPlayer(nickname) */ || this.game.isFull())
+            throw new IllegalStateException();
 
-            this.game.addPlayer(nickname, view);
-            return true;
-        }
-        return false;
+        this.game.addPlayer(nickname, view);
     }
 
 

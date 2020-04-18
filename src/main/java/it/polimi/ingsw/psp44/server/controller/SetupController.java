@@ -1,6 +1,6 @@
 package it.polimi.ingsw.psp44.server.controller;
 
-import it.polimi.ingsw.psp44.network.Message;
+import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.VirtualView;
 import it.polimi.ingsw.psp44.server.model.GameModel;
 import it.polimi.ingsw.psp44.server.model.Player;
