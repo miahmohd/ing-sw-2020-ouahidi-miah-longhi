@@ -68,7 +68,7 @@ public class FilterOtherWorkersTest {
         List<Position> actualPositions = gameBoard.getNeighbouringPositions(startingPosition);
 
 
-        filterOtherWorkers.filter(startingPosition, actualPositions, gameBoard);
+        filterOtherWorkers.filter(startingPosition, actualPositions, gameBoard, false);
         
         assertEquals(expectedPositions.size(), actualPositions.size());
         assertTrue(expectedPositions.containsAll(actualPositions));

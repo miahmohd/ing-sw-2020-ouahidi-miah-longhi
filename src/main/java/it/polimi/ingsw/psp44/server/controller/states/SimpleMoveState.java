@@ -1,6 +1,5 @@
 package it.polimi.ingsw.psp44.server.controller.states;
 
-import it.polimi.ingsw.psp44.server.controller.filters.Filter;
 import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
@@ -28,7 +27,7 @@ public class SimpleMoveState extends State {
     public List<Action> getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
         List<Action> availableActions=new ArrayList<>();
         List<Position> moves= board.getNeighbouringPositions(selectedWorker);
-        moveFilter.filter(selectedWorker,moves,board);
+        moveFilter.filter(selectedWorker,moves,board, false);
         for(Position p:moves){
             availableActions.add(new SimpleMovement(selectedWorker, p));
         }

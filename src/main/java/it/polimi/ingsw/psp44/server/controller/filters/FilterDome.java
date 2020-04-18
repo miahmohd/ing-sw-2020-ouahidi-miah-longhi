@@ -8,7 +8,7 @@ import it.polimi.ingsw.psp44.util.Position;
 public class FilterDome extends Filter {
 
     @Override
-    public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard) {
+    public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard, boolean external) {
         positionsToFilter.removeIf(gameBoard::isDome);
     }
 
