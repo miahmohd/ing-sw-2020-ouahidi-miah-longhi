@@ -43,6 +43,7 @@ public class Message {
 
     public enum Code {
         NEW_GAME,
-        JOIN_GAME
+        JOIN_GAME,
+        CHOOSE_CARDS
     }
 }

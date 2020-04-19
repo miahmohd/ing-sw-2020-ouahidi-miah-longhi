@@ -1,7 +1,6 @@
 package it.polimi.ingsw.psp44.server.controller.states;
 
 import it.polimi.ingsw.psp44.server.controller.filters.Filter;
-import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.controller.filters.FilterDome;
 import it.polimi.ingsw.psp44.server.controller.filters.FilterUpByTwo;
 import it.polimi.ingsw.psp44.server.model.Board;
@@ -14,7 +13,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class SimpleMoveStateTest {
 

@@ -82,8 +82,9 @@ public class VirtualView implements Runnable {
 
     /**
      * Send a list containing all the cards, and a number indicating how many to chose
+     * @param message
      */
-    public void chooseCardsFrom() {
+    public void chooseCardsFrom(Message message) {
 
     }
 

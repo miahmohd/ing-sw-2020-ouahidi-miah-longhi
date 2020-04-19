@@ -1,7 +1,7 @@
 package it.polimi.ingsw.psp44.network.message;
 
 import it.polimi.ingsw.psp44.network.VirtualView;
-import it.polimi.ingsw.psp44.util.AppProperties;
+import it.polimi.ingsw.psp44.util.R;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 
 import java.util.HashMap;
@@ -27,7 +27,7 @@ public class MessageRouter {
     public void route(VirtualView view, Message message) {
         MessageHandlerFunction handlerFunction = this.handlers.get(message.getCode());
         if (handlerFunction == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.MESSAGE_HANDLER_NOT_FOUND));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.MESSAGE_HANDLER_NOT_FOUND));
         handlerFunction.accept(view, message);
     }
 

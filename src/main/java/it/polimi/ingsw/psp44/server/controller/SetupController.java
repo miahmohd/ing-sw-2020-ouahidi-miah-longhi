@@ -2,8 +2,11 @@ package it.polimi.ingsw.psp44.server.controller;
 
 import it.polimi.ingsw.psp44.network.VirtualView;
 import it.polimi.ingsw.psp44.network.message.Message;
+import it.polimi.ingsw.psp44.server.model.Card;
 import it.polimi.ingsw.psp44.server.model.GameModel;
 import it.polimi.ingsw.psp44.server.model.Player;
+import it.polimi.ingsw.psp44.util.JsonConvert;
+import it.polimi.ingsw.psp44.util.R;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +55,10 @@ public class SetupController {
      * Starts the setup phase of the game. The first player must choose 2/3 cards from the sent list.
      */
     public void start() {
-        this.playerViews.get(this.model.getCurrentPlayerNickname()).chooseCardsFrom(/*Lista delle carte, con numero di carte da scegleire*/);
+        Card[] allCards = R.getCards();
+        String body = JsonConvert.getInstance().toJson(allCards, Card[].class);
+        Message message = new Message(Message.Code.CHOOSE_CARDS, body);
+        this.playerViews.get(this.model.getCurrentPlayerNickname()).chooseCardsFrom(message);
     }
 
 

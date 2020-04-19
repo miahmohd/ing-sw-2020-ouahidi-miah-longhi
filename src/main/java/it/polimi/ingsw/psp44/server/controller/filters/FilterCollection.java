@@ -1,13 +1,13 @@
 package it.polimi.ingsw.psp44.server.controller.filters;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import it.polimi.ingsw.psp44.server.model.Board;
-import it.polimi.ingsw.psp44.util.AppProperties;
 import it.polimi.ingsw.psp44.util.Position;
+import it.polimi.ingsw.psp44.util.R;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 import it.polimi.ingsw.psp44.util.exception.FilterException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Filter Collection extends Filter.
@@ -30,9 +30,9 @@ public class FilterCollection extends Filter {
      */
     public void add(Filter filter){
         if(filter == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_FILTER));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_FILTER));
         if(filters.contains(filter))
-            throw new FilterException(AppProperties.getInstance().getProperty(ErrorCodes.FILTER_IN_COLLECTION));
+            throw new FilterException(R.getAppProperties().getProperty(ErrorCodes.FILTER_IN_COLLECTION));
         filters.add(filter);
     }
 
@@ -45,9 +45,9 @@ public class FilterCollection extends Filter {
      */
     public void remove(Filter filter){
         if(filter == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_FILTER));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_FILTER));
         if(!filters.contains(filter))
-            throw new FilterException(AppProperties.getInstance().getProperty(ErrorCodes.FILTER_NOT_IN_COLLECTION));
+            throw new FilterException(R.getAppProperties().getProperty(ErrorCodes.FILTER_NOT_IN_COLLECTION));
         filters.remove(filter);
     }
 
@@ -74,7 +74,7 @@ public class FilterCollection extends Filter {
     @Override
     public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard, boolean external) {
         if(filters.isEmpty())
-            throw new IllegalStateException(AppProperties.getInstance().getProperty(ErrorCodes.NO_FILTER_IN_COLLECTION));
+            throw new IllegalStateException(R.getAppProperties().getProperty(ErrorCodes.NO_FILTER_IN_COLLECTION));
         
         for (Filter filter : filters) {
             filter.filter(startingPosition, positionsToFilter, gameBoard, false);

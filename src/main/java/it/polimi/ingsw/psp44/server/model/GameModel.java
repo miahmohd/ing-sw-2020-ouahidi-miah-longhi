@@ -1,8 +1,8 @@
 package it.polimi.ingsw.psp44.server.model;
 
 import it.polimi.ingsw.psp44.server.model.actions.Action;
-import it.polimi.ingsw.psp44.util.AppProperties;
 import it.polimi.ingsw.psp44.util.Position;
+import it.polimi.ingsw.psp44.util.R;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 import it.polimi.ingsw.psp44.util.exception.PlayerException;
 
@@ -43,9 +43,9 @@ public class GameModel {
      */
     public void addPlayer(Player player) {
         if (player == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_PLAYER));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_PLAYER));
         if (players.contains(player))
-            throw new PlayerException(AppProperties.getInstance().getProperty(ErrorCodes.PLAYER_IN_GAME));
+            throw new PlayerException(R.getAppProperties().getProperty(ErrorCodes.PLAYER_IN_GAME));
         this.players.addLast(player);
 
     }
@@ -59,9 +59,9 @@ public class GameModel {
      */
     public void removePlayer(Player player) {
         if (player == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_PLAYER));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_PLAYER));
         if (!players.contains(player))
-            throw new PlayerException(AppProperties.getInstance().getProperty(ErrorCodes.PLAYER_NOT_IN_GAME));
+            throw new PlayerException(R.getAppProperties().getProperty(ErrorCodes.PLAYER_NOT_IN_GAME));
 
 
         List<Position> playerWorkers = gameBoard.getPlayerWorkersPositions(player.getNickname());
@@ -81,7 +81,7 @@ public class GameModel {
      */
     public void nextTurn() {
         if (players.isEmpty())
-            throw new IllegalStateException(AppProperties.getInstance().getProperty(ErrorCodes.NO_PLAYERS_IN_GAME));
+            throw new IllegalStateException(R.getAppProperties().getProperty(ErrorCodes.NO_PLAYERS_IN_GAME));
 
         Player currentPlayer = players.removeFirst();
         players.addLast(currentPlayer);
@@ -94,7 +94,7 @@ public class GameModel {
      */
     public String getCurrentPlayerNickname() {
         if (players.isEmpty())
-            throw new IllegalStateException(AppProperties.getInstance().getProperty(ErrorCodes.NO_PLAYERS_IN_GAME));
+            throw new IllegalStateException(R.getAppProperties().getProperty(ErrorCodes.NO_PLAYERS_IN_GAME));
         Player currentPlayer = players.getFirst();
         return currentPlayer.getNickname();
     }

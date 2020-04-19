@@ -1,11 +1,11 @@
 package it.polimi.ingsw.psp44.client;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import it.polimi.ingsw.psp44.util.network.IVirtual;
 import it.polimi.ingsw.psp44.network.Connection;
 import it.polimi.ingsw.psp44.network.message.Message;
+import it.polimi.ingsw.psp44.util.network.IVirtual;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class VirtualServer implements IVirtual<Message>, Runnable {
 

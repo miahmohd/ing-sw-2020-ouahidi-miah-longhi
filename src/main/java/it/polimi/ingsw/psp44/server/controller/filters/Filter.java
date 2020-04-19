@@ -1,10 +1,10 @@
 package it.polimi.ingsw.psp44.server.controller.filters;
 
-import java.util.List;
-
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.util.Position;
+
+import java.util.List;
 
 /**
  * Abstract Class that defines the model for a Filter class

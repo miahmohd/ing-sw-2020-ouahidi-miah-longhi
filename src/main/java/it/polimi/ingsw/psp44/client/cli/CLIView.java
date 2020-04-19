@@ -1,10 +1,10 @@
 package it.polimi.ingsw.psp44.client.cli;
 
-import java.util.Scanner;
-
 import it.polimi.ingsw.psp44.client.IView;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.util.network.IVirtual;
+
+import java.util.Scanner;
 
 
 public class CLIView implements IView<Message> {
