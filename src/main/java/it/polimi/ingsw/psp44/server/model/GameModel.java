@@ -25,6 +25,11 @@ public class GameModel {
         this(new Board(), new LinkedList<>(), 0);
     }
 
+
+    /**
+     * Execute the action and applay the changes to the board.
+     * @param action object representing a change to the board.
+     */
     public void applyAction(Action action) {
         action.execute(this.gameBoard);
     }
@@ -36,10 +41,10 @@ public class GameModel {
      * @throws IllegalArgumentException if player is null
      * @throws PlayerException          if player is already in the game
      */
-    public void addPlayer(Player player){
-        if(player == null)
+    public void addPlayer(Player player) {
+        if (player == null)
             throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_PLAYER));
-        if(players.contains(player))
+        if (players.contains(player))
             throw new PlayerException(AppProperties.getInstance().getProperty(ErrorCodes.PLAYER_IN_GAME));
         this.players.addLast(player);
 
@@ -52,12 +57,12 @@ public class GameModel {
      * @throws IllegalArgumentException if player is null
      * @throws PlayerException          if a player is not in the game
      */
-    public void removePlayer(Player player){
-        if(player == null)
+    public void removePlayer(Player player) {
+        if (player == null)
             throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_PLAYER));
-        if(!players.contains(player))
+        if (!players.contains(player))
             throw new PlayerException(AppProperties.getInstance().getProperty(ErrorCodes.PLAYER_NOT_IN_GAME));
-        
+
 
         List<Position> playerWorkers = gameBoard.getPlayerWorkersPositions(player.getNickname());
 
@@ -74,8 +79,8 @@ public class GameModel {
      *
      * @throws IllegalStateException if there are no players in the game
      */
-    public void nextTurn(){
-        if(players.isEmpty())
+    public void nextTurn() {
+        if (players.isEmpty())
             throw new IllegalStateException(AppProperties.getInstance().getProperty(ErrorCodes.NO_PLAYERS_IN_GAME));
 
         Player currentPlayer = players.removeFirst();
@@ -88,7 +93,7 @@ public class GameModel {
      * @throws IllegalStateException if there are no players in the game
      */
     public String getCurrentPlayerNickname() {
-        if(players.isEmpty())
+        if (players.isEmpty())
             throw new IllegalStateException(AppProperties.getInstance().getProperty(ErrorCodes.NO_PLAYERS_IN_GAME));
         Player currentPlayer = players.getFirst();
         return currentPlayer.getNickname();
@@ -112,7 +117,8 @@ public class GameModel {
 
     /**
      * A full round is when all players have the seme number of turns.
-     * @return <code>true</code> if there has been a full round, <code>false</code> otherwise
+     *
+     * @return true if there has been a full round, false otherwise
      */
     public boolean isFullRound() {
         return this.turnNumber % this.players.size() == 0;
