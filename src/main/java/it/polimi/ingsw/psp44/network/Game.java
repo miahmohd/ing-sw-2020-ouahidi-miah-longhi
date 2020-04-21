@@ -37,5 +37,8 @@ public class Game {
         return setupController.getRegisteredPlayer() == maxPlayers;
     }
 
+    public long getId(){
+        return this.id;
+    }
 
 }

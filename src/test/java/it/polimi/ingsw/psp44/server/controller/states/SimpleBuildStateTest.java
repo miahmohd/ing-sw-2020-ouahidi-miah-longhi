@@ -1,7 +1,5 @@
 package it.polimi.ingsw.psp44.server.controller.states;
 
-import it.polimi.ingsw.psp44.server.controller.filters.Filter;
-import it.polimi.ingsw.psp44.server.controller.filters.FilterDome;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.server.model.actions.SimpleBuild;
@@ -12,7 +10,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class SimpleBuildStateTest {
 

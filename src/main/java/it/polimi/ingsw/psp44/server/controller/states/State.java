@@ -1,5 +1,5 @@
 package it.polimi.ingsw.psp44.server.controller.states;
-import it.polimi.ingsw.psp44.server.controller.filters.Filter;
+
 import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;

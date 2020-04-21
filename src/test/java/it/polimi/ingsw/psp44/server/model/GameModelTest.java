@@ -1,11 +1,10 @@
 package it.polimi.ingsw.psp44.server.model;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import it.polimi.ingsw.psp44.server.model.Worker.Sex;
 import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.exception.PlayerException;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.junit.Assert.*;
 

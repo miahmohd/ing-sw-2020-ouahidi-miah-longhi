@@ -1,7 +1,7 @@
 package it.polimi.ingsw.psp44.server.model;
 
-import it.polimi.ingsw.psp44.util.AppProperties;
 import it.polimi.ingsw.psp44.util.Position;
+import it.polimi.ingsw.psp44.util.R;
 import it.polimi.ingsw.psp44.util.exception.ConstructionException;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 
@@ -34,15 +34,15 @@ public class Board {
      */
     public void buildUp(Position position) {
         if (position == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_POS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_POS));
         if (!isPositionInBounds(position))
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.OUT_OF_BOUNDS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.OUT_OF_BOUNDS));
         if (isDome(position))
-            throw new ConstructionException(AppProperties.getInstance().getProperty(ErrorCodes.DOME_PRESENT));
+            throw new ConstructionException(R.getAppProperties().getProperty(ErrorCodes.DOME_PRESENT));
 
         Space targetSpace = this.field[position.getRow()][position.getColumn()];
         if (targetSpace.isFinalLevel())
-            throw new ConstructionException(AppProperties.getInstance().getProperty(ErrorCodes.CAN_NOT_BUILD));
+            throw new ConstructionException(R.getAppProperties().getProperty(ErrorCodes.CAN_NOT_BUILD));
 
         targetSpace.setLevel(targetSpace.getLevel() + 1);
 
@@ -56,15 +56,15 @@ public class Board {
      */
     public void buildDown(Position position) {
         if (position == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_POS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_POS));
         if (!isPositionInBounds(position))
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.OUT_OF_BOUNDS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.OUT_OF_BOUNDS));
         if (isDome(position))
-            throw new ConstructionException(AppProperties.getInstance().getProperty(ErrorCodes.DOME_PRESENT));
+            throw new ConstructionException(R.getAppProperties().getProperty(ErrorCodes.DOME_PRESENT));
 
         Space targetSpace = this.field[position.getRow()][position.getColumn()];
         if (targetSpace.isGroundLevel())
-            throw new ConstructionException(AppProperties.getInstance().getProperty(ErrorCodes.CAN_NOT_UNBUILD));
+            throw new ConstructionException(R.getAppProperties().getProperty(ErrorCodes.CAN_NOT_UNBUILD));
 
         targetSpace.setLevel(targetSpace.getLevel() - 1);
     }
@@ -76,9 +76,9 @@ public class Board {
      */
     public int getLevel(Position position) {
         if (position == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_POS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_POS));
         if (!isPositionInBounds(position))
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.OUT_OF_BOUNDS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.OUT_OF_BOUNDS));
 
         Space targetSpace = this.field[position.getRow()][position.getColumn()];
 
@@ -93,11 +93,11 @@ public class Board {
      */
     public void buildDome(Position position) {
         if (position == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_POS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_POS));
         if (!isPositionInBounds(position))
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.OUT_OF_BOUNDS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.OUT_OF_BOUNDS));
         if (isDome(position))
-            throw new ConstructionException(AppProperties.getInstance().getProperty(ErrorCodes.DOME_PRESENT));
+            throw new ConstructionException(R.getAppProperties().getProperty(ErrorCodes.DOME_PRESENT));
 
         Space targetSpace = this.field[position.getRow()][position.getColumn()];
         targetSpace.setDome(true);
@@ -111,11 +111,11 @@ public class Board {
      */
     public void removeDome(Position position) {
         if (position == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_POS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_POS));
         if (!isPositionInBounds(position))
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.OUT_OF_BOUNDS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.OUT_OF_BOUNDS));
         if (!isDome(position))
-            throw new ConstructionException(AppProperties.getInstance().getProperty(ErrorCodes.CAN_NOT_UNBUILD));
+            throw new ConstructionException(R.getAppProperties().getProperty(ErrorCodes.CAN_NOT_UNBUILD));
 
         Space targetSpace = this.field[position.getRow()][position.getColumn()];
         targetSpace.setDome(false);
@@ -123,9 +123,9 @@ public class Board {
 
     public boolean isDome(Position position) {
         if (position == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_POS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_POS));
         if (!isPositionInBounds(position))
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.OUT_OF_BOUNDS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.OUT_OF_BOUNDS));
 
         Space targetSpace = this.field[position.getRow()][position.getColumn()];
         return targetSpace.isDome();
@@ -133,11 +133,11 @@ public class Board {
 
     public void setWorker(Position position, Worker worker) {
         if (position == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_POS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_POS));
         if (!isPositionInBounds(position))
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.OUT_OF_BOUNDS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.OUT_OF_BOUNDS));
         if (isDome(position))
-            throw new ConstructionException(AppProperties.getInstance().getProperty(ErrorCodes.DOME_PRESENT));
+            throw new ConstructionException(R.getAppProperties().getProperty(ErrorCodes.DOME_PRESENT));
 
         Space targetSpace = this.field[position.getRow()][position.getColumn()];
         targetSpace.setWorker(worker);
@@ -145,11 +145,11 @@ public class Board {
 
     public Worker getWorker(Position position) {
         if (position == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_POS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_POS));
         if (!isPositionInBounds(position))
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.OUT_OF_BOUNDS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.OUT_OF_BOUNDS));
         if (isDome(position))
-            throw new ConstructionException(AppProperties.getInstance().getProperty(ErrorCodes.DOME_PRESENT));
+            throw new ConstructionException(R.getAppProperties().getProperty(ErrorCodes.DOME_PRESENT));
 
         Space targetSpace = this.field[position.getRow()][position.getColumn()];
         return targetSpace.getWorker();
@@ -161,9 +161,9 @@ public class Board {
      */
     public List<Position> getNeighbouringPositions(Position position) {
         if (position == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.NULL_POS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_POS));
         if (!isPositionInBounds(position))
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.OUT_OF_BOUNDS));
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.OUT_OF_BOUNDS));
 
         List<Position> neighbouringPositions = new ArrayList<>();
 

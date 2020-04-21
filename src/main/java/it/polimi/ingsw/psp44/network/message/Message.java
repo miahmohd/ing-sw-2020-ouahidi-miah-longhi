@@ -1,5 +1,7 @@
 package it.polimi.ingsw.psp44.network.message;
 
+import java.util.Map;
+
 /**
  * Class based on w3 specification of HTTP @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html
  */
@@ -12,7 +14,7 @@ public class Message {
     /**
      * Additional infromation about the message
      */
-    private MessageHeader header;
+    private Map<String, String> headers;
     /**
      * Body of the message
      */
@@ -23,9 +25,9 @@ public class Message {
     }
 
 
-    public Message(Code code, MessageHeader header, String body) {
+    public Message(Code code, Map<String, String> headers, String body) {
         this.code = code;
-        this.header = header;
+        this.headers = headers;
         this.body = body;
     }
 
@@ -33,8 +35,8 @@ public class Message {
         return code;
     }
 
-    public MessageHeader getHeader() {
-        return header;
+    public Map<String, String> getHeader() {
+        return this.headers;
     }
 
     public String getBody() {
@@ -43,6 +45,7 @@ public class Message {
 
     public enum Code {
         NEW_GAME,
-        JOIN_GAME
+        JOIN_GAME,
+        CHOOSE_CARDS
     }
 }

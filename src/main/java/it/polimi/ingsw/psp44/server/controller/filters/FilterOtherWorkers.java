@@ -1,10 +1,10 @@
 package it.polimi.ingsw.psp44.server.controller.filters;
 
-import java.util.List;
-
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.Worker;
 import it.polimi.ingsw.psp44.util.Position;
+
+import java.util.List;
 
 public class FilterOtherWorkers extends Filter {
 

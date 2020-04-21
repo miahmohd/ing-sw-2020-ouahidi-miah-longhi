@@ -49,8 +49,8 @@ public class Property {
      * Retrieves a property
      *
      * @param code
-     * @return the specified property <code>if</code> the code refers to an existing property
-     * otherwise returns <code>null</code>;
+     * @return the specified property if the code refers to an existing property
+     * otherwise returns null;
      */
     public String getProperty(String code) {
         return this.prop.getProperty(code);

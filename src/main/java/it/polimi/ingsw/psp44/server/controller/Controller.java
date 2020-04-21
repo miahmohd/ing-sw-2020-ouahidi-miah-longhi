@@ -1,10 +1,12 @@
 package it.polimi.ingsw.psp44.server.controller;
 //TODO
 
-import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.VirtualView;
+import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.server.controller.filters.Filter;
 import it.polimi.ingsw.psp44.server.model.GameModel;
+import it.polimi.ingsw.psp44.server.model.actions.Action;
+import it.polimi.ingsw.psp44.util.JsonConvert;
 
 import java.util.HashMap;
 
@@ -19,6 +21,15 @@ public class Controller {
     private VirtualView currentPlayerView;
     private GameModel model;
 
+
+    public void start(){
+        /*
+        setta il current player, la currentplayerview
+        currentview.startTurn()
+        current.view.chooseWorkerFrom(lista posizioni)
+        */
+    }
+
     /**
      * Callback that handles and processes "get worker" message type.
      * Next the view must choose the worker.
@@ -27,12 +38,21 @@ public class Controller {
      * @param message the message containing information about the selected worker
      * @return <code>true</code> if the message does not require further processing, <code>false</code>  otherwise.
      */
-    public Boolean getWorkerMessageHandler(VirtualView view, Message message) {
-        if (message.getHeader() == "get worker") {
-            //menage request
-            return true;
-        }
-        return false;
+    public void chosenWorkerMessageHandler(VirtualView view, Message message) {
+        /*
+            Posizione p = message.parse()
+
+            if(lista mosse vuota){
+                controllo se sono in 2, se  si l'altro vince. senò continuo il gioco e invio gli worker al prossimo.
+                view.lost()
+                // rimuovere dal model gli worker, player, ma non l'observer
+                this.start() // con il prossimo player
+            }else{
+            model.setchosenWorker(p)
+            Message m = controller.getMosse(p)
+            view.choseActionFrom(m)
+            }
+        * */
     }
 
     /**
@@ -43,29 +63,25 @@ public class Controller {
      * @param message the message containing information about the selected worker
      * @return <code>true</code> if the message does not require further processing, <code>false</code>  otherwise.
      */
-    public Boolean workerSelectedMessageHandler(VirtualView view, Message message) {
-        if (message.getHeader() == "worker selected") {
-            //menage request
-            return true;
-        }
-        return false;
+    public void chosenActionMessageHandler(VirtualView view, Message message) {
+
+//        Integer s = JsonConvert.getInstance().fromJson(message.getBody(), Integer.class);
+        /*
+        ricavo in qualche modo  dal messagio la action selezionata
+        model.doaction(action selezionata) // aggiorna automaticamente gli altri
+
+        controllo vittoria con action selezionata.
+        cardController.nextStatus(action)
+
+        invio le prossime action al giocatore corrente.
+
+        if(controller.puòTerminare)
+            view.turnEndable()
+
+        // se l'unica cosa che può fare è terminare il turno, invia direttamente  currentView.endTurn(), e relativa gestione del prossimo turno.
+        */
     }
 
-    /**
-     * Callback that handles and processes "action selected" message type.
-     * Next the view can choose an action, or end the turn.
-     *
-     * @param view    the VirtualView that sended the message
-     * @param message the message containing information about the selected action
-     * @return <code>true</code> if the message does not require further processing, <code>false</code>  otherwise.
-     */
-    private Boolean actionSelectedMessageHandler(VirtualView view, Message message) {
-        if (message.getHeader() == "action selected") {
-            //menage request
-            return true;
-        }
-        return false;
-    }
 
     /**
      * Callback that handles and processes "end turn" message type.
@@ -75,12 +91,13 @@ public class Controller {
      * @param message the message containing information for ending the turn
      * @return <code>true</code> if the message does not require further processing, <code>false</code>  otherwise.
      */
-    public Boolean endTurnMessageHandler(VirtualView view, Message message) {
-        if (message.getHeader() == "end turn") {
-           //menage request
-            return true;
-        }
-        return false;
+    public void endTurnMessageHandler(VirtualView view, Message message) {
+       /*
+            currentView.endTurn()
+            model.nextplayer()
+            this.start().
+       *
+       * */
     }
 
     /**

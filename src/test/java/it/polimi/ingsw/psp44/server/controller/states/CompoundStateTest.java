@@ -15,7 +15,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 public class CompoundStateTest {
     private Board boardTest;

@@ -11,12 +11,14 @@ import it.polimi.ingsw.psp44.network.modelview.Cell;
 import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.network.IVirtual;
 
+import java.util.Scanner;
+
 
 public class CLIView implements IView<Message> {
 
     private static Board board;
 
-    //TODO: Need a board rappresentation to do stuff on, 
+    //TODO: Need a board rappresentation to do stuff on,
     //then add a constructor that accepts the board
     private IVirtual<Message> virtualServer;
     private Scanner scanner;
@@ -60,7 +62,7 @@ public class CLIView implements IView<Message> {
     public CLIView() {
         this(new Scanner(System.in));
     }
-    
+
 
     public void sendAction(){
         //ASK Action input
@@ -95,14 +97,14 @@ public class CLIView implements IView<Message> {
     public void lost(Message lost) {
         // TODO: What to do when you lose
         // The message body may contain some info
-        
+
     }
 
     @Override
     public void won(Message won) {
         // TODO: what to do when you win
         // The message body may contain some info
-        
+
     }
 
     @Override

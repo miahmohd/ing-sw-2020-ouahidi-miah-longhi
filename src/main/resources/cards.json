@@ -1,0 +1,15 @@
+[
+  {
+    "id": 1,
+    "title": "Apollo",
+    "subtitle": "God Of Music",
+    "description": "Your Move: Your Worker may\nmove into an opponent Worker’s\nspace by forcing their Worker to\nthe space yours just vacated."
+  },
+  {
+    "id": 2,
+    "title": "Artemis",
+    "subtitle": "Goddess of the Hunt",
+    "description": "Your Move: Your Worker may\nmove one additional time, but not\nback to its initial space."
+  }
+]
+
