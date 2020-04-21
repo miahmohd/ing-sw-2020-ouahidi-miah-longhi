@@ -17,6 +17,8 @@ public class VirtualView implements Runnable {
     private final SocketConnection connection;
     private final MessageRouter router;
 
+
+
     public VirtualView(SocketConnection connection) {
         this.connection = connection;
         this.router = new MessageRouter();

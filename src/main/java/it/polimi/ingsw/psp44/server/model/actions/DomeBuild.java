@@ -30,6 +30,7 @@ public class DomeBuild extends Construction {
             board.removeDome(this.targetPosition);
         else
             board.buildDome(this.targetPosition);
+
     }
 
 

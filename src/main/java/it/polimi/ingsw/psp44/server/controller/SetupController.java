@@ -8,6 +8,7 @@ import it.polimi.ingsw.psp44.server.model.Player;
 import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.R;
 
+import javax.annotation.processing.Generated;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +37,7 @@ public class SetupController {
         this.setHandlers(view);
     }
 
+    //todo inviare startTurn() tuttle volte che cambia il giocatore
     /**
      * Arranges the message handlers.
      */
@@ -55,9 +57,13 @@ public class SetupController {
      * Starts the setup phase of the game. The first player must choose 2/3 cards from the sent list.
      */
     public void start() {
+        // la lista dei nicknames a tutti.
+
         Card[] allCards = R.getCards();
         String body = JsonConvert.getInstance().toJson(allCards, Card[].class);
+        // header contiene la cardinalita
         Message message = new Message(Message.Code.CHOOSE_CARDS, body);
+        // view.startTurn()
         this.playerViews.get(this.model.getCurrentPlayerNickname()).chooseCardsFrom(message);
     }
 
@@ -69,7 +75,8 @@ public class SetupController {
      * @param message message that contains information about the chosen cards.
      */
     public void chosenCardsMessageHandler(VirtualView view, Message message) {
-
+        // il messaggio di ritorno contien le tre carte scelte
+        // per richiedere al client di rieseguire l'ultimo comando, tengo un lastMessage dentro la view, e un metodo repeat()
         this.model.nextTurn();
         VirtualView currentPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
 
@@ -84,6 +91,7 @@ public class SetupController {
      * @return
      */
     public boolean chosenCardMessageHandler(VirtualView view, Message message) {
+
 
 /*
         List carteRimanenti = message.parse;
@@ -117,7 +125,7 @@ public class SetupController {
 
         /*
 
-            Position[] chosenPosition = message.parse; // first male, second female
+            Position[] chosenPosition = message.parse; // first female, second male
 
             Worker male = new Worker(this.model.getCurrentPlayerNickname(), Worker.MALE);
             Worker female = new Worker(this.model.getCurrentPlayerNickname(), Worker.FEMALE);
@@ -125,18 +133,13 @@ public class SetupController {
 //          opzione 1
             Action a = new InitialPositionament(chosenPosition[0], male);
             this.model.applyAction(a)
+            // todo goameModel è observable delle view
 
-//          opzione 2
-            this.model.getBoard().setWorker(chosenPosition[0], male);
-            this.model.getBoard().setWorker(chosenPosition[1], female);
-
-            // todo Definire il ModelView
-            modelView.notify();
 
             this.model.nextTurn();
             VirtualView nextPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
             if(!this.model.isFullRound()){
-                nextPlayer.chooseWorkersInitialPosition(this.mode.getBoard().getUnoccupiedPosition());
+                nextPlayer.chooseWorkersInitialPosition(this.mode.getBoard().getUnoccupiedPosition()); // settare comunque la cardinalià anche se superfluo
             }else{
                 this.controller.setVirtualViews(this.playerViews)
                 this.controller.setCardControllers(this.playerCardControllers)
