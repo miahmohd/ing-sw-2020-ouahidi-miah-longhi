@@ -55,7 +55,7 @@ public class FilterCollection extends Filter {
      * Removes all the filters from the list
      */
     public void empty(){
-        filters.clear();
+        filters.removeIf(filter -> !filter.isExternal());
     }
 
     /**
