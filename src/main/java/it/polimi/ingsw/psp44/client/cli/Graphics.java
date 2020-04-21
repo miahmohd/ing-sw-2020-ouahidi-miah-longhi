@@ -75,12 +75,12 @@ public class Graphics {
         /**
          * Pawn look better
          */
-        MALE_WORKER(" \u2659 "),
-        FEMALE_WORKER(" \u2659 "),
+        MALE_WORKER("\u2659 "),
+        FEMALE_WORKER("\u2659 "),
 
 
         DOME("\uD835\uDEF7 "),
-        EMPTY(" ");
+        EMPTY("  ");
 
 
         private String escape;

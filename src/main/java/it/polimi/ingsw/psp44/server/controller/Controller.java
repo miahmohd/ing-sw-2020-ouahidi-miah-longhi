@@ -83,10 +83,24 @@ public class Controller {
         return false;
     }
 
-    public void dispatchBuildFilter(Filter filter) {
+    /**
+     * Add a build filter to opponents build filter list
+     * @param filter to apply to opponents filter
+     */
+    public void appliesOpponentsBuildFilter(Filter filter) {
+        players.values().stream()
+                .filter((cardController)->cardController!=currentPlayer)
+                .forEach((cardController)->cardController.addBuildFilter(filter));
     }
 
-    public void dispatchMoveFilter(Filter filter) {
+    /**
+     * Add a move filter to opponents move filter list
+     * @param filter to apply to opponents filter
+     */
+    public void appliesOpponentsMoveFilter(Filter filter) {
+        players.values().stream()
+                .filter((cardController)->cardController!=currentPlayer)
+                .forEach((cardController)->cardController.addMoveFilter(filter));
     }
 
     public void addPlayer(String nickname, VirtualView view) {

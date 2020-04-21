@@ -24,8 +24,11 @@ public class CLIView implements IView<Message> {
 
 
     public static void main(String[] args) {
-        board = new Board();
-        
+
+        String myPlayer = "ciao";
+        String opponent1 = "mio dio";
+
+        board = new Board(myPlayer, Arrays.asList(opponent1));
 
         List<Cell> cellsToUpdate;
 
@@ -33,9 +36,13 @@ public class CLIView implements IView<Message> {
             new Cell(new Position(1, 0), 1 , false, null, ""),
             new Cell(new Position(1, 1), 2 , false, null, ""),
             new Cell(new Position(0, 1), 3 , false, null, ""),
-            new Cell(new Position(1, 4), 3 , true, null, "")
-            
+                new Cell(new Position(2, 4), 2 , false, null, myPlayer),
+                new Cell(new Position(2, 2), 0 , false, null, opponent1),
+                new Cell(new Position(1, 4), 1 , false, null, myPlayer),
+                new Cell(new Position(3, 3), 2 , false, null, opponent1),
+            new Cell(new Position(4, 4), 1 , true, null, "")
         ));
+
         System.out.print(board.update(cellsToUpdate));
         //System.out.println(Graphics.Color.FIRST_LEVEL+Graphics.Color.DOME.getEscape()+Graphics.Element.FEMALE_WORKER.getEscape()+" "+Graphics.Color.SECOND_LEVEL+"secondo"+Graphics.Color.THIRD_LEVEL+"terzo"+ Graphics.Color.RESET);
     }

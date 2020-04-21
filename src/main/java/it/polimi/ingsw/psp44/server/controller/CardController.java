@@ -1,6 +1,7 @@
 package it.polimi.ingsw.psp44.server.controller;
 
 import it.polimi.ingsw.psp44.server.controller.VictoryCondition.VictoryCondition;
+import it.polimi.ingsw.psp44.server.controller.filters.Filter;
 import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.controller.states.State;
 import it.polimi.ingsw.psp44.server.model.Board;
@@ -123,22 +124,38 @@ public class CardController {
      */
     private void executeTransition(Transition transition, Action lastAction) {
         if(currentState==null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getMessage(ErrorCodes.TRANSITION_SCHEMA_ERROR));
+            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.TRANSITION_SCHEMA_ERROR));
 
         currentState = transition.getNextState();
 
         transition.getBuildFilter(lastAction).forEach((filter) ->{
             if(filter.isExternal())
-                context.dispatchBuildFilter(filter);
+                context.appliesOpponentsBuildFilter(filter);
             else
                 activeBuildFilter.add(filter);
         } );
 
         transition.getMoveFilter(lastAction).forEach((filter) ->{
             if(filter.isExternal())
-                context.dispatchMoveFilter(filter);
+                context.appliesOpponentsMoveFilter(filter);
             else
                 activeMoveFilter.add(filter);
         } );
+    }
+
+    /**
+     * add a filter to activeBuildFilter list
+     * @param filter to add
+     */
+    public void addBuildFilter(Filter filter) {
+        activeBuildFilter.add(filter);
+    }
+
+    /**
+     * add a filter to activeMoveFilter list
+     * @param filter to add
+     */
+    public void addMoveFilter(Filter filter) {
+        activeMoveFilter.add(filter);
     }
 }
