@@ -9,9 +9,9 @@ import java.net.Socket;
 /**
  * Represents a communication channel with the client.
  */
-public class SocketConnection extends Connection<String>{
+public class SocketConnection extends Connection<String> {
 
-    private Socket socket;
+    private final Socket socket;
 
     private PrintWriter writer;
     private BufferedReader reader;

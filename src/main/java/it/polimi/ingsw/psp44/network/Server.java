@@ -17,7 +17,7 @@ public class Server {
     private final int port;
 
     //TODO servono?
-    private List<SocketConnection> connections = Collections.synchronizedList(new ArrayList<>());
+    private final List<SocketConnection> connections = Collections.synchronizedList(new ArrayList<>());
 
     private Game game;
 

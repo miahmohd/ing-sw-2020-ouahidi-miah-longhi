@@ -13,25 +13,26 @@ import java.util.List;
  * Filter Collection extends Filter.
  * Has simple collection methods (add and remove)
  * Architecture based on the composite pattern (https://en.wikipedia.org/wiki/Composite_pattern)
-*/
+ */
 public class FilterCollection extends Filter {
 
-    private List<Filter> filters;
+    private final List<Filter> filters;
 
-    public FilterCollection(){
+    public FilterCollection() {
         this.filters = new ArrayList<>();
     }
 
     /**
      * Adds a filter to the list of filters in the collection
+     *
      * @param filter is the filter to be added to the collection
      * @throws IllegalArgumentException if Filter is null
-     * @throws FilterException if filter is already in the list
+     * @throws FilterException          if filter is already in the list
      */
-    public void add(Filter filter){
-        if(filter == null)
+    public void add(Filter filter) {
+        if (filter == null)
             throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_FILTER));
-        if(filters.contains(filter))
+        if (filters.contains(filter))
             throw new FilterException(R.getAppProperties().getProperty(ErrorCodes.FILTER_IN_COLLECTION));
         filters.add(filter);
     }
@@ -39,14 +40,15 @@ public class FilterCollection extends Filter {
 
     /**
      * Removes a filter form the list of filters
+     *
      * @param filter is the filter to be removed from the collection
      * @throws IllegalArgumentException if Filter is null
-     * @throws FilterException if filter is not in the list
+     * @throws FilterException          if filter is not in the list
      */
-    public void remove(Filter filter){
-        if(filter == null)
+    public void remove(Filter filter) {
+        if (filter == null)
             throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_FILTER));
-        if(!filters.contains(filter))
+        if (!filters.contains(filter))
             throw new FilterException(R.getAppProperties().getProperty(ErrorCodes.FILTER_NOT_IN_COLLECTION));
         filters.remove(filter);
     }
@@ -54,28 +56,30 @@ public class FilterCollection extends Filter {
     /**
      * Removes all the filters from the list
      */
-    public void empty(){
+    public void empty() {
         filters.removeIf(filter -> !filter.isExternal());
     }
 
     /**
      * return the filters of the collection
+     *
      * @return a list of the filters in the collection
      */
-    public List<Filter> getFilters(){
+    public List<Filter> getFilters() {
         return filters;
     }
 
-    
+
     /**
      * calls filter method on all its Filter collection
+     *
      * @throws IllegalStateException if the filter list is empty
-    */
+     */
     @Override
     public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard, boolean external) {
-        if(filters.isEmpty())
+        if (filters.isEmpty())
             throw new IllegalStateException(R.getAppProperties().getProperty(ErrorCodes.NO_FILTER_IN_COLLECTION));
-        
+
         for (Filter filter : filters) {
             filter.filter(startingPosition, positionsToFilter, gameBoard, false);
         }
@@ -90,7 +94,7 @@ public class FilterCollection extends Filter {
         return result;
     }
 
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -101,14 +105,9 @@ public class FilterCollection extends Filter {
             return false;
         FilterCollection other = (FilterCollection) obj;
         if (filters == null) {
-            if (other.filters != null)
-                return false;
-        } else if (!filters.equals(other.filters))
-            return false;
-        return true;
+            return other.filters == null;
+        } else return filters.equals(other.filters);
     }
 
-
-    
 
 }

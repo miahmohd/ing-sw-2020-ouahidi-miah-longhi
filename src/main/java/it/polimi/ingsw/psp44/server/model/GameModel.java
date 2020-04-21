@@ -28,6 +28,7 @@ public class GameModel {
 
     /**
      * Execute the action and applay the changes to the board.
+     *
      * @param action object representing a change to the board.
      */
     public void applyAction(Action action) {

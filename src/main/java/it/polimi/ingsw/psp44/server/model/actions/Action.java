@@ -19,7 +19,7 @@ public abstract class Action {
     }
 
     public Action(Position target) {
-        this.sourcePosition=null;
+        this.sourcePosition = null;
         this.targetPosition = target;
     }
 
@@ -45,12 +45,14 @@ public abstract class Action {
 
     /**
      * Indicate the type of action
+     *
      * @return true if it is a movement action false otherwise
      */
     public abstract boolean isMovement();
 
     /**
      * Indicate the type of action
+     *
      * @return true if it is a movement action false otherwise
      */
     public abstract boolean isBuild();

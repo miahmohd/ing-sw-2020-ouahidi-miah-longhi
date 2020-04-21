@@ -9,20 +9,33 @@ public class Cell {
     /**
      * Where the cell is positioned
      */
-    private Position target;
+    private final Position target;
 
-    private int level;
-    private boolean dome;
+    private final int level;
+    private final boolean dome;
 
     /**
      * sex of worker if present
      */
-    private Worker.Sex sex;
+    private final Worker.Sex sex;
 
     /**
      * player nickname if the workers is present in the cell
      */
-    private String playerNickname;
+    private final String playerNickname;
+
+    public Cell(Position target, int level, boolean dome, Sex sex, String playerNickname) {
+        this.target = target;
+        this.level = level;
+        this.dome = dome;
+        this.sex = sex;
+        this.playerNickname = playerNickname;
+    }
+
+    public Cell() {
+        //FIXME: Just a proof of concept
+        this(null, 0, false, null, null);
+    }
 
     public int getLevel() {
         return this.level;
@@ -40,24 +53,10 @@ public class Cell {
         return playerNickname;
     }
 
-    public Cell(Position target, int level, boolean dome, Sex sex, String playerNickname) {
-        this.target = target;
-        this.level = level;
-        this.dome = dome;
-        this.sex = sex;
-        this.playerNickname = playerNickname;
+    public Position getPosition() {
+        return target;
     }
 
-
-    public Cell(){
-        //FIXME: Just a proof of concept
-        this(null, 0, false, null, null);
-    }
-
-	public Position getPosition() {
-		return target;
-	}
-    
 }
 
 
@@ -74,11 +73,11 @@ public class Cell {
 
 
 /*
-* ======
-* G1FL2|
-* ======
-*
-* */
+ * ======
+ * G1FL2|
+ * ======
+ *
+ * */
 
 
 

@@ -19,19 +19,19 @@ import java.util.List;
  * with the actions that the player can perform.
  */
 public class CardController {
-    private Controller context;
+    private final Controller context;
     /**
      * The initial state of the turn
      */
-    private State initialState;
+    private final State initialState;
     /**
      * A list of the possible states transitions for the card
      */
-    private List<Transition> transitionsList;
+    private final List<Transition> transitionsList;
     /**
      * A list of victory condition for the card
      */
-    private List<VictoryCondition> victoryConditionsList;
+    private final List<VictoryCondition> victoryConditionsList;
     /**
      * filters to apply when computing build actions
      */
@@ -47,12 +47,12 @@ public class CardController {
 
 
     public CardController(State initialState, List<Transition> transitionsList, List<VictoryCondition> victoryConditionsList, Controller context) {
-        this.context=context;
+        this.context = context;
         this.initialState = initialState;
         this.transitionsList = transitionsList;
         this.victoryConditionsList = victoryConditionsList;
-        Transition loopBackTransition= transitionsList.stream()
-                .filter((t)-> initialState.equals(t.getNextState()))
+        Transition loopBackTransition = transitionsList.stream()
+                .filter((t) -> initialState.equals(t.getNextState()))
                 .findFirst()
                 .orElse(null);
         executeTransition(loopBackTransition, null);
@@ -60,12 +60,13 @@ public class CardController {
 
     /**
      * Compute all the action that a worker can do
-     * @param board the playground of the match, used to check the available actions
+     *
+     * @param board          the playground of the match, used to check the available actions
      * @param selectedWorker the worker that the player wants to move
      * @return a list with the available actions
      */
-    public List<Action> getAvailableAction(Board board, Position selectedWorker){
-        List<Action> availableActions=currentState.getAvailableActions(board,selectedWorker,activeMoveFilter,activeBuildFilter);
+    public List<Action> getAvailableAction(Board board, Position selectedWorker) {
+        List<Action> availableActions = currentState.getAvailableActions(board, selectedWorker, activeMoveFilter, activeBuildFilter);
         activeBuildFilter.empty();
         activeMoveFilter.empty();
         return availableActions;
@@ -73,14 +74,15 @@ public class CardController {
 
     /**
      * Find the positions of the
-     * @param board the playground of the match, used to find the worker
+     *
+     * @param board          the playground of the match, used to find the worker
      * @param playerNickname the player that is playing the turn
      * @return a list with the positions of the player's worker
      */
-    public List<Position> getWorkers(Board board, String playerNickname){
-        List<Position> availableWorkers=new ArrayList<>();
-        for(Position p : board.getPlayerWorkersPositions(playerNickname))
-            if(!currentState.getAvailableActions(board,p,activeMoveFilter,activeBuildFilter).isEmpty())
+    public List<Position> getWorkers(Board board, String playerNickname) {
+        List<Position> availableWorkers = new ArrayList<>();
+        for (Position p : board.getPlayerWorkersPositions(playerNickname))
+            if (!currentState.getAvailableActions(board, p, activeMoveFilter, activeBuildFilter).isEmpty())
                 availableWorkers.add(p);
         return availableWorkers;
     }
@@ -89,62 +91,65 @@ public class CardController {
     /**
      * After that an action is performed menage the transition to the next status
      * if there are no transition active means that the turn is ended
+     *
      * @param lastAction the last action performed
      * @return true if there is a new state, false if the turn is ended
      * @throws IllegalArgumentException there aren't active transitions
      */
-    public boolean nextState(Action lastAction){
+    public boolean nextState(Action lastAction) {
 
-        Transition activeTransition= transitionsList.stream()
-                .filter((t)-> currentState.equals(t.getCurrentState())
-                        && ( t.isUnconditional() || t.checkCondition(lastAction)))
+        Transition activeTransition = transitionsList.stream()
+                .filter((t) -> currentState.equals(t.getCurrentState())
+                        && (t.isUnconditional() || t.checkCondition(lastAction)))
                 .findFirst()
                 .orElse(null);
-        executeTransition(activeTransition, lastAction );
+        executeTransition(activeTransition, lastAction);
         return !currentState.equals(initialState);
     }
 
     /**
      * check victory conditions, set status to WON is a condition is proved
+     *
      * @param lastAction last action performed
-     * @param board the playing field
+     * @param board      the playing field
      */
     public boolean checkVictory(Action lastAction, Board board) {
         return victoryConditionsList.stream()
-                .filter((condition)->lastAction.isBuild()?condition.isAfterBuild():
-                        !condition.isAfterBuild())
-                .anyMatch((condition)-> condition.check(lastAction,board));
+                .filter((condition) -> lastAction.isBuild() == condition.isAfterBuild())
+                .anyMatch((condition) -> condition.check(lastAction, board));
     }
 
     /**
      * set next status and activate filters
+     *
      * @param transition transition that must be performed
      * @param lastAction last action performed
      * @throws IllegalArgumentException if transition is null
      */
     private void executeTransition(Transition transition, Action lastAction) {
-        if(currentState==null)
+        if (currentState == null)
             throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.TRANSITION_SCHEMA_ERROR));
 
         currentState = transition.getNextState();
 
-        transition.getBuildFilter(lastAction).forEach((filter) ->{
-            if(filter.isExternal())
+        transition.getBuildFilter(lastAction).forEach((filter) -> {
+            if (filter.isExternal())
                 context.appliesOpponentsBuildFilter(filter);
             else
                 activeBuildFilter.add(filter);
-        } );
+        });
 
-        transition.getMoveFilter(lastAction).forEach((filter) ->{
-            if(filter.isExternal())
+        transition.getMoveFilter(lastAction).forEach((filter) -> {
+            if (filter.isExternal())
                 context.appliesOpponentsMoveFilter(filter);
             else
                 activeMoveFilter.add(filter);
-        } );
+        });
     }
 
     /**
      * add a filter to activeBuildFilter list
+     *
      * @param filter to add
      */
     public void addBuildFilter(Filter filter) {
@@ -153,6 +158,7 @@ public class CardController {
 
     /**
      * add a filter to activeMoveFilter list
+     *
      * @param filter to add
      */
     public void addMoveFilter(Filter filter) {

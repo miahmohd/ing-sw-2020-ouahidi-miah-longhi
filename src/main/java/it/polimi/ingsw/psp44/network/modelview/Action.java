@@ -4,20 +4,20 @@ import it.polimi.ingsw.psp44.util.Position;
 
 public class Action {
 
-    private Position target;
-    private boolean build;
-    private boolean move;
+    private final Position target;
+    private final boolean build;
+    private final boolean move;
 
     /**
      * Not set if the action is move
      */
-    private int level;
+    private final int level;
 
-    
+
     /**
      * Not set if the action is move
      */
-    private boolean dome;
+    private final boolean dome;
 
     public Action(Position target, boolean build, boolean move, int level, boolean dome) {
         this.target = target;
@@ -44,7 +44,7 @@ public class Action {
     public int getLevel() {
         return level;
     }
-    
+
     public boolean isDome() {
         return dome;
     }

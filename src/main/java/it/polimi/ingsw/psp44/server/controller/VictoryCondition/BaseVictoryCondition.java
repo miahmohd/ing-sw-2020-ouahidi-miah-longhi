@@ -17,8 +17,8 @@ public class BaseVictoryCondition extends VictoryCondition {
      */
     @Override
     public boolean check(Action lastAction, Board gameBoard) {
-        int source=gameBoard.getLevel(lastAction.getSourcePosition());
-        int target=gameBoard.getLevel(lastAction.getTargetPosition());
-        return target==3 && target-source==1;
+        int source = gameBoard.getLevel(lastAction.getSourcePosition());
+        int target = gameBoard.getLevel(lastAction.getTargetPosition());
+        return target == 3 && target - source == 1;
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Board {
     private static final int DIMENSION = 5;
-    private Space[][] field;
+    private final Space[][] field;
 
     public Board() {
         this.field = new Space[DIMENSION][DIMENSION];
@@ -182,7 +182,7 @@ public class Board {
         return neighbouringPositions;
     }
 
-    public List<Position> getUnoccupiedPosition(){
+    public List<Position> getUnoccupiedPosition() {
         return new ArrayList<>(); // todo da implementare
     }
 
@@ -201,7 +201,7 @@ public class Board {
                     selectedWorker = this.getWorker(selectedPosition);
                     if (selectedWorker != null && nickname.equals(selectedWorker.getPlayerNickname()))
                         playerWorkerPositions.add(selectedPosition);
-                } catch (ConstructionException e){
+                } catch (ConstructionException e) {
                     continue;
                 }
             }

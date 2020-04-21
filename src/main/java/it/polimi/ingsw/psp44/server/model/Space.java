@@ -60,6 +60,7 @@ public class Space {
 
     /**
      * checks if the building in this space is complate
+     *
      * @return true if there are 3 block and the dome, false otherwise
      */
     public boolean isComplete() {
@@ -68,6 +69,7 @@ public class Space {
 
     /**
      * checks if all the three blocks have been built in a space
+     *
      * @return true if level 3 have been reached, false otherwise
      */
     public boolean isFinalLevel() {
@@ -76,6 +78,7 @@ public class Space {
 
     /**
      * checks if no blocks have been built in a space
+     *
      * @return true if no blocks have been built, false otherwise
      */
     public boolean isGroundLevel() {

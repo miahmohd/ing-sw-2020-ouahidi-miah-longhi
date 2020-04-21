@@ -14,8 +14,8 @@ public abstract class VictoryCondition {
      */
     protected boolean afterBuild;
 
-    public VictoryCondition(){
-        this.afterBuild =false;
+    public VictoryCondition() {
+        this.afterBuild = false;
     }
 
     public boolean isAfterBuild() {
@@ -24,8 +24,9 @@ public abstract class VictoryCondition {
 
     /**
      * Check whether the player has won, with his last action
+     *
      * @param lastAction the last action performed by the player
-     * @param gameBoard the game field
+     * @param gameBoard  the game field
      */
     public abstract boolean check(Action lastAction, Board gameBoard);
 

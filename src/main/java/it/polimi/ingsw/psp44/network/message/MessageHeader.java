@@ -6,6 +6,6 @@ package it.polimi.ingsw.psp44.network.message;
 public class MessageHeader {
 
     private String description;
-    
+
 
 }

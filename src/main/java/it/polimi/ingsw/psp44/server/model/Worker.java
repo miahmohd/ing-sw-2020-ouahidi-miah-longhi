@@ -6,7 +6,7 @@ package it.polimi.ingsw.psp44.server.model;
 public class Worker {
 
     /**
-     *  sex of the worker (male or female) it will be used by some god powers)
+     * sex of the worker (male or female) it will be used by some god powers)
      */
     private final Sex sex;
 

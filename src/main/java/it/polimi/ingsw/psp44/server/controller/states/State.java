@@ -18,8 +18,8 @@ public abstract class State {
     protected boolean finalState;
 
 
-    public State(){
-        this.finalState=false;
+    public State() {
+        this.finalState = false;
     }
 
     @Override
@@ -47,10 +47,11 @@ public abstract class State {
 
     /**
      * Compute the available actions that the player can perform
-     * @param board representation of the playing field
+     *
+     * @param board          representation of the playing field
      * @param selectedWorker worker selected from the player
-     * @param moveFilter filter to apply to move actions
-     * @param buildFilter filter to apply to build actions
+     * @param moveFilter     filter to apply to move actions
+     * @param buildFilter    filter to apply to build actions
      * @return list of available actions
      */
     public abstract List<Action> getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter);

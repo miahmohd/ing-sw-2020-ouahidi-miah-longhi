@@ -9,11 +9,11 @@ import java.util.Map;
 
 public class VirtualServer implements IVirtual<Message>, Runnable {
 
-    private Connection<Message> connection;
-    private IView<Message> view;
-    private Map<String, Runnable> router;
+    private final Connection<Message> connection;
+    private final IView<Message> view;
+    private final Map<String, Runnable> router;
 
-    public VirtualServer(Connection<Message> connection, IView<Message> view){
+    public VirtualServer(Connection<Message> connection, IView<Message> view) {
         this.connection = connection;
         this.view = view;
         this.view.setVirtual(this);

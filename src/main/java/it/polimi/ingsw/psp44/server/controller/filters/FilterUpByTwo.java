@@ -18,5 +18,5 @@ public class FilterUpByTwo extends Filter {
             return delta > 1;
         });
 
-    } 
+    }
 }

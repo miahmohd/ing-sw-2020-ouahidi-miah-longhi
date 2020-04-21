@@ -1,8 +1,8 @@
 package it.polimi.ingsw.psp44.util;
 
-public class CLIProperties extends Property{
+public class CLIProperties extends Property {
     private static CLIProperties instance;
-    private static String propertyPath = "/cli.properties";
+    private static final String propertyPath = "/cli.properties";
 
     private CLIProperties(String path) {
         super(path);
@@ -15,6 +15,6 @@ public class CLIProperties extends Property{
         }
         return instance;
     }
-    
+
 
 }

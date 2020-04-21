@@ -1,28 +1,26 @@
 package it.polimi.ingsw.psp44.client.cli;
 
-import java.time.chrono.ThaiBuddhistEra;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import it.polimi.ingsw.psp44.client.cli.Graphics.Color;
 import it.polimi.ingsw.psp44.network.modelview.Action;
 import it.polimi.ingsw.psp44.network.modelview.Cell;
 import it.polimi.ingsw.psp44.util.Position;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 public class Board {
 
-    //Matrix
-    private Cell[][] cells;
     private static final int DIMENTION = 5;
+    //Matrix
+    private final Cell[][] cells;
+    private final Map<String, Graphics.Color> playerColors;
+    private final Map<Integer, Graphics.Color> levelColors;
+    private final StringBuffer sb;
 
-    private Map<String, Graphics.Color> playerColors;
-    private Map<Integer, Graphics.Color> levelColors;
-    private StringBuffer sb;
 
-
-    public Board(String myPlayer, List<String> opponents){
+    public Board(String myPlayer, List<String> opponents) {
         this.cells = new Cell[DIMENTION][DIMENTION];
         this.playerColors = new HashMap<>();
         this.levelColors = new HashMap<>();
@@ -32,7 +30,7 @@ public class Board {
         Color[] opponentColors = {Color.OPPONENT_1, Color.OPPONENT_2};
         int count = 0;
         this.playerColors.put(myPlayer, Color.MY_PLAYER);
-        for(String opponent : opponents){
+        for (String opponent : opponents) {
             this.playerColors.put(opponent, opponentColors[count]);
         }
 
@@ -44,15 +42,12 @@ public class Board {
     }
 
 
-    public Board(){
+    public Board() {
         this("ciao", new LinkedList<>());
     }
 
 
-
-
     /**
-     *
      * @param actions
      * @return String formatted according to Graphics specification standard
      */
@@ -63,12 +58,13 @@ public class Board {
 
     /**
      * Updated cells in the board
+     *
      * @param cellsToUpdate cells that need to be updated
      * @return String formatted according to Graphics specification standard
      */
     public String update(List<Cell> cellsToUpdate) {
         Position position;
-        for(Cell cell : cellsToUpdate){
+        for (Cell cell : cellsToUpdate) {
             position = cell.getPosition();
             cells[position.getRow()][position.getColumn()] = cell;
         }
@@ -77,13 +73,14 @@ public class Board {
 
     /**
      * Method that generates the string board representation.
+     *
      * @return String formatted according to Graphics specification standard
      */
     public String getBoard() {
         Cell currentCell;
         cleanBoard();
-        for(int row = 0; row<DIMENTION; row++){
-            for(int column = 0; column < DIMENTION; column++){
+        for (int row = 0; row < DIMENTION; row++) {
+            for (int column = 0; column < DIMENTION; column++) {
                 currentCell = cells[row][column];
                 sb.append(getStringFromCell(currentCell));
             }
@@ -103,21 +100,21 @@ public class Board {
     }
 
     private void initBoard() {
-        for(int row = 0; row<DIMENTION; row++){
-            for(int column = 0; column < DIMENTION; column++){
+        for (int row = 0; row < DIMENTION; row++) {
+            for (int column = 0; column < DIMENTION; column++) {
                 cells[row][column] = new Cell();
             }
         }
     }
 
-    private StringBuffer getStringFromCell(Cell cell){
+    private StringBuffer getStringFromCell(Cell cell) {
         StringBuffer cellBuffer = new StringBuffer();
         int currentLevel = cell.getLevel();
 
         cellBuffer.append(levelColors.get(currentLevel));
 
-        if(cell.isEmpty()){
-            if(cell.isDome()){
+        if (cell.isEmpty()) {
+            if (cell.isDome()) {
                 cellBuffer.append(Graphics.Color.DOME);
                 cellBuffer.append(Graphics.Element.DOME);
             } else
@@ -130,7 +127,7 @@ public class Board {
         return cellBuffer;
     }
 
-    private void cleanBoard(){
+    private void cleanBoard() {
         sb.delete(0, sb.length());
     }
 }

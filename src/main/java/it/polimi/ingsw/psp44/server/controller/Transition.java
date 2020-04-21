@@ -8,11 +8,11 @@ import java.util.List;
 
 
 public class Transition {
-    private State currentState;
-    private State nextState;
-    private Action condition;
-    private List<Filter> buildFilters;
-    private List<Filter> moveFilters;
+    private final State currentState;
+    private final State nextState;
+    private final Action condition;
+    private final List<Filter> buildFilters;
+    private final List<Filter> moveFilters;
 
     public Transition(State currentState, State nextState, Action condition, List<Filter> buildFilters, List<Filter> moveFilters) {
         this.currentState = currentState;
@@ -31,17 +31,17 @@ public class Transition {
     }
 
     public List<Filter> getBuildFilter(Action lastAction) {
-        buildFilters.stream().forEach((filter)->filter.setLastAction(lastAction));
+        buildFilters.stream().forEach((filter) -> filter.setLastAction(lastAction));
         return buildFilters;
     }
 
     public List<Filter> getMoveFilter(Action lastAction) {
-        buildFilters.stream().forEach((filter)->filter.setLastAction(lastAction));
+        buildFilters.stream().forEach((filter) -> filter.setLastAction(lastAction));
         return moveFilters;
     }
 
     public boolean isUnconditional() {
-        return condition==null;
+        return condition == null;
     }
 
     public boolean checkCondition(Action lastAction) {

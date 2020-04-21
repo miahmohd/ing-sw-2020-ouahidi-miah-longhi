@@ -50,13 +50,9 @@ public class Player {
             return false;
         Player other = (Player) obj;
         if (nickname == null) {
-            if (other.nickname != null)
-                return false;
-        } else if (!nickname.equals(other.nickname))
-            return false;
-        return true;
+            return other.nickname == null;
+        } else return nickname.equals(other.nickname);
     }
 
-    
 
 }

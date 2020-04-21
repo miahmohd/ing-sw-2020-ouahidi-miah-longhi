@@ -8,7 +8,7 @@ import java.util.Properties;
  * Class intended to be extended.
  */
 public class Property {
-    private Properties prop;
+    private final Properties prop;
 
     /**
      * Creates a property from a specified path

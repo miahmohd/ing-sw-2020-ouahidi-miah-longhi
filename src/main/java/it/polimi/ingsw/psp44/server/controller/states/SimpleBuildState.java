@@ -25,10 +25,10 @@ public class SimpleBuildState extends State {
      */
     @Override
     public List<Action> getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
-        List<Action> availableActions=new ArrayList<>();
-        List<Position> builds= board.getNeighbouringPositions(selectedWorker);
-        buildFilter.filter(selectedWorker, builds,board, false);
-        for(Position p: builds){
+        List<Action> availableActions = new ArrayList<>();
+        List<Position> builds = board.getNeighbouringPositions(selectedWorker);
+        buildFilter.filter(selectedWorker, builds, board, false);
+        for (Position p : builds) {
             availableActions.add(new SimpleBuild(p));
         }
         return availableActions;

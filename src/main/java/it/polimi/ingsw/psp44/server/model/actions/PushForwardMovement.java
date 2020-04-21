@@ -10,7 +10,7 @@ import java.util.List;
 
 public class PushForwardMovement extends Movement {
 
-    private Position forwardPosition;
+    private final Position forwardPosition;
 
     /**
      * Create e movement where the worker in target position is pushed one position straight backwards.

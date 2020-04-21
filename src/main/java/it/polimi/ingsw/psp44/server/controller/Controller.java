@@ -5,8 +5,6 @@ import it.polimi.ingsw.psp44.network.VirtualView;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.server.controller.filters.Filter;
 import it.polimi.ingsw.psp44.server.model.GameModel;
-import it.polimi.ingsw.psp44.server.model.actions.Action;
-import it.polimi.ingsw.psp44.util.JsonConvert;
 
 import java.util.HashMap;
 
@@ -22,7 +20,7 @@ public class Controller {
     private GameModel model;
 
 
-    public void start(){
+    public void start() {
         /*
         setta il current player, la currentplayerview
         currentview.startTurn()
@@ -102,22 +100,24 @@ public class Controller {
 
     /**
      * Add a build filter to opponents build filter list
+     *
      * @param filter to apply to opponents filter
      */
     public void appliesOpponentsBuildFilter(Filter filter) {
         players.values().stream()
-                .filter((cardController)->cardController!=currentPlayer)
-                .forEach((cardController)->cardController.addBuildFilter(filter));
+                .filter((cardController) -> cardController != currentPlayer)
+                .forEach((cardController) -> cardController.addBuildFilter(filter));
     }
 
     /**
      * Add a move filter to opponents move filter list
+     *
      * @param filter to apply to opponents filter
      */
     public void appliesOpponentsMoveFilter(Filter filter) {
         players.values().stream()
-                .filter((cardController)->cardController!=currentPlayer)
-                .forEach((cardController)->cardController.addMoveFilter(filter));
+                .filter((cardController) -> cardController != currentPlayer)
+                .forEach((cardController) -> cardController.addMoveFilter(filter));
     }
 
     public void addPlayer(String nickname, VirtualView view) {

@@ -19,10 +19,11 @@ public abstract class Filter {
      * Modifies the list based on the method implementation
      * The method implementation is "determined" by its class name
      * The method can use other parameters from the actual class
-     *  @param startingPosition position from which the filterage starts
+     *
+     * @param startingPosition  position from which the filterage starts
      * @param positionsToFilter List of positions that needs to be filtered
-     * @param gameBoard provides information about a certain position using it's getters
-     * @param external the filter affect other players
+     * @param gameBoard         provides information about a certain position using it's getters
+     * @param external          the filter affect other players
      */
     public abstract void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard, boolean external);
 

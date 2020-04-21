@@ -8,7 +8,6 @@ import it.polimi.ingsw.psp44.server.model.Player;
 import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.R;
 
-import javax.annotation.processing.Generated;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +37,7 @@ public class SetupController {
     }
 
     //todo inviare startTurn() tuttle volte che cambia il giocatore
+
     /**
      * Arranges the message handlers.
      */

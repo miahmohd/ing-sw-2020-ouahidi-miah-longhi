@@ -1,8 +1,8 @@
 package it.polimi.ingsw.psp44.util;
 
 public class AppProperties extends Property {
-    private static AppProperties instance;
     private static final String[] propertyPaths = {"/errors.properties", "/codes.properties"};
+    private static AppProperties instance;
 
     private AppProperties(String[] path) {
         super(path);

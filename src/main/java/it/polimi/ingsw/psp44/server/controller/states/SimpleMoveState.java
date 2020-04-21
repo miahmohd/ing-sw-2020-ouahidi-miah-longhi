@@ -17,6 +17,7 @@ public class SimpleMoveState extends State {
 
     /**
      * Compute the available actions that the player can perform
+     *
      * @param board          representation of the playing field
      * @param selectedWorker worker selected from the player
      * @param moveFilter     filter to apply to move actions
@@ -25,10 +26,10 @@ public class SimpleMoveState extends State {
      */
     @Override
     public List<Action> getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
-        List<Action> availableActions=new ArrayList<>();
-        List<Position> moves= board.getNeighbouringPositions(selectedWorker);
-        moveFilter.filter(selectedWorker,moves,board, false);
-        for(Position p:moves){
+        List<Action> availableActions = new ArrayList<>();
+        List<Position> moves = board.getNeighbouringPositions(selectedWorker);
+        moveFilter.filter(selectedWorker, moves, board, false);
+        for (Position p : moves) {
             availableActions.add(new SimpleMovement(selectedWorker, p));
         }
         return availableActions;

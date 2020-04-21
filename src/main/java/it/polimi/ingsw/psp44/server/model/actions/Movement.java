@@ -2,7 +2,7 @@ package it.polimi.ingsw.psp44.server.model.actions;
 
 import it.polimi.ingsw.psp44.util.Position;
 
-public abstract class Movement extends Action{
+public abstract class Movement extends Action {
 
     public Movement(Position sourcePosition, Position targetPosition) {
         super(sourcePosition, targetPosition);

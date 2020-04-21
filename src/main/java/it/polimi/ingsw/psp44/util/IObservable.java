@@ -5,7 +5,7 @@ import java.util.List;
 
 public class IObservable<T> {
 
-    private List<IObserver<T>> observers = new ArrayList<>();
+    private final List<IObserver<T>> observers = new ArrayList<>();
 
     public IObservable() {
     }

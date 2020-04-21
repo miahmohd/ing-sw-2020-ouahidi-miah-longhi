@@ -9,10 +9,11 @@ public abstract class Connection<T> {
 
     /**
      * Reads form the chosen connection
+     *
      * @return the message just read
      */
     public abstract T readLine();
-    
+
 
     /**
      * Writes the message into the chosen connection

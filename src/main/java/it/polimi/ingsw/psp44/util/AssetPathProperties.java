@@ -5,10 +5,10 @@ import java.nio.file.Paths;
 
 public class AssetPathProperties extends Property {
     private static AssetPathProperties instance;
-    private static String propertyPath = "/asset.properties";
+    private static final String propertyPath = "/asset.properties";
 
     //TODO: set assetDirectory
-    private String assetDirectory = "";
+    private final String assetDirectory = "";
 
     private AssetPathProperties(String path) {
         super(path);
@@ -31,5 +31,5 @@ public class AssetPathProperties extends Property {
         return path.toString();
     }
 
-    
+
 }

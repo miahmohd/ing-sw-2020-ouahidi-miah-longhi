@@ -10,15 +10,15 @@ public class Message {
     /**
      * Code of message
      */
-    private Code code;
+    private final Code code;
     /**
      * Additional infromation about the message
      */
-    private Map<String, String> headers;
+    private final Map<String, String> headers;
     /**
      * Body of the message
      */
-    private String body;
+    private final String body;
 
     public Message(Code code, String body) {
         this(code, null, body);

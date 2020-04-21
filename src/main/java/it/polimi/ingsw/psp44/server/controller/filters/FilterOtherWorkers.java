@@ -12,7 +12,7 @@ public class FilterOtherWorkers extends Filter {
     public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard, boolean external) {
         Worker myWorker = gameBoard.getWorker(startingPosition);
         String myNickname = myWorker.getPlayerNickname();
-        
+
         positionsToFilter.removeIf(position -> {
             Worker otherWorker = gameBoard.getWorker(position);
             return otherWorker != null && !myNickname.equals(otherWorker.getPlayerNickname());
