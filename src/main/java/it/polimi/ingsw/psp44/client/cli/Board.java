@@ -24,7 +24,6 @@ public class Board {
         this.playerColors = new HashMap<>();
         this.levelColors = new HashMap<>();
 
-
         //FIXME: it's badly written
         Color[] opponentColors = {Color.OPPONENT_1, Color.OPPONENT_2};
         int count = 0;

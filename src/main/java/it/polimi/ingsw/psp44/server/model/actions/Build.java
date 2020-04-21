@@ -6,16 +6,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class Construction extends Action {
+public abstract class Build extends Action {
 
     protected boolean isUnbuild;
 
-    public Construction(Position target) {
+    public Build(Position target) {
         super(target);
         this.isUnbuild = false;
     }
 
-    public Construction(Position targetPosition, boolean isUnbuild) {
+    public Build(Position targetPosition, boolean isUnbuild) {
         super(targetPosition);
         this.isUnbuild = isUnbuild;
     }
@@ -36,7 +36,7 @@ public abstract class Construction extends Action {
      * @return true if it is a movement action false otherwise
      */
     @Override
-    public boolean isConstruction() {
+    public boolean isBuild() {
         return true;
     }
 

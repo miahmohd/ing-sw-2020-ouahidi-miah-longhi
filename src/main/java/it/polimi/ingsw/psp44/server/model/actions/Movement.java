@@ -24,7 +24,7 @@ public abstract class Movement extends Action{
      * @return true if it is a movement action false otherwise
      */
     @Override
-    public boolean isConstruction() {
+    public boolean isBuild() {
         return false;
     }
 }

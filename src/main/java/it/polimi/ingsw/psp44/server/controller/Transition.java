@@ -48,6 +48,6 @@ public class Transition {
         if (condition.isMovement())
             return lastAction.isMovement();
         else
-            return lastAction.isConstruction();
+            return lastAction.isBuild();
     }
 }

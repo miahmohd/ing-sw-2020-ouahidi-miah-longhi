@@ -110,7 +110,7 @@ public class CardController {
      */
     public boolean checkVictory(Action lastAction, Board board) {
         return victoryConditionsList.stream()
-                .filter((condition)->lastAction.isConstruction()?condition.isAfterBuild():
+                .filter((condition)->lastAction.isBuild()?condition.isAfterBuild():
                         !condition.isAfterBuild())
                 .anyMatch((condition)-> condition.check(lastAction,board));
     }

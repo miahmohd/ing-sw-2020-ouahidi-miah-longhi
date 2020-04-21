@@ -53,6 +53,6 @@ public abstract class Action {
      * Indicate the type of action
      * @return true if it is a movement action false otherwise
      */
-    public abstract boolean isConstruction();
+    public abstract boolean isBuild();
 }
 

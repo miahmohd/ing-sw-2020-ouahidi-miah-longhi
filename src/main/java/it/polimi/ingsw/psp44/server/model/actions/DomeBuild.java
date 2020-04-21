@@ -3,7 +3,7 @@ package it.polimi.ingsw.psp44.server.model.actions;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.util.Position;
 
-public class DomeBuild extends Construction {
+public class DomeBuild extends Build {
 
     /**
      * Build a dome at the target position.

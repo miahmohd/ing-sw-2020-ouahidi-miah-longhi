@@ -3,7 +3,7 @@ package it.polimi.ingsw.psp44.server.model.actions;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.util.Position;
 
-public class SimpleBuild extends Construction {
+public class SimpleBuild extends Build {
 
 
     /**
