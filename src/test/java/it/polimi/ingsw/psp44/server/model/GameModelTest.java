@@ -35,7 +35,7 @@ public class GameModelTest {
 
         gameModel.addPlayer(player3);
         assertEquals(player3.getNickname(), gameModel.getCurrentPlayerNickname());
-        
+
         gameModel.addPlayer(player2);
         gameModel.addPlayer(player1);
 
@@ -49,11 +49,11 @@ public class GameModelTest {
 
         Board gameBoard = gameModel.getBoard();
 
-        gameBoard.setWorker(new Position(1,1), worker11);
-        gameBoard.setWorker(new Position(1,2), worker12);
+        gameBoard.setWorker(new Position(1, 1), worker11);
+        gameBoard.setWorker(new Position(1, 2), worker12);
 
-        gameBoard.setWorker(new Position(2,1), worker21);
-        gameBoard.setWorker(new Position(2,2), worker22);
+        gameBoard.setWorker(new Position(2, 1), worker21);
+        gameBoard.setWorker(new Position(2, 2), worker22);
 
         gameModel.removePlayer(player2);
         assertEquals(player1.getNickname(), gameModel.getCurrentPlayerNickname());
@@ -78,7 +78,7 @@ public class GameModelTest {
         gameModel.addPlayer(player1);
         gameModel.addPlayer(player2);
         gameModel.addPlayer(player3);
-        
+
         assertEquals(player3.getNickname(), gameModel.getCurrentPlayerNickname());
         gameModel.nextTurn();
         assertEquals(player2.getNickname(), gameModel.getCurrentPlayerNickname());

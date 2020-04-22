@@ -20,6 +20,10 @@ public class Message {
      */
     private final String body;
 
+    public Message(Code code) {
+        this(code, "");
+    }
+
     public Message(Code code, String body) {
         this(code, null, body);
     }
@@ -46,6 +50,8 @@ public class Message {
     public enum Code {
         NEW_GAME,
         JOIN_GAME,
-        CHOOSE_CARDS
+        CHOOSE_CARDS,
+        START,
+        CHOOSE_WORKER, CHOOSE_ACTION, TURN_ENDABLE, CHOSEN_ACTION, TURN_END, CHOSEN_WORKER
     }
 }

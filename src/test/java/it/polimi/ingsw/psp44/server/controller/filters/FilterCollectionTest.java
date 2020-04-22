@@ -26,7 +26,7 @@ public class FilterCollectionTest {
     }
 
     @Test
-    public void addAndRemove(){
+    public void addAndRemove() {
         Filter dome = new FilterDome();
         Filter upByTwo = new FilterUpByTwo();
 
@@ -49,12 +49,12 @@ public class FilterCollectionTest {
     }
 
     @Test
-    public void filter(){
+    public void filter() {
         Filter dome = new FilterDome();
         Filter upByTwo = new FilterUpByTwo();
         Filter myWorkers = new FilterMyWorkers();
         Filter otherWorkers = new FilterOtherWorkers();
-        
+
         Position startingPosition = new Position(2, 2);
 
         Position positionOtherWorker2 = new Position(4, 4);
@@ -71,7 +71,7 @@ public class FilterCollectionTest {
 
         Player myPlayer = new Player("test");
         Player otherPlayer = new Player("another test");
-        
+
         Worker myWorkerMale = new Worker(myPlayer.getNickname(), Worker.Sex.MALE);
         Worker myWorkerFemale = new Worker(myPlayer.getNickname(), Worker.Sex.FEMALE);
 
@@ -98,11 +98,11 @@ public class FilterCollectionTest {
         gameBoard.setWorker(positionMyWorker, myWorkerFemale);
 
         List<Position> expectedPositions = new ArrayList<>(Arrays.asList(
-            level2,
-            level0,
-            level00,
-            level01,
-            positionOtherWorker1
+                level2,
+                level0,
+                level00,
+                level01,
+                positionOtherWorker1
         ));
 
         filterCollection.add(dome);
@@ -120,11 +120,11 @@ public class FilterCollectionTest {
         filterCollection.remove(upByTwo);
 
         expectedPositions = new ArrayList<>(Arrays.asList(
-            level2,
-            level0,
-            level00,
-            level01,
-            level3
+                level2,
+                level0,
+                level00,
+                level01,
+                level3
         ));
 
         actualPositions = gameBoard.getNeighbouringPositions(startingPosition);

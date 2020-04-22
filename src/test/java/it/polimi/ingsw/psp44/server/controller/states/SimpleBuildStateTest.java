@@ -22,8 +22,8 @@ public class SimpleBuildStateTest {
 
     @Before
     public void setUp() {
-        workerPosition= new Position(1,2);
-        buildStateTest= new SimpleBuildState();
+        workerPosition = new Position(1, 2);
+        buildStateTest = new SimpleBuildState();
         boardTest = new Board();
         Position level1 = new Position(0, 1);
         Position level2 = new Position(0, 2);
@@ -35,24 +35,23 @@ public class SimpleBuildStateTest {
         boardTest.buildUp(level3);
         boardTest.buildDome(level3);
         boardTest.buildDome(dome);
-        expectedPosition=new ArrayList<>();
-        expectedPosition.add(new Position(0,1));
-        expectedPosition.add(new Position(1,3));
-        expectedPosition.add(new Position(2,1));
-        expectedPosition.add(new Position(2,2));
-        expectedPosition.add(new Position(2,3));
+        expectedPosition = new ArrayList<>();
+        expectedPosition.add(new Position(0, 1));
+        expectedPosition.add(new Position(1, 3));
+        expectedPosition.add(new Position(2, 1));
+        expectedPosition.add(new Position(2, 2));
+        expectedPosition.add(new Position(2, 3));
     }
-
 
 
     @Test
     public void getAvailableActions() {
-        List<Position> computedPositions=new ArrayList<>();
-        for(Action a: buildStateTest.getAvailableActions(boardTest,workerPosition)){
+        List<Position> computedPositions = new ArrayList<>();
+        for (Action a : buildStateTest.getAvailableActions(boardTest, workerPosition)) {
             assertTrue(a instanceof SimpleBuild);
             computedPositions.add(a.getTargetPosition());
         }
-        assertTrue(computedPositions.containsAll(expectedPosition)&& computedPositions.size()==expectedPosition.size());
+        assertTrue(computedPositions.containsAll(expectedPosition) && computedPositions.size() == expectedPosition.size());
 
 
     }

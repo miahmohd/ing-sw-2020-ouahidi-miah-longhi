@@ -35,27 +35,27 @@ public class CompoundStateTest {
 
     @Before
     public void setUp() {
-        workerPosition= new Position(1,2);
+        workerPosition = new Position(1, 2);
 
-        moveFiltersTest=new ArrayList<>();
+        moveFiltersTest = new ArrayList<>();
         moveFiltersTest.add(new FilterDome());
         moveFiltersTest.add(new FilterUpByTwo());
 
-        compoundStateTest=new CompoundState();
+        compoundStateTest = new CompoundState();
 
-        buildFiltersTest=new ArrayList<>();
+        buildFiltersTest = new ArrayList<>();
         buildFiltersTest.add(new FilterDome());
 
-        moveStateTest=new SimpleMoveState();
+        moveStateTest = new SimpleMoveState();
 
-        buildStateTest= new SimpleBuildState();
+        buildStateTest = new SimpleBuildState();
 
 
     }
 
 
     @Test
-    public void addRemoveEmptyTest(){
+    public void addRemoveEmptyTest() {
         compoundStateTest.addState(moveStateTest);
         assertThrows(IllegalArgumentException.class, () -> compoundStateTest.addState(null));
         assertTrue(compoundStateTest.getSimpleStates().get(0) instanceof SimpleMoveState);
@@ -70,9 +70,6 @@ public class CompoundStateTest {
         compoundStateTest.empty();
         assertTrue(compoundStateTest.getSimpleStates().isEmpty());
     }
-
-
-
 
 
     @Test
@@ -105,22 +102,22 @@ public class CompoundStateTest {
         boardTest.buildDome(level22);
         boardTest.buildDome(level32);
 
-        expectedMovePosition=new ArrayList<>();
+        expectedMovePosition = new ArrayList<>();
         expectedMovePosition.add(level1);
         expectedMovePosition.add(level12);
-        expectedBuildPosition=new ArrayList<>();
+        expectedBuildPosition = new ArrayList<>();
         expectedBuildPosition.add(level1);
         expectedBuildPosition.add(level2);
         expectedBuildPosition.add(level3);
         expectedBuildPosition.add(level12);
 
-        List<Action> computedActions= compoundStateTest.getAvailableActions(boardTest,workerPosition);
+        List<Action> computedActions = compoundStateTest.getAvailableActions(boardTest, workerPosition);
 
-        assertTrue(computedActions.size()==expectedBuildPosition.size()+expectedMovePosition.size());
-        for (Action a:computedActions){
-            if(a instanceof SimpleMovement)
+        assertTrue(computedActions.size() == expectedBuildPosition.size() + expectedMovePosition.size());
+        for (Action a : computedActions) {
+            if (a instanceof SimpleMovement)
                 assertTrue(expectedMovePosition.contains(a.getTargetPosition()));
-            if(a instanceof SimpleBuild)
+            if (a instanceof SimpleBuild)
                 assertTrue(expectedBuildPosition.contains(a.getTargetPosition()));
         }
     }

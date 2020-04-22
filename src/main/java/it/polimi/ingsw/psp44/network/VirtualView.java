@@ -3,7 +3,6 @@ package it.polimi.ingsw.psp44.network;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHandlerFunction;
 import it.polimi.ingsw.psp44.network.message.MessageRouter;
-import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.Position;
 
@@ -45,8 +44,10 @@ public class VirtualView implements Runnable {
 
     /**
      * Resets the interface and prepare for the start of the game/turn.
+     *
+     * @param message
      */
-    public void startTurn() {
+    public void startTurn(Message message) {
         // superfluo potrebbe bastare selectWorkerFrom
     }
 
@@ -63,14 +64,16 @@ public class VirtualView implements Runnable {
      *
      * @param actions the list of actions to choose from.
      */
-    public void selectActionFrom(List<Action> actions) {
+    public void choseActionFrom(Message actions) {
 
     }
 
     /**
      * Allow the player to end his turn.
+     *
+     * @param message
      */
-    public void turnEndable() {
+    public void turnEndable(Message message) {
     }
 
     /**
@@ -101,6 +104,17 @@ public class VirtualView implements Runnable {
      */
     public void chooseWorkersInitialPosition() {
 
+    }
+
+    /**
+     * Invia le posizioni dei worker per sceglierla all'inizio del turno
+     *
+     * @param playerWorkersPositions
+     */
+    public void choseWorkerFrom(Message playerWorkersPositions) {
+    }
+
+    public void turnEnd(Message message) {
     }
 }
 

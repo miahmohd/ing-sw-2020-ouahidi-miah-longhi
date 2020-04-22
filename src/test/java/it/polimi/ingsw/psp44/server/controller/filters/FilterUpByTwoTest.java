@@ -37,22 +37,22 @@ public class FilterUpByTwoTest {
         gameBoard.buildUp(level3);
         gameBoard.buildUp(level3);
         gameBoard.buildUp(level3);
-    
+
 
         List<Position> expectedPositions = new ArrayList<Position>(Arrays.asList(
-            new Position(1, 1),
-            new Position(1, 2),
-            new Position(1, 3),
-            level0,
-            new Position(3, 1),
-            level1
+                new Position(1, 1),
+                new Position(1, 2),
+                new Position(1, 3),
+                level0,
+                new Position(3, 1),
+                level1
         ));
 
         List<Position> actualPositions = gameBoard.getNeighbouringPositions(startingPosition);
 
 
         filterUpByTwo.filter(startingPosition, actualPositions, gameBoard, false);
-        
+
         assertEquals(expectedPositions.size(), actualPositions.size());
         assertTrue(expectedPositions.containsAll(actualPositions));
 

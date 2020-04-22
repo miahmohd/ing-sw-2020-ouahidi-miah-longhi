@@ -164,4 +164,8 @@ public class CardController {
     public void addMoveFilter(Filter filter) {
         activeMoveFilter.add(filter);
     }
+
+    public boolean isEndableTurn() {
+        return currentState.isFinalState();
+    }
 }

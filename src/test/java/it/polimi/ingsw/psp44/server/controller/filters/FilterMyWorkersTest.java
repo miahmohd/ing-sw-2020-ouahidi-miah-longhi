@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
 public class FilterMyWorkersTest {
     private Board gameBoard;
     private Filter filterMyWorkersTest;
@@ -33,7 +34,7 @@ public class FilterMyWorkersTest {
 
         Player myPlayer = new Player("test");
         Player otherPlayer = new Player("another test");
-        
+
         Worker myWorkerMale = new Worker(myPlayer.getNickname(), Worker.Sex.MALE);
         Worker myWorkerFemale = new Worker(myPlayer.getNickname(), Worker.Sex.FEMALE);
 
@@ -51,25 +52,23 @@ public class FilterMyWorkersTest {
         gameBoard.setWorker(level1, otherWorkerMale);
         gameBoard.setWorker(level2, otherWorkerFemale);
         gameBoard.setWorker(level3, myWorkerFemale);
-    
 
-        
 
         List<Position> expectedPositions = new ArrayList<Position>(Arrays.asList(
-            new Position(1, 1),
-            new Position(1, 2),
-            new Position(1, 3),
-            new Position(2, 3),
-            new Position(3, 2),
-            new Position(3, 1),
-            new Position(2, 1)
+                new Position(1, 1),
+                new Position(1, 2),
+                new Position(1, 3),
+                new Position(2, 3),
+                new Position(3, 2),
+                new Position(3, 1),
+                new Position(2, 1)
         ));
 
         List<Position> actualPositions = gameBoard.getNeighbouringPositions(startingPosition);
 
 
         filterMyWorkersTest.filter(startingPosition, actualPositions, gameBoard, false);
-        
+
         assertEquals(expectedPositions.size(), actualPositions.size());
         assertTrue(expectedPositions.containsAll(actualPositions));
 

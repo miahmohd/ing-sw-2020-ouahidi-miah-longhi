@@ -25,8 +25,8 @@ public class FilterDomeTest {
 
     @Test
     public void filter() {
-        Position startingPosition = new Position(2,2);
-        
+        Position startingPosition = new Position(2, 2);
+
         Position positionDome1 = new Position(1, 1);
         Position positionDome2 = new Position(1, 2);
         Position positionDome3 = new Position(0, 0);
@@ -41,18 +41,18 @@ public class FilterDomeTest {
         gameBoard.buildDome(positionDome3);
 
 
-        gameBoard.buildUp( new Position(2, 3));
-        gameBoard.buildUp( new Position(2, 3));
-        gameBoard.buildUp( new Position(2, 1));
+        gameBoard.buildUp(new Position(2, 3));
+        gameBoard.buildUp(new Position(2, 3));
+        gameBoard.buildUp(new Position(2, 1));
 
 
         List<Position> expectedPositions = new ArrayList<Position>(Arrays.asList(
-            new Position(1, 3),
-            new Position(2, 3),
-            new Position(3, 3),
-            new Position(3, 2),
-            new Position(3, 1),
-            new Position(2, 1)
+                new Position(1, 3),
+                new Position(2, 3),
+                new Position(3, 3),
+                new Position(3, 2),
+                new Position(3, 1),
+                new Position(2, 1)
         ));
 
         List<Position> actualPositions = gameBoard.getNeighbouringPositions(startingPosition);
@@ -64,5 +64,5 @@ public class FilterDomeTest {
 
 
     }
-    
+
 }

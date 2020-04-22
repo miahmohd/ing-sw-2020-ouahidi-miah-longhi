@@ -3,10 +3,15 @@ package it.polimi.ingsw.psp44.server.controller;
 
 import it.polimi.ingsw.psp44.network.VirtualView;
 import it.polimi.ingsw.psp44.network.message.Message;
+import it.polimi.ingsw.psp44.network.modelview.Cell;
 import it.polimi.ingsw.psp44.server.controller.filters.Filter;
 import it.polimi.ingsw.psp44.server.model.GameModel;
+import it.polimi.ingsw.psp44.server.model.actions.Action;
+import it.polimi.ingsw.psp44.util.JsonConvert;
+import it.polimi.ingsw.psp44.util.Position;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * This class implements the logic of the match.
@@ -18,14 +23,20 @@ public class Controller {
     private CardController currentPlayer;
     private VirtualView currentPlayerView;
     private GameModel model;
+    private List<Action> availableActions;
 
-
+    /**
+     * The start of a turn player, fetch current player view and controller and send the position of his worker
+     */
     public void start() {
-        /*
-        setta il current player, la currentplayerview
-        currentview.startTurn()
-        current.view.chooseWorkerFrom(lista posizioni)
-        */
+        this.currentPlayer = players.get(model.getCurrentPlayerNickname());
+        this.currentPlayerView = playerViews.get(model.getCurrentPlayerNickname());
+        currentPlayerView.startTurn(new Message(Message.Code.START));
+        List<Position> workers = model.getBoard().getPlayerWorkersPositions(model.getCurrentPlayerNickname());
+        if (!workers.isEmpty())
+            currentPlayerView.choseWorkerFrom(new Message(Message.Code.CHOOSE_WORKER, JsonConvert.getInstance().toJson(workers, List.class)));
+        else
+            lost();
     }
 
     /**
@@ -37,20 +48,28 @@ public class Controller {
      * @return <code>true</code> if the message does not require further processing, <code>false</code>  otherwise.
      */
     public void chosenWorkerMessageHandler(VirtualView view, Message message) {
-        /*
-            Posizione p = message.parse()
+        Position selectedWorkerPosition;
+        List<Action> availableActions;
 
-            if(lista mosse vuota){
-                controllo se sono in 2, se  si l'altro vince. senò continuo il gioco e invio gli worker al prossimo.
-                view.lost()
-                // rimuovere dal model gli worker, player, ma non l'observer
-                this.start() // con il prossimo player
-            }else{
-            model.setchosenWorker(p)
-            Message m = controller.getMosse(p)
-            view.choseActionFrom(m)
+        if (message.getCode() == Message.Code.CHOSEN_WORKER) {
+            selectedWorkerPosition = JsonConvert.getInstance().fromJson(message.getBody(), Position.class);
+            model.setWorker(selectedWorkerPosition);
+            availableActions = currentPlayer.getAvailableAction(model.getBoard(), model.getWorker());
+            if (availableActions.isEmpty() && (!currentPlayer.isEndableTurn())) {
+                lost();
             }
-        * */
+            if (!availableActions.isEmpty()) {
+                this.availableActions = availableActions;
+                currentPlayerView.choseActionFrom(new Message(Message.Code.CHOOSE_ACTION,
+                        JsonConvert.getInstance().toJson(Cell.convertActionList(availableActions), List.class)));
+            }
+            if (currentPlayer.isEndableTurn()) {
+                currentPlayerView.turnEndable(new Message(Message.Code.TURN_ENDABLE));
+
+            }
+
+        }
+
     }
 
     /**
@@ -62,22 +81,35 @@ public class Controller {
      * @return <code>true</code> if the message does not require further processing, <code>false</code>  otherwise.
      */
     public void chosenActionMessageHandler(VirtualView view, Message message) {
+        Integer selectedActionIndex;
+        Action selectedAction;
+        List<Action> AvailableActions;
+        if (message.getCode() == Message.Code.CHOSEN_ACTION) {
+            selectedActionIndex = JsonConvert.getInstance().fromJson(message.getBody(), Integer.class);
+            selectedAction = this.availableActions.get(selectedActionIndex);
+            model.applyAction(selectedAction);
+            if (selectedAction.isMovement())
+                model.setWorker(selectedAction.getTargetPosition());
+            if (currentPlayer.checkVictory(selectedAction, model.getBoard()))
+                won();
+            if (currentPlayer.nextState(selectedAction)) {
+                availableActions = currentPlayer.getAvailableAction(model.getBoard(), model.getWorker());
+                if (availableActions.isEmpty() && (!currentPlayer.isEndableTurn())) {
+                    lost();
+                }
+                if (!availableActions.isEmpty()) {
+                    this.availableActions = availableActions;
+                    currentPlayerView.choseActionFrom(new Message(Message.Code.CHOOSE_ACTION,
+                            JsonConvert.getInstance().toJson(Cell.convertActionList(availableActions), List.class)));
+                }
+                if (currentPlayer.isEndableTurn()) {
+                    currentPlayerView.turnEndable(new Message(Message.Code.TURN_ENDABLE));
+                }
+            } else {
+                currentPlayerView.turnEndable(new Message(Message.Code.TURN_ENDABLE));
 
-//        Integer s = JsonConvert.getInstance().fromJson(message.getBody(), Integer.class);
-        /*
-        ricavo in qualche modo  dal messagio la action selezionata
-        model.doaction(action selezionata) // aggiorna automaticamente gli altri
-
-        controllo vittoria con action selezionata.
-        cardController.nextStatus(action)
-
-        invio le prossime action al giocatore corrente.
-
-        if(controller.puòTerminare)
-            view.turnEndable()
-
-        // se l'unica cosa che può fare è terminare il turno, invia direttamente  currentView.endTurn(), e relativa gestione del prossimo turno.
-        */
+            }
+        }
     }
 
 
@@ -90,12 +122,9 @@ public class Controller {
      * @return <code>true</code> if the message does not require further processing, <code>false</code>  otherwise.
      */
     public void endTurnMessageHandler(VirtualView view, Message message) {
-       /*
-            currentView.endTurn()
-            model.nextplayer()
-            this.start().
-       *
-       * */
+        currentPlayerView.turnEnd(new Message(Message.Code.TURN_END));
+        model.nextTurn();
+        this.start();
     }
 
     /**
@@ -125,5 +154,21 @@ public class Controller {
 
     public int getRegisteredPlayer() {
         return 5;
+    }
+
+    /**
+     * Called when current player loose the game.
+     * - 3 players match: remove current player from the game
+     * - 2 players match: end the match, the opponent win
+     */
+    private void lost() {
+        /* controllo se sono in 2, se  si l'altro vince. senò continuo il gioco e invio gli worker al prossimo.
+                view.lost()
+                // rimuovere dal model gli worker, player, ma non l'observer
+                this.start() // con il prossimo player
+        */
+    }
+
+    private void won() {
     }
 }

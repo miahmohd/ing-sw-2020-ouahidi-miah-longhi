@@ -2,7 +2,10 @@ package it.polimi.ingsw.psp44.network.modelview;
 
 import it.polimi.ingsw.psp44.server.model.Worker;
 import it.polimi.ingsw.psp44.server.model.Worker.Sex;
+import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.util.Position;
+
+import java.util.List;
 
 public class Cell {
 
@@ -35,6 +38,10 @@ public class Cell {
     public Cell() {
         //FIXME: Just a proof of concept
         this(null, 0, false, null, null);
+    }
+
+    public static List<Cell> convertActionList(List<Action> availableActions) {
+        return null;
     }
 
     public int getLevel() {

@@ -14,11 +14,13 @@ public class GameModel {
     private final Board gameBoard;
     private final LinkedList<Player> players;
     private int turnNumber;
+    private Position selectedWorker;
 
     public GameModel(Board gameBoard, LinkedList<Player> players, int turnNumber) {
         this.gameBoard = gameBoard;
         this.players = players;
         this.turnNumber = turnNumber;
+        this.selectedWorker = null;
     }
 
     public GameModel() {
@@ -123,5 +125,13 @@ public class GameModel {
      */
     public boolean isFullRound() {
         return this.turnNumber % this.players.size() == 0;
+    }
+
+    public void setWorker(Position selectedWorkerPosition) {
+        this.selectedWorker = selectedWorkerPosition;
+    }
+
+    public Position getWorker() {
+        return selectedWorker;
     }
 }
