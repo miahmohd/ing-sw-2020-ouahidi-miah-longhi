@@ -1,5 +1,4 @@
 package it.polimi.ingsw.psp44.server.controller;
-//TODO
 
 import it.polimi.ingsw.psp44.network.VirtualView;
 import it.polimi.ingsw.psp44.network.message.Message;
@@ -10,16 +9,16 @@ import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.Position;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class implements the logic of the match.
  */
 
 public class Controller {
-    private HashMap<String, CardController> players;
-    private HashMap<String, VirtualView> playerViews;
+    private Map<String, CardController> players;
+    private Map<String, VirtualView> playerViews;
     private CardController currentPlayer;
     private VirtualView currentPlayerView;
     private GameModel model;
@@ -170,5 +169,17 @@ public class Controller {
     }
 
     private void won() {
+    }
+
+    public void setVirtualViews(Map<String, VirtualView> playerViews) {
+        this.playerViews = playerViews;
+    }
+
+    public void setCardControllers(Map<String, CardController> players) {
+        this.players = players;
+    }
+
+    public void setModel(GameModel model) {
+        this.model = model;
     }
 }

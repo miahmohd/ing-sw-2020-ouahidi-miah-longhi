@@ -25,7 +25,6 @@ public class VirtualView implements Runnable {
     @Override
     public void run() {
         //TODO da aggiungere:
-        // - definire Message
         // - sistemare in loop
 
         while (true) {
@@ -39,8 +38,6 @@ public class VirtualView implements Runnable {
         this.router.addRoute(code, handler);
     }
 
-    //todo utilizzare oggetti specifici per la trasmissione TBD
-    //  conversione avviene qui o da qualche altra parte?
 
     /**
      * Resets the interface and prepare for the start of the game/turn.
@@ -94,15 +91,17 @@ public class VirtualView implements Runnable {
     }
 
     /**
-     * Allow the player to choose a card .
+     * Allow the player to choose a card.
+     * @param message
      */
-    public void chooseCardFrom() {
+    public void chooseCardFrom(Message message) {
     }
 
     /**
      * Permette al giocatore di scegliere le posizioni iniziali del player
+     * @param message
      */
-    public void chooseWorkersInitialPosition() {
+    public void chooseWorkersInitialPosition(Message message) {
 
     }
 
