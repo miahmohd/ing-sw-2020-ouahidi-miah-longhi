@@ -3,6 +3,7 @@ package it.polimi.ingsw.psp44.server.controller.states;
 import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
+import it.polimi.ingsw.psp44.server.model.actions.DomeBuild;
 import it.polimi.ingsw.psp44.server.model.actions.SimpleBuild;
 import it.polimi.ingsw.psp44.util.Position;
 
@@ -29,7 +30,10 @@ public class SimpleBuildState extends State {
         List<Position> builds = board.getNeighbouringPositions(selectedWorker);
         buildFilter.filter(selectedWorker, builds, board, false);
         for (Position p : builds) {
-            availableActions.add(new SimpleBuild(p));
+            if(board.isFinalLevel(p))
+                availableActions.add(new DomeBuild(p));
+            else
+                availableActions.add(new SimpleBuild(p));
         }
         return availableActions;
     }

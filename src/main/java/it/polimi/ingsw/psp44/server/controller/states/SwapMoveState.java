@@ -3,18 +3,17 @@ package it.polimi.ingsw.psp44.server.controller.states;
 import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
-import it.polimi.ingsw.psp44.server.model.actions.Movement;
 import it.polimi.ingsw.psp44.server.model.actions.SimpleMovement;
+import it.polimi.ingsw.psp44.server.model.actions.SwapMovement;
 import it.polimi.ingsw.psp44.util.Position;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * this state allows to compute all the the movements that the worker can do according
- * the active filters
+ * this state allows to compute all the the movements that the worker adding move action to opponents worker's position
  */
-public class SimpleMoveState extends State {
+public class SwapMoveState extends SimpleMoveState {
 
     /**
      * Compute the available actions that the player can perform
@@ -31,7 +30,7 @@ public class SimpleMoveState extends State {
         List<Position> moves = board.getNeighbouringPositions(selectedWorker);
         moveFilter.filter(selectedWorker, moves, board, false);
         for (Position p : moves) {
-            availableActions.add(new SimpleMovement(selectedWorker, p));
+            availableActions.add(new SwapMovement(selectedWorker, p));
         }
         return availableActions;
     }
