@@ -1,49 +1,51 @@
 package it.polimi.ingsw.psp44.client.cli;
 
 import it.polimi.ingsw.psp44.client.cli.Graphics.Color;
-import it.polimi.ingsw.psp44.network.modelview.Action;
-import it.polimi.ingsw.psp44.network.modelview.Cell;
 import it.polimi.ingsw.psp44.util.Position;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class Board {
 
     private static final int DIMENTION = 5;
-    //Matrix
+
+
     private final Cell[][] cells;
     private final Map<String, Graphics.Color> playerColors;
     private final Map<Integer, Graphics.Color> levelColors;
     private final StringBuffer sb;
 
 
-    public Board(String myPlayer, List<String> opponents) {
+    public Board() {
         this.cells = new Cell[DIMENTION][DIMENTION];
         this.playerColors = new HashMap<>();
         this.levelColors = new HashMap<>();
         this.sb = new StringBuffer();
 
-        //FIXME: it's badly written
-        Color[] opponentColors = {Color.OPPONENT_1, Color.OPPONENT_2};
-        int count = 0;
-        this.playerColors.put(myPlayer, Color.MY_PLAYER);
-        for (String opponent : opponents) {
-            this.playerColors.put(opponent, opponentColors[count]);
-        }
-
-
         initBoard();
         initLevelColors();
-
-
     }
 
 
-    public Board() {
-        this("ciao", new LinkedList<>());
+    /**
+     * Sets the color of the players in the game, colors cannot be chosen
+     * They are set automatically
+     * @param myPlayer this client's player
+     * @param opponents this client's opponents
+     */
+    public void setPlayers(String myPlayer, List<String> opponents){
+        Color[] opponentColors = {Color.OPPONENT_1, Color.OPPONENT_2};
+        int count = 0;
+
+        this.playerColors.put(myPlayer, Color.MY_PLAYER);
+
+        for (String opponent : opponents) {
+            this.playerColors.put(opponent, opponentColors[count]);
+            count++;
+        }
+
     }
 
 
@@ -52,7 +54,7 @@ public class Board {
      * @return String formatted according to Graphics specification standard
      */
     public String highlight(List<Action> actions) {
-
+        //TODO:
         return "";
     }
 
@@ -62,11 +64,11 @@ public class Board {
      * @param cellsToUpdate cells that need to be updated
      * @return String formatted according to Graphics specification standard
      */
-    public String update(List<Cell> cellsToUpdate) {
-        Position position;
-        for (Cell cell : cellsToUpdate) {
-            position = cell.getPosition();
-            cells[position.getRow()][position.getColumn()] = cell;
+    public String update(Map<Position,Cell> cellsToUpdate) {
+        Cell cellToUpdate;
+        for (Position position : cellsToUpdate.keySet()) {
+            cellToUpdate = cellsToUpdate.get(position);
+            cells[position.getRow()][position.getColumn()] = cellToUpdate;
         }
         return this.getBoard();
     }

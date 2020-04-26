@@ -1,4 +1,4 @@
-package it.polimi.ingsw.psp44.network.modelview;
+package it.polimi.ingsw.psp44.network.communication;
 
 import it.polimi.ingsw.psp44.server.model.Worker;
 import it.polimi.ingsw.psp44.server.model.Worker.Sex;
