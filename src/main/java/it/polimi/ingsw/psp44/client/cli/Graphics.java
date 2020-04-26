@@ -80,7 +80,7 @@ public class Graphics {
      */
     public enum Element implements AnsiElement {
         /**
-         * Pawn look better
+         * Pawn looks better
          */
         MALE_WORKER("\u2659 "),
         FEMALE_WORKER("\u2659 "),

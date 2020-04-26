@@ -38,6 +38,12 @@ public interface IView<T> {
     void endTurn(T endTurn);
 
     /**
+     * Method that defines what to do when players are sent
+     * @param players
+     */
+    void players(T players);
+
+    /**
      * Method that defines what to do in case of update
      */
     void update(T update);
@@ -45,6 +51,6 @@ public interface IView<T> {
     /**
      * method used for setting the virtual sender
      */
-    void setVirtual(IVirtual<T> virtual);
+    void setServer(IVirtual<T> virtual);
 
 }

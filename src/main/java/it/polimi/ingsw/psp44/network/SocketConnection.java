@@ -37,7 +37,7 @@ public class SocketConnection extends Connection<String> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "Errore";
+        return "Error";
     }
 
     public void writeLine(String msg) {

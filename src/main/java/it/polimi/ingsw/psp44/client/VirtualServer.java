@@ -10,13 +10,10 @@ import java.util.Map;
 public class VirtualServer implements IVirtual<Message>, Runnable {
 
     private final Connection<Message> connection;
-    private final IView<Message> view;
     private final Map<String, Runnable> router;
 
-    public VirtualServer(Connection<Message> connection, IView<Message> view) {
+    public VirtualServer(Connection connection) {
         this.connection = connection;
-        this.view = view;
-        this.view.setVirtual(this);
         router = new HashMap<>();
     }
 
@@ -24,9 +21,12 @@ public class VirtualServer implements IVirtual<Message>, Runnable {
     @Override
     public void run() {
         //FIXME: Doesn't work, just an example
-        Message message = connection.readLine();
-        Message.Code code = message.getCode();
-        router.get(code).run();
+
+        while(true){
+            Message message = connection.readLine();
+            Message.Code code = message.getCode();
+            router.get(code).run();
+        }
     }
 
     @Override

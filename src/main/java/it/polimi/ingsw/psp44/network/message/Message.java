@@ -63,6 +63,7 @@ public class Message {
         CHOSEN_ACTION,
         TURN_ENDABLE,
         TURN_END,
+        PLAYER_NICKNAME
 
     }
 }
