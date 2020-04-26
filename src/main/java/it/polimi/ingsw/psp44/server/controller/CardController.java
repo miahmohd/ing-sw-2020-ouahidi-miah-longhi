@@ -51,11 +51,7 @@ public class CardController {
         this.initialState = initialState;
         this.transitionsList = transitionsList;
         this.victoryConditionsList = victoryConditionsList;
-        Transition loopBackTransition = transitionsList.stream()
-                .filter((t) -> initialState.equals(t.getNextState()))
-                .findFirst()
-                .orElse(null);
-        executeTransition(loopBackTransition, null);
+
     }
 
     /**
@@ -130,18 +126,18 @@ public class CardController {
 
         currentState = transition.getNextState();
 
-        transition.getBuildFilter(lastAction).forEach((filter) -> {
+        transition.getBuildFilter().forEach((filter) -> {
             if (filter.isExternal())
-                context.appliesOpponentsBuildFilter(filter);
+                context.appliesOpponentsBuildFilter(filter, lastAction);
             else
-                buildFilter.add(filter);
+                buildFilter.update(filter, lastAction);
         });
 
-        transition.getMoveFilter(lastAction).forEach((filter) -> {
+        transition.getMoveFilter().forEach((filter) -> {
             if (filter.isExternal())
-                context.appliesOpponentsMoveFilter(filter);
+                context.appliesOpponentsMoveFilter(filter, lastAction);
             else
-                moveFilter.add(filter);
+                moveFilter.update(filter, lastAction);
         });
     }
 
@@ -150,8 +146,13 @@ public class CardController {
      *
      * @param filter to add
      */
-    public void addBuildFilter(Filter filter) {
-        buildFilter.add(filter);
+    public void addBuildFilter(Filter filter, Action lastAction) {
+        if(buildFilter.contains(filter)){
+            buildFilter.update(filter,lastAction);
+        }else{
+            filter.update(lastAction);
+            buildFilter.add(filter);
+        }
     }
 
     /**
@@ -159,8 +160,13 @@ public class CardController {
      *
      * @param filter to add
      */
-    public void addMoveFilter(Filter filter) {
-        moveFilter.add(filter);
+    public void addMoveFilter(Filter filter, Action lastAction) {
+        if(moveFilter.contains(filter)){
+            moveFilter.update(filter,lastAction);
+        }else{
+            filter.update(lastAction);
+            moveFilter.add(filter);
+        }
     }
 
     /**

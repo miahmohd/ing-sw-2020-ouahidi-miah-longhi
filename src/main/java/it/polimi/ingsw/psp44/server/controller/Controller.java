@@ -100,10 +100,10 @@ public class Controller {
      *
      * @param filter to apply to opponents filter
      */
-    public void appliesOpponentsBuildFilter(Filter filter) {
+    public void appliesOpponentsBuildFilter(Filter filter, Action lastAction) {
         players.values().stream()
                 .filter((cardController) -> cardController != currentPlayer)
-                .forEach((cardController) -> cardController.addBuildFilter(filter));
+                .forEach((cardController) -> cardController.addBuildFilter(filter, lastAction));
     }
 
     /**
@@ -111,10 +111,10 @@ public class Controller {
      *
      * @param filter to apply to opponents filter
      */
-    public void appliesOpponentsMoveFilter(Filter filter) {
+    public void appliesOpponentsMoveFilter(Filter filter, Action lastAction) {
         players.values().stream()
                 .filter((cardController) -> cardController != currentPlayer)
-                .forEach((cardController) -> cardController.addMoveFilter(filter));
+                .forEach((cardController) -> cardController.addMoveFilter(filter, lastAction));
     }
 
 

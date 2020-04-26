@@ -1,5 +1,6 @@
 package it.polimi.ingsw.psp44.server.controller;
 
+import it.polimi.ingsw.psp44.server.controller.filters.DinamicFilter;
 import it.polimi.ingsw.psp44.server.controller.filters.Filter;
 import it.polimi.ingsw.psp44.server.controller.states.State;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
@@ -11,10 +12,10 @@ public class Transition {
     private final State currentState;
     private final State nextState;
     private final Action condition;
-    private final List<Filter> buildFilters;
-    private final List<Filter> moveFilters;
+    private final List<DinamicFilter> buildFilters;
+    private final List<DinamicFilter> moveFilters;
 
-    public Transition(State currentState, State nextState, Action condition, List<Filter> buildFilters, List<Filter> moveFilters) {
+    public Transition(State currentState, State nextState, Action condition, List<DinamicFilter> buildFilters, List<DinamicFilter> moveFilters) {
         this.currentState = currentState;
         this.nextState = nextState;
         this.condition = condition;
@@ -30,13 +31,11 @@ public class Transition {
         return nextState;
     }
 
-    public List<Filter> getBuildFilter(Action lastAction) {
-        buildFilters.stream().forEach((filter) -> filter.setLastAction(lastAction));
+    public List<DinamicFilter> getBuildFilter() {
         return buildFilters;
     }
 
-    public List<Filter> getMoveFilter(Action lastAction) {
-        buildFilters.stream().forEach((filter) -> filter.setLastAction(lastAction));
+    public List<DinamicFilter> getMoveFilter() {
         return moveFilters;
     }
 

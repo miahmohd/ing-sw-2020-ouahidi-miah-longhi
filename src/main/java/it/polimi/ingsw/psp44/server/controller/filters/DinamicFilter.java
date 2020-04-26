@@ -7,15 +7,20 @@ import it.polimi.ingsw.psp44.util.Position;
 import java.util.List;
 
 public abstract class DinamicFilter extends Filter {
-    private boolean active;
-    private Action lastAction;
+
+    public DinamicFilter() {
+        super();
+        this.active=false;
+    }
 
     /**
-     * Active the filter and set the last action performed
+     * Update the sate of the filter
      * @param lastAction
      */
+
+    @Override
     public void update(Action lastAction){
-        this.lastAction=lastAction;
+        super.update(lastAction);
         this.active=true;
     }
 }

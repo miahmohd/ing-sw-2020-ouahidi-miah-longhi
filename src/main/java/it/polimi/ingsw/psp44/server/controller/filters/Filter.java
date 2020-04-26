@@ -12,9 +12,12 @@ import java.util.List;
  * Ovverrides equals method so that two objects that have the same class are the same
  */
 public abstract class Filter {
-    private boolean external;
+    protected boolean external;
+    protected boolean active;
+    protected Action lastAction;
 
     public Filter() {
+        this.active=true;
         this.external = false;
     }
 
@@ -27,6 +30,15 @@ public abstract class Filter {
      * @param gameBoard         provides information about a certain position using it's getters
      */
     public abstract void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard);
+
+
+    /**
+     * Update the sate of the filter
+     * @param lastAction
+     */
+    public void update(Action lastAction){
+        this.lastAction=lastAction;
+    }
 
     public boolean isExternal() {
         return external;
