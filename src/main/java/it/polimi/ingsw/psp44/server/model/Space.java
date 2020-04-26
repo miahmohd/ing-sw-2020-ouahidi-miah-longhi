@@ -54,6 +54,10 @@ public class Space {
         return worker;
     }
 
+    public void removeWorker(){
+        this.worker=null;
+    }
+
     public void setWorker(Worker worker) {
         this.worker = worker;
     }
@@ -85,4 +89,11 @@ public class Space {
         return this.level == 0;
     }
 
+    public boolean isWorker() {
+        return this.worker!=null;
+    }
+
+    public boolean isUnoccupied() {
+        return (!this.isDome()&&this.isWorker());
+    }
 }

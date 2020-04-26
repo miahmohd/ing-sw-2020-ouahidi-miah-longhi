@@ -3,19 +3,17 @@ package it.polimi.ingsw.psp44.server.controller.states;
 import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
-import it.polimi.ingsw.psp44.server.model.actions.Movement;
-import it.polimi.ingsw.psp44.server.model.actions.SimpleMovement;
+import it.polimi.ingsw.psp44.server.model.actions.DomeBuild;
+import it.polimi.ingsw.psp44.server.model.actions.SimpleBuild;
 import it.polimi.ingsw.psp44.util.Position;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * this state allows to compute all the the movements that the worker can do according
- * the active filters
+ * this state allows to compute all the the build actions that the worker can do adding build dome action at every level
  */
-public class SimpleMoveState extends State {
-
+public class DomeBuildState extends SimpleBuildState {
     /**
      * Compute the available actions that the player can perform
      *
@@ -27,12 +25,14 @@ public class SimpleMoveState extends State {
      */
     @Override
     public List<Action> getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
-        List<Action> availableActions = new ArrayList<>();
-        List<Position> moves = board.getNeighbouringPositions(selectedWorker);
-        moveFilter.filter(selectedWorker, moves, board, false);
-        for (Position p : moves) {
-            availableActions.add(new SimpleMovement(selectedWorker, p));
+        List<Action> availableAction;
+        availableAction=super.getAvailableActions(board, selectedWorker, moveFilter, buildFilter);
+        for (Action action: availableAction){
+            if(!board.isFinalLevel(action.getTargetPosition()))
+                availableAction.add(new DomeBuild(action.getTargetPosition()));
+
         }
-        return availableActions;
+        return availableAction;
     }
 }
+

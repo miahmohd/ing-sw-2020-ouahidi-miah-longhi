@@ -165,6 +165,10 @@ public class CardController {
         activeMoveFilter.add(filter);
     }
 
+    /**
+     * check if current state is final
+     * @return <code>true</code> if current state is final <code>false</code> otherwise
+     */
     public boolean isEndableTurn() {
         return currentState.isFinalState();
     }

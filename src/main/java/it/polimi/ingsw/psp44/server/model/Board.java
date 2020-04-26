@@ -6,7 +6,10 @@ import it.polimi.ingsw.psp44.util.exception.ConstructionException;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * the playground of the match, it keep information about buildings and workers positions
@@ -121,6 +124,11 @@ public class Board {
         targetSpace.setDome(false);
     }
 
+    /**
+     * Check if a dome have been built at the specified position
+     * @param position to check
+     * @return true if there is a dome false otherwise
+     */
     public boolean isDome(Position position) {
         if (position == null)
             throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_POS));
@@ -131,6 +139,41 @@ public class Board {
         return targetSpace.isDome();
     }
 
+    /**
+     * checks if all the three blocks have been built in a space
+     * @param position to check
+     * @return <code>true</code> if level 3 have been reached, <code>false</code> otherwise
+     */
+    public boolean isFinalLevel(Position position) {
+        if (position == null)
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_POS));
+        if (!isPositionInBounds(position))
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.OUT_OF_BOUNDS));
+
+        Space targetSpace = this.field[position.getRow()][position.getColumn()];
+        return targetSpace.isFinalLevel();
+    }
+
+    /**
+     * Check if there is a worker at the specified position
+     * @param position to check
+     * @return true if there is a worker false otherwise
+     */
+    public boolean isWorker(Position position) {
+        if (position == null)
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_POS));
+        if (!isPositionInBounds(position))
+            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.OUT_OF_BOUNDS));
+
+        Space targetSpace = this.field[position.getRow()][position.getColumn()];
+        return targetSpace.isWorker();
+    }
+
+    /**
+     * Add the worker to the space at the specified position
+     * @param position where add the worker
+     * @param worker to add
+     */
     public void setWorker(Position position, Worker worker) {
         if (position == null)
             throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_POS));
@@ -143,6 +186,11 @@ public class Board {
         targetSpace.setWorker(worker);
     }
 
+    /**
+     * return the worker at the specified position
+     * @param position
+     * @return the worker at the position
+     */
     public Worker getWorker(Position position) {
         if (position == null)
             throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_POS));
@@ -154,6 +202,7 @@ public class Board {
         Space targetSpace = this.field[position.getRow()][position.getColumn()];
         return targetSpace.getWorker();
     }
+
 
     /**
      * @param position to check neighbouring spaces
@@ -182,8 +231,21 @@ public class Board {
         return neighbouringPositions;
     }
 
+    /**
+     * Filter all the spaces without dome or workers (unoccupied)
+     * @return a list with all the unoccupied spaces
+     */
     public List<Position> getUnoccupiedPosition() {
-        return new ArrayList<>(); // todo da implementare
+        List<Position> unoccupiedPositions = new ArrayList<>();
+        Position unoccupiedPosition;
+        for (int r = 0; r < DIMENSION; r++) {
+            for (int c = 0; c < DIMENSION; c++) {
+                if (field[r][c].isUnoccupied())
+                    unoccupiedPositions.add(new Position(r, c));
+
+            }
+        }
+        return unoccupiedPositions;
     }
 
     /**

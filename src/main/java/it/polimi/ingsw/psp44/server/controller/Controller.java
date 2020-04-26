@@ -31,16 +31,12 @@ public class Controller {
         this.currentPlayer = players.get(model.getCurrentPlayerNickname());
         this.currentPlayerView = playerViews.get(model.getCurrentPlayerNickname());
         currentPlayerView.startTurn(new Message(Message.Code.START));
-        List<Position> workers = model.getBoard().getPlayerWorkersPositions(model.getCurrentPlayerNickname());
-        if (!workers.isEmpty())
-            currentPlayerView.choseWorkerFrom(new Message(Message.Code.CHOOSE_WORKER, JsonConvert.getInstance().toJson(workers, List.class)));
-        else
-            lost();
+        workers();
     }
 
     /**
-     * Callback that handles and processes "get worker" message type.
-     * Next the view must choose the worker.
+     * Callback that handles and processes "chosen worker" message type.
+     * Next the view must choose the action to perform
      *
      * @param view    the VirtualView that sended the message
      * @param message the message containing information about the selected worker
@@ -48,32 +44,17 @@ public class Controller {
      */
     public void chosenWorkerMessageHandler(VirtualView view, Message message) {
         Position selectedWorkerPosition;
-        List<Action> availableActions;
-
         if (message.getCode() == Message.Code.CHOSEN_WORKER) {
             selectedWorkerPosition = JsonConvert.getInstance().fromJson(message.getBody(), Position.class);
             model.setWorker(selectedWorkerPosition);
-            availableActions = currentPlayer.getAvailableAction(model.getBoard(), model.getWorker());
-            if (availableActions.isEmpty() && (!currentPlayer.isEndableTurn())) {
-                lost();
-            }
-            if (!availableActions.isEmpty()) {
-                this.availableActions = availableActions;
-                currentPlayerView.choseActionFrom(new Message(Message.Code.CHOOSE_ACTION,
-                        JsonConvert.getInstance().toJson(Cell.convertActionList(availableActions), List.class)));
-            }
-            if (currentPlayer.isEndableTurn()) {
-                currentPlayerView.turnEndable(new Message(Message.Code.TURN_ENDABLE));
-
-            }
-
+            actions();
         }
 
     }
 
     /**
-     * Callback that handles and processes "worker selected" message type.
-     * Next the view must choose an action.
+     * Callback that handles and processes "chosen action" message type.
+     * Next perform the action and the transition to next state
      *
      * @param view    the VirtualView that sended the message
      * @param message the message containing information about the selected worker
@@ -82,7 +63,6 @@ public class Controller {
     public void chosenActionMessageHandler(VirtualView view, Message message) {
         Integer selectedActionIndex;
         Action selectedAction;
-        List<Action> AvailableActions;
         if (message.getCode() == Message.Code.CHOSEN_ACTION) {
             selectedActionIndex = JsonConvert.getInstance().fromJson(message.getBody(), Integer.class);
             selectedAction = this.availableActions.get(selectedActionIndex);
@@ -92,20 +72,9 @@ public class Controller {
             if (currentPlayer.checkVictory(selectedAction, model.getBoard()))
                 won();
             if (currentPlayer.nextState(selectedAction)) {
-                availableActions = currentPlayer.getAvailableAction(model.getBoard(), model.getWorker());
-                if (availableActions.isEmpty() && (!currentPlayer.isEndableTurn())) {
-                    lost();
-                }
-                if (!availableActions.isEmpty()) {
-                    this.availableActions = availableActions;
-                    currentPlayerView.choseActionFrom(new Message(Message.Code.CHOOSE_ACTION,
-                            JsonConvert.getInstance().toJson(Cell.convertActionList(availableActions), List.class)));
-                }
-                if (currentPlayer.isEndableTurn()) {
-                    currentPlayerView.turnEndable(new Message(Message.Code.TURN_ENDABLE));
-                }
+                actions();
             } else {
-                currentPlayerView.turnEndable(new Message(Message.Code.TURN_ENDABLE));
+                endable();
 
             }
         }
@@ -148,12 +117,6 @@ public class Controller {
                 .forEach((cardController) -> cardController.addMoveFilter(filter));
     }
 
-    public void addPlayer(String nickname, VirtualView view) {
-    }
-
-    public int getRegisteredPlayer() {
-        return 5;
-    }
 
     /**
      * Called when current player loose the game.
@@ -161,14 +124,57 @@ public class Controller {
      * - 2 players match: end the match, the opponent win
      */
     private void lost() {
-        /* controllo se sono in 2, se  si l'altro vince. senò continuo il gioco e invio gli worker al prossimo.
-                view.lost()
-                // rimuovere dal model gli worker, player, ma non l'observer
-                this.start() // con il prossimo player
-        */
+        if(model.getNumberOfPlayer()==3){
+            model.removePlayer(model.getCurrentPlayerNickname());
+            model.nextTurn();
+            start();
+        }else{
+            model.nextTurn();
+            currentPlayerView=playerViews.get(model.getCurrentPlayerNickname());
+            currentPlayer=players.get(model.getCurrentPlayerNickname());
+            won();
+        }
+
     }
 
-    private void won() {
+    /**
+     * Called when current player wins the match
+     */
+    public void won() {
+
+    }
+
+    /**
+     * Sends available actions to current player
+     * Call lost routine if no actions are available and turn is not endable
+     * Call endable routine if the turn can be ended
+     */
+    private void actions(){
+        availableActions = currentPlayer.getAvailableAction(model.getBoard(), model.getWorker());
+        currentPlayerView.choseActionFrom(new Message(Message.Code.CHOOSE_ACTION,
+                JsonConvert.getInstance().toJson(Cell.convertActionList(availableActions), List.class)));
+        if (availableActions.isEmpty() && (!currentPlayer.isEndableTurn()))
+            lost();
+        if (currentPlayer.isEndableTurn())
+            endable();
+    }
+
+    /**
+     * Sends workers list to current player.
+     * Call lost routine if list is empty
+     */
+    private void workers() {
+        List<Position> workers = model.getBoard().getPlayerWorkersPositions(model.getCurrentPlayerNickname());
+        currentPlayerView.choseWorkerFrom(new Message(Message.Code.CHOOSE_WORKER, JsonConvert.getInstance().toJson(workers, List.class)));
+        if (workers.isEmpty())
+            lost();
+    }
+
+    /**
+     * Notices tha current player that the match can be ended
+     */
+    private void endable() {
+        currentPlayerView.turnEndable(new Message(Message.Code.TURN_ENDABLE));
     }
 
     public void setVirtualViews(Map<String, VirtualView> playerViews) {
