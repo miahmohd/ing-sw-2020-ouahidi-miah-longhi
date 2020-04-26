@@ -51,7 +51,7 @@ public class FilterUpByTwoTest {
         List<Position> actualPositions = gameBoard.getNeighbouringPositions(startingPosition);
 
 
-        filterUpByTwo.filter(startingPosition, actualPositions, gameBoard, false);
+        filterUpByTwo.filter(startingPosition, actualPositions, gameBoard);
 
         assertEquals(expectedPositions.size(), actualPositions.size());
         assertTrue(expectedPositions.containsAll(actualPositions));

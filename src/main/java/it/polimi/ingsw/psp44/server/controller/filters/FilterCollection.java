@@ -76,12 +76,12 @@ public class FilterCollection extends Filter {
      * @throws IllegalStateException if the filter list is empty
      */
     @Override
-    public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard, boolean external) {
+    public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard) {
         if (filters.isEmpty())
             throw new IllegalStateException(R.getAppProperties().getProperty(ErrorCodes.NO_FILTER_IN_COLLECTION));
 
         for (Filter filter : filters) {
-            filter.filter(startingPosition, positionsToFilter, gameBoard, false);
+            filter.filter(startingPosition, positionsToFilter, gameBoard);
         }
 
     }

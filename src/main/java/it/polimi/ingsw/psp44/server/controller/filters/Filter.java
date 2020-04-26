@@ -13,30 +13,23 @@ import java.util.List;
  */
 public abstract class Filter {
     private boolean external;
-    private Action lastAction;
+
+    public Filter() {
+        this.external = false;
+    }
 
     /**
      * Modifies the list based on the method implementation
      * The method implementation is "determined" by its class name
      * The method can use other parameters from the actual class
-     *
-     * @param startingPosition  position from which the filterage starts
+     *  @param startingPosition  position from which the filterage starts
      * @param positionsToFilter List of positions that needs to be filtered
      * @param gameBoard         provides information about a certain position using it's getters
-     * @param external          the filter affect other players
      */
-    public abstract void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard, boolean external);
+    public abstract void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard);
 
     public boolean isExternal() {
         return external;
-    }
-
-    public Action getLastAction() {
-        return lastAction;
-    }
-
-    public void setLastAction(Action lastAction) {
-        this.lastAction = lastAction;
     }
 
     @Override

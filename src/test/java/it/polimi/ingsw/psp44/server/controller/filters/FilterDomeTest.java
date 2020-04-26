@@ -58,7 +58,7 @@ public class FilterDomeTest {
         List<Position> actualPositions = gameBoard.getNeighbouringPositions(startingPosition);
 
 
-        filterDomeTest.filter(startingPosition, actualPositions, gameBoard, false);
+        filterDomeTest.filter(startingPosition, actualPositions, gameBoard);
         assertEquals(actualPositions.size(), expectedPositions.size());
         assertTrue(actualPositions.containsAll(expectedPositions));
 

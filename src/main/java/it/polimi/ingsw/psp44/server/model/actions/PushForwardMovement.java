@@ -18,12 +18,9 @@ public class PushForwardMovement extends Movement {
      * @param sourcePosition initial position of the worker to move
      * @param targetPosition final position of the worker to move, and initial position of the worker to push
      */
-    public PushForwardMovement(Position sourcePosition, Position targetPosition) {
+    public PushForwardMovement(Position sourcePosition, Position targetPosition, Position forwardPosition) {
         super(sourcePosition, targetPosition);
-        this.forwardPosition = new Position(
-                this.targetPosition.getRow() + (this.targetPosition.getRow() - this.sourcePosition.getRow()),
-                this.targetPosition.getColumn() + (this.targetPosition.getColumn() - this.sourcePosition.getColumn())
-        );
+        this.forwardPosition = forwardPosition;
     }
 
     @Override

@@ -35,11 +35,11 @@ public class CardController {
     /**
      * filters to apply when computing build actions
      */
-    private FilterCollection activeBuildFilter;
+    private FilterCollection buildFilter;
     /**
      * filters to apply when computing move actions
      */
-    private FilterCollection activeMoveFilter;
+    private FilterCollection moveFilter;
     /**
      * The current state of the player turn
      */
@@ -66,9 +66,7 @@ public class CardController {
      * @return a list with the available actions
      */
     public List<Action> getAvailableAction(Board board, Position selectedWorker) {
-        List<Action> availableActions = currentState.getAvailableActions(board, selectedWorker, activeMoveFilter, activeBuildFilter);
-        activeBuildFilter.empty();
-        activeMoveFilter.empty();
+        List<Action> availableActions = currentState.getAvailableActions(board, selectedWorker, moveFilter, buildFilter);
         return availableActions;
     }
 
@@ -82,7 +80,7 @@ public class CardController {
     public List<Position> getWorkers(Board board, String playerNickname) {
         List<Position> availableWorkers = new ArrayList<>();
         for (Position p : board.getPlayerWorkersPositions(playerNickname))
-            if (!currentState.getAvailableActions(board, p, activeMoveFilter, activeBuildFilter).isEmpty())
+            if (!currentState.getAvailableActions(board, p, moveFilter, buildFilter).isEmpty())
                 availableWorkers.add(p);
         return availableWorkers;
     }
@@ -136,14 +134,14 @@ public class CardController {
             if (filter.isExternal())
                 context.appliesOpponentsBuildFilter(filter);
             else
-                activeBuildFilter.add(filter);
+                buildFilter.add(filter);
         });
 
         transition.getMoveFilter(lastAction).forEach((filter) -> {
             if (filter.isExternal())
                 context.appliesOpponentsMoveFilter(filter);
             else
-                activeMoveFilter.add(filter);
+                moveFilter.add(filter);
         });
     }
 
@@ -153,7 +151,7 @@ public class CardController {
      * @param filter to add
      */
     public void addBuildFilter(Filter filter) {
-        activeBuildFilter.add(filter);
+        buildFilter.add(filter);
     }
 
     /**
@@ -162,7 +160,7 @@ public class CardController {
      * @param filter to add
      */
     public void addMoveFilter(Filter filter) {
-        activeMoveFilter.add(filter);
+        moveFilter.add(filter);
     }
 
     /**

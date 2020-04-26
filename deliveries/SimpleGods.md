@@ -1,6 +1,6 @@
 Card Controllers
 =====================================================================
-Simple Player
+0 Simple Player
 ---------------------------------------------------------------------
 
 **Transitions:**
@@ -10,7 +10,7 @@ Simple Player
 | 1 |Simple Move|Simple Build| Dome Workers| N.D.| null|
 | 2 | Simple Build| Simple Move| N.D.|Dome, Workers, Up By 2 |null| |TRUE|
 
-Apollo
+1 Apollo
 ---------------------------------------------------------------------
 
 **Transitions:**
@@ -21,7 +21,7 @@ Apollo
 | 2 | Simple Build| Swap Move| N.D.|Dome, My Worker, Up By 2 |null| |TRUE|
 
 
-Artemis
+2 Artemis
 ---------------------------------------------------------------------
 
 
@@ -35,7 +35,7 @@ Artemis
 | 4 | Simple Build| Simple Move| N.D.|Dome, Workers, Up By 2 |null| |TRUE|
 
 
-Athena
+3 Athena
 ---------------------------------------------------------------------
 
 **Transitions:**
@@ -45,16 +45,16 @@ Athena
 | 1 |Simple Move|Simple Build| Dome Workers| Opp.NotUp(Action)| null|
 | 2 | Simple Build| Simple Move| N.D.|Dome, Workers, Up By 2 |null| |TRUE|
 
-Atlas
+4 Atlas
 ---------------------------------------------------------------------
 **Transitions:**
 
 |#  |Current State  | Next State    | Build Filter  | Move Filter   |Condition  |Final|LB|
 |---|---------------|---------------|---------------|---------------|-----------|------|-----|
-| 1 |Simple Move|Dome Build| Dome Workers| Opp.NotUp(Action)| null|
+| 1 |Simple Move|Dome Build| Dome Workers|Dome, My Worker, Up By 2 | null|
 | 2 | Dome Build| Simple Move| N.D.|Dome, Workers, Up By 2 |null| |TRUE|
 
-Demeter
+5 Demeter
 ---------------------------------------------------------------------
 **Transitions:**
 
@@ -64,7 +64,7 @@ Demeter
 | 2 |Simple Build|Second Build| Dome Workers, OldBuild(Action)| N.D.| null | TRUE
 | 3 | Second Build| Simple Move| N.D.|Dome, Workers, Up By 2 |null | |TRUE|
 
-Hephaesus
+6 Hephaesus
 ---------------------------------------------------------------------
 **Transitions:**
 
@@ -74,7 +74,7 @@ Hephaesus
 | 2 |Simple Build|Second Build| Dome, Workers, AllButOld(action), TopLevel| N.D.| null | TRUE
 | 3 | Second Build| Simple Move| N.D.|Dome, Workers, Up By 2 |null | |TRUE|
 
-Minotaur
+8 Minotaur
 ---------------------------------------------------------------------
 **Transitions:**
 
@@ -83,7 +83,7 @@ Minotaur
 | 1 |Push Move|Simple Build| Dome Workers| N.D.| null||
 | 2 | Simple Build| Push Move| N.D.|Dome, My Worker, Up By 2 |null| |TRUE|
 
-Pan
+9 Pan
 ---------------------------------------------------------------------
 **Transitions:**
 
@@ -95,7 +95,7 @@ Pan
 **Victory Condition:**
 if (Move Down by two)
 
-Prometheus
+10 Prometheus
 ---------------------------------------------------------------------
 
 **Transitions:**
@@ -105,7 +105,7 @@ Prometheus
 | 1 | Move Build| Simple Build|Dome Workers| N.D. |Move|
 | 2 | Move Build| Simple Move| N.D. |Dome, Workers, Up By 2, Up By 1 |Build|
 | 3 |Simple Move|Simple Build|Dome Workers| N.D. |null|
-| 4 | Simple Build| Move Build| Dome Workers |Dome, Workers, Up By 2 |null| |TRUE|
+| 4 | Simple Build| Move Build| Dome Workers|Dome, Workers, Up By 2 |null| |TRUE|
 
 
 Advanced Gods
