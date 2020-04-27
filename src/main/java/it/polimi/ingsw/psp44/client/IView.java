@@ -7,15 +7,20 @@ import it.polimi.ingsw.psp44.util.network.IVirtual;
  */
 public interface IView<T> {
 
+    void chooseCardsFrom(T cards);
+
+    void chooseCardFrom(T cards);
+
+    void chooseNickname(T chooseNickname);
     /**
      * Method that defines what to do in case of recieving workers
      */
-    void workers(T workers);
+    void chooseWorkerFrom(T workers);
 
     /**
      * Method that defines what to do in case of recieving actions
      */
-    void actions(T actions);
+    void chooseActionFrom(T actions);
 
     /**
      * Method that defines what to do in case of defeat
@@ -47,7 +52,8 @@ public interface IView<T> {
      * Method that defines what to do in case of update
      */
     void update(T update);
-
+    
+    
     /**
      * method used for setting the virtual sender
      */

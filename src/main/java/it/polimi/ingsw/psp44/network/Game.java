@@ -1,6 +1,7 @@
 package it.polimi.ingsw.psp44.network;
 
 import it.polimi.ingsw.psp44.server.controller.SetupController;
+import it.polimi.ingsw.psp44.server.view.VirtualView;
 
 import java.util.Date;
 

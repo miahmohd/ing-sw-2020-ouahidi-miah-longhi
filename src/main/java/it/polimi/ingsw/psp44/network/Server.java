@@ -1,6 +1,9 @@
 package it.polimi.ingsw.psp44.network;
 
+import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
 import it.polimi.ingsw.psp44.network.message.Message;
+import it.polimi.ingsw.psp44.server.view.VirtualView;
+import it.polimi.ingsw.psp44.util.JsonConvert;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -62,24 +65,26 @@ public class Server {
         //todo gestire il ritenta al posto dell'errore
         if (this.game != null)// ricavare il numero da nickname.
             throw new IllegalStateException();
+        BodyTemplates.FirstMessage firstMessage = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplates.FirstMessage.class);
 
-        this.game = new Game(Integer.parseInt(message.getBody())); // ricavare il numero da message.
-        this.game.addPlayer(message.getBody(), view); // ricavare il nickname da message
+        this.game = new Game(firstMessage.getNumberOfPlayers()); // ricavare il numero da message.
+        this.game.addPlayer(firstMessage.getPlayerNickname(), view); // ricavare il nickname da message
     }
 
     /**
      * Callback that handles and processes "join game" message type.
      *
-     * @param view    the VirtualView that sended the message
+     * @param view    the VirtualView that sent the message
      * @param message the message containing information for joining an existing game
      */
     private void joinGameMessageHandler(VirtualView view, Message message) {
         // todo see todos in this::newGameMessageHandler
-        String nickname = message.getBody();
+
         if (this.game == null /*|| this.game.containsPlayer(nickname) */ || this.game.isFull())
             throw new IllegalStateException();
+        BodyTemplates.FirstMessage firstMessage = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplates.FirstMessage.class);
 
-        this.game.addPlayer(nickname, view);
+        this.game.addPlayer(firstMessage.getPlayerNickname(), view);
     }
 
 

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.psp44.server.controller;
 
-import it.polimi.ingsw.psp44.network.VirtualView;
+import it.polimi.ingsw.psp44.server.view.VirtualView;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.communication.Cell;
 import it.polimi.ingsw.psp44.server.controller.filters.Filter;
@@ -30,7 +30,7 @@ public class Controller {
     public void start() {
         this.currentPlayer = players.get(model.getCurrentPlayerNickname());
         this.currentPlayerView = playerViews.get(model.getCurrentPlayerNickname());
-        currentPlayerView.startTurn(new Message(Message.Code.START));
+        currentPlayerView.sendMessage(new Message(Message.Code.START));
         workers();
     }
 
@@ -90,7 +90,7 @@ public class Controller {
      * @return <code>true</code> if the message does not require further processing, <code>false</code>  otherwise.
      */
     public void endTurnMessageHandler(VirtualView view, Message message) {
-        currentPlayerView.turnEnd(new Message(Message.Code.TURN_END));
+        currentPlayerView.sendMessage(new Message(Message.Code.TURN_END));
         model.nextTurn();
         this.start();
     }
@@ -151,7 +151,7 @@ public class Controller {
      */
     private void actions(){
         availableActions = currentPlayer.getAvailableAction(model.getBoard(), model.getWorker());
-        currentPlayerView.choseActionFrom(new Message(Message.Code.CHOOSE_ACTION,
+        currentPlayerView.sendMessage(new Message(Message.Code.CHOOSE_ACTION,
                 JsonConvert.getInstance().toJson(Cell.convertActionList(availableActions), List.class)));
         if (availableActions.isEmpty() && (!currentPlayer.isEndableTurn()))
             lost();
@@ -165,7 +165,7 @@ public class Controller {
      */
     private void workers() {
         List<Position> workers = model.getBoard().getPlayerWorkersPositions(model.getCurrentPlayerNickname());
-        currentPlayerView.choseWorkerFrom(new Message(Message.Code.CHOOSE_WORKER, JsonConvert.getInstance().toJson(workers, List.class)));
+        currentPlayerView.sendMessage(new Message(Message.Code.CHOOSE_WORKER, JsonConvert.getInstance().toJson(workers, List.class)));
         if (workers.isEmpty())
             lost();
     }
@@ -174,7 +174,7 @@ public class Controller {
      * Notices tha current player that the match can be ended
      */
     private void endable() {
-        currentPlayerView.turnEndable(new Message(Message.Code.TURN_ENDABLE));
+        currentPlayerView.sendMessage(new Message(Message.Code.TURN_ENDABLE));
     }
 
     public void setVirtualViews(Map<String, VirtualView> playerViews) {

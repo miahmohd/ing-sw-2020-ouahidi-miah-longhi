@@ -1,6 +1,8 @@
 package it.polimi.ingsw.psp44.server.controller;
 
-import it.polimi.ingsw.psp44.network.VirtualView;
+import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
+import it.polimi.ingsw.psp44.network.message.MessageHeader;
+import it.polimi.ingsw.psp44.server.view.VirtualView;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.server.model.Card;
 import it.polimi.ingsw.psp44.server.model.GameModel;
@@ -73,14 +75,15 @@ public class SetupController {
         VirtualView currentPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
         Card[] allCards = R.getCards();
         String body = JsonConvert.getInstance().toJson(allCards, Card[].class);
-        Map<String, String> headers = new HashMap<>();
+        Map<MessageHeader, String> headers = new HashMap<>();
 
         // TODO possiamo fare con la classe locale come in this::chosenCardMessageHandler?
-        headers.put("cardinality", String.valueOf(this.getRegisteredPlayer()));
+
+        headers.put(MessageHeader.CARDINALITY, String.valueOf(this.getRegisteredPlayer()));
         Message message = new Message(Message.Code.CHOOSE_CARDS, headers, body);
 
-        currentPlayer.startTurn(new Message(Message.Code.START));
-        currentPlayer.chooseCardsFrom(message);
+        currentPlayer.sendMessage(new Message(Message.Code.START));
+        currentPlayer.sendMessage(message);
     }
 
 
@@ -97,7 +100,7 @@ public class SetupController {
             VirtualView currentPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
             Message toSend = new Message(Message.Code.CHOOSE_CARD, message.getBody());
 
-            currentPlayer.chooseCardFrom(toSend);
+            currentPlayer.sendMessage(toSend);
         }
     }
 
@@ -113,14 +116,9 @@ public class SetupController {
     public void chosenCardMessageHandler(VirtualView view, Message message) {
         if (message.getCode() == Message.Code.CHOSEN_CARD) {
 
-            class BodyTemplate {
-                Card chosen;
-                Card[] rest;
-            }
-
-            BodyTemplate body = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplate.class);
-            Card chosen = body.chosen;
-            Card[] rest = body.rest;
+            BodyTemplates.CardMessage body = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplates.CardMessage.class);
+            Card chosen = body.getChosen();
+            Card[] rest = body.getRest();
 
 //          TODO this.playerCardController.put(this.model.getCurrentPlayerNickname(), CardFactory.getController(chosen));
 
@@ -129,15 +127,15 @@ public class SetupController {
                 VirtualView nextPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
                 Message toSend = new Message(Message.Code.CHOOSE_CARD, JsonConvert.getInstance().toJson(rest, Card[].class));
 
-                nextPlayer.chooseCardFrom(toSend);
+                nextPlayer.sendMessage(toSend);
             } else {
 //                now view is the first player
                 Position[] positions = (Position[]) this.model.getBoard().getUnoccupiedPosition().toArray();
                 Message toSend = new Message(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION,
                         JsonConvert.getInstance().toJson(positions, Position[].class));
 
-                view.startTurn(new Message(Message.Code.START));
-                view.chooseWorkersInitialPosition(toSend);
+                view.sendMessage(new Message(Message.Code.START));
+                view.sendMessage(toSend);
             }
         }
     }
@@ -173,7 +171,7 @@ public class SetupController {
                 Message toSend = new Message(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION,
                         JsonConvert.getInstance().toJson(positions, Position[].class));
 
-                nextPlayer.chooseWorkersInitialPosition(toSend);
+                nextPlayer.sendMessage(toSend);
             } else {
                 this.controller.setVirtualViews(this.playerViews);
                 this.controller.setCardControllers(this.playerCardController);
