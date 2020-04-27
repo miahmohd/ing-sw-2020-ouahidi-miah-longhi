@@ -4,7 +4,7 @@ import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
 import it.polimi.ingsw.psp44.network.message.Message;
-import it.polimi.ingsw.psp44.server.model.Card;
+import it.polimi.ingsw.psp44.util.Card;
 import it.polimi.ingsw.psp44.server.model.GameModel;
 import it.polimi.ingsw.psp44.server.model.Player;
 import it.polimi.ingsw.psp44.server.model.Worker;
@@ -76,8 +76,6 @@ public class SetupController {
         Card[] allCards = R.getCards();
         String body = JsonConvert.getInstance().toJson(allCards, Card[].class);
         Map<MessageHeader, String> headers = new HashMap<>();
-
-        // TODO possiamo fare con la classe locale come in this::chosenCardMessageHandler?
 
         headers.put(MessageHeader.CARDINALITY, String.valueOf(this.getRegisteredPlayer()));
         Message message = new Message(Message.Code.CHOOSE_CARDS, headers, body);

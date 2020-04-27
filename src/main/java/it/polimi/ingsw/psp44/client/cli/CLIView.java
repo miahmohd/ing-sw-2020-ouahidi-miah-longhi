@@ -3,11 +3,10 @@ package it.polimi.ingsw.psp44.client.cli;
 import it.polimi.ingsw.psp44.client.IView;
 import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
 import it.polimi.ingsw.psp44.network.message.Message;
-import it.polimi.ingsw.psp44.network.message.MessageCodes;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.Position;
-import it.polimi.ingsw.psp44.util.network.IVirtual;
+import it.polimi.ingsw.psp44.network.IVirtual;
 
 import java.util.*;
 
@@ -49,7 +48,6 @@ public class CLIView implements IView<Message>, Runnable {
         this.playerNickname = input.nextLine();
 
 
-        System.out.println("What do you want to do? Join Game (J) | New Game (N)");
 
         chosenOption = input.nextLine();
         chosenOption = chosenOption.replace(" ", "").toLowerCase();

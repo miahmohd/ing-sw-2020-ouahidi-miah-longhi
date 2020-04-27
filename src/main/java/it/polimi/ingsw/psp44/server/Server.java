@@ -1,5 +1,6 @@
-package it.polimi.ingsw.psp44.network;
+package it.polimi.ingsw.psp44.server;
 
+import it.polimi.ingsw.psp44.network.SocketConnection;
 import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
@@ -22,7 +23,7 @@ public class Server {
     //TODO servono?
     private final List<SocketConnection> connections = Collections.synchronizedList(new ArrayList<>());
 
-    private Game game;
+    private Lobby lobby;
 
     public Server(int port) {
         this.port = port;
@@ -55,36 +56,36 @@ public class Server {
 
 
     /**
-     * Callback that handles and processes "new game" message type.
+     * Callback that handles and processes "new lobby" message type.
      *
      * @param view    the VirtualView that sended the message
-     * @param message the message containing information for creating a new game
+     * @param message the message containing information for creating a new lobby
      */
     private void newGameMessageHandler(VirtualView view, Message message) {
         //todo definire header come costanti e/o file
         //todo gestire il ritenta al posto dell'errore
-        if (this.game != null)// ricavare il numero da nickname.
+        if (this.lobby != null)// ricavare il numero da nickname.
             throw new IllegalStateException();
         BodyTemplates.FirstMessage firstMessage = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplates.FirstMessage.class);
 
-        this.game = new Game(firstMessage.getNumberOfPlayers()); // ricavare il numero da message.
-        this.game.addPlayer(firstMessage.getPlayerNickname(), view); // ricavare il nickname da message
+        this.lobby = new Lobby(firstMessage.getNumberOfPlayers()); // ricavare il numero da message.
+        this.lobby.addPlayer(firstMessage.getPlayerNickname(), view); // ricavare il nickname da message
     }
 
     /**
-     * Callback that handles and processes "join game" message type.
+     * Callback that handles and processes "join lobby" message type.
      *
      * @param view    the VirtualView that sent the message
-     * @param message the message containing information for joining an existing game
+     * @param message the message containing information for joining an existing lobby
      */
     private void joinGameMessageHandler(VirtualView view, Message message) {
         // todo see todos in this::newGameMessageHandler
 
-        if (this.game == null /*|| this.game.containsPlayer(nickname) */ || this.game.isFull())
+        if (this.lobby == null /*|| this.lobby.containsPlayer(nickname) */ || this.lobby.isFull())
             throw new IllegalStateException();
         BodyTemplates.FirstMessage firstMessage = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplates.FirstMessage.class);
 
-        this.game.addPlayer(firstMessage.getPlayerNickname(), view);
+        this.lobby.addPlayer(firstMessage.getPlayerNickname(), view);
     }
 
 

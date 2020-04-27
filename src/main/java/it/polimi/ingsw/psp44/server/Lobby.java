@@ -1,4 +1,4 @@
-package it.polimi.ingsw.psp44.network;
+package it.polimi.ingsw.psp44.server;
 
 import it.polimi.ingsw.psp44.server.controller.SetupController;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
@@ -8,14 +8,14 @@ import java.util.Date;
 /**
  * A class representing a single game. It is self-sustained.
  */
-public class Game {
+public class Lobby {
 
     private final int maxPlayers;
     private final long id;
     private final SetupController setupController;
 
 
-    public Game(int maxPlayers) {
+    public Lobby(int maxPlayers) {
         this.maxPlayers = maxPlayers;
         this.id = new Date().getTime();
         this.setupController = new SetupController();

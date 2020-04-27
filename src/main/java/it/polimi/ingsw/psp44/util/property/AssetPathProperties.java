@@ -1,4 +1,4 @@
-package it.polimi.ingsw.psp44.util;
+package it.polimi.ingsw.psp44.util.property;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

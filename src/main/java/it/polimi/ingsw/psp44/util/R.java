@@ -1,6 +1,9 @@
 package it.polimi.ingsw.psp44.util;
 
-import it.polimi.ingsw.psp44.server.model.Card;
+import it.polimi.ingsw.psp44.util.property.AppProperties;
+import it.polimi.ingsw.psp44.util.property.AssetPathProperties;
+import it.polimi.ingsw.psp44.util.property.CLIProperties;
+import it.polimi.ingsw.psp44.util.property.Property;
 
 import java.io.File;
 import java.io.FileReader;

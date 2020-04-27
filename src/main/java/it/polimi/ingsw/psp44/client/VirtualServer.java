@@ -2,13 +2,12 @@ package it.polimi.ingsw.psp44.client;
 
 import it.polimi.ingsw.psp44.network.Connection;
 import it.polimi.ingsw.psp44.network.message.Message;
-import it.polimi.ingsw.psp44.util.network.IVirtual;
+import it.polimi.ingsw.psp44.network.IVirtual;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class VirtualServer implements IVirtual<Message>, Runnable {
 

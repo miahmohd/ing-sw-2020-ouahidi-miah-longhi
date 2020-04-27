@@ -5,10 +5,8 @@ import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHandlerFunction;
 import it.polimi.ingsw.psp44.network.message.MessageRouter;
 import it.polimi.ingsw.psp44.util.JsonConvert;
-import it.polimi.ingsw.psp44.util.Position;
-import it.polimi.ingsw.psp44.util.network.IVirtual;
+import it.polimi.ingsw.psp44.network.IVirtual;
 
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

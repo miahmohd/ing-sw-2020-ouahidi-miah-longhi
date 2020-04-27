@@ -2,7 +2,7 @@ package it.polimi.ingsw.psp44.server.model;
 
 /**
  * Player is determined by its nickname
- * Two players with the same nickname in the same Game are the same Player
+ * Two players with the same nickname in the same Lobby are the same Player
  */
 public class Player {
     /**

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.psp44.util.network;
+package it.polimi.ingsw.psp44.network;
 
 /**
  * Interface intended for networking with something (Virtual entity) through a single method

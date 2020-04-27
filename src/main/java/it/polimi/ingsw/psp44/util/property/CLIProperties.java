@@ -1,4 +1,4 @@
-package it.polimi.ingsw.psp44.util;
+package it.polimi.ingsw.psp44.util.property;
 
 public class CLIProperties extends Property {
     private static CLIProperties instance;

@@ -6,7 +6,7 @@ import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.controller.states.State;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
-import it.polimi.ingsw.psp44.util.AppProperties;
+import it.polimi.ingsw.psp44.util.property.AppProperties;
 import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 

@@ -1,4 +1,6 @@
-package it.polimi.ingsw.psp44.util;
+package it.polimi.ingsw.psp44.util.property;
+
+import it.polimi.ingsw.psp44.util.property.AppProperties;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.psp44.server.model;
 
-import it.polimi.ingsw.psp44.util.CLIProperties;
+import it.polimi.ingsw.psp44.util.property.CLIProperties;
 import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.exception.ConstructionException;
 import org.junit.Before;

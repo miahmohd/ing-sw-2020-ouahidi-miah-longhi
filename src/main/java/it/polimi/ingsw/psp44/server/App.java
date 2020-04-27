@@ -1,7 +1,7 @@
-package it.polimi.ingsw.psp44;
+package it.polimi.ingsw.psp44.server;
 
 
-import it.polimi.ingsw.psp44.network.Server;
+import it.polimi.ingsw.psp44.server.Server;
 
 public class App {
     public static void main(String[] args) {

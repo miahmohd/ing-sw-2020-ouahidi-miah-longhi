@@ -75,7 +75,6 @@ public class Controller {
                 actions();
             } else {
                 endable();
-
             }
         }
     }

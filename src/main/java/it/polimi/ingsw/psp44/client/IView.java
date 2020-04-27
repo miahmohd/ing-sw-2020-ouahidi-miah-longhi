@@ -1,6 +1,6 @@
 package it.polimi.ingsw.psp44.client;
 
-import it.polimi.ingsw.psp44.util.network.IVirtual;
+import it.polimi.ingsw.psp44.network.IVirtual;
 
 /**
  *

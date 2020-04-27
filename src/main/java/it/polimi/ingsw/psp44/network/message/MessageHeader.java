@@ -5,5 +5,4 @@ package it.polimi.ingsw.psp44.network.message;
  */
 public enum MessageHeader {
     CARDINALITY
-
 }
