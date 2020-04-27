@@ -28,7 +28,7 @@ public class SimpleBuildState extends State {
     public List<Action> getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
         List<Action> availableActions = new ArrayList<>();
         List<Position> builds = board.getNeighbouringPositions(selectedWorker);
-        buildFilter.filter(selectedWorker, builds, board, false);
+        buildFilter.filter(selectedWorker, builds, board);
         for (Position p : builds) {
             if(board.isFinalLevel(p))
                 availableActions.add(new DomeBuild(p));

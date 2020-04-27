@@ -273,7 +273,12 @@ public class Board {
     }
 
 
-    private boolean isPositionInBounds(Position position) {
+    /**
+     * Check if a position is inside the game field
+     * @param position to check
+     * @return <code>true</code> if is inside <code>false</code> otherwise
+     */
+    public boolean isPositionInBounds(Position position) {
         return position.getRow() >= 0 && position.getRow() < DIMENSION
                 && position.getColumn() >= 0 && position.getColumn() < DIMENSION;
     }

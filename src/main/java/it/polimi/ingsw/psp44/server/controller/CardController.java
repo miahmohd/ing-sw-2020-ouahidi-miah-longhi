@@ -35,11 +35,11 @@ public class CardController {
     /**
      * filters to apply when computing build actions
      */
-    private FilterCollection activeBuildFilter;
+    private FilterCollection buildFilter;
     /**
      * filters to apply when computing move actions
      */
-    private FilterCollection activeMoveFilter;
+    private FilterCollection moveFilter;
     /**
      * The current state of the player turn
      */
@@ -51,11 +51,7 @@ public class CardController {
         this.initialState = initialState;
         this.transitionsList = transitionsList;
         this.victoryConditionsList = victoryConditionsList;
-        Transition loopBackTransition = transitionsList.stream()
-                .filter((t) -> initialState.equals(t.getNextState()))
-                .findFirst()
-                .orElse(null);
-        executeTransition(loopBackTransition, null);
+
     }
 
     /**
@@ -66,9 +62,7 @@ public class CardController {
      * @return a list with the available actions
      */
     public List<Action> getAvailableAction(Board board, Position selectedWorker) {
-        List<Action> availableActions = currentState.getAvailableActions(board, selectedWorker, activeMoveFilter, activeBuildFilter);
-        activeBuildFilter.empty();
-        activeMoveFilter.empty();
+        List<Action> availableActions = currentState.getAvailableActions(board, selectedWorker, moveFilter, buildFilter);
         return availableActions;
     }
 
@@ -82,7 +76,7 @@ public class CardController {
     public List<Position> getWorkers(Board board, String playerNickname) {
         List<Position> availableWorkers = new ArrayList<>();
         for (Position p : board.getPlayerWorkersPositions(playerNickname))
-            if (!currentState.getAvailableActions(board, p, activeMoveFilter, activeBuildFilter).isEmpty())
+            if (!currentState.getAvailableActions(board, p, moveFilter, buildFilter).isEmpty())
                 availableWorkers.add(p);
         return availableWorkers;
     }
@@ -132,18 +126,18 @@ public class CardController {
 
         currentState = transition.getNextState();
 
-        transition.getBuildFilter(lastAction).forEach((filter) -> {
+        transition.getBuildFilter().forEach((filter) -> {
             if (filter.isExternal())
-                context.appliesOpponentsBuildFilter(filter);
+                context.appliesOpponentsBuildFilter(filter, lastAction);
             else
-                activeBuildFilter.add(filter);
+                buildFilter.update(filter, lastAction);
         });
 
-        transition.getMoveFilter(lastAction).forEach((filter) -> {
+        transition.getMoveFilter().forEach((filter) -> {
             if (filter.isExternal())
-                context.appliesOpponentsMoveFilter(filter);
+                context.appliesOpponentsMoveFilter(filter, lastAction);
             else
-                activeMoveFilter.add(filter);
+                moveFilter.update(filter, lastAction);
         });
     }
 
@@ -152,8 +146,13 @@ public class CardController {
      *
      * @param filter to add
      */
-    public void addBuildFilter(Filter filter) {
-        activeBuildFilter.add(filter);
+    public void addBuildFilter(Filter filter, Action lastAction) {
+        if(buildFilter.contains(filter)){
+            buildFilter.update(filter,lastAction);
+        }else{
+            filter.update(lastAction);
+            buildFilter.add(filter);
+        }
     }
 
     /**
@@ -161,8 +160,13 @@ public class CardController {
      *
      * @param filter to add
      */
-    public void addMoveFilter(Filter filter) {
-        activeMoveFilter.add(filter);
+    public void addMoveFilter(Filter filter, Action lastAction) {
+        if(moveFilter.contains(filter)){
+            moveFilter.update(filter,lastAction);
+        }else{
+            filter.update(lastAction);
+            moveFilter.add(filter);
+        }
     }
 
     /**

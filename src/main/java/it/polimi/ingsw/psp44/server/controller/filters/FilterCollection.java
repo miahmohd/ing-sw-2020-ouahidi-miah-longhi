@@ -1,6 +1,7 @@
 package it.polimi.ingsw.psp44.server.controller.filters;
 
 import it.polimi.ingsw.psp44.server.model.Board;
+import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.R;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
@@ -37,6 +38,14 @@ public class FilterCollection extends Filter {
         filters.add(filter);
     }
 
+    /**
+     * check if a filter is already in the collection
+     * @param filter
+     * @return
+     */
+    public boolean contains(Filter filter){
+        return filters.contains(filter);
+    }
 
     /**
      * Removes a filter form the list of filters
@@ -54,10 +63,15 @@ public class FilterCollection extends Filter {
     }
 
     /**
-     * Removes all the filters from the list
+     * Update the sate of the selected filters
+     * @param lastAction
      */
-    public void empty() {
-        filters.removeIf(filter -> !filter.isExternal());
+    public void update(Filter filter,Action lastAction){
+        for (Filter f: filters){
+            if(filter.equals(f))
+                f.update(lastAction);
+        }
+
     }
 
     /**
@@ -76,12 +90,12 @@ public class FilterCollection extends Filter {
      * @throws IllegalStateException if the filter list is empty
      */
     @Override
-    public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard, boolean external) {
+    public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard) {
         if (filters.isEmpty())
             throw new IllegalStateException(R.getAppProperties().getProperty(ErrorCodes.NO_FILTER_IN_COLLECTION));
 
         for (Filter filter : filters) {
-            filter.filter(startingPosition, positionsToFilter, gameBoard, false);
+            filter.filter(startingPosition, positionsToFilter, gameBoard);
         }
 
     }

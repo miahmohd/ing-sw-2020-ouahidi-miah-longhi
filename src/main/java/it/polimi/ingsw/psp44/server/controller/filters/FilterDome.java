@@ -8,7 +8,7 @@ import java.util.List;
 public class FilterDome extends Filter {
 
     @Override
-    public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard, boolean external) {
+    public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard) {
         positionsToFilter.removeIf(gameBoard::isDome);
     }
 

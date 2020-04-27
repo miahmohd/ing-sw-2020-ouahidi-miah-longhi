@@ -77,12 +77,6 @@ public class CompoundState extends State {
         this.simpleStates.remove(targetState);
     }
 
-    /**
-     * Removes all the states from the list of states
-     */
-    public void empty() {
-        simpleStates.clear();
-    }
 
     /**
      * Get the list of simple state in this compound state
