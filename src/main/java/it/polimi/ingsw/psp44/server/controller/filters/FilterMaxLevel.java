@@ -5,7 +5,7 @@ import it.polimi.ingsw.psp44.util.Position;
 
 import java.util.List;
 
-public class FilterMaxLevel extends DinamicFilter {
+public class FilterMaxLevel extends DynamicFilter {
     /**
      * Modifies the list based on the method implementation
      * The method implementation is "determined" by its class name

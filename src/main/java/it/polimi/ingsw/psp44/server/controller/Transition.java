@@ -1,7 +1,6 @@
 package it.polimi.ingsw.psp44.server.controller;
 
-import it.polimi.ingsw.psp44.server.controller.filters.DinamicFilter;
-import it.polimi.ingsw.psp44.server.controller.filters.Filter;
+import it.polimi.ingsw.psp44.server.controller.filters.DynamicFilter;
 import it.polimi.ingsw.psp44.server.controller.states.State;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
 
@@ -12,10 +11,10 @@ public class Transition {
     private final State currentState;
     private final State nextState;
     private final Action condition;
-    private final List<DinamicFilter> buildFilters;
-    private final List<DinamicFilter> moveFilters;
+    private final List<DynamicFilter> buildFilters;
+    private final List<DynamicFilter> moveFilters;
 
-    public Transition(State currentState, State nextState, Action condition, List<DinamicFilter> buildFilters, List<DinamicFilter> moveFilters) {
+    public Transition(State currentState, State nextState, Action condition, List<DynamicFilter> buildFilters, List<DynamicFilter> moveFilters) {
         this.currentState = currentState;
         this.nextState = nextState;
         this.condition = condition;
@@ -31,11 +30,11 @@ public class Transition {
         return nextState;
     }
 
-    public List<DinamicFilter> getBuildFilter() {
+    public List<DynamicFilter> getBuildFilter() {
         return buildFilters;
     }
 
-    public List<DinamicFilter> getMoveFilter() {
+    public List<DynamicFilter> getMoveFilter() {
         return moveFilters;
     }
 

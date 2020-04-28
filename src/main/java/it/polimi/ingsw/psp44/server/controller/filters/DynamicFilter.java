@@ -6,9 +6,9 @@ import it.polimi.ingsw.psp44.util.Position;
 
 import java.util.List;
 
-public abstract class DinamicFilter extends Filter {
+public abstract class DynamicFilter extends Filter {
 
-    public DinamicFilter() {
+    public DynamicFilter() {
         super();
         this.active=false;
     }
