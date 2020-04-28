@@ -22,6 +22,7 @@ public class SwapMovement extends Movement {
 
     @Override
     public void execute(Board board) {
+        super.execute(board);
         Worker sourceWorker = board.getWorker(this.sourcePosition);
         board.setWorker(this.sourcePosition, board.getWorker(this.targetPosition));
         board.setWorker(this.targetPosition, sourceWorker);

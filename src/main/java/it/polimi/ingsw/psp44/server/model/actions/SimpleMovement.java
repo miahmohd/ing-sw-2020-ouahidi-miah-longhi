@@ -23,6 +23,7 @@ public class SimpleMovement extends Movement {
 
     @Override
     public void execute(Board board) {
+        super.execute(board);
         board.setWorker(this.targetPosition, board.getWorker(this.sourcePosition));
         board.setWorker(this.sourcePosition, null);
     }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.psp44.util.Position;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SimpleBuildTest {
 
@@ -24,6 +25,10 @@ public class SimpleBuildTest {
         board.buildUp(unbuildPos);
         unbuild.execute(board);
         assertEquals(0, board.getLevel(unbuildPos));
+        assertTrue(build.getModifiedPositions().size()==1);
+        assertEquals(build.getModifiedPositions().get(0),buildPos);
+        assertTrue(unbuild.getModifiedPositions().size()==1);
+        assertEquals(unbuild.getModifiedPositions().get(0),unbuildPos);
 
     }
 }

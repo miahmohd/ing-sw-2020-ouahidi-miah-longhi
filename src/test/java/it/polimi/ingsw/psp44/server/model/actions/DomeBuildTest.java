@@ -4,8 +4,7 @@ import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.util.Position;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class DomeBuildTest {
 
@@ -25,5 +24,9 @@ public class DomeBuildTest {
         board.buildDome(unbuildPos);
         unbuild.execute(board);
         assertFalse(board.isDome(unbuildPos));
+        assertTrue(build.getModifiedPositions().size()==1);
+        assertTrue(unbuild.getModifiedPositions().size()==1);
+        assertEquals(build.getModifiedPositions().get(0),buildPos);
+        assertEquals(unbuild.getModifiedPositions().get(0),unbuildPos);
     }
 }

@@ -14,13 +14,12 @@ public class GameModel {
     private final Board gameBoard;
     private final LinkedList<Player> players;
     private int turnNumber;
-    private Position selectedWorker;
+
 
     public GameModel(Board gameBoard, LinkedList<Player> players, int turnNumber) {
         this.gameBoard = gameBoard;
         this.players = players;
         this.turnNumber = turnNumber;
-        this.selectedWorker = null;
     }
 
     public GameModel() {
@@ -35,6 +34,7 @@ public class GameModel {
      */
     public void applyAction(Action action) {
         action.execute(this.gameBoard);
+
     }
 
     /**
@@ -73,7 +73,7 @@ public class GameModel {
 
         //TODO notify(); ci sta anche creare delle mosse ma non esageriamo
 
-        this.players.remove(player);
+        this.players.removeIf((p)->p.getNickname().equals(player));
     }
 
     /**
@@ -131,14 +131,7 @@ public class GameModel {
      * @param selectedWorkerPosition
      */
     public void setWorker(Position selectedWorkerPosition) {
-        Worker workerToMove;
-        if (selectedWorkerPosition == null) {
-            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_POS));
-        }
-        workerToMove=gameBoard.getWorker(selectedWorker);
-        gameBoard.setWorker(selectedWorker,null);
-        gameBoard.setWorker(selectedWorkerPosition,workerToMove);
-        this.selectedWorker = selectedWorkerPosition;
+        gameBoard.setSelectedWorker(selectedWorkerPosition);
     }
 
     /**
@@ -146,10 +139,7 @@ public class GameModel {
      * @return selected worker position
      */
     public Position getWorker() {
-        return selectedWorker;
+        return gameBoard.getSelectedWorker();
     }
 
-    public int getNumberOfPlayers(){
-        return this.players.size();
-    }
 }

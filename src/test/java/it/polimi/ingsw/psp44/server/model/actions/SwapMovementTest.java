@@ -5,7 +5,10 @@ import it.polimi.ingsw.psp44.server.model.Worker;
 import it.polimi.ingsw.psp44.util.Position;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SwapMovementTest {
 
@@ -26,7 +29,8 @@ public class SwapMovementTest {
         move.execute(board);
         assertEquals(targetWorker, board.getWorker(source));
         assertEquals(sourceWorker, board.getWorker(target));
-
+        assertTrue(move.getModifiedPositions().size()==2);
+        assertTrue(move.getModifiedPositions().containsAll(Arrays.asList(source,target)));
 
     }
 }

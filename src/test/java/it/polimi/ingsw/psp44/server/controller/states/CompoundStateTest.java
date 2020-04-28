@@ -67,7 +67,7 @@ public class CompoundStateTest {
 
         compoundStateTest.addState(moveStateTest);
         compoundStateTest.addState(buildStateTest);
-        compoundStateTest.empty();
+       // compoundStateTest.empty();
         assertTrue(compoundStateTest.getSimpleStates().isEmpty());
     }
 

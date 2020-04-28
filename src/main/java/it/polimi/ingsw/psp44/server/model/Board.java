@@ -17,10 +17,11 @@ import java.util.stream.Stream;
 public class Board {
     private static final int DIMENSION = 5;
     private final Space[][] field;
+    private Position selectedWorker;
 
     public Board() {
         this.field = new Space[DIMENSION][DIMENSION];
-
+        this.selectedWorker=null;
         for (int row = 0; row < DIMENSION; ++row) {
             for (int column = 0; column < DIMENSION; ++column) {
                 this.field[row][column] = new Space();
@@ -283,6 +284,21 @@ public class Board {
                 && position.getColumn() >= 0 && position.getColumn() < DIMENSION;
     }
 
+    /**
+     * return the worker selected for this turn
+     * @return selected worker position
+     */
+    public Position getSelectedWorker() {
+       return this.selectedWorker;
+    }
+
+    /**
+     * Change position of the selected worker in this turn
+     * @param selectedWorkerPosition
+     */
+    public void setSelectedWorker(Position selectedWorkerPosition) {
+        this.selectedWorker = selectedWorkerPosition;
+    }
 
 }
 

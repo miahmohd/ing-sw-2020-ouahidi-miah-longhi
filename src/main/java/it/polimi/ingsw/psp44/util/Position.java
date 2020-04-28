@@ -2,6 +2,9 @@ package it.polimi.ingsw.psp44.util;
 
 import java.util.Objects;
 
+/**
+ * This class shapes an abstract position inside a table
+ */
 public class Position {
     private final int row;
     private final int column;

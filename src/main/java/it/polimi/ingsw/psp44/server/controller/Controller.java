@@ -67,8 +67,6 @@ public class Controller {
             selectedActionIndex = JsonConvert.getInstance().fromJson(message.getBody(), Integer.class);
             selectedAction = this.availableActions.get(selectedActionIndex);
             model.applyAction(selectedAction);
-            if (selectedAction.isMovement())
-                model.setWorker(selectedAction.getTargetPosition());
             if (currentPlayer.checkVictory(selectedAction, model.getBoard()))
                 won();
             if (currentPlayer.nextState(selectedAction)) {

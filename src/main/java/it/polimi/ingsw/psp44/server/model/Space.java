@@ -54,10 +54,10 @@ public class Space {
         return worker;
     }
 
-    public void removeWorker(){
-        this.worker=null;
-    }
-
+    /**
+     * Add a specific worker to the space
+     * @param worker the worker to add at this space, <code>null</code> to remove the worker
+     */
     public void setWorker(Worker worker) {
         this.worker = worker;
     }
@@ -65,7 +65,7 @@ public class Space {
     /**
      * checks if the building in this space is complate
      *
-     * @return true if there are 3 block and the dome, false otherwise
+     * @return <code>true</code> if there are 3 block and the dome, <code>false</code> otherwise
      */
     public boolean isComplete() {
         return this.isFinalLevel() && this.isDome();
@@ -74,7 +74,7 @@ public class Space {
     /**
      * checks if all the three blocks have been built in a space
      *
-     * @return true if level 3 have been reached, false otherwise
+     * @return <code>true</code> if level 3 have been reached, <code>false</code> otherwise
      */
     public boolean isFinalLevel() {
         return this.level == 3;
@@ -83,17 +83,25 @@ public class Space {
     /**
      * checks if no blocks have been built in a space
      *
-     * @return true if no blocks have been built, false otherwise
+     * @return <code>true</code> if no blocks have been built, <code>false</code> otherwise
      */
     public boolean isGroundLevel() {
         return this.level == 0;
     }
 
+    /**
+     * check if there is a worker inside the space
+     * @return <code>true</code> if the space contains the worker, <code>false</code> otherwise
+     */
     public boolean isWorker() {
         return this.worker!=null;
     }
 
+    /**
+     * check if the space is unoccupied (no dome and no worker)
+     * @return <code>true</code> if the space is unoccupied, <code>false</code> otherwise
+     */
     public boolean isUnoccupied() {
-        return (!this.isDome()&&this.isWorker());
+        return (!this.isDome()&&!this.isWorker());
     }
 }
