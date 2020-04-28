@@ -1,4 +1,4 @@
-package it.polimi.ingsw.psp44.server.model;
+package it.polimi.ingsw.psp44.util;
 
 public class Card {
     private int id;

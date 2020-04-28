@@ -12,9 +12,9 @@ public class Message {
      */
     private final Code code;
     /**
-     * Additional infromation about the message
+     * Additional information about the message
      */
-    private final Map<String, String> headers;
+    private final Map<MessageHeader, String> headers;
     /**
      * Body of the message
      */
@@ -29,7 +29,7 @@ public class Message {
     }
 
 
-    public Message(Code code, Map<String, String> headers, String body) {
+    public Message(Code code, Map<MessageHeader, String> headers, String body) {
         this.code = code;
         this.headers = headers;
         this.body = body;
@@ -39,7 +39,7 @@ public class Message {
         return code;
     }
 
-    public Map<String, String> getHeader() {
+    public Map<MessageHeader, String> getHeader() {
         return this.headers;
     }
 

@@ -1,6 +1,9 @@
 package it.polimi.ingsw.psp44.util;
 
-import it.polimi.ingsw.psp44.server.model.Card;
+import it.polimi.ingsw.psp44.util.property.AppProperties;
+import it.polimi.ingsw.psp44.util.property.AssetPathProperties;
+import it.polimi.ingsw.psp44.util.property.CLIProperties;
+import it.polimi.ingsw.psp44.util.property.Property;
 
 import java.io.File;
 import java.io.FileReader;
@@ -16,7 +19,7 @@ public final class R {
      * @return an array containing the Cards in cards.json. Returns an empty array if there are no saved cards.
      */
     public static Card[] getCards() {
-        File file = new File(R.class.getResource("cards.json").getFile());
+        File file = new File(R.class.getResource("/cards.json").getFile());
         try {
             Reader reader = new FileReader(file);
             Card[] cards = JsonConvert.getInstance().fromJson(reader, Card[].class);
@@ -39,5 +42,10 @@ public final class R {
      */
     public static Property getCLIProperties() {
         return CLIProperties.getInstance();
+    }
+
+
+    public static Property getAssetPathProperties() {
+        return AssetPathProperties.getInstance();
     }
 }

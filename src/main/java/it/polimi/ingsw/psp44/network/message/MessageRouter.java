@@ -1,6 +1,6 @@
 package it.polimi.ingsw.psp44.network.message;
 
-import it.polimi.ingsw.psp44.network.VirtualView;
+import it.polimi.ingsw.psp44.server.view.VirtualView;
 import it.polimi.ingsw.psp44.util.R;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 

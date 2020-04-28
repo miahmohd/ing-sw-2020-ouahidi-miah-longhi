@@ -1,25 +1,32 @@
 package it.polimi.ingsw.psp44.client;
 
 
-import it.polimi.ingsw.psp44.client.cli.CLIViewSetup;
+import it.polimi.ingsw.psp44.client.cli.CLIView;
 import it.polimi.ingsw.psp44.network.Connection;
 import it.polimi.ingsw.psp44.network.message.Message;
-import it.polimi.ingsw.psp44.util.network.IVirtual;
 
 import java.io.IOException;
 
 public class ClientApp {
-    private static String HOST = "localhost";
-    private static final int PORT = 3000;
+    private static final String HOST = "localhost";
+    private static final int PORT = 8080;
 
 
     public static void main(String[] args) {
         try {
             Connection<Message> socketConnection = new SocketConnection(HOST, PORT);
-            VirtualServer virtualServer = new VirtualServer(socketConnection);
-            CLIViewSetup cliViewSetup = new CLIViewSetup();
-            virtualServer.run();
-        } catch (IOException e) {
+            CLIView cliView = new CLIView();
+            VirtualServer virtualServer = new VirtualServer(socketConnection, cliView);
+
+            Thread server = new Thread(virtualServer);
+            Thread view = new Thread(cliView);
+
+            server.start();
+            view.start();
+
+            server.join();
+            view.join();
+        } catch (IOException | InterruptedException e) {
             System.err.println("ERROR: "+ e.getMessage());
         }
 

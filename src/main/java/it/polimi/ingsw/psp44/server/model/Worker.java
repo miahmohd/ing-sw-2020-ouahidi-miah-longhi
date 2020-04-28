@@ -29,6 +29,7 @@ public class Worker {
         return sex;
     }
 
+
     public enum Sex {
         MALE,
         FEMALE
