@@ -4,6 +4,7 @@ import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.util.Position;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A class that represents a generic operation that changes the game board.
@@ -21,6 +22,20 @@ public abstract class Action {
     public Action(Position target) {
         this.sourcePosition = null;
         this.targetPosition = target;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Action)) return false;
+        Action action = (Action) o;
+        return Objects.equals(getTargetPosition(), action.getTargetPosition()) &&
+                Objects.equals(getSourcePosition(), action.getSourcePosition());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTargetPosition(), getSourcePosition());
     }
 
     public Position getSourcePosition() {

@@ -44,6 +44,10 @@ public abstract class Filter {
         return external;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
