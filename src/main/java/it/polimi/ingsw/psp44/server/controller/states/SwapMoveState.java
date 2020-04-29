@@ -26,12 +26,16 @@ public class SwapMoveState extends SimpleMoveState {
     @Override
     public List<Action> getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
         List<Action> availableActions = super.getAvailableActions(board, selectedWorker, moveFilter, buildFilter);
+        List<Action> availableSwapActions=new ArrayList<>();
         for (Action a : availableActions) {
             if (board.isWorker(a.getTargetPosition())) {
-                availableActions.remove(a);
-                availableActions.add(new SwapMovement(selectedWorker, a.getTargetPosition()));
+                availableSwapActions.add(new SwapMovement(selectedWorker, a.getTargetPosition()));
             }
         }
+        for(Action swapAction:availableSwapActions){
+            availableActions.removeIf(a->swapAction.getTargetPosition().equals(a.getTargetPosition()));
+        }
+        availableActions.addAll(availableSwapActions);
         return availableActions;
 
     }

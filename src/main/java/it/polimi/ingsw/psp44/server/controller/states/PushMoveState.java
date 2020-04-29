@@ -28,14 +28,18 @@ public class PushMoveState extends SimpleMoveState {
     public List<Action> getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
         Position workerAfterPushPosition;
         List<Action> availableActions = super.getAvailableActions(board, selectedWorker, moveFilter, buildFilter);
+        List<Action> availablePushActions=new ArrayList<>();
+        List<Action> actionsToRemove=new ArrayList<>();
         for (Action a:availableActions) {
             if(board.isWorker(a.getTargetPosition())){
-                availableActions.remove(a);
+                actionsToRemove.add(a);
                 workerAfterPushPosition=positionToTest(a.getSourcePosition(),a.getTargetPosition());
                 if(board.isPositionInBounds(workerAfterPushPosition)&&(!board.isWorker(workerAfterPushPosition))&&(!board.isDome(workerAfterPushPosition)))
-                    availableActions.add(new PushForwardMovement(selectedWorker,a.getTargetPosition(),workerAfterPushPosition));
+                    availablePushActions.add(new PushForwardMovement(selectedWorker,a.getTargetPosition(),workerAfterPushPosition));
             }
         }
+        availableActions.removeAll(actionsToRemove);
+        availableActions.addAll(availablePushActions);
         return availableActions;
     }
 
