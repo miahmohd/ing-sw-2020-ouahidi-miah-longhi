@@ -30,7 +30,7 @@ public class SimpleBuildState extends State {
         List<Position> builds = board.getNeighbouringPositions(selectedWorker);
         buildFilter.filter(selectedWorker, builds, board);
         for (Position p : builds) {
-            if(board.isFinalLevel(p))
+            if (board.isFinalLevel(p))
                 availableActions.add(new DomeBuild(p));
             else
                 availableActions.add(new SimpleBuild(p));

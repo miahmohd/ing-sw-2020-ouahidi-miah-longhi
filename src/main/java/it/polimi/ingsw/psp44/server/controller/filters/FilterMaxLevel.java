@@ -17,8 +17,8 @@ public class FilterMaxLevel extends DynamicFilter {
      */
     @Override
     public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard) {
-        if(active)
+        if (active)
             positionsToFilter.removeIf(position -> gameBoard.isFinalLevel(position));
-        active=false;
+        active = false;
     }
 }

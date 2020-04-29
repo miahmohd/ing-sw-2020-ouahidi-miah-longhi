@@ -1,14 +1,14 @@
 package it.polimi.ingsw.psp44.server.controller;
 
 import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
-import it.polimi.ingsw.psp44.network.message.MessageHeader;
-import it.polimi.ingsw.psp44.server.view.VirtualView;
 import it.polimi.ingsw.psp44.network.message.Message;
-import it.polimi.ingsw.psp44.util.Card;
+import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.server.model.GameModel;
 import it.polimi.ingsw.psp44.server.model.Player;
 import it.polimi.ingsw.psp44.server.model.Worker;
 import it.polimi.ingsw.psp44.server.model.actions.InitialPlacement;
+import it.polimi.ingsw.psp44.server.view.VirtualView;
+import it.polimi.ingsw.psp44.util.Card;
 import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.R;
@@ -41,14 +41,12 @@ public class SetupController {
     }
 
 
-
     public void addPlayer(String nickname, VirtualView view) {
         Player player = new Player(nickname);
         this.playerViews.put(nickname, view);
         this.model.addPlayer(player);
         this.setHandlers(view);
     }
-
 
 
     private void setHandlers(VirtualView view) {

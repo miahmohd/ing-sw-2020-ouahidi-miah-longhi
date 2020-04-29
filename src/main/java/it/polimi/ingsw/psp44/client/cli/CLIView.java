@@ -1,12 +1,12 @@
 package it.polimi.ingsw.psp44.client.cli;
 
 import it.polimi.ingsw.psp44.client.IView;
+import it.polimi.ingsw.psp44.network.IVirtual;
 import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.Position;
-import it.polimi.ingsw.psp44.network.IVirtual;
 
 import java.util.*;
 
@@ -48,13 +48,12 @@ public class CLIView implements IView<Message>, Runnable {
         this.playerNickname = input.nextLine();
 
 
-
         chosenOption = input.nextLine();
         chosenOption = chosenOption.replace(" ", "").toLowerCase();
 
         messageCode = this.gameOptions.get(chosenOption);
 
-        if(messageCode == Message.Code.NEW_GAME){
+        if (messageCode == Message.Code.NEW_GAME) {
             System.out.println("How many Players");
             numberOfPlayers = Integer.parseInt(input.nextLine());
             messageBody = new BodyTemplates.FirstMessage(this.playerNickname, numberOfPlayers);
@@ -82,7 +81,7 @@ public class CLIView implements IView<Message>, Runnable {
 
         Card[] cardsList = JsonConvert.getInstance().fromJson(cards.getBody(), Card[].class);
 
-        for(Card card : cardsList){
+        for (Card card : cardsList) {
             System.out.println(card.id);
             System.out.println(card.description);
             System.out.println();
@@ -118,7 +117,7 @@ public class CLIView implements IView<Message>, Runnable {
 
         //board.highlightPositions(workerPositions);
 
-        for (Position workerPosition : workerPositions){
+        for (Position workerPosition : workerPositions) {
             display.append(workerPosition);
         }
 
@@ -182,7 +181,7 @@ public class CLIView implements IView<Message>, Runnable {
     }
 
 
-    private void initGameOptions(){
+    private void initGameOptions() {
         this.gameOptions.put("newgame", Message.Code.NEW_GAME);
         this.gameOptions.put("n", Message.Code.NEW_GAME);
 
@@ -193,27 +192,27 @@ public class CLIView implements IView<Message>, Runnable {
 
 
 /**
- public static void main(String[] args) {
-
- String myPlayer = "ciao";
- String opponent1 = "mio dio";
-
- board = new Board(myPlayer, Arrays.asList(opponent1));
-
- List<Cell> cellsToUpdate;
-
- cellsToUpdate = new ArrayList<Cell>(Arrays.asList(
- new Cell(new Position(1, 0), 1, false, null, ""),
- new Cell(new Position(1, 1), 2, false, null, ""),
- new Cell(new Position(0, 1), 3, false, null, ""),
- new Cell(new Position(2, 4), 2, false, null, myPlayer),
- new Cell(new Position(2, 2), 0, false, null, opponent1),
- new Cell(new Position(1, 4), 1, false, null, myPlayer),
- new Cell(new Position(3, 3), 2, false, null, opponent1),
- new Cell(new Position(4, 4), 1, true, null, "")
- ));
-
- System.out.print(board.update(cellsToUpdate));
- //System.out.println(Graphics.Color.FIRST_LEVEL+Graphics.Color.DOME.getEscape()+Graphics.Element.FEMALE_WORKER.getEscape()+" "+Graphics.Color.SECOND_LEVEL+"secondo"+Graphics.Color.THIRD_LEVEL+"terzo"+ Graphics.Color.RESET);
- }
+ * public static void main(String[] args) {
+ * <p>
+ * String myPlayer = "ciao";
+ * String opponent1 = "mio dio";
+ * <p>
+ * board = new Board(myPlayer, Arrays.asList(opponent1));
+ * <p>
+ * List<Cell> cellsToUpdate;
+ * <p>
+ * cellsToUpdate = new ArrayList<Cell>(Arrays.asList(
+ * new Cell(new Position(1, 0), 1, false, null, ""),
+ * new Cell(new Position(1, 1), 2, false, null, ""),
+ * new Cell(new Position(0, 1), 3, false, null, ""),
+ * new Cell(new Position(2, 4), 2, false, null, myPlayer),
+ * new Cell(new Position(2, 2), 0, false, null, opponent1),
+ * new Cell(new Position(1, 4), 1, false, null, myPlayer),
+ * new Cell(new Position(3, 3), 2, false, null, opponent1),
+ * new Cell(new Position(4, 4), 1, true, null, "")
+ * ));
+ * <p>
+ * System.out.print(board.update(cellsToUpdate));
+ * //System.out.println(Graphics.Color.FIRST_LEVEL+Graphics.Color.DOME.getEscape()+Graphics.Element.FEMALE_WORKER.getEscape()+" "+Graphics.Color.SECOND_LEVEL+"secondo"+Graphics.Color.THIRD_LEVEL+"terzo"+ Graphics.Color.RESET);
+ * }
  */

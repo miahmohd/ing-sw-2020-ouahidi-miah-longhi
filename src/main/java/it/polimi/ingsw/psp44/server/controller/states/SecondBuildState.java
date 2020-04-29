@@ -3,11 +3,8 @@ package it.polimi.ingsw.psp44.server.controller.states;
 import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
-import it.polimi.ingsw.psp44.server.model.actions.DomeBuild;
-import it.polimi.ingsw.psp44.server.model.actions.SimpleBuild;
 import it.polimi.ingsw.psp44.util.Position;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +13,7 @@ import java.util.List;
 public class SecondBuildState extends SimpleBuildState {
 
     public SecondBuildState() {
-        this.finalState=true;
+        this.finalState = true;
     }
 
     /**

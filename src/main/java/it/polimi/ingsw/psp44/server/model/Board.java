@@ -6,10 +6,7 @@ import it.polimi.ingsw.psp44.util.exception.ConstructionException;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * the playground of the match, it keep information about buildings and workers positions
@@ -21,7 +18,7 @@ public class Board {
 
     public Board() {
         this.field = new Space[DIMENSION][DIMENSION];
-        this.selectedWorker=null;
+        this.selectedWorker = null;
         for (int row = 0; row < DIMENSION; ++row) {
             for (int column = 0; column < DIMENSION; ++column) {
                 this.field[row][column] = new Space();
@@ -127,6 +124,7 @@ public class Board {
 
     /**
      * Check if a dome have been built at the specified position
+     *
      * @param position to check
      * @return true if there is a dome false otherwise
      */
@@ -142,6 +140,7 @@ public class Board {
 
     /**
      * checks if all the three blocks have been built in a space
+     *
      * @param position to check
      * @return <code>true</code> if level 3 have been reached, <code>false</code> otherwise
      */
@@ -157,6 +156,7 @@ public class Board {
 
     /**
      * Check if there is a worker at the specified position
+     *
      * @param position to check
      * @return true if there is a worker false otherwise
      */
@@ -172,8 +172,9 @@ public class Board {
 
     /**
      * Add the worker to the space at the specified position
+     *
      * @param position where add the worker
-     * @param worker to add
+     * @param worker   to add
      */
     public void setWorker(Position position, Worker worker) {
         if (position == null)
@@ -189,6 +190,7 @@ public class Board {
 
     /**
      * return the worker at the specified position
+     *
      * @param position
      * @return the worker at the position
      */
@@ -234,6 +236,7 @@ public class Board {
 
     /**
      * Filter all the spaces without dome or workers (unoccupied)
+     *
      * @return a list with all the unoccupied spaces
      */
     public List<Position> getUnoccupiedPosition() {
@@ -276,6 +279,7 @@ public class Board {
 
     /**
      * Check if a position is inside the game field
+     *
      * @param position to check
      * @return <code>true</code> if is inside <code>false</code> otherwise
      */
@@ -286,14 +290,16 @@ public class Board {
 
     /**
      * return the worker selected for this turn
+     *
      * @return selected worker position
      */
     public Position getSelectedWorker() {
-       return this.selectedWorker;
+        return this.selectedWorker;
     }
 
     /**
      * Change position of the selected worker in this turn
+     *
      * @param selectedWorkerPosition
      */
     public void setSelectedWorker(Position selectedWorkerPosition) {

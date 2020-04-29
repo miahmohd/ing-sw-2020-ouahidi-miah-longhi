@@ -32,10 +32,11 @@ public class Board {
     /**
      * Sets the color of the players in the game, colors cannot be chosen
      * They are set automatically
-     * @param myPlayer this client's player
+     *
+     * @param myPlayer  this client's player
      * @param opponents this client's opponents
      */
-    public void setPlayers(String myPlayer, List<String> opponents){
+    public void setPlayers(String myPlayer, List<String> opponents) {
         Color[] opponentColors = {Color.OPPONENT_1, Color.OPPONENT_2};
         int count = 0;
 
@@ -64,7 +65,7 @@ public class Board {
      * @param cellsToUpdate cells that need to be updated
      * @return String formatted according to Graphics specification standard
      */
-    public String update(Map<Position,Cell> cellsToUpdate) {
+    public String update(Map<Position, Cell> cellsToUpdate) {
         Cell cellToUpdate;
         for (Position position : cellsToUpdate.keySet()) {
             cellToUpdate = cellsToUpdate.get(position);

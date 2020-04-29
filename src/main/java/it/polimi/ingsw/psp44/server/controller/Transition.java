@@ -4,6 +4,7 @@ import it.polimi.ingsw.psp44.server.controller.filters.DynamicFilter;
 import it.polimi.ingsw.psp44.server.controller.states.State;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ public class Transition {
      * From a specific state could start different transitions.
      * <code>Condition</code> is used to select the transition to follow.
      */
-    private final Action condition;
+    private final Condition condition;
 
     /**
      * the dynamic build filter that will be used in the next state
@@ -38,12 +39,19 @@ public class Transition {
      */
     private final List<DynamicFilter> moveFilters;
 
-    public Transition(State currentState, State nextState, Action condition, List<DynamicFilter> buildFilters, List<DynamicFilter> moveFilters) {
+    public Transition(State currentState, State nextState, Condition condition, List<DynamicFilter> buildFilters, List<DynamicFilter> moveFilters) {
         this.currentState = currentState;
         this.nextState = nextState;
         this.condition = condition;
-        this.buildFilters = buildFilters;
-        this.moveFilters = moveFilters;
+        if (buildFilters != null)
+            this.buildFilters = buildFilters;
+        else
+            this.buildFilters = new ArrayList<>();
+
+        if (moveFilters != null)
+            this.moveFilters = moveFilters;
+        else
+            this.moveFilters = new ArrayList<>();
     }
 
     public State getCurrentState() {
@@ -64,6 +72,7 @@ public class Transition {
 
     /**
      * Check if the transition can be activated without any condition
+     *
      * @return <code>true</code> if no transition needed, <false>Otherwise</false>
      */
     public boolean isUnconditional() {
@@ -73,13 +82,19 @@ public class Transition {
     /**
      * Check if there have been the required condition to activate this transition
      * Conditions depend on the type of the last action performed
+     *
      * @param lastAction
      * @return
      */
     public boolean checkCondition(Action lastAction) {
-        if (condition.isMovement())
+        if (condition == Condition.MOVE)
             return lastAction.isMovement();
         else
             return lastAction.isBuild();
+    }
+
+    public enum Condition {
+        MOVE,
+        BUILD
     }
 }

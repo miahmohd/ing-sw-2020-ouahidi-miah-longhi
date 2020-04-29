@@ -26,7 +26,7 @@ public class SimpleMovementTest {
         move.execute(board);
         assertEquals(worker, board.getWorker(target));
         assertEquals(null, board.getWorker(source));
-        assertTrue(move.getModifiedPositions().size()==2);
-        assertTrue(move.getModifiedPositions().containsAll(Arrays.asList(source,target)));
+        assertTrue(move.getModifiedPositions().size() == 2);
+        assertTrue(move.getModifiedPositions().containsAll(Arrays.asList(source, target)));
     }
 }

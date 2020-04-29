@@ -27,7 +27,7 @@ public class Cell {
         this.playerNickname = playerNickname;
     }
 
-    public Cell(){
+    public Cell() {
         this(0, false, null, null);
     }
 

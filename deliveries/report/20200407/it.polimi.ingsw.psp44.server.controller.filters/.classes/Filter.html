@@ -1,122 +1,120 @@
-
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html id="htmlId">
 <head>
-  <title>Coverage Report :: Filter</title>
-  <style type="text/css">
-    @import "../../.css/coverage.css";
-  </style>
+    <title>Coverage Report :: Filter</title>
+    <style type="text/css">
+        @import "../../.css/coverage.css";
+    </style>
 </head>
 
 <body>
 <div class="header"></div>
 
 <div class="content">
-<div class="breadCrumbs">
-    [ <a href="../../index.html">all classes</a> ]
-    [ <a href="../index.html">it.polimi.ingsw.psp44.server.controller.filters</a> ]
-</div>
+    <div class="breadCrumbs">
+        [ <a href="../../index.html">all classes</a> ]
+        [ <a href="../index.html">it.polimi.ingsw.psp44.server.controller.filters</a> ]
+    </div>
 
-<h1>Coverage Summary for Class: Filter (it.polimi.ingsw.psp44.server.controller.filters)</h1>
+    <h1>Coverage Summary for Class: Filter (it.polimi.ingsw.psp44.server.controller.filters)</h1>
 
-<table class="coverageStats">
-<tr>
-  <th class="name">Class</th>
-<th class="coverageStat 
+    <table class="coverageStats">
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
 ">
-  Class, %
-</th>
-<th class="coverageStat 
+                Class, %
+            </th>
+            <th class="coverageStat
 ">
-  Method, %
-</th>
-<th class="coverageStat 
+                Method, %
+            </th>
+            <th class="coverageStat
 ">
-  Line, %
-</th>
-</tr>
-<tr>
-  <td class="name">Filter</td>
-<td class="coverageStat">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">Filter</td>
+            <td class="coverageStat">
   <span class="percent">
     100%
   </span>
-  <span class="absValue">
+                <span class="absValue">
     (1/ 1)
   </span>
-</td>
-<td class="coverageStat">
+            </td>
+            <td class="coverageStat">
   <span class="percent">
     66.7%
   </span>
-  <span class="absValue">
+                <span class="absValue">
     (2/ 3)
   </span>
-</td>
-<td class="coverageStat">
+            </td>
+            <td class="coverageStat">
   <span class="percent">
     71.4%
   </span>
-  <span class="absValue">
+                <span class="absValue">
     (5/ 7)
   </span>
-</td>
-</tr>
+            </td>
+        </tr>
 
-</table>
+    </table>
 
-<br/>
-<br/>
+    <br/>
+    <br/>
 
 
-<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server.controller.filters;
-<i>2</i>&nbsp;
-<i>3</i>&nbsp;import java.util.List;
-<i>4</i>&nbsp;
-<i>5</i>&nbsp;import it.polimi.ingsw.psp44.server.model.Board;
-<i>6</i>&nbsp;import it.polimi.ingsw.psp44.util.Position;
-<i>7</i>&nbsp;
-<i>8</i>&nbsp;/**
-<i>9</i>&nbsp; * Abstract Class that defines the model for a Filter class
-<i>10</i>&nbsp; * Defines @see filter
-<i>11</i>&nbsp; * Ovverrides equals method so that two objects that have the same class are the same
-<i>12</i>&nbsp; */
-<b class="fc"><i>13</i>&nbsp;public abstract class Filter {</b>
-<i>14</i>&nbsp;
-<i>15</i>&nbsp;    /**
-<i>16</i>&nbsp;     * Modifies the list based on the method implementation
-<i>17</i>&nbsp;     * The method implementation is &quot;determined&quot; by its class name
-<i>18</i>&nbsp;     * The method can use other parameters from the actual class
-<i>19</i>&nbsp;     * 
-<i>20</i>&nbsp;     * @param startingPosition position from which the filterage starts
-<i>21</i>&nbsp;     * @param positionsToFilter List of positions that needs to be filtered
-<i>22</i>&nbsp;     * @param gameBoard provides information about a certain position using it&#39;s getters
-<i>23</i>&nbsp;     */
-<i>24</i>&nbsp;    public abstract void filter(Position startingPosition, List&lt;Position&gt; positionsToFilter, Board gameBoard);
-<i>25</i>&nbsp;
-<i>26</i>&nbsp;    @Override
-<i>27</i>&nbsp;    public boolean equals(Object obj) {
-<b class="fc"><i>28</i>&nbsp;        if (this == obj)</b>
-<b class="fc"><i>29</i>&nbsp;            return true;</b>
-<b class="fc"><i>30</i>&nbsp;        if (obj == null)</b>
-<b class="nc"><i>31</i>&nbsp;            return false;</b>
-<b class="fc"><i>32</i>&nbsp;        return getClass() == obj.getClass();</b>
-<i>33</i>&nbsp;    }
-<i>34</i>&nbsp;
-<i>35</i>&nbsp;    @Override
-<i>36</i>&nbsp;    public int hashCode() {
-<b class="nc"><i>37</i>&nbsp;        return super.hashCode();</b>
-<i>38</i>&nbsp;    }
-<i>39</i>&nbsp;
-<i>40</i>&nbsp;}
-</div>
+    <div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server.controller.filters;
+        <i>2</i>&nbsp;
+        <i>3</i>&nbsp;import java.util.List;
+        <i>4</i>&nbsp;
+        <i>5</i>&nbsp;import it.polimi.ingsw.psp44.server.model.Board;
+        <i>6</i>&nbsp;import it.polimi.ingsw.psp44.util.Position;
+        <i>7</i>&nbsp;
+        <i>8</i>&nbsp;/**
+        <i>9</i>&nbsp; * Abstract Class that defines the model for a Filter class
+        <i>10</i>&nbsp; * Defines @see filter
+        <i>11</i>&nbsp; * Ovverrides equals method so that two objects that have the same class are the same
+        <i>12</i>&nbsp; */
+        <b class="fc"><i>13</i>&nbsp;public abstract class Filter {</b>
+        <i>14</i>&nbsp;
+        <i>15</i>&nbsp; /**
+        <i>16</i>&nbsp; * Modifies the list based on the method implementation
+        <i>17</i>&nbsp; * The method implementation is &quot;determined&quot; by its class name
+        <i>18</i>&nbsp; * The method can use other parameters from the actual class
+        <i>19</i>&nbsp; *
+        <i>20</i>&nbsp; * @param startingPosition position from which the filterage starts
+        <i>21</i>&nbsp; * @param positionsToFilter List of positions that needs to be filtered
+        <i>22</i>&nbsp; * @param gameBoard provides information about a certain position using it&#39;s getters
+        <i>23</i>&nbsp; */
+        <i>24</i>&nbsp; public abstract void filter(Position startingPosition, List&lt;Position&gt; positionsToFilter,
+        Board gameBoard);
+        <i>25</i>&nbsp;
+        <i>26</i>&nbsp; @Override
+        <i>27</i>&nbsp; public boolean equals(Object obj) {
+        <b class="fc"><i>28</i>&nbsp; if (this == obj)</b>
+        <b class="fc"><i>29</i>&nbsp; return true;</b>
+        <b class="fc"><i>30</i>&nbsp; if (obj == null)</b>
+        <b class="nc"><i>31</i>&nbsp; return false;</b>
+        <b class="fc"><i>32</i>&nbsp; return getClass() == obj.getClass();</b>
+        <i>33</i>&nbsp; }
+        <i>34</i>&nbsp;
+        <i>35</i>&nbsp; @Override
+        <i>36</i>&nbsp; public int hashCode() {
+        <b class="nc"><i>37</i>&nbsp; return super.hashCode();</b>
+        <i>38</i>&nbsp; }
+        <i>39</i>&nbsp;
+        <i>40</i>&nbsp;}
+    </div>
 </div>
 
 <div class="footer">
-    
+
     <div style="float:right;">generated on 2020-04-07 04:23</div>
 </div>
 </body>

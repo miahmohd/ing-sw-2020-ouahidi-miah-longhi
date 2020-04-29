@@ -1,6 +1,7 @@
 package it.polimi.ingsw.psp44.server.controller.filters;
 
 import it.polimi.ingsw.psp44.server.model.Board;
+import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.util.Position;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 public class FilterOpponentMoveUp extends FilterMoveUp {
     public FilterOpponentMoveUp() {
         super();
-        this.external=true;
+        this.external = true;
     }
 
     /**
@@ -22,8 +23,20 @@ public class FilterOpponentMoveUp extends FilterMoveUp {
      */
     @Override
     public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard) {
-        if(active && gameBoard.getLevel(lastAction.getTargetPosition())-gameBoard.getLevel(lastAction.getSourcePosition())>0)
+        if (active && gameBoard.getLevel(lastAction.getTargetPosition()) - gameBoard.getLevel(lastAction.getSourcePosition()) > 0)
             super.filter(startingPosition, positionsToFilter, gameBoard);
-        this.active=true;
+        this.active = true;
+    }
+
+    /**
+     * Update the sate of the filter
+     *
+     * @param lastAction
+     * @param board
+     */
+    @Override
+    public void update(Action lastAction, Board board) {
+        super.update(lastAction, board);
+        this.active = (board.getLevel(lastAction.getTargetPosition()) - board.getLevel(lastAction.getSourcePosition())) > 0;
     }
 }

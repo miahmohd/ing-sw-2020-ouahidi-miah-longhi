@@ -5,17 +5,17 @@ public class Logger {
     private static Logger instance;
     private boolean debug;
 
-    private Logger(){
+    private Logger() {
         this.debug = true;
     }
 
-    public Logger getInstance(){
+    public Logger getInstance() {
         if (instance == null)
             instance = new Logger();
         return instance;
     }
 
-    public void println(String logEntry){
+    public void println(String logEntry) {
         System.out.println("Log: " + logEntry);
     }
 }

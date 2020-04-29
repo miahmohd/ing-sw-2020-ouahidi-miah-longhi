@@ -27,7 +27,7 @@ public class ClientApp {
             server.join();
             view.join();
         } catch (IOException | InterruptedException e) {
-            System.err.println("ERROR: "+ e.getMessage());
+            System.err.println("ERROR: " + e.getMessage());
         }
 
     }

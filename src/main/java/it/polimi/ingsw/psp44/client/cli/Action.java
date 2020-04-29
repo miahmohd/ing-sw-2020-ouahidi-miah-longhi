@@ -40,7 +40,7 @@ public class Action {
         this.dome = dome;
     }
 
-    public int getID(){
+    public int getID() {
         return id;
     }
 

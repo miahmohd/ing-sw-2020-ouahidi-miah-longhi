@@ -73,7 +73,7 @@ public class GameModel {
 
         //TODO notify(); ci sta anche creare delle mosse ma non esageriamo
 
-        this.players.removeIf((p)->p.getNickname().equals(player));
+        this.players.removeIf((p) -> p.getNickname().equals(player));
     }
 
     /**
@@ -128,6 +128,7 @@ public class GameModel {
 
     /**
      * Change position of the selected worker in this turn
+     *
      * @param selectedWorkerPosition
      */
     public void setWorker(Position selectedWorkerPosition) {
@@ -136,6 +137,7 @@ public class GameModel {
 
     /**
      * return the worker selected for this turn
+     *
      * @return selected worker position
      */
     public Position getWorker() {

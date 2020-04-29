@@ -17,7 +17,7 @@ public class BodyTemplates {
             this.numberOfPlayers = numberOfPlayers;
         }
 
-        public FirstMessage(String nickname){
+        public FirstMessage(String nickname) {
             this(nickname, 0);
         }
 

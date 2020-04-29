@@ -16,10 +16,15 @@ public abstract class State {
      * if set to true the player can decide to end the turn without performing actions
      */
     protected boolean finalState;
+    /**
+     * if set to true the player starts the turn from this state
+     */
+    protected boolean initialState;
 
 
     public State() {
         this.finalState = false;
+        this.initialState = false;
     }
 
     @Override
@@ -44,6 +49,13 @@ public abstract class State {
         this.finalState = finalState;
     }
 
+    public boolean isInitialState() {
+        return initialState;
+    }
+
+    public void setInitialState(boolean initialState) {
+        this.initialState = initialState;
+    }
 
     /**
      * Compute the available actions that the player can perform
@@ -55,4 +67,6 @@ public abstract class State {
      * @return list of available actions
      */
     public abstract List<Action> getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter);
+
+
 }

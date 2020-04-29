@@ -1,11 +1,11 @@
 package it.polimi.ingsw.psp44.server.controller;
 
-import it.polimi.ingsw.psp44.server.view.VirtualView;
-import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.communication.Cell;
+import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.server.controller.filters.Filter;
 import it.polimi.ingsw.psp44.server.model.GameModel;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
+import it.polimi.ingsw.psp44.server.view.VirtualView;
 import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.Position;
 
@@ -69,7 +69,7 @@ public class Controller {
             model.applyAction(selectedAction);
             if (currentPlayer.checkVictory(selectedAction, model.getBoard()))
                 won();
-            if (currentPlayer.nextState(selectedAction)) {
+            if (currentPlayer.nextState(selectedAction, model.getBoard())) {
                 actions();
             } else {
                 endable();
@@ -100,7 +100,7 @@ public class Controller {
     public void appliesOpponentsBuildFilter(Filter filter, Action lastAction) {
         players.values().stream()
                 .filter((cardController) -> cardController != currentPlayer)
-                .forEach((cardController) -> cardController.addBuildFilter(filter, lastAction));
+                .forEach((cardController) -> cardController.addBuildFilter(filter, lastAction, model.getBoard()));
     }
 
     /**
@@ -111,7 +111,7 @@ public class Controller {
     public void appliesOpponentsMoveFilter(Filter filter, Action lastAction) {
         players.values().stream()
                 .filter((cardController) -> cardController != currentPlayer)
-                .forEach((cardController) -> cardController.addMoveFilter(filter, lastAction));
+                .forEach((cardController) -> cardController.addMoveFilter(filter, lastAction, model.getBoard()));
     }
 
 
@@ -121,14 +121,14 @@ public class Controller {
      * - 2 players match: end the match, the opponent win
      */
     private void lost() {
-        if(model.getNumberOfPlayer()==3){
+        if (model.getNumberOfPlayer() == 3) {
             model.removePlayer(model.getCurrentPlayerNickname());
             model.nextTurn();
             start();
-        }else{
+        } else {
             model.nextTurn();
-            currentPlayerView=playerViews.get(model.getCurrentPlayerNickname());
-            currentPlayer=players.get(model.getCurrentPlayerNickname());
+            currentPlayerView = playerViews.get(model.getCurrentPlayerNickname());
+            currentPlayer = players.get(model.getCurrentPlayerNickname());
             won();
         }
 
@@ -146,7 +146,7 @@ public class Controller {
      * Call lost routine if no actions are available and turn is not endable
      * Call endable routine if the turn can be ended
      */
-    private void actions(){
+    private void actions() {
         availableActions = currentPlayer.getAvailableAction(model.getBoard(), model.getWorker());
         currentPlayerView.sendMessage(new Message(Message.Code.CHOOSE_ACTION,
                 JsonConvert.getInstance().toJson(Cell.convertActionList(availableActions), List.class)));

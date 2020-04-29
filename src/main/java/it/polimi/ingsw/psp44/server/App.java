@@ -1,8 +1,6 @@
 package it.polimi.ingsw.psp44.server;
 
 
-import it.polimi.ingsw.psp44.server.Server;
-
 public class App {
     public static void main(String[] args) {
         setup();

@@ -1,11 +1,11 @@
 package it.polimi.ingsw.psp44.server.view;
 
+import it.polimi.ingsw.psp44.network.IVirtual;
 import it.polimi.ingsw.psp44.network.SocketConnection;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHandlerFunction;
 import it.polimi.ingsw.psp44.network.message.MessageRouter;
 import it.polimi.ingsw.psp44.util.JsonConvert;
-import it.polimi.ingsw.psp44.network.IVirtual;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -50,7 +50,6 @@ public class VirtualView implements Runnable, IVirtual<Message> {
     public void addMessageHandler(Message.Code code, MessageHandlerFunction handler) {
         this.router.addRoute(code, handler);
     }
-
 
 
     @Override

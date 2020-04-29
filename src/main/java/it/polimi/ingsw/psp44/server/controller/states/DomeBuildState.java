@@ -4,11 +4,9 @@ import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.server.model.actions.DomeBuild;
-import it.polimi.ingsw.psp44.server.model.actions.SimpleBuild;
 import it.polimi.ingsw.psp44.util.Position;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,10 +26,10 @@ public class DomeBuildState extends SimpleBuildState {
     public List<Action> getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
         List<Action> availableAction;
         List<Action> availableDomeAction;
-        availableDomeAction=new ArrayList<>();
-        availableAction=super.getAvailableActions(board, selectedWorker, moveFilter, buildFilter);
-        for (Action action: availableAction){
-            if(!board.isFinalLevel(action.getTargetPosition()))
+        availableDomeAction = new ArrayList<>();
+        availableAction = super.getAvailableActions(board, selectedWorker, moveFilter, buildFilter);
+        for (Action action : availableAction) {
+            if (!board.isFinalLevel(action.getTargetPosition()))
                 availableDomeAction.add(new DomeBuild(action.getTargetPosition()));
 
         }

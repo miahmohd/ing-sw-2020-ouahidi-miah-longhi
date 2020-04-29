@@ -25,10 +25,10 @@ public class SimpleBuildTest {
         board.buildUp(unbuildPos);
         unbuild.execute(board);
         assertEquals(0, board.getLevel(unbuildPos));
-        assertTrue(build.getModifiedPositions().size()==1);
-        assertEquals(build.getModifiedPositions().get(0),buildPos);
-        assertTrue(unbuild.getModifiedPositions().size()==1);
-        assertEquals(unbuild.getModifiedPositions().get(0),unbuildPos);
+        assertTrue(build.getModifiedPositions().size() == 1);
+        assertEquals(build.getModifiedPositions().get(0), buildPos);
+        assertTrue(unbuild.getModifiedPositions().size() == 1);
+        assertEquals(unbuild.getModifiedPositions().get(0), unbuildPos);
 
     }
 }

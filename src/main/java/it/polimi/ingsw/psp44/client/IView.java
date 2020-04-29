@@ -12,6 +12,7 @@ public interface IView<T> {
     void chooseCardFrom(T cards);
 
     void chooseNickname(T chooseNickname);
+
     /**
      * Method that defines what to do in case of recieving workers
      */
@@ -44,6 +45,7 @@ public interface IView<T> {
 
     /**
      * Method that defines what to do when players are sent
+     *
      * @param players
      */
     void players(T players);
@@ -52,8 +54,8 @@ public interface IView<T> {
      * Method that defines what to do in case of update
      */
     void update(T update);
-    
-    
+
+
     /**
      * method used for setting the virtual sender
      */

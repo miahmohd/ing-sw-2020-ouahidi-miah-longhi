@@ -1,8 +1,8 @@
 package it.polimi.ingsw.psp44.server.model;
 
-import it.polimi.ingsw.psp44.util.property.CLIProperties;
 import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.exception.ConstructionException;
+import it.polimi.ingsw.psp44.util.property.CLIProperties;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -268,16 +268,16 @@ public class BoardTest {
     @Test
     public void getUnoccupiedPosition() {
         Random rand = new Random();
-        List<Position> unoccupiedPositionExpected=new ArrayList<>();
+        List<Position> unoccupiedPositionExpected = new ArrayList<>();
         List<Position> unoccupiedPositionActual;
-        for (int row=1; row<5;++row){
-            for(int column=0;column<5;++column){
-                unoccupiedPositionExpected.add(new Position(row,column));
+        for (int row = 1; row < 5; ++row) {
+            for (int column = 0; column < 5; ++column) {
+                unoccupiedPositionExpected.add(new Position(row, column));
             }
         }
-        Worker w00 =new Worker("ply0", Worker.Sex.MALE);
-        Worker w10 =new Worker("ply1", Worker.Sex.MALE);
-        Worker w01 =new Worker("ply0", Worker.Sex.FEMALE);
+        Worker w00 = new Worker("ply0", Worker.Sex.MALE);
+        Worker w10 = new Worker("ply1", Worker.Sex.MALE);
+        Worker w01 = new Worker("ply0", Worker.Sex.FEMALE);
         Position dome0 = new Position(0, 0);
         Position dome1 = new Position(0, 1);
         Position positionW00 = new Position(0, 2);
@@ -285,8 +285,8 @@ public class BoardTest {
         Position positionW10 = new Position(0, 4);
         boardTest.buildUp(unoccupiedPositionExpected.get(rand.nextInt(unoccupiedPositionExpected.size())));
         boardTest.buildDome(dome0);
-        boardTest.setWorker(positionW00,w00);
-        boardTest.setWorker(positionW01,w01);
+        boardTest.setWorker(positionW00, w00);
+        boardTest.setWorker(positionW01, w01);
 
         assertFalse(boardTest.isDome(dome1));
         assertFalse(boardTest.isWorker(positionW10));
@@ -295,23 +295,22 @@ public class BoardTest {
         assertTrue(boardTest.isWorker(positionW01));
 
         boardTest.buildDome(dome1);
-        boardTest.setWorker(positionW10,w10);
-        unoccupiedPositionActual=boardTest.getUnoccupiedPosition();
+        boardTest.setWorker(positionW10, w10);
+        unoccupiedPositionActual = boardTest.getUnoccupiedPosition();
 
         assertEquals(unoccupiedPositionExpected.size(), unoccupiedPositionActual.size());
         assertTrue(unoccupiedPositionExpected.containsAll(unoccupiedPositionActual));
-
 
 
     }
 
     @Test
     public void isPositionInBounds() {
-        Position p0=new Position(-1,5);
-        Position p1=new Position(4,9);
-        Position p2=new Position(-7,8);
-        Position p3=new Position(2,3);
-        Position p4=new Position(3,-5);
+        Position p0 = new Position(-1, 5);
+        Position p1 = new Position(4, 9);
+        Position p2 = new Position(-7, 8);
+        Position p3 = new Position(2, 3);
+        Position p4 = new Position(3, -5);
 
         assertFalse(boardTest.isPositionInBounds(p0));
         assertFalse(boardTest.isPositionInBounds(p1));

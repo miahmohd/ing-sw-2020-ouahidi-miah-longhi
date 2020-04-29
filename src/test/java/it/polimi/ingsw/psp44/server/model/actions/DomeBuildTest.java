@@ -24,9 +24,9 @@ public class DomeBuildTest {
         board.buildDome(unbuildPos);
         unbuild.execute(board);
         assertFalse(board.isDome(unbuildPos));
-        assertTrue(build.getModifiedPositions().size()==1);
-        assertTrue(unbuild.getModifiedPositions().size()==1);
-        assertEquals(build.getModifiedPositions().get(0),buildPos);
-        assertEquals(unbuild.getModifiedPositions().get(0),unbuildPos);
+        assertTrue(build.getModifiedPositions().size() == 1);
+        assertTrue(unbuild.getModifiedPositions().size() == 1);
+        assertEquals(build.getModifiedPositions().get(0), buildPos);
+        assertEquals(unbuild.getModifiedPositions().get(0), unbuildPos);
     }
 }

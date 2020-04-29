@@ -1,8 +1,8 @@
 package it.polimi.ingsw.psp44.client;
 
 import it.polimi.ingsw.psp44.network.Connection;
-import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.IVirtual;
+import it.polimi.ingsw.psp44.network.message.Message;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +27,7 @@ public class VirtualServer implements IVirtual<Message>, Runnable {
         initRouter();
     }
 
-    private void initRouter(){
+    private void initRouter() {
         router.put(Message.Code.START, view::startTurn);
         router.put(Message.Code.CHOOSE_CARDS, view::chooseCardsFrom);
         router.put(Message.Code.CHOOSE_CARD, view::chooseCardFrom);
@@ -35,7 +35,7 @@ public class VirtualServer implements IVirtual<Message>, Runnable {
 
     @Override
     public void run() {
-        while(true){
+        while (true) {
             Message message = connection.readLine();
             Message.Code code = message.getCode();
             //TODO: make it better

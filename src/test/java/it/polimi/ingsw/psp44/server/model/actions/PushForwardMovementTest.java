@@ -24,12 +24,12 @@ public class PushForwardMovementTest {
         Position source1 = new Position(0, 0);
         Position target1 = new Position(0, 1);
         Position forward1 = new Position(0, 2);
-        PushForwardMovement move1 = new PushForwardMovement(source1, target1,forward1);
+        PushForwardMovement move1 = new PushForwardMovement(source1, target1, forward1);
 
         Position source2 = new Position(1, 0);
         Position target2 = new Position(2, 1);
         Position forward2 = new Position(3, 2);
-        PushForwardMovement move2 = new PushForwardMovement(source2, target2,forward2);
+        PushForwardMovement move2 = new PushForwardMovement(source2, target2, forward2);
 
 
         board.setWorker(source1, sourceWorkerM);
@@ -45,9 +45,9 @@ public class PushForwardMovementTest {
         move2.execute(board);
         assertEquals(targetWorkerF, board.getWorker(forward2));
 
-        assertEquals(3,move1.getModifiedPositions().size());
-        assertEquals(3,move2.getModifiedPositions().size());
-        assertTrue(move1.getModifiedPositions().containsAll(Arrays.asList(source1,target1,forward1)));
-        assertTrue(move2.getModifiedPositions().containsAll(Arrays.asList(source2,target2,forward2)));
+        assertEquals(3, move1.getModifiedPositions().size());
+        assertEquals(3, move2.getModifiedPositions().size());
+        assertTrue(move1.getModifiedPositions().containsAll(Arrays.asList(source1, target1, forward1)));
+        assertTrue(move2.getModifiedPositions().containsAll(Arrays.asList(source2, target2, forward2)));
     }
 }

@@ -40,10 +40,11 @@ public class FilterCollection extends Filter {
 
     /**
      * check if a filter is already in the collection
+     *
      * @param filter
      * @return
      */
-    public boolean contains(Filter filter){
+    public boolean contains(Filter filter) {
         return filters.contains(filter);
     }
 
@@ -64,12 +65,14 @@ public class FilterCollection extends Filter {
 
     /**
      * Update the sate of the selected filters
+     *
      * @param lastAction
+     * @param board
      */
-    public void update(Filter filter,Action lastAction){
-        for (Filter f: filters){
-            if(filter.equals(f))
-                f.update(lastAction);
+    public void update(Filter filter, Action lastAction, Board board) {
+        for (Filter f : filters) {
+            if (filter.equals(f))
+                f.update(lastAction, board);
         }
 
     }

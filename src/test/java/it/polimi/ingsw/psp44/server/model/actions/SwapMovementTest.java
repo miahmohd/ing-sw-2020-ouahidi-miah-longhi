@@ -29,8 +29,8 @@ public class SwapMovementTest {
         move.execute(board);
         assertEquals(targetWorker, board.getWorker(source));
         assertEquals(sourceWorker, board.getWorker(target));
-        assertTrue(move.getModifiedPositions().size()==2);
-        assertTrue(move.getModifiedPositions().containsAll(Arrays.asList(source,target)));
+        assertTrue(move.getModifiedPositions().size() == 2);
+        assertTrue(move.getModifiedPositions().containsAll(Arrays.asList(source, target)));
 
     }
 }

@@ -6,9 +6,9 @@ import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.controller.states.State;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
-import it.polimi.ingsw.psp44.util.property.AppProperties;
 import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
+import it.polimi.ingsw.psp44.util.property.AppProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +20,6 @@ import java.util.List;
  */
 public class CardController {
     private final Controller context;
-    /**
-     * The initial state of the turn
-     */
-    private final State initialState;
     /**
      * A list of the possible states transitions for the card
      */
@@ -46,11 +42,19 @@ public class CardController {
     private State currentState;
 
 
-    public CardController(State initialState, List<Transition> transitionsList, List<VictoryCondition> victoryConditionsList, Controller context) {
+    public CardController(
+            List<Transition> transitionsList,
+            List<VictoryCondition> victoryConditionsList,
+            Controller context,
+            FilterCollection buildFilter,
+            FilterCollection moveFilter) {
+
         this.context = context;
-        this.initialState = initialState;
+        this.currentState = transitionsList.stream().filter((t) -> t.getCurrentState().isInitialState()).findFirst().get().getCurrentState();
         this.transitionsList = transitionsList;
         this.victoryConditionsList = victoryConditionsList;
+        this.buildFilter = buildFilter;
+        this.moveFilter = moveFilter;
 
     }
 
@@ -90,15 +94,15 @@ public class CardController {
      * @return true if there is a new state, false if the turn is ended
      * @throws IllegalArgumentException there aren't active transitions
      */
-    public boolean nextState(Action lastAction) {
+    public boolean nextState(Action lastAction, Board board) {
 
         Transition activeTransition = transitionsList.stream()
                 .filter((t) -> currentState.equals(t.getCurrentState())
                         && (t.isUnconditional() || t.checkCondition(lastAction)))
                 .findFirst()
                 .orElse(null);
-        executeTransition(activeTransition, lastAction);
-        return !currentState.equals(initialState);
+        executeTransition(activeTransition, lastAction, board);
+        return !currentState.isInitialState();
     }
 
     /**
@@ -118,9 +122,10 @@ public class CardController {
      *
      * @param transition transition that must be performed
      * @param lastAction last action performed
+     * @param board
      * @throws IllegalArgumentException if transition is null
      */
-    private void executeTransition(Transition transition, Action lastAction) {
+    private void executeTransition(Transition transition, Action lastAction, Board board) {
         if (currentState == null)
             throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.TRANSITION_SCHEMA_ERROR));
 
@@ -130,14 +135,14 @@ public class CardController {
             if (filter.isExternal())
                 context.appliesOpponentsBuildFilter(filter, lastAction);
             else
-                buildFilter.update(filter, lastAction);
+                buildFilter.update(filter, lastAction, board);
         });
 
         transition.getMoveFilter().forEach((filter) -> {
             if (filter.isExternal())
                 context.appliesOpponentsMoveFilter(filter, lastAction);
             else
-                moveFilter.update(filter, lastAction);
+                moveFilter.update(filter, lastAction, board);
         });
     }
 
@@ -146,11 +151,11 @@ public class CardController {
      *
      * @param filter to add
      */
-    public void addBuildFilter(Filter filter, Action lastAction) {
-        if(buildFilter.contains(filter)){
-            buildFilter.update(filter,lastAction);
-        }else{
-            filter.update(lastAction);
+    public void addBuildFilter(Filter filter, Action lastAction, Board board) {
+        if (buildFilter.contains(filter)) {
+            buildFilter.update(filter, lastAction, board);
+        } else {
+            filter.update(lastAction, board);
             buildFilter.add(filter);
         }
     }
@@ -160,17 +165,18 @@ public class CardController {
      *
      * @param filter to add
      */
-    public void addMoveFilter(Filter filter, Action lastAction) {
-        if(moveFilter.contains(filter)){
-            moveFilter.update(filter,lastAction);
-        }else{
-            filter.update(lastAction);
+    public void addMoveFilter(Filter filter, Action lastAction, Board board) {
+        if (moveFilter.contains(filter)) {
+            moveFilter.update(filter, lastAction, board);
+        } else {
+            filter.update(lastAction, board);
             moveFilter.add(filter);
         }
     }
 
     /**
      * check if current state is final
+     *
      * @return <code>true</code> if current state is final <code>false</code> otherwise
      */
     public boolean isEndableTurn() {

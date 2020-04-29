@@ -56,6 +56,7 @@ public class Space {
 
     /**
      * Add a specific worker to the space
+     *
      * @param worker the worker to add at this space, <code>null</code> to remove the worker
      */
     public void setWorker(Worker worker) {
@@ -91,17 +92,19 @@ public class Space {
 
     /**
      * check if there is a worker inside the space
+     *
      * @return <code>true</code> if the space contains the worker, <code>false</code> otherwise
      */
     public boolean isWorker() {
-        return this.worker!=null;
+        return this.worker != null;
     }
 
     /**
      * check if the space is unoccupied (no dome and no worker)
+     *
      * @return <code>true</code> if the space is unoccupied, <code>false</code> otherwise
      */
     public boolean isUnoccupied() {
-        return (!this.isDome()&&!this.isWorker());
+        return (!this.isDome() && !this.isWorker());
     }
 }

@@ -14,9 +14,10 @@ public class PushForwardMovement extends Movement {
 
     /**
      * Create e movement where the worker in target position is pushed one position straight backwards.
+     *
      * @param forwardPosition final position of the worker to push
-     * @param sourcePosition initial position of the worker to move
-     * @param targetPosition final position of the worker to move, and initial position of the worker to push
+     * @param sourcePosition  initial position of the worker to move
+     * @param targetPosition  final position of the worker to move, and initial position of the worker to push
      */
     public PushForwardMovement(Position sourcePosition, Position targetPosition, Position forwardPosition) {
         super(sourcePosition, targetPosition);
