@@ -49,7 +49,6 @@ public class Controller {
             model.setWorker(selectedWorkerPosition);
             actions();
         }
-
     }
 
     /**

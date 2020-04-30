@@ -2,7 +2,7 @@ package it.polimi.ingsw.psp44.client;
 
 
 import it.polimi.ingsw.psp44.client.cli.CLIView;
-import it.polimi.ingsw.psp44.network.Connection;
+import it.polimi.ingsw.psp44.network.IConnection;
 import it.polimi.ingsw.psp44.network.message.Message;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ public class ClientApp {
 
     public static void main(String[] args) {
         try {
-            Connection<Message> socketConnection = new SocketConnection(HOST, PORT);
+            IConnection<Message> socketConnection = new SocketConnection(HOST, PORT);
             CLIView cliView = new CLIView();
             VirtualServer virtualServer = new VirtualServer(socketConnection, cliView);
 

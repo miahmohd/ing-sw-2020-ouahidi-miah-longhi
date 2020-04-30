@@ -32,9 +32,9 @@ public class FilterCollection extends Filter {
      */
     public void add(Filter filter) {
         if (filter == null)
-            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_FILTER));
+            throw new IllegalArgumentException(R.getAppProperties().get(ErrorCodes.NULL_FILTER));
         if (filters.contains(filter))
-            throw new FilterException(R.getAppProperties().getProperty(ErrorCodes.FILTER_IN_COLLECTION));
+            throw new FilterException(R.getAppProperties().get(ErrorCodes.FILTER_IN_COLLECTION));
         filters.add(filter);
     }
 
@@ -57,9 +57,9 @@ public class FilterCollection extends Filter {
      */
     public void remove(Filter filter) {
         if (filter == null)
-            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_FILTER));
+            throw new IllegalArgumentException(R.getAppProperties().get(ErrorCodes.NULL_FILTER));
         if (!filters.contains(filter))
-            throw new FilterException(R.getAppProperties().getProperty(ErrorCodes.FILTER_NOT_IN_COLLECTION));
+            throw new FilterException(R.getAppProperties().get(ErrorCodes.FILTER_NOT_IN_COLLECTION));
         filters.remove(filter);
     }
 
@@ -95,7 +95,7 @@ public class FilterCollection extends Filter {
     @Override
     public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard) {
         if (filters.isEmpty())
-            throw new IllegalStateException(R.getAppProperties().getProperty(ErrorCodes.NO_FILTER_IN_COLLECTION));
+            throw new IllegalStateException(R.getAppProperties().get(ErrorCodes.NO_FILTER_IN_COLLECTION));
 
         for (Filter filter : filters) {
             filter.filter(startingPosition, positionsToFilter, gameBoard);

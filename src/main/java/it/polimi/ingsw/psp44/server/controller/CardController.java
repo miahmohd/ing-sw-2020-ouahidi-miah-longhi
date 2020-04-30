@@ -127,7 +127,7 @@ public class CardController {
      */
     private void executeTransition(Transition transition, Action lastAction, Board board) {
         if (currentState == null)
-            throw new IllegalArgumentException(AppProperties.getInstance().getProperty(ErrorCodes.TRANSITION_SCHEMA_ERROR));
+            throw new IllegalArgumentException(AppProperties.getInstance().get(ErrorCodes.TRANSITION_SCHEMA_ERROR));
 
         currentState = transition.getNextState();
 

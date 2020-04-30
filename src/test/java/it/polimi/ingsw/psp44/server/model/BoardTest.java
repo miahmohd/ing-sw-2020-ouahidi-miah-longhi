@@ -52,7 +52,7 @@ public class BoardTest {
                     boardTest.buildDome(p);
                     boardTest.buildUp(p);
                 });
-        CLIProperties.getInstance().getProperty("");
+        CLIProperties.getInstance().get("");
         assertThrows(ConstructionException.class,
                 () -> boardTest.buildUp(level3));
 

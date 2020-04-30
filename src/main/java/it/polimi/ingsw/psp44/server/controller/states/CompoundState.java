@@ -44,7 +44,7 @@ public class CompoundState extends State {
     public List<Action> getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
         ArrayList<Action> availableActions = new ArrayList<>();
         if (simpleStates.isEmpty())
-            throw new StateException(R.getAppProperties().getProperty(ErrorCodes.NO_STATE_IN_COLLECTION));
+            throw new StateException(R.getAppProperties().get(ErrorCodes.NO_STATE_IN_COLLECTION));
         for (State s : simpleStates)
             availableActions.addAll(s.getAvailableActions(board, selectedWorker, moveFilter, buildFilter));
         return availableActions;
@@ -58,7 +58,7 @@ public class CompoundState extends State {
      */
     public void addState(State newState) {
         if (newState == null)
-            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_STATE));
+            throw new IllegalArgumentException(R.getAppProperties().get(ErrorCodes.NULL_STATE));
         this.simpleStates.add(newState);
     }
 
@@ -71,9 +71,9 @@ public class CompoundState extends State {
      */
     public void removeState(State targetState) {
         if (targetState == null)
-            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_STATE));
+            throw new IllegalArgumentException(R.getAppProperties().get(ErrorCodes.NULL_STATE));
         if (!simpleStates.contains(targetState))
-            throw new StateException(R.getAppProperties().getProperty(ErrorCodes.STATE_NOT_IN_COLLECTION));
+            throw new StateException(R.getAppProperties().get(ErrorCodes.STATE_NOT_IN_COLLECTION));
         this.simpleStates.remove(targetState);
     }
 

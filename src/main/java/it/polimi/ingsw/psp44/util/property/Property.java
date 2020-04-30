@@ -52,7 +52,7 @@ public class Property {
      * @return the specified property if the code refers to an existing property
      * otherwise returns null;
      */
-    public String getProperty(String code) {
+    public String get(String code) {
         return this.prop.getProperty(code);
     }
 

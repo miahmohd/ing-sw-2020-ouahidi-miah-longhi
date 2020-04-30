@@ -19,10 +19,6 @@ public class IObservable<T> {
         this.observers.remove(observer);
     }
 
-    public void notifyObservers() {
-        this.notifyObservers(null);
-    }
-
     public void notifyObservers(T arg) {
         for (IObserver<T> o : this.observers) {
             o.update(this, arg);

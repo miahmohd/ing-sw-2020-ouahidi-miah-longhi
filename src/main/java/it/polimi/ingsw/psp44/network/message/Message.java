@@ -61,9 +61,9 @@ public class Message {
         CHOOSE_ACTION,
         CHOSEN_WORKER,
         CHOSEN_ACTION,
+        MODIFIED_POSITIONS,
         TURN_ENDABLE,
         TURN_END,
-        PLAYER_NICKNAME
-
+        PLAYER_NICKNAME,
     }
 }

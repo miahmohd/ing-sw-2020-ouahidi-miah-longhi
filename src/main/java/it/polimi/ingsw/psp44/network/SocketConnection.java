@@ -9,7 +9,7 @@ import java.net.Socket;
 /**
  * Represents a communication channel with the client.
  */
-public class SocketConnection extends Connection<String> {
+public class SocketConnection implements IConnection<String> {
 
     private final Socket socket;
 
@@ -37,7 +37,7 @@ public class SocketConnection extends Connection<String> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "Error";
+        return null;
     }
 
     public void writeLine(String msg) {

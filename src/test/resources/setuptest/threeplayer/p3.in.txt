@@ -1,0 +1,4 @@
+{"code":"CHOSEN_CARDS","body":"unexpected message from p3"}
+{"code":"CHOSEN_CARD","body":"unexpected message from p3"}
+{"code":"CHOSEN_CARD","body":"{\"chosen\":{\"id\":1,\"title\":\"Apollo\",\"subtitle\":\"God Of Music\",\"description\":\"Your Move: Your Worker may\\nmove into an opponent Worker’s\\nspace by forcing their Worker to\\nthe space yours just vacated.\"},\"rest\":[{\"id\":3,\"title\":\"Athena\",\"subtitle\":\"Goddess of Wisdom\",\"description\":\"Opponent’s Turn: If one of your\\nWorkers moved up on your last\\nturn, opponent Workers cannot\\nmove up this turn.\"}]}"}
+{"code":"CHOSEN_WORKERS_INITIAL_POSITION","body":"unexpected message from p3"}

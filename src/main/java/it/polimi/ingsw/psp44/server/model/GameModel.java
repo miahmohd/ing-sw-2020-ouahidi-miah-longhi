@@ -1,6 +1,9 @@
 package it.polimi.ingsw.psp44.server.model;
 
+import it.polimi.ingsw.psp44.network.communication.BodyFactory;
+import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
+import it.polimi.ingsw.psp44.util.IObservable;
 import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.R;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
@@ -9,8 +12,8 @@ import it.polimi.ingsw.psp44.util.exception.PlayerException;
 import java.util.LinkedList;
 import java.util.List;
 
-// TODO implementare observable
-public class GameModel {
+
+public class GameModel extends IObservable<Message> {
     private final Board gameBoard;
     private final LinkedList<Player> players;
     private int turnNumber;
@@ -34,7 +37,8 @@ public class GameModel {
      */
     public void applyAction(Action action) {
         action.execute(this.gameBoard);
-
+        Message toSend = new Message(Message.Code.MODIFIED_POSITIONS, BodyFactory.toCells(action.getModifiedPositions(), this.getBoard()));
+        this.notifyObservers(toSend);
     }
 
     /**
@@ -46,9 +50,9 @@ public class GameModel {
      */
     public void addPlayer(Player player) {
         if (player == null)
-            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_PLAYER));
+            throw new IllegalArgumentException(R.getAppProperties().get(ErrorCodes.NULL_PLAYER));
         if (players.contains(player))
-            throw new PlayerException(R.getAppProperties().getProperty(ErrorCodes.PLAYER_IN_GAME));
+            throw new PlayerException(R.getAppProperties().get(ErrorCodes.PLAYER_IN_GAME));
         this.players.addLast(player);
 
     }
@@ -62,9 +66,9 @@ public class GameModel {
      */
     public void removePlayer(String player) {
         if (player == null)
-            throw new IllegalArgumentException(R.getAppProperties().getProperty(ErrorCodes.NULL_PLAYER));
+            throw new IllegalArgumentException(R.getAppProperties().get(ErrorCodes.NULL_PLAYER));
         if (players.stream().noneMatch(p -> p.getNickname().equals(player)))
-            throw new PlayerException(R.getAppProperties().getProperty(ErrorCodes.PLAYER_NOT_IN_GAME));
+            throw new PlayerException(R.getAppProperties().get(ErrorCodes.PLAYER_NOT_IN_GAME));
 
         List<Position> playerWorkers = gameBoard.getPlayerWorkersPositions(player);
 
@@ -83,7 +87,7 @@ public class GameModel {
      */
     public void nextTurn() {
         if (players.isEmpty())
-            throw new IllegalStateException(R.getAppProperties().getProperty(ErrorCodes.NO_PLAYERS_IN_GAME));
+            throw new IllegalStateException(R.getAppProperties().get(ErrorCodes.NO_PLAYERS_IN_GAME));
 
         Player currentPlayer = players.removeFirst();
         players.addLast(currentPlayer);
@@ -96,7 +100,7 @@ public class GameModel {
      */
     public String getCurrentPlayerNickname() {
         if (players.isEmpty())
-            throw new IllegalStateException(R.getAppProperties().getProperty(ErrorCodes.NO_PLAYERS_IN_GAME));
+            throw new IllegalStateException(R.getAppProperties().get(ErrorCodes.NO_PLAYERS_IN_GAME));
         Player currentPlayer = players.getFirst();
         return currentPlayer.getNickname();
     }
@@ -127,21 +131,21 @@ public class GameModel {
     }
 
     /**
-     * Change position of the selected worker in this turn
-     *
-     * @param selectedWorkerPosition
-     */
-    public void setWorker(Position selectedWorkerPosition) {
-        gameBoard.setSelectedWorker(selectedWorkerPosition);
-    }
-
-    /**
      * return the worker selected for this turn
      *
      * @return selected worker position
      */
     public Position getWorker() {
         return gameBoard.getSelectedWorker();
+    }
+
+    /**
+     * Change position of the selected worker in this turn
+     *
+     * @param selectedWorkerPosition
+     */
+    public void setWorker(Position selectedWorkerPosition) {
+        gameBoard.setSelectedWorker(selectedWorkerPosition);
     }
 
 }

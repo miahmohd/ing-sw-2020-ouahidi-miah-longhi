@@ -1,6 +1,6 @@
 package it.polimi.ingsw.psp44.client;
 
-import it.polimi.ingsw.psp44.network.Connection;
+import it.polimi.ingsw.psp44.network.IConnection;
 import it.polimi.ingsw.psp44.network.IVirtual;
 import it.polimi.ingsw.psp44.network.message.Message;
 
@@ -12,11 +12,11 @@ import java.util.concurrent.Executors;
 public class VirtualServer implements IVirtual<Message>, Runnable {
 
     private final ExecutorService executor;
-    private final Connection<Message> connection;
+    private final IConnection<Message> connection;
     private final Map<Message.Code, IMessageHandlerFunction> router;
     private final IView<Message> view;
 
-    public VirtualServer(Connection connection, IView<Message> view) {
+    public VirtualServer(IConnection connection, IView<Message> view) {
         this.connection = connection;
         this.view = view;
 

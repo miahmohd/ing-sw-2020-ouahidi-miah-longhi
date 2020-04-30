@@ -1,6 +1,6 @@
 package it.polimi.ingsw.psp44.client;
 
-import it.polimi.ingsw.psp44.network.Connection;
+import it.polimi.ingsw.psp44.network.IConnection;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.util.JsonConvert;
 
@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class SocketConnection extends Connection<Message> {
+public class SocketConnection implements IConnection<Message> {
 
     private Socket socket;
     private Scanner read;

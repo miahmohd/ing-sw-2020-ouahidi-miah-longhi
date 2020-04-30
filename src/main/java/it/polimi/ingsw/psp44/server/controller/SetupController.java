@@ -12,7 +12,9 @@ import it.polimi.ingsw.psp44.util.Card;
 import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.R;
+import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +47,7 @@ public class SetupController {
         Player player = new Player(nickname);
         this.playerViews.put(nickname, view);
         this.model.addPlayer(player);
+        this.model.addObserver(view);
         this.setHandlers(view);
     }
 
@@ -73,7 +76,7 @@ public class SetupController {
         VirtualView currentPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
         Card[] allCards = R.getCards();
         String body = JsonConvert.getInstance().toJson(allCards, Card[].class);
-        Map<MessageHeader, String> headers = new HashMap<>();
+        Map<MessageHeader, String> headers = new EnumMap<>(MessageHeader.class);
 
         headers.put(MessageHeader.CARDINALITY, String.valueOf(this.getRegisteredPlayer()));
         Message message = new Message(Message.Code.CHOOSE_CARDS, headers, body);
@@ -87,17 +90,18 @@ public class SetupController {
      * Callback that handles the cards chosen by the first player.
      * It redirects the chosen cards to the second player.
      *
-     * @param view    the player that chose the cards.
+     * @param view    the player that chose the cards, the first one.
      * @param message message with code CHOSEN_CARDS containing information about the chosen cards.
      */
     public void chosenCardsMessageHandler(VirtualView view, Message message) {
-        if (message.getCode() == Message.Code.CHOSEN_CARDS) {
-            this.model.nextTurn();
-            VirtualView currentPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
-            Message toSend = new Message(Message.Code.CHOOSE_CARD, message.getBody());
+        if (playerViews.get(this.model.getCurrentPlayerNickname()) != view)
+            throw new IllegalStateException(R.getAppProperties().get(ErrorCodes.MESSAGE_FROM_UNEXPECTED_PLAYER));
 
-            currentPlayer.sendMessage(toSend);
-        }
+        this.model.nextTurn();
+        VirtualView currentPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
+        Message toSend = new Message(Message.Code.CHOOSE_CARD, message.getBody());
+
+        currentPlayer.sendMessage(toSend);
     }
 
 
@@ -110,30 +114,31 @@ public class SetupController {
      * @param message message with code CHOSEN_CARD containing information about the chosen card.
      */
     public void chosenCardMessageHandler(VirtualView view, Message message) {
-        if (message.getCode() == Message.Code.CHOSEN_CARD) {
+        if (playerViews.get(this.model.getCurrentPlayerNickname()) != view)
+            throw new IllegalStateException(R.getAppProperties().get(ErrorCodes.MESSAGE_FROM_UNEXPECTED_PLAYER));
 
-            BodyTemplates.CardMessage body = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplates.CardMessage.class);
-            Card chosen = body.getChosen();
-            Card[] rest = body.getRest();
+        BodyTemplates.CardMessage body = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplates.CardMessage.class);
+        Card chosen = body.getChosen();
+        Card[] rest = body.getRest();
 
 //          TODO this.playerCardController.put(this.model.getCurrentPlayerNickname(), CardFactory.getController(chosen));
 
-            if (!this.model.isFullRound()) {
-                this.model.nextTurn();
-                VirtualView nextPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
-                Message toSend = new Message(Message.Code.CHOOSE_CARD, JsonConvert.getInstance().toJson(rest, Card[].class));
+        if (!this.model.isFullRound()) {
+            this.model.nextTurn();
+            VirtualView nextPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
+            Message toSend = new Message(Message.Code.CHOOSE_CARD, JsonConvert.getInstance().toJson(rest, Card[].class));
 
-                nextPlayer.sendMessage(toSend);
-            } else {
+            nextPlayer.sendMessage(toSend);
+        } else {
 //                now view is the first player
-                Position[] positions = (Position[]) this.model.getBoard().getUnoccupiedPosition().toArray();
-                Message toSend = new Message(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION,
-                        JsonConvert.getInstance().toJson(positions, Position[].class));
+            Position[] positions = this.model.getBoard().getUnoccupiedPosition().toArray(new Position[0]);
+            Message toSend = new Message(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION,
+                    JsonConvert.getInstance().toJson(positions, Position[].class));
 
-                view.sendMessage(new Message(Message.Code.START));
-                view.sendMessage(toSend);
-            }
+            view.sendMessage(new Message(Message.Code.START));
+            view.sendMessage(toSend);
         }
+
     }
 
 
@@ -147,34 +152,35 @@ public class SetupController {
      * @param message message with code CHOSEN_WORKERS_INITIAL_POSITION containing information about the chose positions.
      */
     public void chosenWorkersInitialPositionsMessageHandler(VirtualView view, Message message) {
-        if (message.getCode() == Message.Code.CHOSEN_WORKERS_INITIAL_POSITION) {
-            Position[] chosenPositions = JsonConvert.getInstance().fromJson(message.getBody(), Position[].class);
+        if (playerViews.get(this.model.getCurrentPlayerNickname()) != view)
+            throw new IllegalStateException(R.getAppProperties().get(ErrorCodes.MESSAGE_FROM_UNEXPECTED_PLAYER));
 
-            String currentPlayerNickname = this.model.getCurrentPlayerNickname();
-            Worker female = new Worker(currentPlayerNickname, Worker.Sex.FEMALE);
-            Worker male = new Worker(currentPlayerNickname, Worker.Sex.MALE);
+        Position[] chosenPositions = JsonConvert.getInstance().fromJson(message.getBody(), Position[].class);
 
-            InitialPlacement femalePlacement = new InitialPlacement(chosenPositions[0], female);
-            InitialPlacement malePlacement = new InitialPlacement(chosenPositions[0], male);
-            this.model.applyAction(femalePlacement);
-            this.model.applyAction(malePlacement);
+        String currentPlayerNickname = this.model.getCurrentPlayerNickname();
+        Worker female = new Worker(currentPlayerNickname, Worker.Sex.FEMALE);
+        Worker male = new Worker(currentPlayerNickname, Worker.Sex.MALE);
 
-            this.model.nextTurn();
-            VirtualView nextPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
+        InitialPlacement femalePlacement = new InitialPlacement(chosenPositions[0], female);
+        InitialPlacement malePlacement = new InitialPlacement(chosenPositions[1], male);
+        this.model.applyAction(femalePlacement);
+        this.model.applyAction(malePlacement);
 
-            if (!this.model.isFullRound()) {
-                Position[] positions = (Position[]) this.model.getBoard().getUnoccupiedPosition().toArray();
-                Message toSend = new Message(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION,
-                        JsonConvert.getInstance().toJson(positions, Position[].class));
+        this.model.nextTurn();
+        VirtualView nextPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
 
-                nextPlayer.sendMessage(toSend);
-            } else {
-                this.controller.setVirtualViews(this.playerViews);
-                this.controller.setCardControllers(this.playerCardController);
-                this.controller.setModel(this.model);
+        if (!this.model.isFullRound()) {
+            Position[] positions =  this.model.getBoard().getUnoccupiedPosition().toArray(new Position[0]);
+            Message toSend = new Message(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION,
+                    JsonConvert.getInstance().toJson(positions, Position[].class));
 
-                this.controller.start();
-            }
+            nextPlayer.sendMessage(toSend);
+        } else {
+            this.controller.setVirtualViews(this.playerViews);
+            this.controller.setCardControllers(this.playerCardController);
+            this.controller.setModel(this.model);
+
+            this.controller.start();
         }
     }
 

@@ -25,6 +25,8 @@ public final class ErrorCodes {
 
     public static final String MESSAGE_HANDLER_NOT_FOUND = "MESSAGE_HANDLER_NOT_FOUND";
 
+    public static final String MESSAGE_FROM_UNEXPECTED_PLAYER = "MESSAGE_FROM_UNEXPECTED_PLAYER";
+
     private ErrorCodes() {
     }
 }

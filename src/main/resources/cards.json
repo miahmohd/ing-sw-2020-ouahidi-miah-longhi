@@ -10,6 +10,12 @@
     "title": "Artemis",
     "subtitle": "Goddess of the Hunt",
     "description": "Your Move: Your Worker may\nmove one additional time, but not\nback to its initial space."
+  },
+  {
+    "id": 3,
+    "title": "Athena",
+    "subtitle": "Goddess of Wisdom",
+    "description": "Opponent’s Turn: If one of your\nWorkers moved up on your last\nturn, opponent Workers cannot\nmove up this turn."
   }
 ]
 

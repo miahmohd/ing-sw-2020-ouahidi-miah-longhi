@@ -25,8 +25,8 @@ public class AssetPathProperties extends Property {
      * @return absolute path to asset file
      */
     @Override
-    public String getProperty(String code) {
-        String assetName = super.getProperty(code);
+    public String get(String code) {
+        String assetName = super.get(code);
         Path path = Paths.get(assetDirectory, assetName);
         return path.toString();
     }
