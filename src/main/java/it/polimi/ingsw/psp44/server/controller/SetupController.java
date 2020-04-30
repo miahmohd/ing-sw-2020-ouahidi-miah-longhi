@@ -95,7 +95,7 @@ public class SetupController {
      */
     public void chosenCardsMessageHandler(VirtualView view, Message message) {
         if (playerViews.get(this.model.getCurrentPlayerNickname()) != view)
-            throw new IllegalStateException(R.getAppProperties().get(ErrorCodes.MESSAGE_FROM_UNEXPECTED_PLAYER));
+            return;
 
         this.model.nextTurn();
         VirtualView currentPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
@@ -115,7 +115,7 @@ public class SetupController {
      */
     public void chosenCardMessageHandler(VirtualView view, Message message) {
         if (playerViews.get(this.model.getCurrentPlayerNickname()) != view)
-            throw new IllegalStateException(R.getAppProperties().get(ErrorCodes.MESSAGE_FROM_UNEXPECTED_PLAYER));
+            return;
 
         BodyTemplates.CardMessage body = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplates.CardMessage.class);
         Card chosen = body.getChosen();
@@ -153,7 +153,7 @@ public class SetupController {
      */
     public void chosenWorkersInitialPositionsMessageHandler(VirtualView view, Message message) {
         if (playerViews.get(this.model.getCurrentPlayerNickname()) != view)
-            throw new IllegalStateException(R.getAppProperties().get(ErrorCodes.MESSAGE_FROM_UNEXPECTED_PLAYER));
+            return;
 
         Position[] chosenPositions = JsonConvert.getInstance().fromJson(message.getBody(), Position[].class);
 
@@ -170,7 +170,7 @@ public class SetupController {
         VirtualView nextPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
 
         if (!this.model.isFullRound()) {
-            Position[] positions =  this.model.getBoard().getUnoccupiedPosition().toArray(new Position[0]);
+            Position[] positions = this.model.getBoard().getUnoccupiedPosition().toArray(new Position[0]);
             Message toSend = new Message(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION,
                     JsonConvert.getInstance().toJson(positions, Position[].class));
 

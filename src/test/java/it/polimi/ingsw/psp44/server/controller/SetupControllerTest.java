@@ -50,6 +50,7 @@ public class SetupControllerTest {
         VirtualView p2 = new VirtualView(p2Connection);
         VirtualView p3 = new VirtualView(p3Connection);
 
+
         setupController.addPlayer("p1", p1);
         assertEquals(1, setupController.getRegisteredPlayer());
         setupController.addPlayer("p2", p2);
@@ -62,15 +63,10 @@ public class SetupControllerTest {
 //        Send START CHOOSE_CARDS to p1
         setupController.start();
 
-
 //        Receive CHOSEN_CARDS from p1 and send CHOOSE_CARD to p2
-        assertThrows(IllegalStateException.class, () -> setupController.chosenCardsMessageHandler(p2, getNextMessageFrom(p2Connection)));
-        assertThrows(IllegalStateException.class, () -> setupController.chosenCardsMessageHandler(p3, getNextMessageFrom(p3Connection)));
         setupController.chosenCardsMessageHandler(p1, getNextMessageFrom(p1Connection));
 
 //        Receive CHOSEN_CARD from p2, and send CHOOSE_CARD to p3
-        assertThrows(IllegalStateException.class, () -> setupController.chosenCardMessageHandler(p1, getNextMessageFrom(p1Connection)));
-        assertThrows(IllegalStateException.class, () -> setupController.chosenCardMessageHandler(p3, getNextMessageFrom(p3Connection)));
         setupController.chosenCardMessageHandler(p2, getNextMessageFrom(p2Connection));
 
 //        Receive CHOSEN_CARD from p3, and send CHOSE_CARD to p1
@@ -80,8 +76,6 @@ public class SetupControllerTest {
         setupController.chosenCardMessageHandler(p1, getNextMessageFrom(p1Connection));
 
 //        Receive CHOSEN_WORKERS_INITIAL_POSITION from p1, notify changed positions to all, and send CHOOSE_WORKERS_INITIAL_POSITION to p2
-        assertThrows(IllegalStateException.class, () -> setupController.chosenWorkersInitialPositionsMessageHandler(p2, getNextMessageFrom(p2Connection)));
-        assertThrows(IllegalStateException.class, () -> setupController.chosenWorkersInitialPositionsMessageHandler(p3, getNextMessageFrom(p3Connection)));
         setupController.chosenWorkersInitialPositionsMessageHandler(p1, getNextMessageFrom(p1Connection));
 
 //        Receive CHOSEN_WORKERS_INITIAL_POSITION from p2, notify changed positions to all, and send CHOOSE_WORKERS_INITIAL_POSITION to p3
@@ -89,6 +83,7 @@ public class SetupControllerTest {
 
 //        Receive CHOSEN_WORKERS_INITIAL_POSITION from p3, notify changed positions to all, and send START, CHOOSE_WORKER to p1 for game phase.
 //        setupController.chosenWorkersInitialPositionsMessageHandler(p3, getNextMessageFrom(p3Connection));
+
 
 //        Expected messages sent to the views
         String p1ExpectedOut = new String(Files.readAllBytes(Paths.get(getClass().getResource("/setuptest/threeplayer/p1.out.txt").toURI())));
