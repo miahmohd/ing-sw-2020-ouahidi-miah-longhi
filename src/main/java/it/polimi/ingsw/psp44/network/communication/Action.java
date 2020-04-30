@@ -31,11 +31,9 @@ public class Action {
         return target;
     }
 
-
     public boolean isBuild() {
         return build;
     }
-
 
     public boolean isMove() {
         return move;

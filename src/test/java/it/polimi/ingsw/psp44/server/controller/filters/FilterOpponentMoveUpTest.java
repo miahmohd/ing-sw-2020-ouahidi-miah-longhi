@@ -60,42 +60,42 @@ public class FilterOpponentMoveUpTest {
         //0,0 -> 1,1
         actions = state.getAvailableActions(gameBoard, new Position(0, 0), activeMoveFilter, null);
         actionToPerform = actions.stream().filter(a -> a.getTargetPosition().equals(new Position(1, 1))).findFirst().get();
-        gm.applyAction(actionToPerform);
+        gm.doAction(actionToPerform);
         activeMoveFilter.getFilters().stream().filter(f -> f.isExternal()).findFirst().get().update(actionToPerform, gameBoard);
         assertTrue(activeMoveFilter.getFilters().stream().filter(f -> f.isExternal()).findFirst().get().isActive());
 
         //1,1 -> 2,1
         actions = state.getAvailableActions(gameBoard, new Position(1, 1), activeMoveFilter, null);
         actionToPerform = actions.stream().filter(a -> a.getTargetPosition().equals(new Position(2, 1))).findFirst().get();
-        gm.applyAction(actionToPerform);
+        gm.doAction(actionToPerform);
         activeMoveFilter.getFilters().stream().filter(f -> f.isExternal()).findFirst().get().update(actionToPerform, gameBoard);
         assertFalse(activeMoveFilter.getFilters().stream().filter(f -> f.isExternal()).findFirst().get().isActive());
 
         //2,1 -> 3,2
         actions = state.getAvailableActions(gameBoard, new Position(2, 1), activeMoveFilter, null);
         actionToPerform = actions.stream().filter(a -> a.getTargetPosition().equals(new Position(3, 2))).findFirst().get();
-        gm.applyAction(actionToPerform);
+        gm.doAction(actionToPerform);
         activeMoveFilter.getFilters().stream().filter(f -> f.isExternal()).findFirst().get().update(actionToPerform, gameBoard);
         assertTrue(activeMoveFilter.getFilters().stream().filter(f -> f.isExternal()).findFirst().get().isActive());
 
         //3,2 -> 2,3
         actions = state.getAvailableActions(gameBoard, new Position(3, 2), activeMoveFilter, null);
         actionToPerform = actions.stream().filter(a -> a.getTargetPosition().equals(new Position(2, 3))).findFirst().get();
-        gm.applyAction(actionToPerform);
+        gm.doAction(actionToPerform);
         activeMoveFilter.getFilters().stream().filter(f -> f.isExternal()).findFirst().get().update(actionToPerform, gameBoard);
         assertFalse(activeMoveFilter.getFilters().stream().filter(f -> f.isExternal()).findFirst().get().isActive());
 
         //2,3 -> 3,3
         actions = state.getAvailableActions(gameBoard, new Position(2, 3), activeMoveFilter, null);
         actionToPerform = actions.stream().filter(a -> a.getTargetPosition().equals(new Position(3, 3))).findFirst().get();
-        gm.applyAction(actionToPerform);
+        gm.doAction(actionToPerform);
         activeMoveFilter.getFilters().stream().filter(f -> f.isExternal()).findFirst().get().update(actionToPerform, gameBoard);
         assertTrue(activeMoveFilter.getFilters().stream().filter(f -> f.isExternal()).findFirst().get().isActive());
 
         //3,3 -> 4,4
         actions = state.getAvailableActions(gameBoard, new Position(3, 3), activeMoveFilter, null);
         actionToPerform = actions.stream().filter(a -> a.getTargetPosition().equals(new Position(4, 4))).findFirst().get();
-        gm.applyAction(actionToPerform);
+        gm.doAction(actionToPerform);
         activeMoveFilter.getFilters().stream().filter(f -> f.isExternal()).findFirst().get().update(actionToPerform, gameBoard);
         assertFalse(activeMoveFilter.getFilters().stream().filter(f -> f.isExternal()).findFirst().get().isActive());
 

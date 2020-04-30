@@ -35,7 +35,7 @@ public class GameModel extends IObservable<Message> {
      *
      * @param action object representing a change to the board.
      */
-    public void applyAction(Action action) {
+    public void doAction(Action action) {
         action.execute(this.gameBoard);
         Message toSend = new Message(Message.Code.MODIFIED_POSITIONS, BodyFactory.toCells(action.getModifiedPositions(), this.getBoard()));
         this.notifyObservers(toSend);

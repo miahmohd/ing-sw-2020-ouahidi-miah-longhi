@@ -104,9 +104,9 @@ public class GameModelTest {
         Action move = new SimpleMovement(new Position(0, 1), new Position(1, 1));
         Action move2 = new PushForwardMovement(new Position(1, 1), new Position(1, 2), new Position(1, 3));
         Action move3 = new SimpleMovement(new Position(1, 2), new Position(1, 3));
-        gameModel.applyAction(move);
-        gameModel.applyAction(move2);
-        gameModel.applyAction(move3);
+        gameModel.doAction(move);
+        gameModel.doAction(move2);
+        gameModel.doAction(move3);
         assertEquals(new Position(1, 3), gameModel.getWorker());
 
 

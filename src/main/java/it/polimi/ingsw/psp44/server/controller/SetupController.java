@@ -121,7 +121,7 @@ public class SetupController {
         Card chosen = body.getChosen();
         Card[] rest = body.getRest();
 
-//          TODO this.playerCardController.put(this.model.getCurrentPlayerNickname(), CardFactory.getController(chosen));
+        this.playerCardController.put(this.model.getCurrentPlayerNickname(), CardFactory.getController(chosen));
 
         if (!this.model.isFullRound()) {
             this.model.nextTurn();
@@ -163,8 +163,8 @@ public class SetupController {
 
         InitialPlacement femalePlacement = new InitialPlacement(chosenPositions[0], female);
         InitialPlacement malePlacement = new InitialPlacement(chosenPositions[1], male);
-        this.model.applyAction(femalePlacement);
-        this.model.applyAction(malePlacement);
+        this.model.doAction(femalePlacement);
+        this.model.doAction(malePlacement);
 
         this.model.nextTurn();
         VirtualView nextPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());

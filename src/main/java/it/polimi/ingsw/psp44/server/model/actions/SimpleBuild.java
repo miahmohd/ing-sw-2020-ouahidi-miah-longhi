@@ -32,6 +32,4 @@ public class SimpleBuild extends Build {
         else
             board.buildUp(this.targetPosition);
     }
-
-
 }

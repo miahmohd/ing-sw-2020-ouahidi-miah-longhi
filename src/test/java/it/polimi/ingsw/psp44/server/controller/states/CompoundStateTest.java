@@ -136,9 +136,9 @@ public class CompoundStateTest {
         assertTrue(allowedActionExpected.containsAll(allowedActionActual));
 
         for (Action a : allowedActionExpected)
-            gmExpected.applyAction(a);
+            gmExpected.doAction(a);
         for (Action a : allowedActionActual)
-            gmActual.applyAction(a);
+            gmActual.doAction(a);
         for (Position p : field) {
             assertEquals(boardTestExpected.getLevel(p), boardTestActual.getLevel(p));
             assertEquals(boardTestExpected.isDome(p), boardTestActual.isDome(p));

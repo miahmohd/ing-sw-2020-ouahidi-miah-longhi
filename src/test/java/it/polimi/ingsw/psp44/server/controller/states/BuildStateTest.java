@@ -104,9 +104,9 @@ public class BuildStateTest {
         assertTrue(allowedActionExpected.containsAll(allowedActionActual));
 
         for (Action a : allowedActionExpected)
-            gmExpected.applyAction(a);
+            gmExpected.doAction(a);
         for (Action a : allowedActionActual)
-            gmActual.applyAction(a);
+            gmActual.doAction(a);
         for (Position p : field) {
             assertEquals(boardTestExpected.getLevel(p), boardTestActual.getLevel(p));
             assertEquals(boardTestExpected.isDome(p), boardTestActual.isDome(p));
@@ -148,7 +148,7 @@ public class BuildStateTest {
                     a.getTargetPosition().equals(field[13]) ||
                     a.getTargetPosition().equals(field[17]) ||
                     a.getTargetPosition().equals(field[23])) && a instanceof SimpleBuild))
-                gmExpected.applyAction(a);
+                gmExpected.doAction(a);
         }
         for (Action a : allowedActionActual) {
             if (!((a.getTargetPosition().equals(field[1]) ||
@@ -156,7 +156,7 @@ public class BuildStateTest {
                     a.getTargetPosition().equals(field[13]) ||
                     a.getTargetPosition().equals(field[17]) ||
                     a.getTargetPosition().equals(field[23])) && a instanceof SimpleBuild))
-                gmActual.applyAction(a);
+                gmActual.doAction(a);
         }
         for (Position p : field) {
             assertEquals(boardTestExpected.getLevel(p), boardTestActual.getLevel(p));
@@ -209,9 +209,9 @@ public class BuildStateTest {
         assertFalse(f2.isActive());
 
         for (Action a : allowedActionExpected)
-            gmExpected.applyAction(a);
+            gmExpected.doAction(a);
         for (Action a : allowedActionActual)
-            gmActual.applyAction(a);
+            gmActual.doAction(a);
         for (Position p : field) {
             assertEquals(boardTestExpected.getLevel(p), boardTestActual.getLevel(p));
             assertEquals(boardTestExpected.isDome(p), boardTestActual.isDome(p));

@@ -130,9 +130,9 @@ public class MoveStateTest {
         assertTrue(allowedActionExpected.containsAll(allowedActionActual));
 
         for (Action a : allowedActionExpected)
-            gmExpected.applyAction(a);
+            gmExpected.doAction(a);
         for (Action a : allowedActionActual)
-            gmActual.applyAction(a);
+            gmActual.doAction(a);
         for (Position p : field)
             assertEquals(boardTestActual.isWorker(p), boardTestExpected.isWorker(p));
 
@@ -167,9 +167,9 @@ public class MoveStateTest {
 
 
         for (Action a : allowedActionExpected)
-            gmExpected.applyAction(a);
+            gmExpected.doAction(a);
         for (Action a : allowedActionActual)
-            gmActual.applyAction(a);
+            gmActual.doAction(a);
         for (Position p : field) {
             assertEquals(boardTestActual.isWorker(p), boardTestExpected.isWorker(p));
         }
@@ -212,9 +212,9 @@ public class MoveStateTest {
             assertEquals(boardTestActual.isWorker(p), boardTestExpected.isWorker(p));
         }
         for (Action a : allowedActionExpected)
-            gmExpected.applyAction(a);
+            gmExpected.doAction(a);
         for (Action a : allowedActionActual)
-            gmActual.applyAction(a);
+            gmActual.doAction(a);
         for (Position p : field) {
             assertEquals(boardTestActual.isWorker(p), boardTestExpected.isWorker(p));
         }

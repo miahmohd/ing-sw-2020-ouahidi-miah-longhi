@@ -65,7 +65,7 @@ public class Controller {
         if (message.getCode() == Message.Code.CHOSEN_ACTION) {
             selectedActionIndex = JsonConvert.getInstance().fromJson(message.getBody(), Integer.class);
             selectedAction = this.availableActions.get(selectedActionIndex);
-            model.applyAction(selectedAction);
+            model.doAction(selectedAction);
             if (currentPlayer.checkVictory(selectedAction, model.getBoard()))
                 won();
             if (currentPlayer.nextState(selectedAction, model.getBoard())) {

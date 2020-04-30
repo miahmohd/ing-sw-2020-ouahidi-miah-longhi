@@ -111,7 +111,7 @@ public class CardControllerTest {
 
         //0 -MOVE->5
         lastaction = new SimpleMovement(field[0], field[5]);
-        gm.applyAction(lastaction);
+        gm.doAction(lastaction);
 
         assertFalse(controller.checkVictory(lastaction, boardTest));
         assertTrue(controller.nextState(lastaction, boardTest));
@@ -131,7 +131,7 @@ public class CardControllerTest {
 
         // 5 -BUILD-> 1
         lastaction = new SimpleBuild(field[1]);
-        gm.applyAction(lastaction);
+        gm.doAction(lastaction);
 
         assertFalse(controller.checkVictory(lastaction, boardTest));
         assertTrue(controller.nextState(lastaction, boardTest));
@@ -146,7 +146,7 @@ public class CardControllerTest {
         transitionList.remove(0);
         //5 -MOVE-> 10
         lastaction = new SimpleMovement(field[5], field[10]);
-        gm.applyAction(lastaction);
+        gm.doAction(lastaction);
 
         assertFalse(controller.checkVictory(lastaction, boardTest));
         assertTrue(controller.nextState(lastaction, boardTest));
@@ -160,7 +160,7 @@ public class CardControllerTest {
         transitionList.remove(0);
         //10 -MOVE-> 11
         lastaction = new SimpleMovement(field[10], field[11]);
-        gm.applyAction(lastaction);
+        gm.doAction(lastaction);
         assertTrue(controller.checkVictory(lastaction, boardTest));
         assertTrue(controller.nextState(lastaction, boardTest));
         assertFalse(controller.isEndableTurn());
@@ -175,7 +175,7 @@ public class CardControllerTest {
         transitionList.remove(0);
         //11 -MOVE-> 17
         lastaction = new SimpleMovement(field[11], field[17]);
-        gm.applyAction(lastaction);
+        gm.doAction(lastaction);
         assertFalse(controller.checkVictory(lastaction, boardTest));
         assertTrue(controller.nextState(lastaction, boardTest));
         assertFalse(controller.isEndableTurn());
@@ -190,7 +190,7 @@ public class CardControllerTest {
         transitionList.remove(0);
         //17 -BUILD-> 13
         lastaction = new SimpleBuild(field[13]);
-        gm.applyAction(lastaction);
+        gm.doAction(lastaction);
 
         assertFalse(controller.checkVictory(lastaction, boardTest));
         assertTrue(controller.nextState(lastaction, boardTest));
@@ -203,7 +203,7 @@ public class CardControllerTest {
 
         //17 -BUILD-> 13
         lastaction = new SimpleBuild(field[13]);
-        gm.applyAction(lastaction);
+        gm.doAction(lastaction);
 
         assertFalse(controller.checkVictory(lastaction, boardTest));
         assertFalse(controller.nextState(lastaction, boardTest));
