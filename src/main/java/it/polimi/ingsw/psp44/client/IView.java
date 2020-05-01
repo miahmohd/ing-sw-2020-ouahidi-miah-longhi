@@ -14,12 +14,14 @@ public interface IView<T> {
     void chooseNickname(T chooseNickname);
 
     /**
-     * Method that defines what to do in case of recieving workers
+     * Method that defines what to do in case of receiving workers
      */
     void chooseWorkerFrom(T workers);
 
+    void chooseWorkersInitialPositionFrom(T workers);
+
     /**
-     * Method that defines what to do in case of recieving actions
+     * Method that defines what to do in case of receiving actions
      */
     void chooseActionFrom(T actions);
 

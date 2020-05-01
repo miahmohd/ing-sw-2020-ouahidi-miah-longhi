@@ -3,6 +3,7 @@ package it.polimi.ingsw.psp44.client.cli;
 import it.polimi.ingsw.psp44.client.cli.Graphics.Color;
 import it.polimi.ingsw.psp44.util.Position;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,8 +55,7 @@ public class Board {
      * @param actions
      * @return String formatted according to Graphics specification standard
      */
-    public String highlight(List<Action> actions) {
-        //TODO:
+    public String highlightActions(List<Action> actions) {
         return "";
     }
 
@@ -132,5 +132,10 @@ public class Board {
 
     private void cleanBoard() {
         sb.delete(0, sb.length());
+    }
+
+
+    public String highlightPositions(Position[] positions) {
+        return "";
     }
 }

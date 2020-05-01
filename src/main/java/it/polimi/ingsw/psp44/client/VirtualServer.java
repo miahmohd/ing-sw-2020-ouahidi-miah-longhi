@@ -31,6 +31,8 @@ public class VirtualServer implements IVirtual<Message>, Runnable {
         router.put(Message.Code.START, view::startTurn);
         router.put(Message.Code.CHOOSE_CARDS, view::chooseCardsFrom);
         router.put(Message.Code.CHOOSE_CARD, view::chooseCardFrom);
+        router.put(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION, view::chooseWorkersInitialPositionFrom);
+
     }
 
     @Override

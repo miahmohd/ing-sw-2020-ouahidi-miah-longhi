@@ -5,9 +5,11 @@ import it.polimi.ingsw.psp44.network.IVirtual;
 import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
+import it.polimi.ingsw.psp44.util.Card;
 import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.Position;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -47,7 +49,7 @@ public class CLIView implements IView<Message>, Runnable {
         System.out.println("Gimme your nickname");
         this.playerNickname = input.nextLine();
 
-
+        System.out.println("What you want to do? New Game or Join Game? N/J");
         chosenOption = input.nextLine();
         chosenOption = chosenOption.replace(" ", "").toLowerCase();
 
@@ -70,29 +72,72 @@ public class CLIView implements IView<Message>, Runnable {
 
     @Override
     public void chooseCardsFrom(Message cards) {
-        System.out.println("You need to choose cards from this pile");
+        int cardinality;
+        Card[] cardList, chosenCards;
+        Card chosenCard;
+        String responseBody;
+        Message response;
 
-        class Card {
-            int id;
-            String description;
-        }
+        cardinality = Integer.parseInt(cards.getHeader().get(MessageHeader.CARDINALITY));
 
-        int cardinality = Integer.parseInt(cards.getHeader().get(MessageHeader.CARDINALITY));
+        //TODO: Change this using body factory
+        cardList = JsonConvert.getInstance().fromJson(cards.getBody(), Card[].class);
+        chosenCards = new Card[cardinality];
 
-        Card[] cardsList = JsonConvert.getInstance().fromJson(cards.getBody(), Card[].class);
+        System.out.println(String.format("You need to choose %d cards from this pile (just id)", cardinality));
 
-        for (Card card : cardsList) {
-            System.out.println(card.id);
-            System.out.println(card.description);
+
+        for (Card card : cardList) {
+            System.out.println(card);
             System.out.println();
         }
 
+        for(int numberOfCardCounter = 1; numberOfCardCounter <= cardinality; numberOfCardCounter++) {
+            System.out.println(String.format("chose id number %d", numberOfCardCounter));
+            int chosenCardId = Integer.parseInt(input.nextLine());
 
+            chosenCard = Arrays.stream(cardList).filter(card -> card.getId()==chosenCardId).findAny().get();
+
+            chosenCards[numberOfCardCounter-1] = chosenCard;
+        }
+
+        //TODO: Change this using body factory
+        responseBody = JsonConvert.getInstance().toJson(chosenCards, Card[].class);
+        response = new Message(Message.Code.CHOSEN_CARDS, responseBody);
+        virtualServer.sendMessage(response);
     }
 
     @Override
     public void chooseCardFrom(Message cards) {
+        int chosenCardId;
+        Card[] cardList, restOfCards;
+        Card chosenCard;
+        BodyTemplates.CardMessage bodyTemplate;
+        String responseBody;
+        Message response;
+
+        //TODO: Change this using body factory
+        cardList = JsonConvert.getInstance().fromJson(cards.getBody(), Card[].class);
+        System.out.println(String.format("choose your card"));
+
+        for (Card card : cardList) {
+            System.out.println(card);
+            System.out.println();
+        }
+
+        chosenCardId = Integer.parseInt(input.nextLine());
+
+        chosenCard = Arrays.stream(cardList).filter(card -> card.getId()==chosenCardId).findAny().get();
+        restOfCards = Arrays.stream(cardList).filter(card -> !card.equals(chosenCard)).toArray(Card[]::new);
+
+        //TODO: Change this using body factory
+        bodyTemplate = new BodyTemplates.CardMessage(chosenCard, restOfCards);
+
+        responseBody = JsonConvert.getInstance().toJson(bodyTemplate, BodyTemplates.CardMessage.class);
+        response = new Message(Message.Code.CHOSEN_CARD, responseBody);
+        virtualServer.sendMessage(response);
     }
+
 
     @Override
     public void chooseNickname(Message chooseNickname) {
@@ -112,21 +157,16 @@ public class CLIView implements IView<Message>, Runnable {
 
     @Override
     public void chooseWorkerFrom(Message workers) {
-        String body = workers.getBody();
-        Position[] workerPositions = JsonConvert.getInstance().fromJson(body, Position[].class);
 
-        //board.highlightPositions(workerPositions);
 
-        for (Position workerPosition : workerPositions) {
-            display.append(workerPosition);
-        }
+    }
 
-        //TODO: add the stuff
+    @Override
+    public void chooseWorkersInitialPositionFrom(Message workers) {
     }
 
     @Override
     public void chooseActionFrom(Message actions) {
-
     }
 
 
@@ -189,30 +229,3 @@ public class CLIView implements IView<Message>, Runnable {
         this.gameOptions.put("j", Message.Code.JOIN_GAME);
     }
 }
-
-
-/**
- * public static void main(String[] args) {
- * <p>
- * String myPlayer = "ciao";
- * String opponent1 = "mio dio";
- * <p>
- * board = new Board(myPlayer, Arrays.asList(opponent1));
- * <p>
- * List<Cell> cellsToUpdate;
- * <p>
- * cellsToUpdate = new ArrayList<Cell>(Arrays.asList(
- * new Cell(new Position(1, 0), 1, false, null, ""),
- * new Cell(new Position(1, 1), 2, false, null, ""),
- * new Cell(new Position(0, 1), 3, false, null, ""),
- * new Cell(new Position(2, 4), 2, false, null, myPlayer),
- * new Cell(new Position(2, 2), 0, false, null, opponent1),
- * new Cell(new Position(1, 4), 1, false, null, myPlayer),
- * new Cell(new Position(3, 3), 2, false, null, opponent1),
- * new Cell(new Position(4, 4), 1, true, null, "")
- * ));
- * <p>
- * System.out.print(board.update(cellsToUpdate));
- * //System.out.println(Graphics.Color.FIRST_LEVEL+Graphics.Color.DOME.getEscape()+Graphics.Element.FEMALE_WORKER.getEscape()+" "+Graphics.Color.SECOND_LEVEL+"secondo"+Graphics.Color.THIRD_LEVEL+"terzo"+ Graphics.Color.RESET);
- * }
- */

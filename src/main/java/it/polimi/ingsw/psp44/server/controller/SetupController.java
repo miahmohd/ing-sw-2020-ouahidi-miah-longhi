@@ -114,7 +114,10 @@ public class SetupController {
      * @param message message with code CHOSEN_CARD containing information about the chosen card.
      */
     public void chosenCardMessageHandler(VirtualView view, Message message) {
-        if (playerViews.get(this.model.getCurrentPlayerNickname()) != view)
+        Message toSend;
+        VirtualView currentView = playerViews.get(this.model.getCurrentPlayerNickname());
+
+        if (currentView != view)
             return;
 
         BodyTemplates.CardMessage body = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplates.CardMessage.class);
@@ -123,21 +126,19 @@ public class SetupController {
 
         this.playerCardController.put(this.model.getCurrentPlayerNickname(), CardFactory.getController(chosen));
 
-        if (!this.model.isFullRound()) {
-            this.model.nextTurn();
-            VirtualView nextPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
-            Message toSend = new Message(Message.Code.CHOOSE_CARD, JsonConvert.getInstance().toJson(rest, Card[].class));
+        this.model.nextTurn();
+        currentView = playerViews.get(this.model.getCurrentPlayerNickname());
 
-            nextPlayer.sendMessage(toSend);
-        } else {
-//                now view is the first player
+        if (this.model.isFullRound()) {
             Position[] positions = this.model.getBoard().getUnoccupiedPosition().toArray(new Position[0]);
-            Message toSend = new Message(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION,
+            toSend = new Message(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION,
                     JsonConvert.getInstance().toJson(positions, Position[].class));
 
-            view.sendMessage(new Message(Message.Code.START));
-            view.sendMessage(toSend);
+            currentView.sendMessage(new Message(Message.Code.START));
+        } else {
+            toSend = new Message(Message.Code.CHOOSE_CARD, JsonConvert.getInstance().toJson(rest, Card[].class));
         }
+        currentView.sendMessage(toSend);
 
     }
 

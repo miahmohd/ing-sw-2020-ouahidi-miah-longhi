@@ -6,4 +6,9 @@ public class CardFactory {
     public static CardController getController(Card chosen) {
         return null;
     }
+
+
+    public static CardController getDefaultController(){
+        return null;
+    }
 }
