@@ -50,7 +50,7 @@ public interface IView<T> {
      *
      * @param players
      */
-    void players(T players);
+    void allPlayerNicknames(T players);
 
     /**
      * Method that defines what to do in case of update
