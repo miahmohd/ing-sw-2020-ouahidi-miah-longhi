@@ -3,6 +3,7 @@ package it.polimi.ingsw.psp44.client.cli;
 import it.polimi.ingsw.psp44.client.IView;
 import it.polimi.ingsw.psp44.network.IVirtual;
 import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
+import it.polimi.ingsw.psp44.network.communication.Cell;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.util.Card;
@@ -19,17 +20,19 @@ public class CLIView implements IView<Message>, Runnable {
     private Board board;
     private IVirtual<Message> virtualServer;
     private Map<String, Message.Code> gameOptions;
+    private Console console;
 
 
-    public CLIView(Scanner input, StringBuffer display, Board board, Map<String, Message.Code> gameOptions) {
+    public CLIView(Scanner input, StringBuffer display, Board board, Map<String, Message.Code> gameOptions, Console console) {
         this.input = input;
         this.display = display;
         this.board = board;
         this.gameOptions = gameOptions;
+        this.console = console;
     }
 
     public CLIView() {
-        this(new Scanner(System.in), new StringBuffer(), new Board(), new HashMap<>());
+        this(new Scanner(System.in), new StringBuffer(), new Board(), new HashMap<>(), new Console());
         initGameOptions();
     }
 
@@ -44,18 +47,19 @@ public class CLIView implements IView<Message>, Runnable {
         int numberOfPlayers;
 
         //TODO: this prompt needs to be in another location
-        System.out.println("Gimme your nickname");
-        this.playerNickname = input.nextLine();
+        console.writeLine("Gimme your nickname");
 
-        System.out.println("What you want to do? New Game or Join Game? N/J");
-        chosenOption = input.nextLine();
+        this.playerNickname = getInput();
+
+        console.writeLine("What you want to do? New Game or Join Game? N/J");
+        chosenOption = getInput();
         chosenOption = chosenOption.replace(" ", "").toLowerCase();
 
         messageCode = this.gameOptions.get(chosenOption);
 
         if (messageCode == Message.Code.NEW_GAME) {
-            System.out.println("How many Players");
-            numberOfPlayers = Integer.parseInt(input.nextLine());
+            console.writeLine("How many Players");
+            numberOfPlayers = Integer.parseInt(getInput());
             messageBody = new BodyTemplates.FirstMessage(this.playerNickname, numberOfPlayers);
 
         } else {
@@ -65,6 +69,12 @@ public class CLIView implements IView<Message>, Runnable {
         responseBody = JsonConvert.getInstance().toJson(messageBody, BodyTemplates.FirstMessage.class);
         response = new Message(messageCode, responseBody);
         virtualServer.sendMessage(response);
+    }
+
+
+    private String getInput() {
+        //System.out.print(Graphics.Behaviour.MOVE_RIGHT);
+        return input.nextLine();
     }
 
 
@@ -82,17 +92,23 @@ public class CLIView implements IView<Message>, Runnable {
         cardList = JsonConvert.getInstance().fromJson(cards.getBody(), Card[].class);
         chosenCards = new Card[cardinality];
 
-        System.out.println(String.format("You need to choose %d cards from this pile (just id)", cardinality));
+        console.writeLine(String.format("You need to choose %d cards from this pile (just id)", cardinality));
 
 
         for (Card card : cardList) {
-            System.out.println(card);
-            System.out.println();
+            console.writeLine(card.toString());
+            console.writeLine(Graphics.Behaviour.NEW_LINE.toString());
         }
 
+<<<<<<< HEAD
         for (int numberOfCardCounter = 1; numberOfCardCounter <= cardinality; numberOfCardCounter++) {
             System.out.println(String.format("chose id number %d", numberOfCardCounter));
             int chosenCardId = Integer.parseInt(input.nextLine());
+=======
+        for(int numberOfCardCounter = 1; numberOfCardCounter <= cardinality; numberOfCardCounter++) {
+            console.writeLine(String.format("chose id number %d", numberOfCardCounter));
+            int chosenCardId = Integer.parseInt(getInput());
+>>>>>>> origin/dev
 
             chosenCard = Arrays.stream(cardList).filter(card -> card.getId() == chosenCardId).findAny().get();
 
@@ -116,14 +132,14 @@ public class CLIView implements IView<Message>, Runnable {
 
         //TODO: Change this using body factory
         cardList = JsonConvert.getInstance().fromJson(cards.getBody(), Card[].class);
-        System.out.println(String.format("choose your card"));
+        console.writeLine(String.format("choose your card"));
 
         for (Card card : cardList) {
-            System.out.println(card);
-            System.out.println();
+            console.writeLine(card.toString());
+            console.writeLine(Graphics.Element.EMPTY.toString());
         }
 
-        chosenCardId = Integer.parseInt(input.nextLine());
+        chosenCardId = Integer.parseInt(getInput());
 
         chosenCard = Arrays.stream(cardList).filter(card -> card.getId() == chosenCardId).findAny().get();
         restOfCards = Arrays.stream(cardList).filter(card -> !card.equals(chosenCard)).toArray(Card[]::new);
@@ -135,6 +151,50 @@ public class CLIView implements IView<Message>, Runnable {
         response = new Message(Message.Code.CHOSEN_CARD, responseBody);
         virtualServer.sendMessage(response);
     }
+
+    @Override
+    public void chooseWorkersInitialPositionFrom(Message workers) {
+        List<Position> positionsToHighlight = new ArrayList<>(
+                Arrays.asList(JsonConvert.getInstance().fromJson(workers.getBody(), Position[].class))
+        );
+
+        String board = this.board.highlightPositions(positionsToHighlight);
+        console.printOnBoardSection(board);
+
+        console.writeLine("choose positions ({row},{column})");
+        console.writeLine("gimme the female");
+        Position femalePosition = getPosition();
+        console.writeLine("gimme the male");
+        Position malePosition = getPosition();
+        Position[] positionsToSend = {femalePosition, malePosition};
+        String responseBody = JsonConvert.getInstance().toJson(positionsToSend, Position[].class);
+        Message response = new Message(Message.Code.CHOSEN_WORKERS_INITIAL_POSITION, responseBody);
+        virtualServer.sendMessage(response);
+    }
+
+    @Override
+    public void chooseWorkerFrom(Message workers) {
+        List<Position> positionsToHighlight = new ArrayList<>(
+                Arrays.asList(JsonConvert.getInstance().fromJson(workers.getBody(), Position[].class))
+        );
+
+        String board = this.board.highlightPositions(positionsToHighlight);
+        console.printOnBoardSection(board);
+
+
+        console.writeLine("choose position");
+
+        Position positionToSend = getPosition();
+        String responseBody = JsonConvert.getInstance().toJson(positionToSend, Position.class);
+        Message response = new Message(Message.Code.CHOSEN_WORKERS_INITIAL_POSITION, responseBody);
+        virtualServer.sendMessage(response);
+
+    }
+
+    @Override
+    public void chooseActionFrom(Message actions) {
+    }
+
 
 
     @Override
@@ -151,20 +211,6 @@ public class CLIView implements IView<Message>, Runnable {
 
         this.playerNickname = nickname;
         virtualServer.sendMessage(response);
-    }
-
-    @Override
-    public void chooseWorkerFrom(Message workers) {
-
-
-    }
-
-    @Override
-    public void chooseWorkersInitialPositionFrom(Message workers) {
-    }
-
-    @Override
-    public void chooseActionFrom(Message actions) {
     }
 
 
@@ -184,17 +230,29 @@ public class CLIView implements IView<Message>, Runnable {
 
     @Override
     public void startTurn(Message startTurn) {
-        System.out.println("It's your turn boy");
+        console.clear();
+        console.printOnBoardSection(this.board.getBoard());
+        console.printOnPlayersSection(this.board.getPlayers());
+        console.writeLine("It's your turn boy");
     }
 
     @Override
     public void endTurn(Message endTurn) {
         // TODO: What to do when your turn is over
+    }
 
+
+    @Override
+    public void update(Message update) {
+        Cell[] cellsToUpdate = JsonConvert.getInstance().fromJson(update.getBody(), Cell[].class);
+        this.board.update(cellsToUpdate);
+
+        console.printOnBoardSection(this.board.getBoard());
+        //console.printOnPlayersSection(this.board.getPlayers());
     }
 
     @Override
-    public void players(Message players) {
+    public void allPlayerNicknames(Message players) {
         String[] allPlayers;
         List<String> opponents;
 
@@ -204,12 +262,6 @@ public class CLIView implements IView<Message>, Runnable {
         opponents.remove(this.playerNickname);
 
         board.setPlayers(this.playerNickname, opponents);
-    }
-
-    @Override
-    public void update(Message update) {
-        // TODO: extract the info from Message
-        // Update the view
     }
 
 
@@ -225,5 +277,19 @@ public class CLIView implements IView<Message>, Runnable {
 
         this.gameOptions.put("joingame", Message.Code.JOIN_GAME);
         this.gameOptions.put("j", Message.Code.JOIN_GAME);
+    }
+
+    private Position getPosition() {
+        int row, column;
+        String position;
+        String[] rowAndColumn;
+
+        position = getInput();
+
+        rowAndColumn = position.split(",");
+        row = Integer.parseInt(rowAndColumn[0]);
+        column = Integer.parseInt(rowAndColumn[1]);
+
+        return new Position(row, column);
     }
 }

@@ -56,6 +56,7 @@ public class Message {
         CHOSEN_CARD,
         CHOOSE_WORKERS_INITIAL_POSITION,
         CHOSEN_WORKERS_INITIAL_POSITION,
+        ALL_PLAYER_NICKNAMES,
         START,
         CHOOSE_WORKER,
         CHOOSE_ACTION,

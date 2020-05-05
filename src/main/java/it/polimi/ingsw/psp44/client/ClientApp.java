@@ -1,10 +1,13 @@
 package it.polimi.ingsw.psp44.client;
 
 
+import it.polimi.ingsw.psp44.client.cli.Board;
 import it.polimi.ingsw.psp44.client.cli.CLIView;
+import it.polimi.ingsw.psp44.client.cli.Console;
 import it.polimi.ingsw.psp44.network.IConnection;
 import it.polimi.ingsw.psp44.network.message.Message;
 
+import javax.sound.midi.Soundbank;
 import java.io.IOException;
 
 public class ClientApp {

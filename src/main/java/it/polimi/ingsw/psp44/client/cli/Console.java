@@ -1,0 +1,99 @@
+package it.polimi.ingsw.psp44.client.cli;
+
+import it.polimi.ingsw.psp44.util.Position;
+
+/**
+ * Based on http://www.termsys.demon.co.uk/vtansi.htm
+ */
+public class Console {
+    private static char ESC = 0x1B;
+    private static Position BOARD_SECTION_INITIAL_POSITION = new Position(1,1);
+    private static Position PLAYERS_SECTION_INITIAL_POSITION = new Position(2, 15);
+    private static Position TURN_SECTION_INITIAL_POSITION = new Position(4, 15);
+    private static Position INTERACTION_SECTION_INITIAL_POSITION = new Position(15,0);
+
+    private int currentInteractionRowOffset;
+    private int currentInteractionColumnOffset;
+
+    public Console(){
+        currentInteractionRowOffset = currentInteractionColumnOffset = 0;
+    }
+
+
+    public void clear(){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        currentInteractionRowOffset = currentInteractionColumnOffset = 0;
+    }
+
+
+    public void writeLine(String message){
+        message = goToInteractionSection(currentInteractionRowOffset, currentInteractionColumnOffset) + message;
+        System.out.print(message);
+        currentInteractionRowOffset++;
+    }
+
+    public void printOnBoardSection(String board){
+        int rowOffset, columnOffset;
+        rowOffset = columnOffset = 0;
+
+        board = goToBoardSection(0,0) + board;
+        while(board.contains(Graphics.Behaviour.NEW_LINE.getEscape())){
+            rowOffset++;
+            board = board.replaceFirst(Graphics.Behaviour.NEW_LINE.toString(), goToBoardSection(rowOffset, columnOffset));
+        }
+
+        System.out.println(board);
+    }
+
+    public void printOnPlayersSection(String players){
+        int rowOffset, columnOffset;
+        rowOffset = columnOffset = 0;
+
+        players = goToPlayersSection(0,0) + players;
+        while(players.contains(Graphics.Behaviour.NEW_LINE.getEscape())){
+            rowOffset++;
+            players = players.replaceFirst(Graphics.Behaviour.NEW_LINE.getEscape(), goToPlayersSection(rowOffset, columnOffset));
+        }
+
+        System.out.println(players);
+    }
+
+    public void printOnTurnSection(String turn) {
+        int rowOffset, columnOffset;
+        rowOffset = columnOffset = 0;
+
+        turn = goToTurnSection(0,0) + turn;
+        while(turn.contains(Graphics.Behaviour.NEW_LINE.getEscape())){
+            rowOffset++;
+            turn = turn.replaceFirst(Graphics.Behaviour.NEW_LINE.getEscape(), goToPlayersSection(rowOffset, columnOffset));
+        }
+
+        System.out.println(turn);
+    }
+
+    private String goToTurnSection(int rowOffset, int columnOffset) {
+        return (String.format("%c[%d;%df", ESC,
+                TURN_SECTION_INITIAL_POSITION.getRow() + rowOffset,
+                TURN_SECTION_INITIAL_POSITION.getColumn() + columnOffset));
+    }
+
+    private String goToBoardSection(int rowOffset, int columnOffset) {
+        return (String.format("%c[%d;%df", ESC,
+                BOARD_SECTION_INITIAL_POSITION.getRow() + rowOffset,
+                BOARD_SECTION_INITIAL_POSITION.getColumn() + columnOffset));
+
+    }
+
+    private String goToPlayersSection(int rowOffset, int columnOffset) {
+        return (String.format("%c[%d;%df", ESC,
+                PLAYERS_SECTION_INITIAL_POSITION.getRow() + rowOffset,
+                PLAYERS_SECTION_INITIAL_POSITION.getColumn() + columnOffset));
+    }
+
+    private String goToInteractionSection(int rowOffset, int columnOffset) {
+        return (String.format("%c[%d;%df", ESC,
+                INTERACTION_SECTION_INITIAL_POSITION.getRow() + rowOffset,
+                INTERACTION_SECTION_INITIAL_POSITION.getColumn() + columnOffset));
+    }
+}

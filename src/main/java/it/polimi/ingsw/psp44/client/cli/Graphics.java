@@ -50,11 +50,11 @@ public class Graphics {
         /**
          * white
          */
-        BOTH_HIGHLIGHT("\u001B[48;5;15m");
+        BOTH_HIGHLIGHT("\u001B[48;5;15m"),
         /**
          * white
          */
-
+        POSITION_HIGHLIGHT("\u001B[48;5;15m");
         static final String RESET = "\u001B[0m";
 
         private final String escape;
@@ -111,7 +111,24 @@ public class Graphics {
 
     public enum Behaviour implements AnsiElement {
 
-        PADDING(""), NEW_LINE("\n");
+        /**
+         * Up: \u001b[{n}A
+         * Down: \u001b[{n}B
+         * Right: \u001b[{n}C
+         * Left: \u001b[{n}D
+         */
+
+        /**
+         * Moves by 50 to the right
+         */
+        MOVE_RIGHT("\u001b[50C"),
+        /**
+         * Resets cursor
+         */
+        MOVE_LEFT("\u001b[1000D"),
+        MOVE_UP("\u001b[1000A"),
+        NEW_LINE("\n");
+
         private final String escape;
 
         Behaviour(String escape) {

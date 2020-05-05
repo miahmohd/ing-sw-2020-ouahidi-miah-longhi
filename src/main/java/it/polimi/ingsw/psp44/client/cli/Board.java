@@ -1,15 +1,16 @@
 package it.polimi.ingsw.psp44.client.cli;
 
 import it.polimi.ingsw.psp44.client.cli.Graphics.Color;
+import it.polimi.ingsw.psp44.network.communication.Action;
+import it.polimi.ingsw.psp44.network.communication.Cell;
 import it.polimi.ingsw.psp44.util.Position;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Board {
 
-    private static final int DIMENTION = 5;
+    private static final int DIMENSION = 5;
 
 
     private final Cell[][] cells;
@@ -19,7 +20,7 @@ public class Board {
 
 
     public Board() {
-        this.cells = new Cell[DIMENTION][DIMENTION];
+        this.cells = new Cell[DIMENSION][DIMENSION];
         this.playerColors = new HashMap<>();
         this.levelColors = new HashMap<>();
         this.sb = new StringBuffer();
@@ -49,6 +50,16 @@ public class Board {
 
     }
 
+    public String getPlayers(){
+        StringBuffer players = new StringBuffer();
+        for(String player : this.playerColors.keySet()){
+            players.append(this.playerColors.get(player));
+            players.append(player);
+            players.append(Graphics.Behaviour.NEW_LINE);
+        }
+        players.append(Color.RESET);
+        return players.toString();
+    }
 
     /**
      * @param actions
@@ -64,11 +75,11 @@ public class Board {
      * @param cellsToUpdate cells that need to be updated
      * @return String formatted according to Graphics specification standard
      */
-    public String update(Map<Position, Cell> cellsToUpdate) {
-        Cell cellToUpdate;
-        for (Position position : cellsToUpdate.keySet()) {
-            cellToUpdate = cellsToUpdate.get(position);
-            cells[position.getRow()][position.getColumn()] = cellToUpdate;
+    public String update(Cell[] cellsToUpdate) {
+        Position positionToUpdate;
+        for (Cell cellToUpdate : cellsToUpdate) {
+            positionToUpdate = cellToUpdate.getPosition();
+            cells[positionToUpdate.getRow()][positionToUpdate.getColumn()] = cellToUpdate;
         }
         return this.getBoard();
     }
@@ -81,10 +92,36 @@ public class Board {
     public String getBoard() {
         Cell currentCell;
         cleanBoard();
-        for (int row = 0; row < DIMENTION; row++) {
-            for (int column = 0; column < DIMENTION; column++) {
+        for (int row = 0; row < DIMENSION; row++) {
+            for (int column = 0; column < DIMENSION; column++) {
                 currentCell = cells[row][column];
-                sb.append(getStringFromCell(currentCell));
+                sb.append(getStringFromCell(currentCell, false));
+            }
+            sb.append(Graphics.Behaviour.NEW_LINE);
+        }
+        sb.append(Color.RESET);
+
+        return sb.toString();
+    }
+
+
+    public String highlightPositions(List<Position> positionsToHighlight) {
+        Cell currentCell;
+        Position currentPosition;
+        boolean highlightMode;
+        cleanBoard();
+        for (int row = 0; row < DIMENSION; row++) {
+            for (int column = 0; column < DIMENSION; column++) {
+                currentPosition = new Position(row, column);
+                currentCell = cells[row][column];
+
+                if(positionsToHighlight.contains(currentPosition))
+                    highlightMode = true;
+                else
+                    highlightMode = false;
+
+                sb.append(getStringFromCell(currentCell, highlightMode));
+
             }
             sb.append(Graphics.Behaviour.NEW_LINE);
         }
@@ -102,17 +139,19 @@ public class Board {
     }
 
     private void initBoard() {
-        for (int row = 0; row < DIMENTION; row++) {
-            for (int column = 0; column < DIMENTION; column++) {
+        for (int row = 0; row < DIMENSION; row++) {
+            for (int column = 0; column < DIMENSION; column++) {
                 cells[row][column] = new Cell();
             }
         }
     }
 
-    private StringBuffer getStringFromCell(Cell cell) {
+    private StringBuffer getStringFromCell(Cell cell, boolean highlightMode) {
         StringBuffer cellBuffer = new StringBuffer();
         int currentLevel = cell.getLevel();
 
+        if(highlightMode)
+            cellBuffer.append(Graphics.Color.POSITION_HIGHLIGHT);
         cellBuffer.append(levelColors.get(currentLevel));
 
         if (cell.isEmpty()) {
@@ -133,8 +172,4 @@ public class Board {
         sb.delete(0, sb.length());
     }
 
-
-    public String highlightPositions(Position[] positions) {
-        return "";
-    }
 }
