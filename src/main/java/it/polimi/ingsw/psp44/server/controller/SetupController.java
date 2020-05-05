@@ -12,7 +12,6 @@ import it.polimi.ingsw.psp44.util.Card;
 import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.R;
-import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 
 import java.util.EnumMap;
 import java.util.HashMap;

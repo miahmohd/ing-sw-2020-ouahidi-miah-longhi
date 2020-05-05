@@ -161,9 +161,13 @@ public class Controller {
      */
     private void workers() {
         List<Position> workers = model.getBoard().getPlayerWorkersPositions(model.getCurrentPlayerNickname());
-        currentPlayerView.sendMessage(new Message(Message.Code.CHOOSE_WORKER, JsonConvert.getInstance().toJson(workers, List.class)));
+        Position[] workersArray = new Position[workers.size()];
+        String body = "";
         if (workers.isEmpty())
             lost();
+        else
+            body = JsonConvert.getInstance().toJson(workers.toArray(workersArray), Position[].class);
+        currentPlayerView.sendMessage(new Message(Message.Code.CHOOSE_WORKER, body));
     }
 
     /**

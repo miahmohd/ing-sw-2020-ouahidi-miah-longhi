@@ -19,7 +19,7 @@ import java.util.List;
  * with the actions that the player can perform.
  */
 public class CardController {
-    private final Controller context;
+    private Controller context;
     /**
      * A list of the possible states transitions for the card
      */
@@ -45,17 +45,20 @@ public class CardController {
     public CardController(
             List<Transition> transitionsList,
             List<VictoryCondition> victoryConditionsList,
-            Controller context,
             FilterCollection buildFilter,
             FilterCollection moveFilter) {
 
-        this.context = context;
-        this.currentState = transitionsList.stream().filter((t) -> t.getCurrentState().isInitialState()).findFirst().get().getCurrentState();
+        this.context = null;
+        this.currentState = transitionsList.stream().filter((t) -> t.getNextState().isInitialState()).findFirst().get().getNextState();
         this.transitionsList = transitionsList;
         this.victoryConditionsList = victoryConditionsList;
         this.buildFilter = buildFilter;
         this.moveFilter = moveFilter;
 
+    }
+
+    public void setContext(Controller context) {
+        this.context = context;
     }
 
     /**

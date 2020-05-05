@@ -7,9 +7,7 @@ import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.util.Card;
 import it.polimi.ingsw.psp44.util.JsonConvert;
-import it.polimi.ingsw.psp44.util.Position;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -92,13 +90,13 @@ public class CLIView implements IView<Message>, Runnable {
             System.out.println();
         }
 
-        for(int numberOfCardCounter = 1; numberOfCardCounter <= cardinality; numberOfCardCounter++) {
+        for (int numberOfCardCounter = 1; numberOfCardCounter <= cardinality; numberOfCardCounter++) {
             System.out.println(String.format("chose id number %d", numberOfCardCounter));
             int chosenCardId = Integer.parseInt(input.nextLine());
 
-            chosenCard = Arrays.stream(cardList).filter(card -> card.getId()==chosenCardId).findAny().get();
+            chosenCard = Arrays.stream(cardList).filter(card -> card.getId() == chosenCardId).findAny().get();
 
-            chosenCards[numberOfCardCounter-1] = chosenCard;
+            chosenCards[numberOfCardCounter - 1] = chosenCard;
         }
 
         //TODO: Change this using body factory
@@ -127,7 +125,7 @@ public class CLIView implements IView<Message>, Runnable {
 
         chosenCardId = Integer.parseInt(input.nextLine());
 
-        chosenCard = Arrays.stream(cardList).filter(card -> card.getId()==chosenCardId).findAny().get();
+        chosenCard = Arrays.stream(cardList).filter(card -> card.getId() == chosenCardId).findAny().get();
         restOfCards = Arrays.stream(cardList).filter(card -> !card.equals(chosenCard)).toArray(Card[]::new);
 
         //TODO: Change this using body factory

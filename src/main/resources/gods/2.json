@@ -1,54 +1,70 @@
 {
-    "transitions": [
-        {
-            "initial-state": "it.polimi.ingsw.psp44.server.controller.states.SimpleMoveState",
-            "final-state": ["it.polimi.ingsw.psp44.server.controller.states.SimpleMoveState",
-                "it.polimi.ingsw.psp44.server.controller.states.SimpleBuildState"],
-            "condition": -1,
-            "move-filters": ["it.polimi.ingsw.psp44.server.controller.filters.FilterLastMovePosition"],
-            "build-filters": [],
-            "start":false
-        },
-        {
-            "initial-state": ["it.polimi.ingsw.psp44.server.controller.states.SimpleMoveState",
-                "it.polimi.ingsw.psp44.server.controller.states.SimpleBuildState"],
-            "final-state": "it.polimi.ingsw.psp44.server.controller.states.SimpleMoveState",
-            "condition": 1,
-            "move-filters": [],
-            "build-filters": [],
-            "start":true
-        },
-        {
-            "initial-state": ["it.polimi.ingsw.psp44.server.controller.states.SimpleMoveState",
-                "it.polimi.ingsw.psp44.server.controller.states.SimpleBuildState"],
-            "final-state": "it.polimi.ingsw.psp44.server.controller.states.SimpleBuildState",
-            "condition": 0,
-            "move-filters": [],
-            "build-filters": [],
-            "start":false
-        },
-        {
-            "initial-state": "it.polimi.ingsw.psp44.server.controller.states.SimpleBuildState",
-            "final-state": "it.polimi.ingsw.psp44.server.controller.states.SimpleMoveState",
-            "condition": -1,
-            "move-filters": [],
-            "build-filters": [],
-            "start":true
-        }
-    ],
-    "win-conditions": [
-        "it.polimi.ingsw.psp44.server.controller.VictoryCondition.BaseVictoryCondition"
-    ],
-    "buil-filters": [
-        "it.polimi.ingsw.psp44.server.controller.filters.FilterMyWorkers",
-        "it.polimi.ingsw.psp44.server.controller.filters.FilterDome",
-        "it.polimi.ingsw.psp44.server.controller.filters.FilterOtherWorkers"
-    ],
-    "move-filters": [
-        "it.polimi.ingsw.psp44.server.controller.filters.FilterDome",
-        "it.polimi.ingsw.psp44.server.controller.filters.FilterMyWorkers",
-        "it.polimi.ingsw.psp44.server.controller.filters.FilterOtherWorkers",
-        "it.polimi.ingsw.psp44.server.controller.filters.FilterUpByTwo",
+  "transitions": [
+    {
+      "initial-state": [
+        "it.polimi.ingsw.psp44.server.controller.states.SimpleMoveState"
+      ],
+      "final-state": [
+        "it.polimi.ingsw.psp44.server.controller.states.SimpleMoveState",
+        "it.polimi.ingsw.psp44.server.controller.states.SimpleBuildState"
+      ],
+      "condition": -1,
+      "move-filters": [
         "it.polimi.ingsw.psp44.server.controller.filters.FilterLastMovePosition"
-    ]
+      ],
+      "build-filters": []
+    },
+    {
+      "initial-state": [
+        "it.polimi.ingsw.psp44.server.controller.states.SimpleMoveState",
+        "it.polimi.ingsw.psp44.server.controller.states.SimpleBuildState"
+      ],
+      "final-state": [
+        "it.polimi.ingsw.psp44.server.controller.states.SimpleMoveState"
+      ],
+      "condition": 1,
+      "move-filters": [],
+      "build-filters": [],
+      "initial": true
+    },
+    {
+      "initial-state": [
+        "it.polimi.ingsw.psp44.server.controller.states.SimpleMoveState",
+        "it.polimi.ingsw.psp44.server.controller.states.SimpleBuildState"
+      ],
+      "final-state": [
+        "it.polimi.ingsw.psp44.server.controller.states.SimpleBuildState"
+      ],
+      "condition": 0,
+      "move-filters": [],
+      "build-filters": []
+    },
+    {
+      "initial-state": [
+        "it.polimi.ingsw.psp44.server.controller.states.SimpleBuildState"
+      ],
+      "final-state": [
+        "it.polimi.ingsw.psp44.server.controller.states.SimpleMoveState"
+      ],
+      "condition": -1,
+      "move-filters": [],
+      "build-filters": [],
+      "initial": true
+    }
+  ],
+  "win-conditions": [
+    "it.polimi.ingsw.psp44.server.controller.VictoryCondition.BaseVictoryCondition"
+  ],
+  "build-filters": [
+    "it.polimi.ingsw.psp44.server.controller.filters.FilterMyWorkers",
+    "it.polimi.ingsw.psp44.server.controller.filters.FilterDome",
+    "it.polimi.ingsw.psp44.server.controller.filters.FilterOtherWorkers"
+  ],
+  "move-filters": [
+    "it.polimi.ingsw.psp44.server.controller.filters.FilterDome",
+    "it.polimi.ingsw.psp44.server.controller.filters.FilterMyWorkers",
+    "it.polimi.ingsw.psp44.server.controller.filters.FilterOtherWorkers",
+    "it.polimi.ingsw.psp44.server.controller.filters.FilterUpByTwo",
+    "it.polimi.ingsw.psp44.server.controller.filters.FilterLastMovePosition"
+  ]
 }
