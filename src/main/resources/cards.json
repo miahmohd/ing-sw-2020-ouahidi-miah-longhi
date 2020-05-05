@@ -16,48 +16,6 @@
     "title": "Athena",
     "subtitle": "Goddess of Wisdom",
     "description": "Opponent’s Turn: If one of your\nWorkers moved up on your last\nturn, opponent Workers cannot\nmove up this turn."
-  },
-  {
-    "id": 4,
-    "title": "TITLE",
-    "subtitle": "SUB",
-    "description": "DESC"
-  },
-  {
-    "id": 5,
-    "title": "TITLE",
-    "subtitle": "SUB",
-    "description": "DESC"
-  },
-  {
-    "id": 6,
-    "title": "TITLE",
-    "subtitle": "SUB",
-    "description": "DESC"
-  },
-  {
-    "id": 7,
-    "title": "TITLE",
-    "subtitle": "SUB",
-    "description": "DESC"
-  },
-  {
-    "id": 8,
-    "title": "TITLE",
-    "subtitle": "SUB",
-    "description": "DESC"
-  },
-  {
-    "id": 9,
-    "title": "TITLE",
-    "subtitle": "SUB",
-    "description": "DESC"
-  },
-  {
-    "id": 10,
-    "title": "TITLE",
-    "subtitle": "SUB",
-    "description": "DESC"
   }
 ]
 

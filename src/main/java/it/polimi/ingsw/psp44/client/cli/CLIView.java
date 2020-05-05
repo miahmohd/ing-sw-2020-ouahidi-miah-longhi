@@ -8,6 +8,7 @@ import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.util.Card;
 import it.polimi.ingsw.psp44.util.JsonConvert;
+import it.polimi.ingsw.psp44.util.Position;
 
 import java.util.*;
 
@@ -100,15 +101,11 @@ public class CLIView implements IView<Message>, Runnable {
             console.writeLine(Graphics.Behaviour.NEW_LINE.toString());
         }
 
-<<<<<<< HEAD
-        for (int numberOfCardCounter = 1; numberOfCardCounter <= cardinality; numberOfCardCounter++) {
-            System.out.println(String.format("chose id number %d", numberOfCardCounter));
-            int chosenCardId = Integer.parseInt(input.nextLine());
-=======
+
         for(int numberOfCardCounter = 1; numberOfCardCounter <= cardinality; numberOfCardCounter++) {
             console.writeLine(String.format("chose id number %d", numberOfCardCounter));
             int chosenCardId = Integer.parseInt(getInput());
->>>>>>> origin/dev
+
 
             chosenCard = Arrays.stream(cardList).filter(card -> card.getId() == chosenCardId).findAny().get();
 

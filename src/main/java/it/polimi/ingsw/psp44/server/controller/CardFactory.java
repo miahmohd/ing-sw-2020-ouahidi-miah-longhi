@@ -141,7 +141,6 @@ public class CardFactory {
 
     private static State getState(JsonArray states) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         if (states.size() == 1) {
-            System.out.println(Class.forName(states.get(0).getAsString()));
             return (State) Class.forName(states.get(0).getAsString()).getConstructor().newInstance();
         }
         Iterator<JsonElement> stateIterator = states.iterator();
