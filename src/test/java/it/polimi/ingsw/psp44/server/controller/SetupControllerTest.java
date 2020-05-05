@@ -23,7 +23,7 @@ public class SetupControllerTest {
     private SetupController setupController;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         setupController = new SetupController();
     }
 
@@ -85,6 +85,10 @@ public class SetupControllerTest {
         String p1ExpectedOut = new String(Files.readAllBytes(Paths.get(getClass().getResource("/setuptest/threeplayer/p1.out.txt").toURI())));
         String p2ExpectedOut = new String(Files.readAllBytes(Paths.get(getClass().getResource("/setuptest/threeplayer/p2.out.txt").toURI())));
         String p3ExpectedOut = new String(Files.readAllBytes(Paths.get(getClass().getResource("/setuptest/threeplayer/p3.out.txt").toURI())));
+
+        p1ExpectedIn.close();
+        p2ExpectedIn.close();
+        p3ExpectedIn.close();
 
         assertEquals(p1ExpectedOut, p1ActualOut.toString());
         assertEquals(p2ExpectedOut, p2ActualOut.toString());
