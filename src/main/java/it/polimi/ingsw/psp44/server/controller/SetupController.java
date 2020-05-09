@@ -133,6 +133,7 @@ public class SetupController {
      */
     public void chosenCardMessageHandler(VirtualView view, Message message) {
         Message toSend;
+        CardController cardController;
         VirtualView currentView = playerViews.get(this.model.getCurrentPlayerNickname());
 
         if (currentView != view)
@@ -142,13 +143,21 @@ public class SetupController {
         Card chosen = body.getChosen();
         Card[] rest = body.getRest();
 
-        this.playerCardController.put(this.model.getCurrentPlayerNickname(), CardFactory.getController(chosen));
+        cardController = CardFactory.getController(chosen);
+        cardController.setContext(controller);
+
+        this.playerCardController.put(this.model.getCurrentPlayerNickname(), cardController);
 
         this.model.nextTurn();
         currentView = playerViews.get(this.model.getCurrentPlayerNickname());
 
         if (this.model.isFullRound()) {
+            cardController = CardFactory.getController(chosen);
+            cardController.setContext(controller);
+            this.playerCardController.put(this.model.getCurrentPlayerNickname(), CardFactory.getController(chosen));
+
             Position[] positions = this.model.getBoard().getUnoccupiedPosition().toArray(new Position[0]);
+
             toSend = new Message(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION,
                     JsonConvert.getInstance().toJson(positions, Position[].class));
         } else {

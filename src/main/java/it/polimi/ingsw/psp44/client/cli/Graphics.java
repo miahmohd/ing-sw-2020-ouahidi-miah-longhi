@@ -42,19 +42,20 @@ public class Graphics {
         /**
          * TODO: add colors
          */
-        MOVE_HIGHLIGHT("\u001B[48;5;m"),
+        MOVE_HIGHLIGHT("\u001B[48;5;200m"),
         /**
          * white
          */
-        BUILD_HIGHLIGHT("\u001B[48;5;15m"),
+        BUILD_HIGHLIGHT("\u001B[48;5;160m"),
         /**
          * white
          */
-        BOTH_HIGHLIGHT("\u001B[48;5;15m"),
+        BOTH_HIGHLIGHT("\u001B[48;5;30m"),
         /**
          * white
          */
-        POSITION_HIGHLIGHT("\u001B[48;5;15m");
+        POSITION_HIGHLIGHT("\u001B[48;5;20m");
+
         static final String RESET = "\u001B[0m";
 
         private final String escape;
@@ -127,7 +128,8 @@ public class Graphics {
          */
         MOVE_LEFT("\u001b[1000D"),
         MOVE_UP("\u001b[1000A"),
-        NEW_LINE("\n");
+        NEW_LINE("\n"),
+        CLEAR("\033[H\033[2J");
 
         private final String escape;
 

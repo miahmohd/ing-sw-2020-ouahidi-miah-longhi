@@ -2,6 +2,7 @@ package it.polimi.ingsw.psp44.network.communication;
 
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.Worker;
+import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.Position;
 
@@ -29,5 +30,23 @@ public class BodyFactory {
             i++;
         }
         return JsonConvert.getInstance().toJson(cells, Cell[].class);
+    }
+
+    public static String toActions(List<Action> availableActions) {
+        it.polimi.ingsw.psp44.network.communication.Action[] actionList = new
+                it.polimi.ingsw.psp44.network.communication.Action[availableActions.size()];
+        int count = 0;
+        for (Action action : availableActions){
+            actionList[count] = new it.polimi.ingsw.psp44.network.communication.Action(
+                    action.getTargetPosition(),
+                    action.isBuild(),
+                    action.isMovement(),
+                    0,
+                    false
+            );
+            count++;
+        }
+
+        return JsonConvert.getInstance().toJson(actionList, it.polimi.ingsw.psp44.network.communication.Action[].class);
     }
 }

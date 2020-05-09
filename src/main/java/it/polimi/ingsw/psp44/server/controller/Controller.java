@@ -1,5 +1,6 @@
 package it.polimi.ingsw.psp44.server.controller;
 
+import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.communication.Cell;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.server.controller.filters.Filter;
@@ -143,12 +144,12 @@ public class Controller {
     /**
      * Sends available actions to current player
      * Call lost routine if no actions are available and turn is not endable
-     * Call endable routine if the turn can be ended
+     * Call endable routine if the turn can be ended!=
      */
     private void actions() {
         availableActions = currentPlayer.getAvailableAction(model.getBoard(), model.getWorker());
         currentPlayerView.sendMessage(new Message(Message.Code.CHOOSE_ACTION,
-                JsonConvert.getInstance().toJson(Cell.convertActionList(availableActions), List.class)));
+                BodyFactory.toActions(availableActions)));
         if (availableActions.isEmpty() && (!currentPlayer.isEndableTurn()))
             lost();
         if (currentPlayer.isEndableTurn())

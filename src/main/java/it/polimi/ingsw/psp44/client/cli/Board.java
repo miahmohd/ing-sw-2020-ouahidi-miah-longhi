@@ -63,11 +63,41 @@ public class Board {
     }
 
     /**
-     * @param actions
+     * @param actionsPerPosition
      * @return String formatted according to Graphics specification standard
      */
-    public String highlightActions(List<Action> actions) {
-        return "";
+    public String highlightActions(Map<Position, List<Action>> actionsPerPosition) {
+        Position currentPosition;
+        Cell currentCell;
+        List<Action> currentActionList;
+
+        StringBuffer sb = new StringBuffer();
+
+        for (int row = 0; row < DIMENSION; row++) {
+            for (int column = 0; column < DIMENSION; column++) {
+                currentPosition = new Position(row, column);
+                currentCell = cells[row][column];
+
+                if(actionsPerPosition.keySet().contains(currentPosition)){
+
+                    currentActionList = actionsPerPosition.get(currentPosition);
+
+                    if(currentActionList.size() > 1)
+                        sb.append(Color.BOTH_HIGHLIGHT);
+                    else if (currentActionList.get(0).isBuild())
+                        sb.append(Color.BUILD_HIGHLIGHT);
+                    else
+                        sb.append(Color.MOVE_HIGHLIGHT);
+
+                } else {
+                    sb.append(this.levelColors.get(currentCell.getLevel()));
+                }
+                sb.append(getStringFromCell(currentCell));
+            }
+            sb.append(Graphics.Behaviour.NEW_LINE);
+        }
+
+        return sb.toString();
     }
 
     /**
@@ -96,7 +126,8 @@ public class Board {
         for (int row = 0; row < DIMENSION; row++) {
             for (int column = 0; column < DIMENSION; column++) {
                 currentCell = cells[row][column];
-                sb.append(getStringFromCell(currentCell, false));
+                sb.append(this.levelColors.get(currentCell.getLevel()));
+                sb.append(getStringFromCell(currentCell));
             }
             sb.append(Graphics.Behaviour.NEW_LINE);
         }
@@ -105,11 +136,9 @@ public class Board {
         return sb.toString();
     }
 
-
     public String highlightPositions(List<Position> positionsToHighlight) {
         Cell currentCell;
         Position currentPosition;
-        boolean highlightMode;
         cleanBoard();
         for (int row = 0; row < DIMENSION; row++) {
             for (int column = 0; column < DIMENSION; column++) {
@@ -117,11 +146,11 @@ public class Board {
                 currentCell = cells[row][column];
 
                 if(positionsToHighlight.contains(currentPosition))
-                    highlightMode = true;
+                    sb.append(Color.POSITION_HIGHLIGHT);
                 else
-                    highlightMode = false;
+                    sb.append(this.levelColors.get(currentCell.getLevel()));
 
-                sb.append(getStringFromCell(currentCell, highlightMode));
+                sb.append(getStringFromCell(currentCell));
 
             }
             sb.append(Graphics.Behaviour.NEW_LINE);
@@ -130,7 +159,6 @@ public class Board {
 
         return sb.toString();
     }
-
 
     private void initLevelColors() {
         this.levelColors.put(0, Color.GROUND_LEVEL);
@@ -147,13 +175,8 @@ public class Board {
         }
     }
 
-    private StringBuffer getStringFromCell(Cell cell, boolean highlightMode) {
+    private StringBuffer getStringFromCell(Cell cell) {
         StringBuffer cellBuffer = new StringBuffer();
-        int currentLevel = cell.getLevel();
-
-        if(highlightMode)
-            cellBuffer.append(Graphics.Color.POSITION_HIGHLIGHT);
-        cellBuffer.append(levelColors.get(currentLevel));
 
         if (cell.isEmpty()) {
             if (cell.isDome()) {

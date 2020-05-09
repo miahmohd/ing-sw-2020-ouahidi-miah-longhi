@@ -19,7 +19,7 @@ import java.util.List;
  * with the actions that the player can perform.
  */
 public class CardController {
-    private final Controller context;
+    private Controller context;
     /**
      * A list of the possible states transitions for the card
      */
@@ -181,5 +181,10 @@ public class CardController {
      */
     public boolean isEndableTurn() {
         return currentState.isFinalState();
+    }
+
+
+    public void setContext(Controller context){
+        this.context = context;
     }
 }

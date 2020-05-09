@@ -43,7 +43,6 @@ public class VirtualServer implements IVirtual<Message>, Runnable {
         while (true) {
             Message message = connection.readLine();
             Message.Code code = message.getCode();
-            //TODO: make it better
 
             executor.execute(new Runnable() {
                 @Override

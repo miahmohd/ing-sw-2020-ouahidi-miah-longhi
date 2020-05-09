@@ -2,6 +2,8 @@ package it.polimi.ingsw.psp44.client.cli;
 
 import it.polimi.ingsw.psp44.util.Position;
 
+import java.util.Scanner;
+
 /**
  * Based on http://www.termsys.demon.co.uk/vtansi.htm
  */
@@ -14,14 +16,22 @@ public class Console {
 
     private int currentInteractionRowOffset;
     private int currentInteractionColumnOffset;
+    private Scanner input;
+
 
     public Console(){
-        currentInteractionRowOffset = currentInteractionColumnOffset = 0;
+        this(0,0,new Scanner(System.in));
+    }
+
+    public Console(int currentInteractionRowOffset, int currentInteractionColumnOffset, Scanner input){
+        this.currentInteractionRowOffset = currentInteractionRowOffset;
+        this.currentInteractionColumnOffset = currentInteractionColumnOffset;
+        this.input = input;
     }
 
 
     public void clear(){
-        System.out.print("\033[H\033[2J");
+        System.out.print(Graphics.Behaviour.CLEAR.toString());
         System.out.flush();
         currentInteractionRowOffset = currentInteractionColumnOffset = 0;
     }
@@ -29,8 +39,21 @@ public class Console {
 
     public void writeLine(String message){
         message = goToInteractionSection(currentInteractionRowOffset, currentInteractionColumnOffset) + message;
+
+        while(message.contains(Graphics.Behaviour.NEW_LINE.getEscape())){
+            currentInteractionRowOffset++;
+            message = message.replaceFirst(Graphics.Behaviour.NEW_LINE.toString(), goToBoardSection(
+                    currentInteractionRowOffset, currentInteractionColumnOffset));
+        }
         System.out.print(message);
         currentInteractionRowOffset++;
+    }
+
+    public String readLine(){
+        String message = input.nextLine();
+        currentInteractionRowOffset++;
+
+        return message;
     }
 
     public void printOnBoardSection(String board){
