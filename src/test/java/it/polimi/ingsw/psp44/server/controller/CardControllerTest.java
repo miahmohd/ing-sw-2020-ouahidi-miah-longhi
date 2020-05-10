@@ -71,7 +71,7 @@ public class CardControllerTest {
         transitionList.add(new Transition(finalState, initialState, null, Arrays.asList(new FilterOnlyLastPosition()), null));
 
         victoryConditions = Arrays.asList(new BaseVictoryCondition());
-        controller = new CardController(transitionList, victoryConditions, null, activeBuildFilter, activeMoveFilter);
+        controller = new CardController(transitionList, victoryConditions, activeBuildFilter, activeMoveFilter);
         gm = new GameModel();
         boardTest = gm.getBoard();
 

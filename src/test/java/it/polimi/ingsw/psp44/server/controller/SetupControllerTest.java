@@ -16,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
 
 
 public class SetupControllerTest {
@@ -24,7 +23,7 @@ public class SetupControllerTest {
     private SetupController setupController;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         setupController = new SetupController();
     }
 
@@ -69,11 +68,8 @@ public class SetupControllerTest {
 //        Receive CHOSEN_CARD from p2, and send CHOOSE_CARD to p3
         setupController.chosenCardMessageHandler(p2, getNextMessageFrom(p2Connection));
 
-//        Receive CHOSEN_CARD from p3, and send CHOSE_CARD to p1
+//        Receive CHOSEN_CARD from p3, and send CHOOSE_WORKERS_INITIAL_POSITION to p1
         setupController.chosenCardMessageHandler(p3, getNextMessageFrom(p3Connection));
-
-//        Receive CHOSEN_CARD from p1, and send START, CHOOSE_WORKERS_INITIAL_POSITION to p1
-        setupController.chosenCardMessageHandler(p1, getNextMessageFrom(p1Connection));
 
 //        Receive CHOSEN_WORKERS_INITIAL_POSITION from p1, notify changed positions to all, and send CHOOSE_WORKERS_INITIAL_POSITION to p2
         setupController.chosenWorkersInitialPositionsMessageHandler(p1, getNextMessageFrom(p1Connection));
@@ -89,6 +85,10 @@ public class SetupControllerTest {
         String p1ExpectedOut = new String(Files.readAllBytes(Paths.get(getClass().getResource("/setuptest/threeplayer/p1.out.txt").toURI())));
         String p2ExpectedOut = new String(Files.readAllBytes(Paths.get(getClass().getResource("/setuptest/threeplayer/p2.out.txt").toURI())));
         String p3ExpectedOut = new String(Files.readAllBytes(Paths.get(getClass().getResource("/setuptest/threeplayer/p3.out.txt").toURI())));
+
+        p1ExpectedIn.close();
+        p2ExpectedIn.close();
+        p3ExpectedIn.close();
 
         assertEquals(p1ExpectedOut, p1ActualOut.toString());
         assertEquals(p2ExpectedOut, p2ActualOut.toString());

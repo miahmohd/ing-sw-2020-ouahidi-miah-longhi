@@ -1,57 +1,177 @@
 package it.polimi.ingsw.psp44.server.controller;
 
-import it.polimi.ingsw.psp44.server.controller.VictoryCondition.BaseVictoryCondition;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import it.polimi.ingsw.psp44.server.controller.VictoryCondition.VictoryCondition;
-import it.polimi.ingsw.psp44.server.controller.filters.*;
-import it.polimi.ingsw.psp44.server.controller.states.SimpleBuildState;
-import it.polimi.ingsw.psp44.server.controller.states.SimpleMoveState;
+import it.polimi.ingsw.psp44.server.controller.filters.DynamicFilter;
+import it.polimi.ingsw.psp44.server.controller.filters.Filter;
+import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
+import it.polimi.ingsw.psp44.server.controller.states.CompoundState;
 import it.polimi.ingsw.psp44.server.controller.states.State;
 import it.polimi.ingsw.psp44.util.Card;
+import it.polimi.ingsw.psp44.util.R;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class CardFactory {
+
+    /**
+     * Factory method for card controller object
+     *
+     * @param chosen the selected god
+     * @return the card controller of the selected god
+     */
     public static CardController getController(Card chosen) {
-        return getDefaultController();
+        return buildCardController(R.getCard(chosen.getId()));
     }
 
+    /**
+     * Factory method for basic card controller, used for a match without gods power
+     *
+     * @return the default card controller
+     */
+    public static CardController getDefaultController() {
+        return buildCardController(R.getCard());
+    }
 
-    public static CardController getDefaultController(){
-        List<Transition> transitionList;
-        List<VictoryCondition> victoryConditions;
-        FilterCollection moveFilter;
-        FilterCollection buildFilter;
+    /**
+     * Built the card controller from the json object red in the file
+     *
+     * @param jsonCard informations to build the card controller
+     * @return Card controller of the selected god
+     */
+    private static CardController buildCardController(JsonObject jsonCard) {
+        List<Transition> transitionList = new ArrayList<>();
+        List<VictoryCondition> victoryConditionList = new ArrayList<>();
+        FilterCollection buildFilter = new FilterCollection();
+        FilterCollection moveFilter = new FilterCollection();
+        //Transitions
+        jsonCard.getAsJsonArray("transitions").iterator().forEachRemaining(t -> {
+            JsonObject transition = t.getAsJsonObject();
+            State initialState = null;
+            State finalState = null;
+            List<DynamicFilter> dynamicBuildFilters = null;
+            List<DynamicFilter> dynamicMoveFilter = null;
+            Transition.Condition condition = null;
+            try {
+                initialState = getState(transition.getAsJsonArray("initial-state"));
+                finalState = getState(transition.getAsJsonArray("final-state"));
+                if (transition.getAsJsonPrimitive("final") != null)
+                    finalState.setFinalState(transition.getAsJsonPrimitive("final").getAsBoolean());
+                if (transition.getAsJsonPrimitive("initial") != null)
+                    finalState.setInitialState(transition.getAsJsonPrimitive("initial").getAsBoolean());
+                condition = getCondition(transition.getAsJsonPrimitive("condition"));
+                dynamicBuildFilters = getFilterAsList(transition.getAsJsonArray("build-filters"));
+                dynamicMoveFilter = getFilterAsList(transition.getAsJsonArray("move-filters"));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            }
 
-        State simpleMove;
-        State simpleBuild;
+            transitionList.add(new Transition(initialState, finalState, condition, dynamicBuildFilters, dynamicMoveFilter));
 
-        simpleMove = new SimpleMoveState();
-        simpleMove.setInitialState(true);
-        simpleBuild = new SimpleBuildState();
-        simpleBuild.setFinalState(true);
-        transitionList = new ArrayList<>();
+        });
 
-        transitionList.add(new Transition(simpleMove, simpleBuild, null, null, null));
-        transitionList.add(new Transition(simpleBuild, simpleMove, null, null, null));
+        //Victory conditions
+        jsonCard.getAsJsonArray("win-conditions").iterator().forEachRemaining(wc -> {
+            try {
+                victoryConditionList.add((VictoryCondition) Class.forName(wc.getAsString()).getConstructor().newInstance());
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
 
-        victoryConditions = new ArrayList<>(Arrays.asList(new BaseVictoryCondition()));
+        //Build filters
+        jsonCard.getAsJsonArray("build-filters").iterator().forEachRemaining(bf -> {
+            try {
+                buildFilter.add((Filter) Class.forName(bf.getAsString()).getConstructor().newInstance());
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
 
-        moveFilter = new FilterCollection();
-        buildFilter = new FilterCollection();
+        //Move filters
+        jsonCard.getAsJsonArray("move-filters").iterator().forEachRemaining(bf -> {
+            try {
+                moveFilter.add((Filter) Class.forName(bf.getAsString()).getConstructor().newInstance());
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
 
-        moveFilter.add(new FilterMyWorkers());
-        moveFilter.add(new FilterDome());
-        moveFilter.add(new FilterOtherWorkers());
-        moveFilter.add(new FilterUpByTwo());
+        return new CardController(transitionList, victoryConditionList, buildFilter, moveFilter);
 
-        buildFilter.add(new FilterMyWorkers());
-        buildFilter.add(new FilterOtherWorkers());
-        buildFilter.add(new FilterDome());
+    }
 
-        CardController defaultCardController = new CardController(transitionList, victoryConditions, null, moveFilter, buildFilter);
+    private static State getState(JsonArray states) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        if (states.size() == 1) {
+            return (State) Class.forName(states.get(0).getAsString()).getConstructor().newInstance();
+        }
+        Iterator<JsonElement> stateIterator = states.iterator();
+        if (states.size() > 1) {
+            CompoundState compoundState = new CompoundState();
+            while (stateIterator.hasNext())
+                compoundState.addState((State) Class.forName(stateIterator.next().getAsString()).getConstructor().newInstance());
+            return compoundState;
+        }
+        return null;
+    }
 
-        return defaultCardController;
+    private static Transition.Condition getCondition(JsonPrimitive condition) {
+        switch (condition.getAsInt()) {
+            case -1:
+                return null;
+            case 0:
+                return Transition.Condition.MOVE;
+            case 1:
+                return Transition.Condition.BUILD;
+        }
+        return null;
+    }
+
+    private static List<DynamicFilter> getFilterAsList(JsonArray filters) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        List<DynamicFilter> filterList = new ArrayList<>();
+        Iterator<JsonElement> filtersIterator = filters.iterator();
+        while (filtersIterator.hasNext())
+            filterList.add((DynamicFilter) Class.forName(filtersIterator.next().getAsString()).getConstructor().newInstance());
+
+        return filterList;
+
     }
 }

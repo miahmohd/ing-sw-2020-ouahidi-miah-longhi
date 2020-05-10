@@ -4,7 +4,6 @@ import it.polimi.ingsw.psp44.client.cli.Graphics.Color;
 import it.polimi.ingsw.psp44.network.communication.Action;
 import it.polimi.ingsw.psp44.network.communication.Cell;
 import it.polimi.ingsw.psp44.util.Position;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

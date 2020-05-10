@@ -50,7 +50,6 @@ public class VirtualView implements Runnable, IVirtual<Message>, IObserver<Messa
     }
 
 
-
     @Override
     public void sendMessage(Message message) {
         String messageString = JsonConvert.getInstance().toJson(message, Message.class);
