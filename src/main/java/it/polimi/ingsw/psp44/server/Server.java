@@ -46,6 +46,7 @@ public class Server {
                 view.addMessageHandler(Message.Code.NEW_GAME, this::newGameMessageHandler);
                 view.addMessageHandler(Message.Code.JOIN_GAME, this::joinGameMessageHandler);
 
+                view.sendMessage(new Message(Message.Code.NEW_JOIN));
                 executor.execute(view);
             }
 
@@ -66,10 +67,12 @@ public class Server {
         //todo gestire il ritenta al posto dell'errore
         if (this.lobby != null)// ricavare il numero da nickname.
             throw new IllegalStateException();
-        BodyTemplates.FirstMessage firstMessage = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplates.FirstMessage.class);
+        BodyTemplates.NewGame firstMessage = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplates.NewGame.class);
 
         this.lobby = new Lobby(firstMessage.getNumberOfPlayers()); // ricavare il numero da message.
         this.lobby.addPlayer(firstMessage.getPlayerNickname(), view); // ricavare il nickname da message
+
+        view.sendMessage(new Message(Message.Code.GAME_CREATED));
     }
 
     /**
@@ -83,9 +86,12 @@ public class Server {
 
         if (this.lobby == null /*|| this.lobby.containsPlayer(nickname) */ || this.lobby.isFull())
             throw new IllegalStateException();
-        BodyTemplates.FirstMessage firstMessage = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplates.FirstMessage.class);
+        BodyTemplates.JoinGame firstMessage = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplates.JoinGame.class);
 
         this.lobby.addPlayer(firstMessage.getPlayerNickname(), view);
+
+        view.sendMessage(new Message(Message.Code.GAME_JOINED));
+
     }
 
 

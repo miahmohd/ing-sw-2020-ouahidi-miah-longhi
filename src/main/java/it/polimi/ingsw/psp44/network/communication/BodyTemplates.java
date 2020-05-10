@@ -6,27 +6,37 @@ import it.polimi.ingsw.psp44.util.Position;
 public class BodyTemplates {
 
     /**
-     * Template for first message
+     * Template for NewGame message
      */
-    public static class FirstMessage {
+    public static class NewGame {
         private String playerNickname;
         private int numberOfPlayers;
 
-        public FirstMessage(String playerNickname, int numberOfPlayers) {
+        public NewGame(String playerNickname, int numberOfPlayers) {
             this.playerNickname = playerNickname;
             this.numberOfPlayers = numberOfPlayers;
         }
-
-        public FirstMessage(String nickname) {
-            this(nickname, 0);
-        }
-
         public String getPlayerNickname() {
             return playerNickname;
         }
-
         public int getNumberOfPlayers() {
             return numberOfPlayers;
+        }
+    }
+
+    public static class JoinGame {
+        private String playerNickname;
+        private int gameId;
+
+        public JoinGame(String playerNickname, int gameId) {
+            this.playerNickname = playerNickname;
+            this.gameId = gameId;
+        }
+        public String getPlayerNickname() {
+            return playerNickname;
+        }
+        public int getGameId() {
+            return gameId;
         }
     }
 

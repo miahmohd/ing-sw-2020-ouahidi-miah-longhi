@@ -48,14 +48,22 @@ public class Message {
     }
 
     public enum Code {
+        NEW_JOIN,
+        GAME_CREATED,
+        GAME_JOINED,
+
         NEW_GAME,
         JOIN_GAME,
+
         CHOOSE_CARDS,
         CHOSEN_CARDS,
+
         CHOOSE_CARD,
         CHOSEN_CARD,
+
         CHOOSE_WORKERS_INITIAL_POSITION,
         CHOSEN_WORKERS_INITIAL_POSITION,
+
         ALL_PLAYER_NICKNAMES,
         START,
         CHOOSE_WORKER,

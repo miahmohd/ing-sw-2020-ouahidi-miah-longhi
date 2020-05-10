@@ -4,8 +4,8 @@ import it.polimi.ingsw.psp44.network.IConnection;
 import it.polimi.ingsw.psp44.network.IVirtual;
 import it.polimi.ingsw.psp44.network.message.Message;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -14,43 +14,53 @@ public class VirtualServer implements IVirtual<Message>, Runnable {
     private final ExecutorService executor;
     private final IConnection<Message> connection;
     private final Map<Message.Code, IMessageHandlerFunction> router;
-    private final IView<Message> view;
 
-    public VirtualServer(IConnection connection, IView<Message> view) {
-        this.connection = connection;
-        this.view = view;
-
-        router = new HashMap<>();
-        view.setServer(this);
-
-        this.executor = Executors.newFixedThreadPool(100);
-        initRouter();
+    public VirtualServer(IConnection connection) {
+        this(connection, new ConcurrentHashMap<>());
     }
 
-    private void initRouter() {
-        router.put(Message.Code.START, view::startTurn);
-        router.put(Message.Code.CHOOSE_CARDS, view::chooseCardsFrom);
-        router.put(Message.Code.CHOOSE_CARD, view::chooseCardFrom);
-        router.put(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION, view::chooseWorkersInitialPositionFrom);
-        router.put(Message.Code.CHOOSE_WORKER, view::chooseWorkerFrom);
-        router.put(Message.Code.MODIFIED_POSITIONS, view::update);
-        router.put(Message.Code.ALL_PLAYER_NICKNAMES, view::allPlayerNicknames);
-        router.put(Message.Code.CHOOSE_ACTION, view::chooseActionFrom);
+    public VirtualServer(IConnection connection, Map<Message.Code, IMessageHandlerFunction> router){
+        this.connection = connection;
+        this.router = router;
+
+        this.executor = Executors.newFixedThreadPool(2);
+    }
+
+    public synchronized void addRoute(Message.Code code, IMessageHandlerFunction route) {
+        //TODO: allinearmi con miah per i nomi
+        System.out.println("i'm adding routes");
+        this.router.put(code, route);
+        notifyAll();
+    }
+
+    public synchronized void cleanRoutes(){
+        System.out.println("i'm trying to clean");
+        this.router.clear();
+
     }
 
     @Override
-    public void run() {
+    public synchronized void run() {
         while (true) {
+
             Message message = connection.readLine();
             Message.Code code = message.getCode();
-
+            System.out.println(code);
+            while(!this.router.containsKey(code)){
+                try {
+                    System.out.println("i'm waiting");
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
                     router.get(code).accept(message);
                 }
             });
-
+            notifyAll();
         }
     }
 

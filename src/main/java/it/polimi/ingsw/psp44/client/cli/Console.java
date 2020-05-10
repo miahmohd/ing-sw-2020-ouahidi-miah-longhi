@@ -2,6 +2,7 @@ package it.polimi.ingsw.psp44.client.cli;
 
 import it.polimi.ingsw.psp44.util.Position;
 
+import java.text.ParseException;
 import java.util.Scanner;
 
 /**
@@ -27,6 +28,8 @@ public class Console {
         this.currentInteractionRowOffset = currentInteractionRowOffset;
         this.currentInteractionColumnOffset = currentInteractionColumnOffset;
         this.input = input;
+
+        this.clear();
     }
 
 
@@ -37,24 +40,68 @@ public class Console {
     }
 
 
-    public void writeLine(String message){
-        message = goToInteractionSection(currentInteractionRowOffset, currentInteractionColumnOffset) + message;
+    public void writeLine(Object obj){
+        String message = goToInteractionSection(currentInteractionRowOffset, currentInteractionColumnOffset) + obj.toString();
 
         while(message.contains(Graphics.Behaviour.NEW_LINE.getEscape())){
             currentInteractionRowOffset++;
-            message = message.replaceFirst(Graphics.Behaviour.NEW_LINE.toString(), goToBoardSection(
+            message = message.replaceFirst(Graphics.Behaviour.NEW_LINE.toString(), goToInteractionSection(
                     currentInteractionRowOffset, currentInteractionColumnOffset));
         }
         System.out.print(message);
-        currentInteractionRowOffset++;
     }
 
     public String readLine(){
         String message = input.nextLine();
         currentInteractionRowOffset++;
-
         return message;
     }
+
+
+    public int readNumber(){
+        int number;
+        boolean isNumber;
+
+        number = 0;
+
+        do {
+            try{
+                number = Integer.parseInt(this.readLine());
+                isNumber = true;
+            } catch (NumberFormatException e) {
+                this.writeLine("Not a Number");
+                isNumber = false;
+            }
+        }while(!isNumber);
+
+        return number;
+    }
+
+    public Position readPosition() {
+        int row, column;
+        String position;
+        boolean isPosition;
+        String[] rowAndColumn;
+
+        row = column = 0;
+        do {
+            this.writeLine("{row},{column}");
+            try{
+                position = this.readLine();
+                rowAndColumn = position.split(",");
+                row = Integer.parseInt(rowAndColumn[0]);
+                column = Integer.parseInt(rowAndColumn[1]);
+                isPosition = true;
+            } catch (NumberFormatException|NullPointerException e){
+                isPosition = false;
+            }
+
+            //TODO: maybe check bounds
+        } while (!isPosition);
+
+        return new Position(row, column);
+    }
+
 
     public void printOnBoardSection(String board){
         int rowOffset, columnOffset;

@@ -73,7 +73,7 @@ public class SetupController {
      * Sends a message containing the list of cards and information on how many cards the player needs to choose.
      */
     public void start() {
-        sendAllPlayerNicknames();
+        //sendAllPlayerNicknames();
 
         VirtualView currentPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
         Card[] allCards = R.getCards();
