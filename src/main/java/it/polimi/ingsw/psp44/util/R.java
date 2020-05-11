@@ -7,10 +7,7 @@ import it.polimi.ingsw.psp44.util.property.AssetPathProperties;
 import it.polimi.ingsw.psp44.util.property.CLIProperties;
 import it.polimi.ingsw.psp44.util.property.Property;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 
 /**
  * Class used for managing resources. R stands for Resources
@@ -21,15 +18,10 @@ public final class R {
      * @return a json object with the specified cardSontroller's elements
      */
     public static JsonObject getCard(int index) {
-        File file = new File(R.class.getResource("/gods/" + index + ".json").getFile());
-        try {
-            FileReader reader = new FileReader(file);
-            JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
-            return jsonObject;
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        InputStream resourceAsStream = R.class.getResourceAsStream("/gods/" + index + ".json");
+        Reader reader = new InputStreamReader(resourceAsStream);
+        JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
+        return jsonObject;
     }
 
     /**
@@ -43,15 +35,10 @@ public final class R {
      * @return an array containing the Cards in cards.json. Returns an empty array if there are no saved cards.
      */
     public static Card[] getCards() {
-        File file = new File(R.class.getResource("/cards.json").getFile());
-        try {
-            Reader reader = new FileReader(file);
-            Card[] cards = JsonConvert.getInstance().fromJson(reader, Card[].class);
-            return cards;
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return new Card[0];
+        InputStream resourceAsStream = R.class.getResourceAsStream("/cards.json");
+        Reader reader = new InputStreamReader(resourceAsStream);
+        Card[] cards = JsonConvert.getInstance().fromJson(reader, Card[].class);
+        return cards;
     }
 
     /**

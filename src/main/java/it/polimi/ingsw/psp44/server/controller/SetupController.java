@@ -17,6 +17,7 @@ import it.polimi.ingsw.psp44.util.R;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This class manages the setup phase of the game.
@@ -55,8 +56,8 @@ public class SetupController {
     /**
      * @return the number of players currently registered.
      */
-    public int getRegisteredPlayer() {
-        return this.model.getNumberOfPlayer();
+    public Set<String> getRegisteredPlayers() {
+        return this.playerViews.keySet();
     }
 
 
@@ -69,7 +70,8 @@ public class SetupController {
 
         VirtualView currentPlayer;
         Map<MessageHeader, String> headers;
-        String body; Message toSend;
+        String body;
+        Message toSend;
 
         currentPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
 
@@ -77,15 +79,13 @@ public class SetupController {
         body = BodyFactory.toCards(allCards);
         headers = new EnumMap<>(MessageHeader.class);
 
-        headers.put(MessageHeader.CARDINALITY, String.valueOf(this.getRegisteredPlayer()));
+        headers.put(MessageHeader.CARDINALITY, String.valueOf(this.getRegisteredPlayers().size()));
 
         toSend = new Message(Message.Code.CHOOSE_CARDS, headers, body);
 
         currentPlayer.sendMessage(new Message(Message.Code.START_TURN));
         currentPlayer.sendMessage(toSend);
     }
-
-
 
 
     /**
@@ -95,7 +95,7 @@ public class SetupController {
      * @param view    the player that chose the cards, the first one.
      * @param message message with code CHOSEN_CARDS containing information about the chosen cards.
      */
-    public void chosenCardsMessageHandler(VirtualView view, Message message) {
+    public synchronized void chosenCardsMessageHandler(VirtualView view, Message message) {
         if (playerViews.get(this.model.getCurrentPlayerNickname()) != view)
             return;
 
@@ -116,7 +116,7 @@ public class SetupController {
      * @param view    the player that chose the card.
      * @param message message with code CHOSEN_CARD containing information about the chosen card.
      */
-    public void chosenCardMessageHandler(VirtualView view, Message message) {
+    public synchronized void chosenCardMessageHandler(VirtualView view, Message message) {
         Message toSend;
         CardController cardController;
         VirtualView currentView = playerViews.get(this.model.getCurrentPlayerNickname());
@@ -164,7 +164,7 @@ public class SetupController {
      * @param view    the player that chose the card.
      * @param message message with code CHOSEN_WORKERS_INITIAL_POSITION containing information about the chose positions.
      */
-    public void chosenWorkersInitialPositionsMessageHandler(VirtualView view, Message message) {
+    public synchronized void chosenWorkersInitialPositionsMessageHandler(VirtualView view, Message message) {
         VirtualView currentView = playerViews.get(this.model.getCurrentPlayerNickname());
 
         if (currentView != view)
@@ -192,7 +192,7 @@ public class SetupController {
         }
     }
 
-    private void setWorkersInitialPositions(Position[] chosenPositions) {
+    private synchronized void setWorkersInitialPositions(Position[] chosenPositions) {
         String currentPlayerNickname = this.model.getCurrentPlayerNickname();
         Worker female = new Worker(currentPlayerNickname, Worker.Sex.FEMALE);
         Worker male = new Worker(currentPlayerNickname, Worker.Sex.MALE);
@@ -224,12 +224,12 @@ public class SetupController {
         messageBody = JsonConvert.getInstance().toJson(allPlayerNicknames, String[].class);
         toSend = new Message(Message.Code.ALL_PLAYER_NICKNAMES, messageBody);
 
-        for(VirtualView view : playerViews.values()) {
+        for (VirtualView view : playerViews.values()) {
             view.sendMessage(toSend);
         }
     }
 
-    private void nextTurn(){
+    private void nextTurn() {
         VirtualView currentView;
 
         currentView = this.playerViews.get(this.model.getCurrentPlayerNickname());

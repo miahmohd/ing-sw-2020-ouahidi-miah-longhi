@@ -20,15 +20,15 @@ public final class JsonConvert {
         return instance;
     }
 
-    public <T> T fromJson(String json, Class<T> classOfT) {
+    public synchronized <T> T fromJson(String json, Class<T> classOfT) {
         return gson.fromJson(json, classOfT);
     }
 
-    public <T> T fromJson(Reader reader, Class<T> classOfT) {
+    public synchronized <T> T fromJson(Reader reader, Class<T> classOfT) {
         return gson.fromJson(reader, classOfT);
     }
 
-    public <T> String toJson(T obj, Class<T> classOfT) {
+    public synchronized <T> String toJson(T obj, Class<T> classOfT) {
         return gson.toJson(obj, classOfT);
     }
 

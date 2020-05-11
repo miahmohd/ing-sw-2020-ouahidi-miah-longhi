@@ -3,39 +3,48 @@ package it.polimi.ingsw.psp44.server;
 import it.polimi.ingsw.psp44.server.controller.SetupController;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
 
-import java.util.Date;
-
 /**
  * A class representing a single game. It is self-sustained.
  */
 public class Lobby {
 
+    private static int idGen = 0;
+
     private final int maxPlayers;
-    private final long id;
+    private final int id;
     private final SetupController setupController;
 
 
     public Lobby(int maxPlayers) {
         this.maxPlayers = maxPlayers;
-        this.id = new Date().getTime();
+        this.id = idGen++;
         this.setupController = new SetupController();
     }
 
 
     /**
-     * Add a new player to the game. When the game reaches full capacity it starts automatically.
+     * Add a new player to the game.
      *
      * @param nickname a unique string tha identify a player
      * @param view     the virtual-view bounded to the player
      */
-    public synchronized void addPlayer(String nickname, VirtualView view) {
+    public void addPlayer(String nickname, VirtualView view) {
         setupController.addPlayer(nickname, view);
-        if (this.isFull())
-            setupController.start();
     }
 
-    public synchronized boolean isFull() {
-        return setupController.getRegisteredPlayer() == maxPlayers;
+    public boolean contains(String nickname) {
+        return setupController.getRegisteredPlayers().contains(nickname);
+    }
+
+    public boolean isFull() {
+        return setupController.getRegisteredPlayers().size() == maxPlayers;
+    }
+
+    /**
+     * Start the setup phase of the game.
+     */
+    public void start() {
+        this.setupController.start();
     }
 
     public long getId() {

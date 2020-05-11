@@ -24,6 +24,10 @@ public class Message {
         this(code, "");
     }
 
+    public Message(Code code, Map<MessageHeader, String> headers) {
+        this(code, headers, "");
+    }
+
     public Message(Code code, String body) {
         this(code, null, body);
     }

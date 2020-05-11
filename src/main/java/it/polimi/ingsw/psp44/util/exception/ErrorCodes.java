@@ -25,7 +25,9 @@ public final class ErrorCodes {
 
     public static final String MESSAGE_HANDLER_NOT_FOUND = "MESSAGE_HANDLER_NOT_FOUND";
 
-    public static final String MESSAGE_FROM_UNEXPECTED_PLAYER = "MESSAGE_FROM_UNEXPECTED_PLAYER";
+    public static final String UNAVAILABLE_NICKNAME = "UNAVAILABLE_NICKNAME";
+    public static final String UNAVAILABLE_GAME = "UNAVAILABLE_GAME";
+    public static final String ILLEGAL_GAME_PARAMS = "ILLEGAL_GAME_PARAMS";
 
     private ErrorCodes() {
     }
