@@ -1,7 +1,6 @@
 package it.polimi.ingsw.psp44.server.controller;
 
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
-import it.polimi.ingsw.psp44.network.communication.Cell;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.server.controller.filters.Filter;
 import it.polimi.ingsw.psp44.server.model.GameModel;
@@ -31,7 +30,7 @@ public class Controller {
     public void start() {
         this.currentPlayer = players.get(model.getCurrentPlayerNickname());
         this.currentPlayerView = playerViews.get(model.getCurrentPlayerNickname());
-        currentPlayerView.sendMessage(new Message(Message.Code.START));
+        currentPlayerView.sendMessage(new Message(Message.Code.START_TURN));
         workers();
     }
 
@@ -87,7 +86,7 @@ public class Controller {
      * @return <code>true</code> if the message does not require further processing, <code>false</code>  otherwise.
      */
     public void endTurnMessageHandler(VirtualView view, Message message) {
-        currentPlayerView.sendMessage(new Message(Message.Code.TURN_END));
+        currentPlayerView.sendMessage(new Message(Message.Code.END_TURN));
         model.nextTurn();
         this.start();
     }
@@ -175,7 +174,7 @@ public class Controller {
      * Notices tha current player that the match can be ended
      */
     private void endable() {
-        currentPlayerView.sendMessage(new Message(Message.Code.TURN_ENDABLE));
+        //currentPlayerView.sendMessage(new Message(Message.Code.TURN_ENDABLE));
     }
 
     public void setVirtualViews(Map<String, VirtualView> playerViews) {

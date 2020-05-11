@@ -42,12 +42,8 @@ public class Server {
                 this.connections.add(connection);
 
                 VirtualView view = new VirtualView(connection);
-
-                view.addMessageHandler(Message.Code.NEW_GAME, this::newGameMessageHandler);
-                view.addMessageHandler(Message.Code.JOIN_GAME, this::joinGameMessageHandler);
-
-                view.sendMessage(new Message(Message.Code.NEW_JOIN));
-                executor.execute(view);
+                setHandlers(view);
+                beginCommunication(view);
             }
 
         } catch (IOException e) {
@@ -88,11 +84,22 @@ public class Server {
             throw new IllegalStateException();
         BodyTemplates.JoinGame firstMessage = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplates.JoinGame.class);
 
-        this.lobby.addPlayer(firstMessage.getPlayerNickname(), view);
-
         view.sendMessage(new Message(Message.Code.GAME_JOINED));
+
+        //TODO: maybe start the game here and not in the addPlayerSection
+        this.lobby.addPlayer(firstMessage.getPlayerNickname(), view);
 
     }
 
+
+    private void setHandlers(VirtualView view){
+        view.addMessageHandler(Message.Code.NEW_GAME, this::newGameMessageHandler);
+        view.addMessageHandler(Message.Code.JOIN_GAME, this::joinGameMessageHandler);
+    }
+
+    private void beginCommunication(VirtualView view) {
+        view.sendMessage(new Message(Message.Code.NEW_OR_JOIN));
+        executor.execute(view);
+    }
 
 }

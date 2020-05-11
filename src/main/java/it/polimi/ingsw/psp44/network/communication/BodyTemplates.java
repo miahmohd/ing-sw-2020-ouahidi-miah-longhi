@@ -41,11 +41,11 @@ public class BodyTemplates {
     }
 
 
-    public static class CardMessage {
+    public static class ChosenCard {
         private Card chosen;
         private Card[] rest;
 
-        public CardMessage(Card chosen, Card[] rest) {
+        public ChosenCard(Card chosen, Card[] rest) {
             this.chosen = chosen;
             this.rest = rest;
         }

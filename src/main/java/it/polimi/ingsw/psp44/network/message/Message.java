@@ -48,7 +48,7 @@ public class Message {
     }
 
     public enum Code {
-        NEW_JOIN,
+        NEW_OR_JOIN,
         GAME_CREATED,
         GAME_JOINED,
 
@@ -65,14 +65,17 @@ public class Message {
         CHOSEN_WORKERS_INITIAL_POSITION,
 
         ALL_PLAYER_NICKNAMES,
-        START,
+
+        START_TURN,
+        END_TURN,
+
         CHOOSE_WORKER,
         CHOOSE_ACTION,
         CHOSEN_WORKER,
         CHOSEN_ACTION,
-        MODIFIED_POSITIONS,
-        TURN_ENDABLE,
-        TURN_END,
-        PLAYER_NICKNAME,
+        UPDATE,
+
+        WON,
+        LOST
     }
 }

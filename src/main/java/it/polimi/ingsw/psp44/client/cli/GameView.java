@@ -1,7 +1,6 @@
 package it.polimi.ingsw.psp44.client.cli;
 
 import it.polimi.ingsw.psp44.client.VirtualServer;
-import it.polimi.ingsw.psp44.network.IVirtual;
 import it.polimi.ingsw.psp44.network.communication.Action;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.communication.Cell;
@@ -25,7 +24,10 @@ public class GameView {
     private Board board;
 
 
-    public GameView(){
+    public GameView(String playerNickname, Console console, Board board){
+        this.playerNickname = playerNickname;
+        this.console = console;
+        this.board = board;
 
     }
 
@@ -88,7 +90,12 @@ public class GameView {
     }
 
     public void start(Message start){
-        //TODO: create coso di setup
+        console.clear();
+        console.writeLine("it's your turn boy");
+    }
+
+    public void end(Message end) {
+        console.writeLine("ora stai fermo");
     }
 
     public void lost(Message lost) {
@@ -111,7 +118,18 @@ public class GameView {
         console.printOnBoardSection(this.board.getBoard());
     }
 
-    public void setServer(VirtualServer virtualServer) {
-        this.virtualServer = virtualServer;
+    public void setServer(VirtualServer virtual) {
+        this.virtualServer = virtual;
+
+        virtualServer.cleanRoutes();
+
+        virtualServer.addRoute(Message.Code.START_TURN, this::start);
+        virtualServer.addRoute(Message.Code.END_TURN, this::end);
+        virtualServer.addRoute(Message.Code.CHOOSE_WORKER, this::chooseWorkerFrom);
+        virtualServer.addRoute(Message.Code.UPDATE, this::update);
+        virtualServer.addRoute(Message.Code.CHOOSE_ACTION, this::chooseActionFrom);
+        virtualServer.addRoute(Message.Code.WON, this::won);
+        virtualServer.addRoute(Message.Code.LOST, this::lost);
+
     }
 }

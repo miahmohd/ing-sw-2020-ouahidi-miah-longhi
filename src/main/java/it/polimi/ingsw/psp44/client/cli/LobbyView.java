@@ -60,28 +60,27 @@ public class LobbyView {
     public void gameCreated(Message gameCreated){
         console.writeLine(gameCreated.getBody());
         console.writeLine("game created now wait and don't do anything, please");
+        changeView();
     }
 
     public void gameJoined(Message gameJoined) {
         console.writeLine(gameJoined.getBody());
         console.writeLine("game joined now wait and don't do anything, please");
-    }
-
-    public void start(Message start){
-        SetupView setupView = new SetupView(this.playerNickname, this.console);
-        setupView.setServer(this.virtualServer);
+        changeView();
     }
 
     public void setServer(VirtualServer virtual){
         this.virtualServer = virtual;
 
-        virtualServer.addRoute(Message.Code.NEW_JOIN, this::newJoin);
+        virtualServer.addRoute(Message.Code.NEW_OR_JOIN, this::newJoin);
         virtualServer.addRoute(Message.Code.GAME_CREATED, this::gameCreated);
         virtualServer.addRoute(Message.Code.GAME_JOINED, this::gameJoined);
-        virtualServer.addRoute(Message.Code.START, this::gameJoined);
-
     }
 
+    private void changeView(){
+        SetupView setupView = new SetupView(this.playerNickname, this.console);
+        setupView.setServer(this.virtualServer);
+    }
 
     private Message.Code getMessageCode(){
         String chosenOption;
@@ -93,6 +92,7 @@ public class LobbyView {
 
         return gameOptions.get(chosenOption);
     }
+
     private void initGameOptions() {
         this.gameOptions.put("newgame", Message.Code.NEW_GAME);
         this.gameOptions.put("n", Message.Code.NEW_GAME);

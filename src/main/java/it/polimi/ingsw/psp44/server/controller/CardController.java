@@ -187,7 +187,4 @@ public class CardController {
     }
 
 
-    public void setContext(Controller context){
-        this.context = context;
-    }
 }

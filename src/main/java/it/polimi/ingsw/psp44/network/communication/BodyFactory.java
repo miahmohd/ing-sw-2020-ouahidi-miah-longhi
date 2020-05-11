@@ -69,8 +69,8 @@ public class BodyFactory {
     }
 
     public static String toChosenCard(Card chosenCard, Card[] rest) {
-        BodyTemplates.CardMessage chosenCardBody = new BodyTemplates.CardMessage(chosenCard, rest);
-        return JsonConvert.getInstance().toJson(chosenCardBody, BodyTemplates.CardMessage.class);
+        BodyTemplates.ChosenCard chosenCardBody = new BodyTemplates.ChosenCard(chosenCard, rest);
+        return JsonConvert.getInstance().toJson(chosenCardBody, BodyTemplates.ChosenCard.class);
     }
 
 
@@ -97,5 +97,13 @@ public class BodyFactory {
 
     public static String toAction(it.polimi.ingsw.psp44.network.communication.Action action) {
         return JsonConvert.getInstance().toJson(action, it.polimi.ingsw.psp44.network.communication.Action.class);
+    }
+
+    public static String[] fromPlayersNickname(String playersNickname) {
+        return JsonConvert.getInstance().fromJson(playersNickname, String[].class);
+    }
+
+    public static BodyTemplates.ChosenCard fromChosenCard(String chosenCard) {
+        return JsonConvert.getInstance().fromJson(chosenCard, BodyTemplates.ChosenCard.class);
     }
 }
