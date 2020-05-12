@@ -7,7 +7,9 @@ import it.polimi.ingsw.psp44.util.property.AssetPathProperties;
 import it.polimi.ingsw.psp44.util.property.CLIProperties;
 import it.polimi.ingsw.psp44.util.property.Property;
 
-import java.io.*;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 /**
  * Class used for managing resources. R stands for Resources

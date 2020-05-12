@@ -24,11 +24,11 @@ public class SetupView {
 
     private boolean isViewSwitchable;
 
-    public SetupView(String playerNickname, Console console){
+    public SetupView(String playerNickname, Console console) {
         this(playerNickname, console, new Board());
     }
 
-    public SetupView(String playerNickname, Console console, Board board){
+    public SetupView(String playerNickname, Console console, Board board) {
         this.playerNickname = playerNickname;
         this.console = console;
         this.board = board;
@@ -58,7 +58,8 @@ public class SetupView {
             chosenCards[numberOfCardCounter] = getChosenCard(cardList);
         }
 
-        body = BodyFactory.toCards(chosenCards); JsonConvert.getInstance().toJson(chosenCards, Card[].class);
+        body = BodyFactory.toCards(chosenCards);
+        JsonConvert.getInstance().toJson(chosenCards, Card[].class);
         response = new Message(Message.Code.CHOSEN_CARDS, body);
         virtualServer.sendMessage(response);
     }
@@ -137,20 +138,20 @@ public class SetupView {
         board.setPlayers(this.playerNickname, opponents);
     }
 
-    public void start(Message start){
+    public void start(Message start) {
         console.clear();
         console.writeLine("it's your turn boy");
     }
 
     public void end(Message end) {
-        if(!this.isViewSwitchable)
+        if (!this.isViewSwitchable)
             return;
 
         GameView view = new GameView(playerNickname, console, board);
         view.setServer(this.virtualServer);
     }
 
-    public void setServer(VirtualServer virtual){
+    public void setServer(VirtualServer virtual) {
         this.virtualServer = virtual;
 
         virtualServer.cleanRoutes();
@@ -164,11 +165,11 @@ public class SetupView {
         virtualServer.addRoute(Message.Code.UPDATE, this::update);
     }
 
-    private Card getChosenCard(Card[] cards){
+    private Card getChosenCard(Card[] cards) {
         Card chosenCard;
 
         console.writeLine("gimmie the id ");
-         do {
+        do {
             int chosenCardId = console.readNumber();
 
             chosenCard = Arrays.stream(cards).filter(
@@ -176,10 +177,10 @@ public class SetupView {
                     .findFirst()
                     .orElse(null);
 
-            if(chosenCard == null)
+            if (chosenCard == null)
                 console.writeLine("not a valid id");
 
-        } while(chosenCard == null);
+        } while (chosenCard == null);
 
 
         return chosenCard;

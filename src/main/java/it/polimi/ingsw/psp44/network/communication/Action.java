@@ -7,24 +7,23 @@ public class Action {
     private final Position target;
     private final boolean build;
     private final boolean move;
+    private final int id;
+    private final String description;
 
-    /**
-     * Not set if the action is move
-     */
-    private final int level;
-
-
-    /**
-     * Not set if the action is move
-     */
-    private final boolean dome;
-
-    public Action(Position target, boolean build, boolean move, int level, boolean dome) {
+    public Action(int id, String description, Position target, boolean build, boolean move) {
+        this.id = id;
+        this.description = description;
         this.target = target;
         this.build = build;
         this.move = move;
-        this.level = level;
-        this.dome = dome;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public Position getTarget() {
@@ -37,14 +36,6 @@ public class Action {
 
     public boolean isMove() {
         return move;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public boolean isDome() {
-        return dome;
     }
 
 }

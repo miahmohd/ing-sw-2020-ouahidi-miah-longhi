@@ -14,11 +14,11 @@ public class Message {
     /**
      * Additional information about the message
      */
-    private final Map<MessageHeader, String> headers;
+    private Map<MessageHeader, String> headers;
     /**
      * Body of the message
      */
-    private final String body;
+    private String body;
 
     public Message(Code code) {
         this(code, "");
@@ -51,6 +51,18 @@ public class Message {
         return body;
     }
 
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public void addHeader(MessageHeader header, String value) {
+        headers.put(header, value);
+    }
+
+    public void removeHeader(MessageHeader header) {
+        headers.remove(header);
+    }
+
     public enum Code {
         NEW_OR_JOIN,
         GAME_CREATED,
@@ -78,8 +90,10 @@ public class Message {
         CHOSEN_WORKER,
         CHOSEN_ACTION,
         UPDATE,
-
         WON,
-        LOST
+        LOST,
+        MODIFIED_POSITIONS,
+        PLAYER_NICKNAME,
+
     }
 }

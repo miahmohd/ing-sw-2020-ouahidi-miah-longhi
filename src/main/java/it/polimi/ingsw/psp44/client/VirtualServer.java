@@ -23,7 +23,7 @@ public class VirtualServer implements IVirtual<Message>, Runnable {
     }
 
 
-    public VirtualServer(IConnection connection, Map<Message.Code, IMessageHandlerFunction> router){
+    public VirtualServer(IConnection connection, Map<Message.Code, IMessageHandlerFunction> router) {
         this.connection = connection;
         this.router = router;
 
@@ -39,7 +39,7 @@ public class VirtualServer implements IVirtual<Message>, Runnable {
         notify();
     }
 
-    public void cleanRoutes(){
+    public void cleanRoutes() {
         //System.out.println("i'm trying to clean");
         this.router.clear();
     }
@@ -52,7 +52,7 @@ public class VirtualServer implements IVirtual<Message>, Runnable {
             Message.Code code = message.getCode();
             //System.out.println(code);
 
-            while(!this.router.containsKey(code)){
+            while (!this.router.containsKey(code)) {
                 try {
                     wait();
                 } catch (InterruptedException e) {

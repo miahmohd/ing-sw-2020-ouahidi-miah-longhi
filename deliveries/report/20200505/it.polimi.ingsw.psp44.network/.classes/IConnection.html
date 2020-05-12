@@ -1,68 +1,65 @@
-
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html id="htmlId">
 <head>
-  <title>Coverage Report :: IConnection</title>
-  <style type="text/css">
-    @import "../../.css/coverage.css";
-  </style>
+    <title>Coverage Report :: IConnection</title>
+    <style type="text/css">
+        @import "../../.css/coverage.css";
+    </style>
 </head>
 
 <body>
 <div class="header"></div>
 
 <div class="content">
-<div class="breadCrumbs">
-    [ <a href="../../index.html">all classes</a> ]
-    [ <a href="../index.html">it.polimi.ingsw.psp44.network</a> ]
-</div>
+    <div class="breadCrumbs">
+        [ <a href="../../index.html">all classes</a> ]
+        [ <a href="../index.html">it.polimi.ingsw.psp44.network</a> ]
+    </div>
 
-<h1>Coverage Summary for Class: IConnection (it.polimi.ingsw.psp44.network)</h1>
+    <h1>Coverage Summary for Class: IConnection (it.polimi.ingsw.psp44.network)</h1>
 
-<table class="coverageStats">
-<tr>
-  <th class="name">Class</th>
-</tr>
-<tr>
-  <td class="name">IConnection</td>
-</tr>
+    <table class="coverageStats">
+        <tr>
+            <th class="name">Class</th>
+        </tr>
+        <tr>
+            <td class="name">IConnection</td>
+        </tr>
 
-</table>
+    </table>
 
-<br/>
-<br/>
+    <br/>
+    <br/>
 
 
-<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.network;
-<i>2</i>&nbsp;
-<i>3</i>&nbsp;/**
-<i>4</i>&nbsp; * Interface for the communication between the user (of the class) and a remote host.
-<i>5</i>&nbsp; */
-<i>6</i>&nbsp;public interface IConnection&lt;T&gt; {
-<i>7</i>&nbsp;
-<i>8</i>&nbsp;
-<i>9</i>&nbsp;    /**
-<i>10</i>&nbsp;     * Reads form the chosen connection
-<i>11</i>&nbsp;     *
-<i>12</i>&nbsp;     * @return the message just read
-<i>13</i>&nbsp;     */
-<i>14</i>&nbsp;    T readLine();
-<i>15</i>&nbsp;
-<i>16</i>&nbsp;
-<i>17</i>&nbsp;    /**
-<i>18</i>&nbsp;     * Writes the message into the chosen connection
-<i>19</i>&nbsp;     */
-<i>20</i>&nbsp;    void writeLine(T message);
-<i>21</i>&nbsp;
-<i>22</i>&nbsp;}
-</div>
+    <div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.network;
+        <i>2</i>&nbsp;
+        <i>3</i>&nbsp;/**
+        <i>4</i>&nbsp; * Interface for the communication between the user (of the class) and a remote host.
+        <i>5</i>&nbsp; */
+        <i>6</i>&nbsp;public interface IConnection&lt;T&gt; {
+        <i>7</i>&nbsp;
+        <i>8</i>&nbsp;
+        <i>9</i>&nbsp; /**
+        <i>10</i>&nbsp; * Reads form the chosen connection
+        <i>11</i>&nbsp; *
+        <i>12</i>&nbsp; * @return the message just read
+        <i>13</i>&nbsp; */
+        <i>14</i>&nbsp; T readLine();
+        <i>15</i>&nbsp;
+        <i>16</i>&nbsp;
+        <i>17</i>&nbsp; /**
+        <i>18</i>&nbsp; * Writes the message into the chosen connection
+        <i>19</i>&nbsp; */
+        <i>20</i>&nbsp; void writeLine(T message);
+        <i>21</i>&nbsp;
+        <i>22</i>&nbsp;}
+    </div>
 </div>
 
 <div class="footer">
-    
+
     <div style="float:right;">generated on 2020-05-05 08:44</div>
 </div>
 </body>

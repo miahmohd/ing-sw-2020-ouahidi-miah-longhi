@@ -24,7 +24,7 @@ public class GameView {
     private Board board;
 
 
-    public GameView(String playerNickname, Console console, Board board){
+    public GameView(String playerNickname, Console console, Board board) {
         this.playerNickname = playerNickname;
         this.console = console;
         this.board = board;
@@ -76,7 +76,7 @@ public class GameView {
 
         List<Action> chosenActions = actionsPerPosition.get(chosenPosition);
 
-        if(chosenActions.size() > 1){
+        if (chosenActions.size() > 1) {
             //TODO: MAKE DECIDE
             chosenAction = chosenActions.stream().findFirst().get();
         } else
@@ -84,12 +84,12 @@ public class GameView {
 
 
         body = BodyFactory.toAction(chosenAction);
-        message = new Message(Message.Code.CHOSEN_ACTION,body);
+        message = new Message(Message.Code.CHOSEN_ACTION, body);
 
         virtualServer.sendMessage(message);
     }
 
-    public void start(Message start){
+    public void start(Message start) {
         console.clear();
         console.writeLine("it's your turn boy");
     }

@@ -16,7 +16,7 @@ public class LobbyView {
     private Map<String, Message.Code> gameOptions;
 
 
-    public LobbyView(Console console){
+    public LobbyView(Console console) {
         this.console = console;
 
         this.gameOptions = new HashMap<>();
@@ -28,7 +28,7 @@ public class LobbyView {
         this(new Console());
     }
 
-    public void newJoin(Message joinOrNew){
+    public void newJoin(Message joinOrNew) {
         String body;
         Message message;
         Message.Code messageCode;
@@ -57,7 +57,7 @@ public class LobbyView {
         virtualServer.sendMessage(message);
     }
 
-    public void gameCreated(Message gameCreated){
+    public void gameCreated(Message gameCreated) {
         console.writeLine(gameCreated.getBody());
         console.writeLine("game created now wait and don't do anything, please");
         changeView();
@@ -69,7 +69,7 @@ public class LobbyView {
         changeView();
     }
 
-    public void setServer(VirtualServer virtual){
+    public void setServer(VirtualServer virtual) {
         this.virtualServer = virtual;
 
         virtualServer.addRoute(Message.Code.NEW_OR_JOIN, this::newJoin);
@@ -77,12 +77,12 @@ public class LobbyView {
         virtualServer.addRoute(Message.Code.GAME_JOINED, this::gameJoined);
     }
 
-    private void changeView(){
+    private void changeView() {
         SetupView setupView = new SetupView(this.playerNickname, this.console);
         setupView.setServer(this.virtualServer);
     }
 
-    private Message.Code getMessageCode(){
+    private Message.Code getMessageCode() {
         String chosenOption;
         do {
             console.writeLine("What you want to do? New Game or Join Game? N/J ");

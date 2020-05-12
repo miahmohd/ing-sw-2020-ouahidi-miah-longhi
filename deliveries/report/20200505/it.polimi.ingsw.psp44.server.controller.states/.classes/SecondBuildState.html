@@ -1,115 +1,113 @@
-
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html id="htmlId">
 <head>
-  <title>Coverage Report :: SecondBuildState</title>
-  <style type="text/css">
-    @import "../../.css/coverage.css";
-  </style>
+    <title>Coverage Report :: SecondBuildState</title>
+    <style type="text/css">
+        @import "../../.css/coverage.css";
+    </style>
 </head>
 
 <body>
 <div class="header"></div>
 
 <div class="content">
-<div class="breadCrumbs">
-    [ <a href="../../index.html">all classes</a> ]
-    [ <a href="../index.html">it.polimi.ingsw.psp44.server.controller.states</a> ]
-</div>
+    <div class="breadCrumbs">
+        [ <a href="../../index.html">all classes</a> ]
+        [ <a href="../index.html">it.polimi.ingsw.psp44.server.controller.states</a> ]
+    </div>
 
-<h1>Coverage Summary for Class: SecondBuildState (it.polimi.ingsw.psp44.server.controller.states)</h1>
+    <h1>Coverage Summary for Class: SecondBuildState (it.polimi.ingsw.psp44.server.controller.states)</h1>
 
-<table class="coverageStats">
-<tr>
-  <th class="name">Class</th>
-<th class="coverageStat 
+    <table class="coverageStats">
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
 ">
-  Class, %
-</th>
-<th class="coverageStat 
+                Class, %
+            </th>
+            <th class="coverageStat
 ">
-  Method, %
-</th>
-<th class="coverageStat 
+                Method, %
+            </th>
+            <th class="coverageStat
 ">
-  Line, %
-</th>
-</tr>
-<tr>
-  <td class="name">SecondBuildState</td>
-<td class="coverageStat">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">SecondBuildState</td>
+            <td class="coverageStat">
   <span class="percent">
     100%
   </span>
-  <span class="absValue">
+                <span class="absValue">
     (1/ 1)
   </span>
-</td>
-<td class="coverageStat">
+            </td>
+            <td class="coverageStat">
   <span class="percent">
     100%
   </span>
-  <span class="absValue">
+                <span class="absValue">
     (2/ 2)
   </span>
-</td>
-<td class="coverageStat">
+            </td>
+            <td class="coverageStat">
   <span class="percent">
     100%
   </span>
-  <span class="absValue">
+                <span class="absValue">
     (4/ 4)
   </span>
-</td>
-</tr>
+            </td>
+        </tr>
 
-</table>
+    </table>
 
-<br/>
-<br/>
+    <br/>
+    <br/>
 
 
-<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server.controller.states;
-<i>2</i>&nbsp;
-<i>3</i>&nbsp;import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
-<i>4</i>&nbsp;import it.polimi.ingsw.psp44.server.model.Board;
-<i>5</i>&nbsp;import it.polimi.ingsw.psp44.server.model.actions.Action;
-<i>6</i>&nbsp;import it.polimi.ingsw.psp44.util.Position;
-<i>7</i>&nbsp;
-<i>8</i>&nbsp;import java.util.List;
-<i>9</i>&nbsp;
-<i>10</i>&nbsp;/**
-<i>11</i>&nbsp; * this state allows to compute all the the build actions that the worker can do, even no build
-<i>12</i>&nbsp; */
-<i>13</i>&nbsp;public class SecondBuildState extends SimpleBuildState {
-<i>14</i>&nbsp;
-<b class="fc"><i>15</i>&nbsp;    public SecondBuildState() {</b>
-<b class="fc"><i>16</i>&nbsp;        this.finalState = true;</b>
-<b class="fc"><i>17</i>&nbsp;    }</b>
-<i>18</i>&nbsp;
-<i>19</i>&nbsp;    /**
-<i>20</i>&nbsp;     * Compute the available actions that the player can perform
-<i>21</i>&nbsp;     *
-<i>22</i>&nbsp;     * @param board          representation of the playing field
-<i>23</i>&nbsp;     * @param selectedWorker worker selected from the player
-<i>24</i>&nbsp;     * @param moveFilter     filter to apply to move actions
-<i>25</i>&nbsp;     * @param buildFilter    filter to apply to build actions
-<i>26</i>&nbsp;     * @return list of available actions
-<i>27</i>&nbsp;     */
-<i>28</i>&nbsp;    @Override
-<i>29</i>&nbsp;    public List&lt;Action&gt; getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
-<b class="fc"><i>30</i>&nbsp;        return super.getAvailableActions(board, selectedWorker, moveFilter, buildFilter);</b>
-<i>31</i>&nbsp;    }
-<i>32</i>&nbsp;}
-<i>33</i>&nbsp;
-</div>
+    <div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server.controller.states;
+        <i>2</i>&nbsp;
+        <i>3</i>&nbsp;import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
+        <i>4</i>&nbsp;import it.polimi.ingsw.psp44.server.model.Board;
+        <i>5</i>&nbsp;import it.polimi.ingsw.psp44.server.model.actions.Action;
+        <i>6</i>&nbsp;import it.polimi.ingsw.psp44.util.Position;
+        <i>7</i>&nbsp;
+        <i>8</i>&nbsp;import java.util.List;
+        <i>9</i>&nbsp;
+        <i>10</i>&nbsp;/**
+        <i>11</i>&nbsp; * this state allows to compute all the the build actions that the worker can do, even no build
+        <i>12</i>&nbsp; */
+        <i>13</i>&nbsp;public class SecondBuildState extends SimpleBuildState {
+        <i>14</i>&nbsp;
+        <b class="fc"><i>15</i>&nbsp; public SecondBuildState() {</b>
+        <b class="fc"><i>16</i>&nbsp; this.finalState = true;</b>
+        <b class="fc"><i>17</i>&nbsp; }</b>
+        <i>18</i>&nbsp;
+        <i>19</i>&nbsp; /**
+        <i>20</i>&nbsp; * Compute the available actions that the player can perform
+        <i>21</i>&nbsp; *
+        <i>22</i>&nbsp; * @param board representation of the playing field
+        <i>23</i>&nbsp; * @param selectedWorker worker selected from the player
+        <i>24</i>&nbsp; * @param moveFilter filter to apply to move actions
+        <i>25</i>&nbsp; * @param buildFilter filter to apply to build actions
+        <i>26</i>&nbsp; * @return list of available actions
+        <i>27</i>&nbsp; */
+        <i>28</i>&nbsp; @Override
+        <i>29</i>&nbsp; public List&lt;Action&gt; getAvailableActions(Board board, Position selectedWorker,
+        FilterCollection moveFilter, FilterCollection buildFilter) {
+        <b class="fc"><i>30</i>&nbsp; return super.getAvailableActions(board, selectedWorker, moveFilter, buildFilter);</b>
+        <i>31</i>&nbsp; }
+        <i>32</i>&nbsp;}
+        <i>33</i>&nbsp;
+    </div>
 </div>
 
 <div class="footer">
-    
+
     <div style="float:right;">generated on 2020-05-05 08:44</div>
 </div>
 </body>

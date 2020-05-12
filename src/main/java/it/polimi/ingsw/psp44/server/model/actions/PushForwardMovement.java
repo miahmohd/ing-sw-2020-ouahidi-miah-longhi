@@ -1,7 +1,9 @@
 package it.polimi.ingsw.psp44.server.model.actions;
 
 import it.polimi.ingsw.psp44.server.model.Board;
+import it.polimi.ingsw.psp44.util.ModelCodes;
 import it.polimi.ingsw.psp44.util.Position;
+import it.polimi.ingsw.psp44.util.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +22,7 @@ public class PushForwardMovement extends Movement {
      * @param targetPosition  final position of the worker to move, and initial position of the worker to push
      */
     public PushForwardMovement(Position sourcePosition, Position targetPosition, Position forwardPosition) {
-        super(sourcePosition, targetPosition);
+        super(sourcePosition, targetPosition, R.getAppProperties().get(ModelCodes.PUSH_FORWARD_MOVEMENT_DESCRIPTION));
         this.forwardPosition = forwardPosition;
     }
 

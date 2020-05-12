@@ -1,0 +1,201 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: BodyFactory</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.psp44.network.communication</a> ]
+</div>
+
+<h1>Coverage Summary for Class: BodyFactory (it.polimi.ingsw.psp44.network.communication)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BodyFactory</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    23.5%
+  </span>
+  <span class="absValue">
+    (4/ 17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    32.5%
+  </span>
+  <span class="absValue">
+    (13/ 40)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.network.communication;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.psp44.server.model.Board;
+<i>4</i>&nbsp;import it.polimi.ingsw.psp44.server.model.Worker;
+<i>5</i>&nbsp;import it.polimi.ingsw.psp44.server.model.actions.Action;
+<i>6</i>&nbsp;import it.polimi.ingsw.psp44.util.Card;
+<i>7</i>&nbsp;import it.polimi.ingsw.psp44.util.JsonConvert;
+<i>8</i>&nbsp;import it.polimi.ingsw.psp44.util.Position;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import java.util.List;
+<i>11</i>&nbsp;
+<b class="nc"><i>12</i>&nbsp;public class BodyFactory {</b>
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    /**
+<i>16</i>&nbsp;     * Convert a list of modified positions to Cell, suitable for transmission
+<i>17</i>&nbsp;     *
+<i>18</i>&nbsp;     * @param positions the list of Position to convert
+<i>19</i>&nbsp;     * @param board     the board where the change happened
+<i>20</i>&nbsp;     * @return a json string representing a list of Cell
+<i>21</i>&nbsp;     */
+<i>22</i>&nbsp;    public static String toCells(List&lt;Position&gt; positions, Board board) {
+<b class="fc"><i>23</i>&nbsp;        Cell[] cells = new Cell[positions.size()];</b>
+<b class="fc"><i>24</i>&nbsp;        int i = 0;</b>
+<b class="fc"><i>25</i>&nbsp;        for (Position position : positions) {</b>
+<b class="fc"><i>26</i>&nbsp;            Worker worker = board.isDome(position) ? null : board.getWorker(position);</b>
+<b class="fc"><i>27</i>&nbsp;            Worker.Sex sex = worker != null ? worker.getSex() : null;</b>
+<b class="fc"><i>28</i>&nbsp;            String nickname = worker != null ? worker.getPlayerNickname() : null;</b>
+<i>29</i>&nbsp;
+<b class="fc"><i>30</i>&nbsp;            cells[i] = new Cell(position, board.getLevel(position), board.isDome(position), sex, nickname);</b>
+<b class="fc"><i>31</i>&nbsp;            i++;</b>
+<b class="fc"><i>32</i>&nbsp;        }</b>
+<b class="fc"><i>33</i>&nbsp;        return JsonConvert.getInstance().toJson(cells, Cell[].class);</b>
+<i>34</i>&nbsp;    }
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    public static String toActions(List&lt;Action&gt; availableActions) {
+<b class="nc"><i>38</i>&nbsp;        it.polimi.ingsw.psp44.network.communication.Action[] actionList = new</b>
+<b class="nc"><i>39</i>&nbsp;                it.polimi.ingsw.psp44.network.communication.Action[availableActions.size()];</b>
+<b class="nc"><i>40</i>&nbsp;        int count = 0;</b>
+<b class="nc"><i>41</i>&nbsp;        for (Action action : availableActions){</b>
+<b class="nc"><i>42</i>&nbsp;            actionList[count] = new it.polimi.ingsw.psp44.network.communication.Action(</b>
+<i>43</i>&nbsp;                    count,
+<b class="nc"><i>44</i>&nbsp;                    action.getDescription(),</b>
+<b class="nc"><i>45</i>&nbsp;                    action.getTargetPosition(),</b>
+<b class="nc"><i>46</i>&nbsp;                    action.isBuild(),</b>
+<b class="nc"><i>47</i>&nbsp;                    action.isMovement()</b>
+<i>48</i>&nbsp;            );
+<b class="nc"><i>49</i>&nbsp;            count++;</b>
+<b class="nc"><i>50</i>&nbsp;        }</b>
+<i>51</i>&nbsp;
+<b class="nc"><i>52</i>&nbsp;        return JsonConvert.getInstance().toJson(actionList, it.polimi.ingsw.psp44.network.communication.Action[].class);</b>
+<i>53</i>&nbsp;    }
+<i>54</i>&nbsp;    public static String toAction(it.polimi.ingsw.psp44.network.communication.Action action) {
+<b class="nc"><i>55</i>&nbsp;        return JsonConvert.getInstance().toJson(action, it.polimi.ingsw.psp44.network.communication.Action.class);</b>
+<i>56</i>&nbsp;    }
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    public static it.polimi.ingsw.psp44.network.communication.Action[] fromActions(String actions) {
+<b class="nc"><i>59</i>&nbsp;        return JsonConvert.getInstance().fromJson(actions, it.polimi.ingsw.psp44.network.communication.Action[].class);</b>
+<i>60</i>&nbsp;    }
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    public static it.polimi.ingsw.psp44.network.communication.Action fromAction(String chosenAction) {
+<b class="nc"><i>63</i>&nbsp;        return JsonConvert.getInstance().fromJson(chosenAction, it.polimi.ingsw.psp44.network.communication.Action.class);</b>
+<i>64</i>&nbsp;    }
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    public static String toNewGame(String playerNickname, int numberOfPlayers){
+<b class="nc"><i>68</i>&nbsp;        BodyTemplates.NewGame body = new BodyTemplates.NewGame(playerNickname,numberOfPlayers);</b>
+<b class="nc"><i>69</i>&nbsp;        return JsonConvert.getInstance().toJson(body, BodyTemplates.NewGame.class);</b>
+<i>70</i>&nbsp;    }
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;    public static String toJoinGame(String playerNickname, int gameId){
+<b class="nc"><i>74</i>&nbsp;        BodyTemplates.JoinGame body = new BodyTemplates.JoinGame(playerNickname,gameId);</b>
+<b class="nc"><i>75</i>&nbsp;        return JsonConvert.getInstance().toJson(body, BodyTemplates.JoinGame.class);</b>
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;    public static String toCards(Card[] cards) {
+<b class="fc"><i>79</i>&nbsp;        return JsonConvert.getInstance().toJson(cards, Card[].class);</b>
+<i>80</i>&nbsp;    }
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;    public static String toChosenCard(Card chosenCard, Card[] rest) {
+<b class="nc"><i>83</i>&nbsp;        BodyTemplates.ChosenCard chosenCardBody = new BodyTemplates.ChosenCard(chosenCard, rest);</b>
+<b class="nc"><i>84</i>&nbsp;        return JsonConvert.getInstance().toJson(chosenCardBody, BodyTemplates.ChosenCard.class);</b>
+<i>85</i>&nbsp;    }
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;    public static Card[] fromCards(String cards) {
+<b class="nc"><i>89</i>&nbsp;        return JsonConvert.getInstance().fromJson(cards, Card[].class);</b>
+<i>90</i>&nbsp;    }
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;
+<i>93</i>&nbsp;    public static Position[] fromPositions(String positions) {
+<b class="nc"><i>94</i>&nbsp;        return JsonConvert.getInstance().fromJson(positions, Position[].class);</b>
+<i>95</i>&nbsp;    }
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    public static Position fromPosition(String position) {
+<b class="nc"><i>98</i>&nbsp;        return JsonConvert.getInstance().fromJson(position, Position.class);</b>
+<i>99</i>&nbsp;    }
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;    public static String toPositions(Position[] positions) {
+<b class="fc"><i>102</i>&nbsp;        return JsonConvert.getInstance().toJson(positions, Position[].class);</b>
+<i>103</i>&nbsp;    }
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;    public static String toPosition(Position position) {
+<b class="nc"><i>106</i>&nbsp;        return JsonConvert.getInstance().toJson(position, Position.class);</b>
+<i>107</i>&nbsp;    }
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;    public static String[] fromPlayersNickname(String playersNickname) {
+<b class="nc"><i>110</i>&nbsp;        return JsonConvert.getInstance().fromJson(playersNickname, String[].class);</b>
+<i>111</i>&nbsp;    }
+<i>112</i>&nbsp;
+<i>113</i>&nbsp;    public static BodyTemplates.ChosenCard fromChosenCard(String chosenCard) {
+<b class="fc"><i>114</i>&nbsp;        return JsonConvert.getInstance().fromJson(chosenCard, BodyTemplates.ChosenCard.class);</b>
+<i>115</i>&nbsp;    }
+<i>116</i>&nbsp;
+<i>117</i>&nbsp;
+<i>118</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-12 03:17</div>
+</div>
+</body>
+</html>

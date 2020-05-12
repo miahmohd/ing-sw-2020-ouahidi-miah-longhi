@@ -2,7 +2,9 @@ package it.polimi.ingsw.psp44.server.model.actions;
 
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.Worker;
+import it.polimi.ingsw.psp44.util.ModelCodes;
 import it.polimi.ingsw.psp44.util.Position;
+import it.polimi.ingsw.psp44.util.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +19,7 @@ public class SwapMovement extends Movement {
      * @param targetPosition position of the second worker
      */
     public SwapMovement(Position sourcePosition, Position targetPosition) {
-        super(sourcePosition, targetPosition);
+        super(sourcePosition, targetPosition, R.getAppProperties().get(ModelCodes.SWAP_MOVEMENT_DESCRIPTION));
     }
 
     @Override

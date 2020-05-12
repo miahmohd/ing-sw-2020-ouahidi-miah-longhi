@@ -2,7 +2,6 @@ package it.polimi.ingsw.psp44.client.cli;
 
 import it.polimi.ingsw.psp44.util.Position;
 
-import java.text.ParseException;
 import java.util.Scanner;
 
 /**
@@ -10,21 +9,21 @@ import java.util.Scanner;
  */
 public class Console {
     private static char ESC = 0x1B;
-    private static Position BOARD_SECTION_INITIAL_POSITION = new Position(1,1);
+    private static Position BOARD_SECTION_INITIAL_POSITION = new Position(1, 1);
     private static Position PLAYERS_SECTION_INITIAL_POSITION = new Position(2, 15);
     private static Position TURN_SECTION_INITIAL_POSITION = new Position(4, 15);
-    private static Position INTERACTION_SECTION_INITIAL_POSITION = new Position(15,0);
+    private static Position INTERACTION_SECTION_INITIAL_POSITION = new Position(15, 0);
 
     private int currentInteractionRowOffset;
     private int currentInteractionColumnOffset;
     private Scanner input;
 
 
-    public Console(){
-        this(0,0,new Scanner(System.in));
+    public Console() {
+        this(0, 0, new Scanner(System.in));
     }
 
-    public Console(int currentInteractionRowOffset, int currentInteractionColumnOffset, Scanner input){
+    public Console(int currentInteractionRowOffset, int currentInteractionColumnOffset, Scanner input) {
         this.currentInteractionRowOffset = currentInteractionRowOffset;
         this.currentInteractionColumnOffset = currentInteractionColumnOffset;
         this.input = input;
@@ -33,17 +32,17 @@ public class Console {
     }
 
 
-    public void clear(){
+    public void clear() {
         System.out.print(Graphics.Behaviour.CLEAR.toString());
         System.out.flush();
         currentInteractionRowOffset = currentInteractionColumnOffset = 0;
     }
 
 
-    public void writeLine(Object obj){
+    public void writeLine(Object obj) {
         String message = goToInteractionSection(currentInteractionRowOffset, currentInteractionColumnOffset) + obj.toString();
 
-        while(message.contains(Graphics.Behaviour.NEW_LINE.getEscape())){
+        while (message.contains(Graphics.Behaviour.NEW_LINE.getEscape())) {
             currentInteractionRowOffset++;
             message = message.replaceFirst(Graphics.Behaviour.NEW_LINE.toString(), goToInteractionSection(
                     currentInteractionRowOffset, currentInteractionColumnOffset));
@@ -51,28 +50,28 @@ public class Console {
         System.out.print(message);
     }
 
-    public String readLine(){
+    public String readLine() {
         String message = input.nextLine();
         currentInteractionRowOffset++;
         return message;
     }
 
 
-    public int readNumber(){
+    public int readNumber() {
         int number;
         boolean isNumber;
 
         number = 0;
 
         do {
-            try{
+            try {
                 number = Integer.parseInt(this.readLine());
                 isNumber = true;
             } catch (NumberFormatException e) {
                 this.writeLine("Not a Number");
                 isNumber = false;
             }
-        }while(!isNumber);
+        } while (!isNumber);
 
         return number;
     }
@@ -86,13 +85,13 @@ public class Console {
         row = column = 0;
         do {
             this.writeLine("{row},{column}");
-            try{
+            try {
                 position = this.readLine();
                 rowAndColumn = position.split(",");
                 row = Integer.parseInt(rowAndColumn[0]);
                 column = Integer.parseInt(rowAndColumn[1]);
                 isPosition = true;
-            } catch (NumberFormatException|NullPointerException e){
+            } catch (NumberFormatException | NullPointerException e) {
                 isPosition = false;
             }
 
@@ -103,12 +102,12 @@ public class Console {
     }
 
 
-    public void printOnBoardSection(String board){
+    public void printOnBoardSection(String board) {
         int rowOffset, columnOffset;
         rowOffset = columnOffset = 0;
 
-        board = goToBoardSection(0,0) + board;
-        while(board.contains(Graphics.Behaviour.NEW_LINE.getEscape())){
+        board = goToBoardSection(0, 0) + board;
+        while (board.contains(Graphics.Behaviour.NEW_LINE.getEscape())) {
             rowOffset++;
             board = board.replaceFirst(Graphics.Behaviour.NEW_LINE.toString(), goToBoardSection(rowOffset, columnOffset));
         }
@@ -116,12 +115,12 @@ public class Console {
         System.out.println(board);
     }
 
-    public void printOnPlayersSection(String players){
+    public void printOnPlayersSection(String players) {
         int rowOffset, columnOffset;
         rowOffset = columnOffset = 0;
 
-        players = goToPlayersSection(0,0) + players;
-        while(players.contains(Graphics.Behaviour.NEW_LINE.getEscape())){
+        players = goToPlayersSection(0, 0) + players;
+        while (players.contains(Graphics.Behaviour.NEW_LINE.getEscape())) {
             rowOffset++;
             players = players.replaceFirst(Graphics.Behaviour.NEW_LINE.getEscape(), goToPlayersSection(rowOffset, columnOffset));
         }
@@ -133,8 +132,8 @@ public class Console {
         int rowOffset, columnOffset;
         rowOffset = columnOffset = 0;
 
-        turn = goToTurnSection(0,0) + turn;
-        while(turn.contains(Graphics.Behaviour.NEW_LINE.getEscape())){
+        turn = goToTurnSection(0, 0) + turn;
+        while (turn.contains(Graphics.Behaviour.NEW_LINE.getEscape())) {
             rowOffset++;
             turn = turn.replaceFirst(Graphics.Behaviour.NEW_LINE.getEscape(), goToPlayersSection(rowOffset, columnOffset));
         }
