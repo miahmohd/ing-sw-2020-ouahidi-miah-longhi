@@ -8,13 +8,22 @@ import it.polimi.ingsw.psp44.network.message.Message;
 import java.io.IOException;
 
 public class ClientApp {
-    private static final String HOST = "localhost";
-    private static final int PORT = 8080;
+    private static final String DEFAULT_HOSTNAME = "localhost";
+    private static final int DEFAULT_PORT = 8080;
 
 
     public static void main(String[] args) {
+        String hostname = DEFAULT_HOSTNAME;
+        int port = DEFAULT_PORT;
+
+        if (args.length > 0) {
+            String[] host = args[0].split(":");
+            hostname = host[0];
+            port = Integer.parseInt(host[1]);
+        }
+
         try {
-            IConnection<Message> socketConnection = new SocketConnection(HOST, PORT);
+            IConnection<Message> socketConnection = new SocketConnection(hostname, port);
             LobbyView view = new LobbyView();
             VirtualServer virtualServer = new VirtualServer(socketConnection);
 

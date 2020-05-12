@@ -105,6 +105,7 @@ public class SetupController {
     }
 
 
+
     /**
      * Callback that handles the card chosen by the player.
      * Creates the CardController associated with the chosen card and redirects the rest of the cards to the next player.
