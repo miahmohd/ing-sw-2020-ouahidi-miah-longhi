@@ -72,6 +72,7 @@ public class Server {
                     JsonConvert.getInstance().toJson(String.format(R.getAppProperties().get(ErrorCodes.ILLEGAL_GAME_PARAMS), nPlayers), String.class));
 
             view.sendMessage(new Message(Message.Code.NEW_OR_JOIN, headers));
+            return;
         }
 
         synchronized (this.lobbies) {
@@ -80,8 +81,7 @@ public class Server {
 
             this.lobbies.add(lobby);
 
-            view.sendMessage(new Message(Message.Code.GAME_CREATED));
-            System.out.println(String.format("Created game %s", lobby.getId()));
+            view.sendMessage(new Message(Message.Code.GAME_CREATED, String.valueOf(lobby.getId())));
         }
     }
 
@@ -113,10 +113,10 @@ public class Server {
                 headers.put(MessageHeader.ERROR_DESCRIPTION,
                         JsonConvert.getInstance().toJson(String.format(R.getAppProperties().get(ErrorCodes.UNAVAILABLE_NICKNAME), nickname), String.class));
             } else {
-                view.sendMessage(new Message(Message.Code.GAME_JOINED));
                 toJoin.addPlayer(body.getPlayerNickname(), view);
                 if (toJoin.isFull())
                     toJoin.start();
+                view.sendMessage(new Message(Message.Code.GAME_JOINED));
                 return;
             }
             headers.put(MessageHeader.ERROR, JsonConvert.getInstance().toJson(true, boolean.class));
