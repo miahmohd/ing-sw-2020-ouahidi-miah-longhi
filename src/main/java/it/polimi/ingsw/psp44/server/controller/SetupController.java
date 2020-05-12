@@ -127,15 +127,14 @@ public class SetupController {
         cardController = CardFactory.getController(chosen);
         cardController.setContext(controller);
         this.playerCardController.put(this.model.getCurrentPlayerNickname(), cardController);
-
         endTurn();
 
         currentView = playerViews.get(this.model.getCurrentPlayerNickname());
 
         if (this.model.isFullRound()) {
-            cardController = CardFactory.getController(chosen);
+            cardController = CardFactory.getController(rest[0]);
             cardController.setContext(controller);
-            this.playerCardController.put(this.model.getCurrentPlayerNickname(), CardFactory.getController(chosen));
+            this.playerCardController.put(this.model.getCurrentPlayerNickname(),cardController);
             this.controller.setVirtualViews(this.playerViews);
             this.controller.setCardControllers(this.playerCardController);
             this.controller.setModel(this.model);

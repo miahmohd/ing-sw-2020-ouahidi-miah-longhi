@@ -23,9 +23,8 @@ public class FilterOpponentMoveUp extends FilterMoveUp {
      */
     @Override
     public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard) {
-        if (active && gameBoard.getLevel(lastAction.getTargetPosition()) - gameBoard.getLevel(lastAction.getSourcePosition()) > 0)
+        if (active )
             super.filter(startingPosition, positionsToFilter, gameBoard);
-        this.active = true;
     }
 
     /**
