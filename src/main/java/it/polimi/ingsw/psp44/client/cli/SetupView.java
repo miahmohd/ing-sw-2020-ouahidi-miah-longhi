@@ -23,7 +23,7 @@ public class SetupView {
         this(playerNickname, console, new Board());
     }
 
-    public SetupView(String playerNickname, Console console, Board board){
+    public SetupView(String playerNickname, Console console, Board board) {
         this.playerNickname = playerNickname;
         this.console = console;
         this.board = board;
@@ -96,7 +96,7 @@ public class SetupView {
         board.setPlayers(this.playerNickname, opponents);
     }
 
-    public void start(Message start){
+    public void start(Message start) {
         console.clear();
         console.writeLine("it's your turn boy");
     }
@@ -106,7 +106,7 @@ public class SetupView {
         view.setServer(this.virtualServer);
     }
 
-    public void setServer(VirtualServer virtual){
+    public void setServer(VirtualServer virtual) {
         this.virtualServer = virtual;
 
         virtualServer.cleanMessageHandlers();
@@ -118,11 +118,11 @@ public class SetupView {
         virtualServer.addMessageHandler(Message.Code.END_TURN, this::end);
     }
 
-    private Card getChosenCard(Card[] cards){
+    private Card getChosenCard(Card[] cards) {
         Card chosenCard;
 
         console.writeLine("gimmie the id ");
-         do {
+        do {
             int chosenCardId = console.readNumber();
 
             chosenCard = Arrays.stream(cards).filter(
@@ -130,10 +130,10 @@ public class SetupView {
                     .findFirst()
                     .orElse(null);
 
-            if(chosenCard == null)
+            if (chosenCard == null)
                 console.writeLine("not a valid id");
 
-        } while(chosenCard == null);
+        } while (chosenCard == null);
 
 
         return chosenCard;

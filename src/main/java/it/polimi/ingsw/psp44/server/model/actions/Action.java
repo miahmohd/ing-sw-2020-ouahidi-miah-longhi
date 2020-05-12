@@ -13,15 +13,17 @@ public abstract class Action {
 
     protected Position targetPosition;
     protected Position sourcePosition;
+    private String description;
 
-    public Action(Position sourcePosition, Position targetPosition) {
-        this.sourcePosition = sourcePosition;
-        this.targetPosition = targetPosition;
+    protected Action(Position target, String description) {
+        this(null, target, description);
+
     }
 
-    public Action(Position target) {
-        this.sourcePosition = null;
+    protected Action(Position source, Position target, String description) {
+        this.sourcePosition = source;
         this.targetPosition = target;
+        this.description = description;
     }
 
     @Override
@@ -44,6 +46,10 @@ public abstract class Action {
 
     public Position getTargetPosition() {
         return targetPosition;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     /**

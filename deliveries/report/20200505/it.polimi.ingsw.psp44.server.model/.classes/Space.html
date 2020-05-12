@@ -1,192 +1,195 @@
-
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html id="htmlId">
 <head>
-  <title>Coverage Report :: Space</title>
-  <style type="text/css">
-    @import "../../.css/coverage.css";
-  </style>
+    <title>Coverage Report :: Space</title>
+    <style type="text/css">
+        @import "../../.css/coverage.css";
+    </style>
 </head>
 
 <body>
 <div class="header"></div>
 
 <div class="content">
-<div class="breadCrumbs">
-    [ <a href="../../index.html">all classes</a> ]
-    [ <a href="../index.html">it.polimi.ingsw.psp44.server.model</a> ]
-</div>
+    <div class="breadCrumbs">
+        [ <a href="../../index.html">all classes</a> ]
+        [ <a href="../index.html">it.polimi.ingsw.psp44.server.model</a> ]
+    </div>
 
-<h1>Coverage Summary for Class: Space (it.polimi.ingsw.psp44.server.model)</h1>
+    <h1>Coverage Summary for Class: Space (it.polimi.ingsw.psp44.server.model)</h1>
 
-<table class="coverageStats">
-<tr>
-  <th class="name">Class</th>
-<th class="coverageStat 
+    <table class="coverageStats">
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
 ">
-  Class, %
-</th>
-<th class="coverageStat 
+                Class, %
+            </th>
+            <th class="coverageStat
 ">
-  Method, %
-</th>
-<th class="coverageStat 
+                Method, %
+            </th>
+            <th class="coverageStat
 ">
-  Line, %
-</th>
-</tr>
-<tr>
-  <td class="name">Space</td>
-<td class="coverageStat">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">Space</td>
+            <td class="coverageStat">
   <span class="percent">
     100%
   </span>
-  <span class="absValue">
+                <span class="absValue">
     (1/ 1)
   </span>
-</td>
-<td class="coverageStat">
+            </td>
+            <td class="coverageStat">
   <span class="percent">
     84.6%
   </span>
-  <span class="absValue">
+                <span class="absValue">
     (11/ 13)
   </span>
-</td>
-<td class="coverageStat">
+            </td>
+            <td class="coverageStat">
   <span class="percent">
     75%
   </span>
-  <span class="absValue">
+                <span class="absValue">
     (18/ 24)
   </span>
-</td>
-</tr>
+            </td>
+        </tr>
 
-</table>
+    </table>
 
-<br/>
-<br/>
+    <br/>
+    <br/>
 
 
-<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server.model;
-<i>2</i>&nbsp;
-<i>3</i>&nbsp;/**
-<i>4</i>&nbsp; * The atomic part of the board
-<i>5</i>&nbsp; */
-<i>6</i>&nbsp;public class Space {
-<i>7</i>&nbsp;    /**
-<i>8</i>&nbsp;     * Contains information about what is built in the specific Space
-<i>9</i>&nbsp;     * his range is from 0 (ground) to 3 (maximum number of block that can be placed in a space)
-<i>10</i>&nbsp;     */
-<i>11</i>&nbsp;    private int level;
-<i>12</i>&nbsp;
-<i>13</i>&nbsp;    /**
-<i>14</i>&nbsp;     * indicate presence of a dome in a space
-<i>15</i>&nbsp;     */
-<i>16</i>&nbsp;    private boolean dome;
-<i>17</i>&nbsp;
-<i>18</i>&nbsp;    /**
-<i>19</i>&nbsp;     * if isn&#39;t null indicate the worker in a space
-<i>20</i>&nbsp;     */
-<i>21</i>&nbsp;    private Worker worker;
-<i>22</i>&nbsp;
-<i>23</i>&nbsp;
-<b class="fc"><i>24</i>&nbsp;    public Space() {</b>
-<b class="fc"><i>25</i>&nbsp;        this.level = 0;</b>
-<b class="fc"><i>26</i>&nbsp;        this.dome = false;</b>
-<b class="fc"><i>27</i>&nbsp;        this.worker = null;</b>
-<b class="fc"><i>28</i>&nbsp;    }</b>
-<i>29</i>&nbsp;
-<i>30</i>&nbsp;
-<b class="nc"><i>31</i>&nbsp;    public Space(int level, boolean hasDome, Worker worker) {</b>
-<b class="nc"><i>32</i>&nbsp;        this.level = level;</b>
-<b class="nc"><i>33</i>&nbsp;        this.dome = hasDome;</b>
-<b class="nc"><i>34</i>&nbsp;        this.worker = worker;</b>
-<b class="nc"><i>35</i>&nbsp;    }</b>
-<i>36</i>&nbsp;
-<i>37</i>&nbsp;    public int getLevel() {
-<b class="fc"><i>38</i>&nbsp;        return level;</b>
-<i>39</i>&nbsp;    }
-<i>40</i>&nbsp;
-<i>41</i>&nbsp;    public void setLevel(int level) {
-<b class="fc"><i>42</i>&nbsp;        this.level = level;</b>
-<b class="fc"><i>43</i>&nbsp;    }</b>
-<i>44</i>&nbsp;
-<i>45</i>&nbsp;    public boolean isDome() {
-<b class="fc"><i>46</i>&nbsp;        return dome;</b>
-<i>47</i>&nbsp;    }
-<i>48</i>&nbsp;
-<i>49</i>&nbsp;    public void setDome(boolean dome) {
-<b class="fc"><i>50</i>&nbsp;        this.dome = dome;</b>
-<b class="fc"><i>51</i>&nbsp;    }</b>
-<i>52</i>&nbsp;
-<i>53</i>&nbsp;    public Worker getWorker() {
-<b class="fc"><i>54</i>&nbsp;        return worker;</b>
-<i>55</i>&nbsp;    }
-<i>56</i>&nbsp;
-<i>57</i>&nbsp;    /**
-<i>58</i>&nbsp;     * Add a specific worker to the space
-<i>59</i>&nbsp;     *
-<i>60</i>&nbsp;     * @param worker the worker to add at this space, &lt;code&gt;null&lt;/code&gt; to remove the worker
-<i>61</i>&nbsp;     */
-<i>62</i>&nbsp;    public void setWorker(Worker worker) {
-<b class="fc"><i>63</i>&nbsp;        this.worker = worker;</b>
-<b class="fc"><i>64</i>&nbsp;    }</b>
-<i>65</i>&nbsp;
-<i>66</i>&nbsp;    /**
-<i>67</i>&nbsp;     * checks if the building in this space is complate
-<i>68</i>&nbsp;     *
-<i>69</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if there are 3 block and the dome, &lt;code&gt;false&lt;/code&gt; otherwise
-<i>70</i>&nbsp;     */
-<i>71</i>&nbsp;    public boolean isComplete() {
-<b class="nc"><i>72</i>&nbsp;        return this.isFinalLevel() &amp;&amp; this.isDome();</b>
-<i>73</i>&nbsp;    }
-<i>74</i>&nbsp;
-<i>75</i>&nbsp;    /**
-<i>76</i>&nbsp;     * checks if all the three blocks have been built in a space
-<i>77</i>&nbsp;     *
-<i>78</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if level 3 have been reached, &lt;code&gt;false&lt;/code&gt; otherwise
-<i>79</i>&nbsp;     */
-<i>80</i>&nbsp;    public boolean isFinalLevel() {
-<b class="fc"><i>81</i>&nbsp;        return this.level == 3;</b>
-<i>82</i>&nbsp;    }
-<i>83</i>&nbsp;
-<i>84</i>&nbsp;    /**
-<i>85</i>&nbsp;     * checks if no blocks have been built in a space
-<i>86</i>&nbsp;     *
-<i>87</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if no blocks have been built, &lt;code&gt;false&lt;/code&gt; otherwise
-<i>88</i>&nbsp;     */
-<i>89</i>&nbsp;    public boolean isGroundLevel() {
-<b class="fc"><i>90</i>&nbsp;        return this.level == 0;</b>
-<i>91</i>&nbsp;    }
-<i>92</i>&nbsp;
-<i>93</i>&nbsp;    /**
-<i>94</i>&nbsp;     * check if there is a worker inside the space
-<i>95</i>&nbsp;     *
-<i>96</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if the space contains the worker, &lt;code&gt;false&lt;/code&gt; otherwise
-<i>97</i>&nbsp;     */
-<i>98</i>&nbsp;    public boolean isWorker() {
-<b class="fc"><i>99</i>&nbsp;        return this.worker != null;</b>
-<i>100</i>&nbsp;    }
-<i>101</i>&nbsp;
-<i>102</i>&nbsp;    /**
-<i>103</i>&nbsp;     * check if the space is unoccupied (no dome and no worker)
-<i>104</i>&nbsp;     *
-<i>105</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if the space is unoccupied, &lt;code&gt;false&lt;/code&gt; otherwise
-<i>106</i>&nbsp;     */
-<i>107</i>&nbsp;    public boolean isUnoccupied() {
-<b class="fc"><i>108</i>&nbsp;        return (!this.isDome() &amp;&amp; !this.isWorker());</b>
-<i>109</i>&nbsp;    }
-<i>110</i>&nbsp;}
-</div>
+    <div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server.model;
+        <i>2</i>&nbsp;
+        <i>3</i>&nbsp;/**
+        <i>4</i>&nbsp; * The atomic part of the board
+        <i>5</i>&nbsp; */
+        <i>6</i>&nbsp;public class Space {
+        <i>7</i>&nbsp; /**
+        <i>8</i>&nbsp; * Contains information about what is built in the specific Space
+        <i>9</i>&nbsp; * his range is from 0 (ground) to 3 (maximum number of block that can be placed in a space)
+        <i>10</i>&nbsp; */
+        <i>11</i>&nbsp; private int level;
+        <i>12</i>&nbsp;
+        <i>13</i>&nbsp; /**
+        <i>14</i>&nbsp; * indicate presence of a dome in a space
+        <i>15</i>&nbsp; */
+        <i>16</i>&nbsp; private boolean dome;
+        <i>17</i>&nbsp;
+        <i>18</i>&nbsp; /**
+        <i>19</i>&nbsp; * if isn&#39;t null indicate the worker in a space
+        <i>20</i>&nbsp; */
+        <i>21</i>&nbsp; private Worker worker;
+        <i>22</i>&nbsp;
+        <i>23</i>&nbsp;
+        <b class="fc"><i>24</i>&nbsp; public Space() {</b>
+        <b class="fc"><i>25</i>&nbsp; this.level = 0;</b>
+        <b class="fc"><i>26</i>&nbsp; this.dome = false;</b>
+        <b class="fc"><i>27</i>&nbsp; this.worker = null;</b>
+        <b class="fc"><i>28</i>&nbsp; }</b>
+        <i>29</i>&nbsp;
+        <i>30</i>&nbsp;
+        <b class="nc"><i>31</i>&nbsp; public Space(int level, boolean hasDome, Worker worker) {</b>
+        <b class="nc"><i>32</i>&nbsp; this.level = level;</b>
+        <b class="nc"><i>33</i>&nbsp; this.dome = hasDome;</b>
+        <b class="nc"><i>34</i>&nbsp; this.worker = worker;</b>
+        <b class="nc"><i>35</i>&nbsp; }</b>
+        <i>36</i>&nbsp;
+        <i>37</i>&nbsp; public int getLevel() {
+        <b class="fc"><i>38</i>&nbsp; return level;</b>
+        <i>39</i>&nbsp; }
+        <i>40</i>&nbsp;
+        <i>41</i>&nbsp; public void setLevel(int level) {
+        <b class="fc"><i>42</i>&nbsp; this.level = level;</b>
+        <b class="fc"><i>43</i>&nbsp; }</b>
+        <i>44</i>&nbsp;
+        <i>45</i>&nbsp; public boolean isDome() {
+        <b class="fc"><i>46</i>&nbsp; return dome;</b>
+        <i>47</i>&nbsp; }
+        <i>48</i>&nbsp;
+        <i>49</i>&nbsp; public void setDome(boolean dome) {
+        <b class="fc"><i>50</i>&nbsp; this.dome = dome;</b>
+        <b class="fc"><i>51</i>&nbsp; }</b>
+        <i>52</i>&nbsp;
+        <i>53</i>&nbsp; public Worker getWorker() {
+        <b class="fc"><i>54</i>&nbsp; return worker;</b>
+        <i>55</i>&nbsp; }
+        <i>56</i>&nbsp;
+        <i>57</i>&nbsp; /**
+        <i>58</i>&nbsp; * Add a specific worker to the space
+        <i>59</i>&nbsp; *
+        <i>60</i>&nbsp; * @param worker the worker to add at this space, &lt;code&gt;null&lt;/code&gt; to remove the
+        worker
+        <i>61</i>&nbsp; */
+        <i>62</i>&nbsp; public void setWorker(Worker worker) {
+        <b class="fc"><i>63</i>&nbsp; this.worker = worker;</b>
+        <b class="fc"><i>64</i>&nbsp; }</b>
+        <i>65</i>&nbsp;
+        <i>66</i>&nbsp; /**
+        <i>67</i>&nbsp; * checks if the building in this space is complate
+        <i>68</i>&nbsp; *
+        <i>69</i>&nbsp; * @return &lt;code&gt;true&lt;/code&gt; if there are 3 block and the dome, &lt;code&gt;false&lt;/code&gt;
+        otherwise
+        <i>70</i>&nbsp; */
+        <i>71</i>&nbsp; public boolean isComplete() {
+        <b class="nc"><i>72</i>&nbsp; return this.isFinalLevel() &amp;&amp; this.isDome();</b>
+        <i>73</i>&nbsp; }
+        <i>74</i>&nbsp;
+        <i>75</i>&nbsp; /**
+        <i>76</i>&nbsp; * checks if all the three blocks have been built in a space
+        <i>77</i>&nbsp; *
+        <i>78</i>&nbsp; * @return &lt;code&gt;true&lt;/code&gt; if level 3 have been reached, &lt;code&gt;false&lt;/code&gt;
+        otherwise
+        <i>79</i>&nbsp; */
+        <i>80</i>&nbsp; public boolean isFinalLevel() {
+        <b class="fc"><i>81</i>&nbsp; return this.level == 3;</b>
+        <i>82</i>&nbsp; }
+        <i>83</i>&nbsp;
+        <i>84</i>&nbsp; /**
+        <i>85</i>&nbsp; * checks if no blocks have been built in a space
+        <i>86</i>&nbsp; *
+        <i>87</i>&nbsp; * @return &lt;code&gt;true&lt;/code&gt; if no blocks have been built, &lt;code&gt;false&lt;/code&gt;
+        otherwise
+        <i>88</i>&nbsp; */
+        <i>89</i>&nbsp; public boolean isGroundLevel() {
+        <b class="fc"><i>90</i>&nbsp; return this.level == 0;</b>
+        <i>91</i>&nbsp; }
+        <i>92</i>&nbsp;
+        <i>93</i>&nbsp; /**
+        <i>94</i>&nbsp; * check if there is a worker inside the space
+        <i>95</i>&nbsp; *
+        <i>96</i>&nbsp; * @return &lt;code&gt;true&lt;/code&gt; if the space contains the worker, &lt;code&gt;false&lt;/code&gt;
+        otherwise
+        <i>97</i>&nbsp; */
+        <i>98</i>&nbsp; public boolean isWorker() {
+        <b class="fc"><i>99</i>&nbsp; return this.worker != null;</b>
+        <i>100</i>&nbsp; }
+        <i>101</i>&nbsp;
+        <i>102</i>&nbsp; /**
+        <i>103</i>&nbsp; * check if the space is unoccupied (no dome and no worker)
+        <i>104</i>&nbsp; *
+        <i>105</i>&nbsp; * @return &lt;code&gt;true&lt;/code&gt; if the space is unoccupied, &lt;code&gt;false&lt;/code&gt;
+        otherwise
+        <i>106</i>&nbsp; */
+        <i>107</i>&nbsp; public boolean isUnoccupied() {
+        <b class="fc"><i>108</i>&nbsp; return (!this.isDome() &amp;&amp; !this.isWorker());</b>
+        <i>109</i>&nbsp; }
+        <i>110</i>&nbsp;}
+    </div>
 </div>
 
 <div class="footer">
-    
+
     <div style="float:right;">generated on 2020-05-05 08:44</div>
 </div>
 </body>

@@ -1,7 +1,9 @@
 package it.polimi.ingsw.psp44.server.model.actions;
 
 import it.polimi.ingsw.psp44.server.model.Board;
+import it.polimi.ingsw.psp44.util.ModelCodes;
 import it.polimi.ingsw.psp44.util.Position;
+import it.polimi.ingsw.psp44.util.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +20,7 @@ public class SimpleMovement extends Movement {
      * @param targetPosition final position of the worker
      */
     public SimpleMovement(Position sourcePosition, Position targetPosition) {
-        super(sourcePosition, targetPosition);
+        super(sourcePosition, targetPosition, R.getAppProperties().get(ModelCodes.SIMPLE_MOVEMENT_DESCRIPTION));
     }
 
     @Override

@@ -5,7 +5,6 @@ import it.polimi.ingsw.psp44.server.model.Worker.Sex;
 import it.polimi.ingsw.psp44.util.Position;
 
 
-
 public class Cell {
 
     /**

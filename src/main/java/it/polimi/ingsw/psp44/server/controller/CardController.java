@@ -133,20 +133,21 @@ public class CardController {
             throw new IllegalArgumentException(AppProperties.getInstance().get(ErrorCodes.TRANSITION_SCHEMA_ERROR));
 
         currentState = transition.getNextState();
+        if (lastAction != null) {
+            transition.getBuildFilter().forEach((filter) -> {
+                if (filter.isExternal())
+                    context.appliesOpponentsBuildFilter(filter, lastAction);
+                else
+                    buildFilter.update(filter, lastAction, board);
+            });
 
-        transition.getBuildFilter().forEach((filter) -> {
-            if (filter.isExternal())
-                context.appliesOpponentsBuildFilter(filter, lastAction);
-            else
-                buildFilter.update(filter, lastAction, board);
-        });
-
-        transition.getMoveFilter().forEach((filter) -> {
-            if (filter.isExternal())
-                context.appliesOpponentsMoveFilter(filter, lastAction);
-            else
-                moveFilter.update(filter, lastAction, board);
-        });
+            transition.getMoveFilter().forEach((filter) -> {
+                if (filter.isExternal())
+                    context.appliesOpponentsMoveFilter(filter, lastAction);
+                else
+                    moveFilter.update(filter, lastAction, board);
+            });
+        }
     }
 
     /**

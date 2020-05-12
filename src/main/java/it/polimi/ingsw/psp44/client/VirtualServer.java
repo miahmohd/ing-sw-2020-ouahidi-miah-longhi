@@ -20,7 +20,7 @@ public class VirtualServer implements IVirtual<Message>, Runnable {
     }
 
 
-    public VirtualServer(IConnection connection, Map<Message.Code, IMessageHandlerFunction> router){
+    public VirtualServer(IConnection connection, Map<Message.Code, IMessageHandlerFunction> router) {
         this.connection = connection;
         this.router = router;
 
@@ -43,7 +43,7 @@ public class VirtualServer implements IVirtual<Message>, Runnable {
             Message message = connection.readLine();
             Message.Code code = message.getCode();
 
-            while(!this.router.containsKey(code)){
+            while (!this.router.containsKey(code)) {
                 try {
                     wait();
                 } catch (InterruptedException e) {

@@ -19,11 +19,11 @@ public class Console {
     private Scanner input;
 
 
-    public Console(){
-        this(0,0,new Scanner(System.in));
+    public Console() {
+        this(0, 0, new Scanner(System.in));
     }
 
-    public Console(int currentInteractionRowOffset, int currentInteractionColumnOffset, Scanner input){
+    public Console(int currentInteractionRowOffset, int currentInteractionColumnOffset, Scanner input) {
         this.currentInteractionRowOffset = currentInteractionRowOffset;
         this.currentInteractionColumnOffset = currentInteractionColumnOffset;
         this.input = input;
@@ -32,7 +32,7 @@ public class Console {
     }
 
 
-    public void clear(){
+    public void clear() {
         System.out.print(Graphics.Behaviour.CLEAR.toString());
         System.out.flush();
         currentInteractionRowOffset = currentInteractionColumnOffset = 0;
@@ -43,7 +43,7 @@ public class Console {
         String message = goToSection(INTERACTION_SECTION_INITIAL_POSITION ,
                 currentInteractionRowOffset, currentInteractionColumnOffset) + obj.toString();
 
-        while(message.contains(Graphics.Behaviour.NEW_LINE.getEscape())){
+        while (message.contains(Graphics.Behaviour.NEW_LINE.getEscape())) {
             currentInteractionRowOffset++;
             message = message.replaceFirst(Graphics.Behaviour.NEW_LINE.toString(), goToSection(
                     INTERACTION_SECTION_INITIAL_POSITION,
@@ -53,18 +53,18 @@ public class Console {
         System.out.print(message);
     }
 
-    public String readLine(){
+    public String readLine() {
         String message = input.nextLine();
         return message;
     }
 
 
-    public int readNumber(){
+    public int readNumber() {
         int number;
         boolean isNumber;
         number = 0;
         do {
-            try{
+            try {
                 number = Integer.parseInt(this.readLine());
                 isNumber = true;
             } catch (NumberFormatException e) {

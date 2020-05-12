@@ -11,13 +11,13 @@ public abstract class Build extends Action {
 
     protected boolean isUnbuild;
 
-    public Build(Position target) {
-        super(target);
+    protected Build(Position target, String description) {
+        super(target, description);
         this.isUnbuild = false;
     }
 
-    public Build(Position targetPosition, boolean isUnbuild) {
-        super(targetPosition);
+    public Build(Position targetPosition, boolean isUnbuild, String description) {
+        super(targetPosition, description);
         this.isUnbuild = isUnbuild;
     }
 

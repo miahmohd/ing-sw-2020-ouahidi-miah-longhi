@@ -1,12 +1,15 @@
 package it.polimi.ingsw.psp44.server.controller;
 
+
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.message.Message;
+import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.server.controller.filters.Filter;
 import it.polimi.ingsw.psp44.server.model.GameModel;
+import it.polimi.ingsw.psp44.server.model.Worker;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
+import it.polimi.ingsw.psp44.server.model.actions.InitialPlacement;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
-import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.Position;
 
 import java.util.List;
@@ -24,71 +27,16 @@ public class Controller {
     private GameModel model;
     private List<Action> availableActions;
 
-    /**
-     * The start of a turn player, fetch current player view and controller and send the position of his worker
-     */
-    public void start() {
-        this.currentPlayer = players.get(model.getCurrentPlayerNickname());
-        this.currentPlayerView = playerViews.get(model.getCurrentPlayerNickname());
-        currentPlayerView.sendMessage(new Message(Message.Code.START_TURN));
-        workers();
+    public void setVirtualViews(Map<String, VirtualView> playerViews) {
+        this.playerViews = playerViews;
     }
 
-    /**
-     * Callback that handles and processes "chosen worker" message type.
-     * Next the view must choose the action to perform
-     *
-     * @param view    the VirtualView that sended the message
-     * @param message the message containing information about the selected worker
-     * @return <code>true</code> if the message does not require further processing, <code>false</code>  otherwise.
-     */
-    public void chosenWorkerMessageHandler(VirtualView view, Message message) {
-        Position selectedWorkerPosition;
-        if (message.getCode() == Message.Code.CHOSEN_WORKER) {
-            selectedWorkerPosition = JsonConvert.getInstance().fromJson(message.getBody(), Position.class);
-            model.setWorker(selectedWorkerPosition);
-            actions();
-        }
+    public void setCardControllers(Map<String, CardController> players) {
+        this.players = players;
     }
 
-    /**
-     * Callback that handles and processes "chosen action" message type.
-     * Next perform the action and the transition to next state
-     *
-     * @param view    the VirtualView that sended the message
-     * @param message the message containing information about the selected worker
-     * @return <code>true</code> if the message does not require further processing, <code>false</code>  otherwise.
-     */
-    public void chosenActionMessageHandler(VirtualView view, Message message) {
-        Integer selectedActionIndex;
-        Action selectedAction;
-        if (message.getCode() == Message.Code.CHOSEN_ACTION) {
-            selectedActionIndex = JsonConvert.getInstance().fromJson(message.getBody(), Integer.class);
-            selectedAction = this.availableActions.get(selectedActionIndex);
-            model.doAction(selectedAction);
-            if (currentPlayer.checkVictory(selectedAction, model.getBoard()))
-                won();
-            if (currentPlayer.nextState(selectedAction, model.getBoard())) {
-                actions();
-            } else {
-                endable();
-            }
-        }
-    }
-
-
-    /**
-     * Callback that handles and processes "end turn" message type.
-     * End the turn of the current player and start the turn for the next player.
-     *
-     * @param view    the VirtualView that sended the message
-     * @param message the message containing information for ending the turn
-     * @return <code>true</code> if the message does not require further processing, <code>false</code>  otherwise.
-     */
-    public void endTurnMessageHandler(VirtualView view, Message message) {
-        currentPlayerView.sendMessage(new Message(Message.Code.END_TURN));
-        model.nextTurn();
-        this.start();
+    public void setModel(GameModel model) {
+        this.model = model;
     }
 
     /**
@@ -113,6 +61,115 @@ public class Controller {
                 .forEach((cardController) -> cardController.addMoveFilter(filter, lastAction, model.getBoard()));
     }
 
+    /**
+     * Callback that handles and processes "chosen worker" message type.
+     * Next the view must choose the action to perform
+     *
+     * @param view    the VirtualView that sended the message
+     * @param message the message containing information about the selected worker
+     * @return <code>true</code> if the message does not require further processing, <code>false</code>  otherwise.
+     */
+    public void chosenWorkerMessageHandler(VirtualView view, Message message) {
+        Position selectedWorkerPosition;
+        if (view.equals(currentPlayerView)) {
+            selectedWorkerPosition = BodyFactory.fromPosition(message.getBody());
+            model.setWorker(selectedWorkerPosition);
+            actions();
+        }
+    }
+
+    /**
+     * Callback that handles and processes "chosen action" message type.
+     * Next perform the action and the transition to next state
+     *
+     * @param view    the VirtualView that sended the message
+     * @param message the message containing information about the selected worker
+     * @return <code>true</code> if the message does not require further processing, <code>false</code>  otherwise.
+     */
+    public void chosenActionMessageHandler(VirtualView view, Message message) {
+        Action selectedAction;
+        if (view.equals(currentPlayerView)) {
+            selectedAction = availableActions.get(BodyFactory.fromAction(message.getBody()).getId());
+            model.doAction(selectedAction);
+            if (currentPlayer.checkVictory(selectedAction, model.getBoard()))
+                won();
+            if (currentPlayer.nextState(selectedAction, model.getBoard())) {
+                actions();
+            } else {
+                end(false);
+                nextTurn(false);
+            }
+        }
+    }
+
+
+    /**
+     * Callback that handles the workers initial positions chosen by the player.
+     * The first position is for the female worker, the second one is for the male worker.
+     * It places the workers on the board.     *
+     *
+     * @param view    the player that chose the card.
+     * @param message message with code CHOSEN_WORKERS_INITIAL_POSITION containing information about the chose positions.
+     */
+    public void chosenWorkersInitialPositionsMessageHandler(VirtualView view, Message message) {
+        if (currentPlayerView.equals(view)) {
+            Position[] chosenPositions = BodyFactory.fromPositions(message.getBody());
+            setWorkersInitialPositions(chosenPositions);
+            end(false);
+            init(model.isFullRound());
+        }
+    }
+
+    /**
+     * The initialization phase of the match. Each player has to place his workers
+     * when each player has placed his workers start with the first game turn
+     *
+     * @param gameReady all player's workers have been placed, the game can start
+     */
+    public void init(boolean gameReady) {
+        if (gameReady)
+            nextTurn(false);
+        else {
+            start();
+            initialsWorkers();
+        }
+
+    }
+
+    /**
+     * Called each time that a turn change, if the current player has won because the previous one was blocked notice the client
+     * and end the match. Otherwise sends him its workers positions
+     *
+     * @param hasWon if <code>true</code> the current player has won the game
+     */
+    private void nextTurn(boolean hasWon) {
+        start();
+        if (hasWon) {
+            won();
+        } else {
+            workers();
+        }
+    }
+
+    /**
+     * The start of a turn player, fetch current player view and controller and send the position of his worker
+     */
+    private void start() {
+        this.currentPlayer = players.get(model.getCurrentPlayerNickname());
+        this.currentPlayerView = playerViews.get(model.getCurrentPlayerNickname());
+        currentPlayerView.sendMessage(new Message(Message.Code.START_TURN));
+    }
+
+
+    /**
+     * end the turn and change the player
+     */
+    private void end(Boolean nextStatus) {
+        if (nextStatus)
+            currentPlayer.nextState(null, model.getBoard());
+        currentPlayerView.sendMessage(new Message(Message.Code.END_TURN));
+        model.nextTurn();
+    }
 
     /**
      * Called when current player loose the game.
@@ -120,15 +177,17 @@ public class Controller {
      * - 2 players match: end the match, the opponent win
      */
     private void lost() {
+        model.removePlayer(model.getCurrentPlayerNickname());
+        players.remove(model.getCurrentPlayerNickname());
+        currentPlayerView.sendMessage(new Message(Message.Code.LOST));
+        model.nextTurn();
+        nextTurn(model.getNumberOfPlayer() == 2);
         if (model.getNumberOfPlayer() == 3) {
-            model.removePlayer(model.getCurrentPlayerNickname());
-            model.nextTurn();
-            start();
+            end(false);
+            nextTurn(false);
         } else {
-            model.nextTurn();
-            currentPlayerView = playerViews.get(model.getCurrentPlayerNickname());
-            currentPlayer = players.get(model.getCurrentPlayerNickname());
-            won();
+            end(false);
+            nextTurn(true);
         }
 
     }
@@ -137,7 +196,7 @@ public class Controller {
      * Called when current player wins the match
      */
     public void won() {
-
+        currentPlayerView.sendMessage(new Message(Message.Code.WON));
     }
 
     /**
@@ -147,12 +206,19 @@ public class Controller {
      */
     private void actions() {
         availableActions = currentPlayer.getAvailableAction(model.getBoard(), model.getWorker());
-        currentPlayerView.sendMessage(new Message(Message.Code.CHOOSE_ACTION,
-                BodyFactory.toActions(availableActions)));
-        if (availableActions.isEmpty() && (!currentPlayer.isEndableTurn()))
-            lost();
-        if (currentPlayer.isEndableTurn())
-            endable();
+        Message actionsMessage = new Message(Message.Code.CHOOSE_ACTION);
+        if (!availableActions.isEmpty()) {
+            actionsMessage.setBody(BodyFactory.toActions(availableActions));
+            if (currentPlayer.isEndableTurn())
+                actionsMessage.addHeader(MessageHeader.END_METHOD, String.valueOf(true));
+            currentPlayerView.sendMessage(actionsMessage);
+        } else {
+            if (currentPlayer.isEndableTurn()) {
+                end(true);
+                this.nextTurn(false);
+            } else
+                lost();
+        }
     }
 
     /**
@@ -162,30 +228,39 @@ public class Controller {
     private void workers() {
         List<Position> workers = model.getBoard().getPlayerWorkersPositions(model.getCurrentPlayerNickname());
         Position[] workersArray = new Position[workers.size()];
-        String body = "";
         if (workers.isEmpty())
             lost();
-        else
-            body = JsonConvert.getInstance().toJson(workers.toArray(workersArray), Position[].class);
-        currentPlayerView.sendMessage(new Message(Message.Code.CHOOSE_WORKER, body));
+        else {
+            currentPlayerView.sendMessage(new Message(Message.Code.CHOOSE_WORKER, BodyFactory.toPositions(workersArray)));
+        }
     }
 
     /**
-     * Notices tha current player that the match can be ended
+     * Sends a list of unoccupied position to the current player.
      */
-    private void endable() {
-        //currentPlayerView.sendMessage(new Message(Message.Code.TURN_ENDABLE));
+    private void initialsWorkers() {
+        List<Position> unoccupiedPositions = model.getBoard().getUnoccupiedPosition();
+        Position[] unoccupiedPositionsArray = new Position[unoccupiedPositions.size()];
+        Message toSend = new Message(
+                Message.Code.CHOOSE_WORKERS_INITIAL_POSITION,
+                BodyFactory.toPositions(unoccupiedPositionsArray));
+        currentPlayerView.sendMessage(toSend);
     }
 
-    public void setVirtualViews(Map<String, VirtualView> playerViews) {
-        this.playerViews = playerViews;
+    /**
+     * Creates two initial placement actions that places the player's workers at the selected position
+     * and performs it
+     *
+     * @param chosenPositions
+     */
+    private void setWorkersInitialPositions(Position[] chosenPositions) {
+        String currentPlayerNickname = this.model.getCurrentPlayerNickname();
+        Worker female = new Worker(currentPlayerNickname, Worker.Sex.FEMALE);
+        Worker male = new Worker(currentPlayerNickname, Worker.Sex.MALE);
+        InitialPlacement femalePlacement = new InitialPlacement(chosenPositions[0], female);
+        InitialPlacement malePlacement = new InitialPlacement(chosenPositions[1], male);
+        this.model.doAction(femalePlacement);
+        this.model.doAction(malePlacement);
     }
 
-    public void setCardControllers(Map<String, CardController> players) {
-        this.players = players;
-    }
-
-    public void setModel(GameModel model) {
-        this.model = model;
-    }
 }

@@ -51,11 +51,11 @@ public class SetupControllerTest {
 
 
         setupController.addPlayer("p1", p1);
-        assertEquals(1, setupController.getRegisteredPlayers());
+        assertEquals(1, setupController.getRegisteredPlayers().size());
         setupController.addPlayer("p2", p2);
-        assertEquals(2, setupController.getRegisteredPlayers());
+        assertEquals(2, setupController.getRegisteredPlayers().size());
         setupController.addPlayer("p3", p3);
-        assertEquals(3, setupController.getRegisteredPlayers());
+        assertEquals(3, setupController.getRegisteredPlayers().size());
 
 //        start() must sent messages only to the first player,
 //        start() does not need inputs.
@@ -71,15 +71,6 @@ public class SetupControllerTest {
 //        Receive CHOSEN_CARD from p3, and send CHOOSE_WORKERS_INITIAL_POSITION to p1
         setupController.chosenCardMessageHandler(p3, getNextMessageFrom(p3Connection));
 
-//        Receive CHOSEN_WORKERS_INITIAL_POSITION from p1, notify changed positions to all, and send CHOOSE_WORKERS_INITIAL_POSITION to p2
-        setupController.chosenWorkersInitialPositionsMessageHandler(p1, getNextMessageFrom(p1Connection));
-
-//        Receive CHOSEN_WORKERS_INITIAL_POSITION from p2, notify changed positions to all, and send CHOOSE_WORKERS_INITIAL_POSITION to p3
-        setupController.chosenWorkersInitialPositionsMessageHandler(p2, getNextMessageFrom(p2Connection));
-
-//        Receive CHOSEN_WORKERS_INITIAL_POSITION from p3, notify changed positions to all, and send START, CHOOSE_WORKER to p1 for game phase.
-//        setupController.chosenWorkersInitialPositionsMessageHandler(p3, getNextMessageFrom(p3Connection));
-
 
 //        Expected messages sent to the views
         String p1ExpectedOut = new String(Files.readAllBytes(Paths.get(getClass().getResource("/setuptest/threeplayer/p1.out.txt").toURI())));
@@ -90,9 +81,9 @@ public class SetupControllerTest {
         p2ExpectedIn.close();
         p3ExpectedIn.close();
 
-//        assertEquals(p1ExpectedOut, p1ActualOut.toString());
-//        assertEquals(p2ExpectedOut, p2ActualOut.toString());
-//        assertEquals(p3ExpectedOut, p3ActualOut.toString());
+        assertEquals(p1ExpectedOut, p1ActualOut.toString());
+        assertEquals(p2ExpectedOut, p2ActualOut.toString());
+        assertEquals(p3ExpectedOut, p3ActualOut.toString());
     }
 
 

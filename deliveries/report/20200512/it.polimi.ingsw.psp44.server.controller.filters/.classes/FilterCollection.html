@@ -1,0 +1,213 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: FilterCollection</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.psp44.server.controller.filters</a> ]
+</div>
+
+<h1>Coverage Summary for Class: FilterCollection (it.polimi.ingsw.psp44.server.controller.filters)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FilterCollection</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.9%
+  </span>
+  <span class="absValue">
+    (8/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    78.6%
+  </span>
+  <span class="absValue">
+    (33/ 42)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server.controller.filters;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.psp44.server.model.Board;
+<i>4</i>&nbsp;import it.polimi.ingsw.psp44.server.model.actions.Action;
+<i>5</i>&nbsp;import it.polimi.ingsw.psp44.util.Position;
+<i>6</i>&nbsp;import it.polimi.ingsw.psp44.util.R;
+<i>7</i>&nbsp;import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
+<i>8</i>&nbsp;import it.polimi.ingsw.psp44.util.exception.FilterException;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import java.util.ArrayList;
+<i>11</i>&nbsp;import java.util.List;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;/**
+<i>14</i>&nbsp; * Filter Collection extends Filter.
+<i>15</i>&nbsp; * Has simple collection methods (add and remove)
+<i>16</i>&nbsp; * Architecture based on the composite pattern (https://en.wikipedia.org/wiki/Composite_pattern)
+<i>17</i>&nbsp; */
+<i>18</i>&nbsp;public class FilterCollection extends Filter {
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    private final List&lt;Filter&gt; filters;
+<i>21</i>&nbsp;
+<b class="fc"><i>22</i>&nbsp;    public FilterCollection() {</b>
+<b class="fc"><i>23</i>&nbsp;        this.filters = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>24</i>&nbsp;    }</b>
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    /**
+<i>27</i>&nbsp;     * Adds a filter to the list of filters in the collection
+<i>28</i>&nbsp;     *
+<i>29</i>&nbsp;     * @param filter is the filter to be added to the collection
+<i>30</i>&nbsp;     * @throws IllegalArgumentException if Filter is null
+<i>31</i>&nbsp;     * @throws FilterException          if filter is already in the list
+<i>32</i>&nbsp;     */
+<i>33</i>&nbsp;    public void add(Filter filter) {
+<b class="fc"><i>34</i>&nbsp;        if (filter == null)</b>
+<b class="fc"><i>35</i>&nbsp;            throw new IllegalArgumentException(R.getAppProperties().get(ErrorCodes.NULL_FILTER));</b>
+<b class="fc"><i>36</i>&nbsp;        if (filters.contains(filter))</b>
+<b class="fc"><i>37</i>&nbsp;            throw new FilterException(R.getAppProperties().get(ErrorCodes.FILTER_IN_COLLECTION));</b>
+<b class="fc"><i>38</i>&nbsp;        filters.add(filter);</b>
+<b class="fc"><i>39</i>&nbsp;    }</b>
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    /**
+<i>42</i>&nbsp;     * check if a filter is already in the collection
+<i>43</i>&nbsp;     *
+<i>44</i>&nbsp;     * @param filter
+<i>45</i>&nbsp;     * @return
+<i>46</i>&nbsp;     */
+<i>47</i>&nbsp;    public boolean contains(Filter filter) {
+<b class="fc"><i>48</i>&nbsp;        return filters.contains(filter);</b>
+<i>49</i>&nbsp;    }
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;    /**
+<i>52</i>&nbsp;     * Removes a filter form the list of filters
+<i>53</i>&nbsp;     *
+<i>54</i>&nbsp;     * @param filter is the filter to be removed from the collection
+<i>55</i>&nbsp;     * @throws IllegalArgumentException if Filter is null
+<i>56</i>&nbsp;     * @throws FilterException          if filter is not in the list
+<i>57</i>&nbsp;     */
+<i>58</i>&nbsp;    public void remove(Filter filter) {
+<b class="fc"><i>59</i>&nbsp;        if (filter == null)</b>
+<b class="fc"><i>60</i>&nbsp;            throw new IllegalArgumentException(R.getAppProperties().get(ErrorCodes.NULL_FILTER));</b>
+<b class="fc"><i>61</i>&nbsp;        if (!filters.contains(filter))</b>
+<b class="fc"><i>62</i>&nbsp;            throw new FilterException(R.getAppProperties().get(ErrorCodes.FILTER_NOT_IN_COLLECTION));</b>
+<b class="fc"><i>63</i>&nbsp;        filters.remove(filter);</b>
+<b class="fc"><i>64</i>&nbsp;    }</b>
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    /**
+<i>67</i>&nbsp;     * Update the sate of the selected filters
+<i>68</i>&nbsp;     *
+<i>69</i>&nbsp;     * @param lastAction
+<i>70</i>&nbsp;     * @param board
+<i>71</i>&nbsp;     */
+<i>72</i>&nbsp;    public void update(Filter filter, Action lastAction, Board board) {
+<b class="fc"><i>73</i>&nbsp;        for (Filter f : filters) {</b>
+<b class="fc"><i>74</i>&nbsp;            if (filter.equals(f))</b>
+<b class="fc"><i>75</i>&nbsp;                f.update(lastAction, board);</b>
+<b class="fc"><i>76</i>&nbsp;        }</b>
+<i>77</i>&nbsp;
+<b class="fc"><i>78</i>&nbsp;    }</b>
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;    /**
+<i>81</i>&nbsp;     * return the filters of the collection
+<i>82</i>&nbsp;     *
+<i>83</i>&nbsp;     * @return a list of the filters in the collection
+<i>84</i>&nbsp;     */
+<i>85</i>&nbsp;    public List&lt;Filter&gt; getFilters() {
+<b class="fc"><i>86</i>&nbsp;        return filters;</b>
+<i>87</i>&nbsp;    }
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;    /**
+<i>91</i>&nbsp;     * calls filter method on all its Filter collection
+<i>92</i>&nbsp;     *
+<i>93</i>&nbsp;     * @throws IllegalStateException if the filter list is empty
+<i>94</i>&nbsp;     */
+<i>95</i>&nbsp;    @Override
+<i>96</i>&nbsp;    public void filter(Position startingPosition, List&lt;Position&gt; positionsToFilter, Board gameBoard) {
+<b class="fc"><i>97</i>&nbsp;        if (filters.isEmpty())</b>
+<b class="nc"><i>98</i>&nbsp;            throw new IllegalStateException(R.getAppProperties().get(ErrorCodes.NO_FILTER_IN_COLLECTION));</b>
+<i>99</i>&nbsp;
+<b class="fc"><i>100</i>&nbsp;        for (Filter filter : filters) {</b>
+<b class="fc"><i>101</i>&nbsp;            filter.filter(startingPosition, positionsToFilter, gameBoard);</b>
+<b class="fc"><i>102</i>&nbsp;        }</b>
+<i>103</i>&nbsp;
+<b class="fc"><i>104</i>&nbsp;    }</b>
+<i>105</i>&nbsp;
+<i>106</i>&nbsp;    @Override
+<i>107</i>&nbsp;    public int hashCode() {
+<b class="nc"><i>108</i>&nbsp;        final int prime = 31;</b>
+<b class="nc"><i>109</i>&nbsp;        int result = super.hashCode();</b>
+<b class="nc"><i>110</i>&nbsp;        result = prime * result + ((filters == null) ? 0 : filters.hashCode());</b>
+<b class="nc"><i>111</i>&nbsp;        return result;</b>
+<i>112</i>&nbsp;    }
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;    @Override
+<i>116</i>&nbsp;    public boolean equals(Object obj) {
+<b class="fc"><i>117</i>&nbsp;        if (this == obj)</b>
+<b class="nc"><i>118</i>&nbsp;            return true;</b>
+<b class="fc"><i>119</i>&nbsp;        if (!super.equals(obj))</b>
+<b class="nc"><i>120</i>&nbsp;            return false;</b>
+<b class="fc"><i>121</i>&nbsp;        if (getClass() != obj.getClass())</b>
+<b class="nc"><i>122</i>&nbsp;            return false;</b>
+<b class="fc"><i>123</i>&nbsp;        FilterCollection other = (FilterCollection) obj;</b>
+<b class="fc"><i>124</i>&nbsp;        if (filters == null) {</b>
+<b class="nc"><i>125</i>&nbsp;            return other.filters == null;</b>
+<b class="fc"><i>126</i>&nbsp;        } else return filters.equals(other.filters);</b>
+<i>127</i>&nbsp;    }
+<i>128</i>&nbsp;
+<i>129</i>&nbsp;
+<i>130</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-12 03:17</div>
+</div>
+</body>
+</html>

@@ -6,12 +6,9 @@ import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.server.model.GameModel;
 import it.polimi.ingsw.psp44.server.model.Player;
-import it.polimi.ingsw.psp44.server.model.Worker;
-import it.polimi.ingsw.psp44.server.model.actions.InitialPlacement;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
 import it.polimi.ingsw.psp44.util.Card;
 import it.polimi.ingsw.psp44.util.JsonConvert;
-import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.R;
 
 import java.util.EnumMap;
@@ -83,7 +80,7 @@ public class SetupController {
 
         toSend = new Message(Message.Code.CHOOSE_CARDS, headers, body);
 
-        currentPlayer.sendMessage(new Message(Message.Code.START_TURN));
+        startTurn();
         currentPlayer.sendMessage(toSend);
     }
 
@@ -131,7 +128,7 @@ public class SetupController {
         cardController.setContext(controller);
         this.playerCardController.put(this.model.getCurrentPlayerNickname(), cardController);
 
-        nextTurn();
+        endTurn();
 
         currentView = playerViews.get(this.model.getCurrentPlayerNickname());
 
@@ -139,76 +136,26 @@ public class SetupController {
             cardController = CardFactory.getController(chosen);
             cardController.setContext(controller);
             this.playerCardController.put(this.model.getCurrentPlayerNickname(), CardFactory.getController(chosen));
-
-            Position[] positions = this.model.getBoard().getUnoccupiedPosition().toArray(new Position[0]);
-
-            toSend = new Message(
-                    Message.Code.CHOOSE_WORKERS_INITIAL_POSITION,
-                    BodyFactory.toPositions(positions));
-        } else {
-            toSend = new Message(
-                    Message.Code.CHOOSE_CARD,
-                    BodyFactory.toCards(rest));
-        }
-
-        currentView.sendMessage(toSend);
-    }
-
-
-    /**
-     * Callback that handles the workers initial positions chosen by the player.
-     * The first position is for the female worker, the second one is for the male worker.
-     * It places the workers on the board.
-     * If all all the players have placed the workers, it starts the main phase of the game.
-     *
-     * @param view    the player that chose the card.
-     * @param message message with code CHOSEN_WORKERS_INITIAL_POSITION containing information about the chose positions.
-     */
-    public synchronized void chosenWorkersInitialPositionsMessageHandler(VirtualView view, Message message) {
-        VirtualView currentView = playerViews.get(this.model.getCurrentPlayerNickname());
-
-        if (currentView != view)
-            return;
-
-        Position[] chosenPositions = BodyFactory.fromPositions(message.getBody());
-
-        setWorkersInitialPositions(chosenPositions);
-        nextTurn();
-
-        VirtualView nextPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
-
-        if (!this.model.isFullRound()) {
-            Position[] positions = this.model.getBoard().getUnoccupiedPosition().toArray(new Position[0]);
-            Message toSend = new Message(
-                    Message.Code.CHOOSE_WORKERS_INITIAL_POSITION,
-                    BodyFactory.toPositions(positions));
-            nextPlayer.sendMessage(toSend);
-
-        } else {
             this.controller.setVirtualViews(this.playerViews);
             this.controller.setCardControllers(this.playerCardController);
             this.controller.setModel(this.model);
-            this.controller.start();
+            this.controller.init(false);
+        } else {
+            startTurn();
+            toSend = new Message(
+                    Message.Code.CHOOSE_CARD,
+                    BodyFactory.toCards(rest));
+            currentView.sendMessage(toSend);
         }
+
+
     }
 
-    private synchronized void setWorkersInitialPositions(Position[] chosenPositions) {
-        String currentPlayerNickname = this.model.getCurrentPlayerNickname();
-        Worker female = new Worker(currentPlayerNickname, Worker.Sex.FEMALE);
-        Worker male = new Worker(currentPlayerNickname, Worker.Sex.MALE);
-
-        InitialPlacement femalePlacement = new InitialPlacement(chosenPositions[0], female);
-        InitialPlacement malePlacement = new InitialPlacement(chosenPositions[1], male);
-
-
-        this.model.doAction(femalePlacement);
-        this.model.doAction(malePlacement);
-    }
 
     private void setHandlers(VirtualView view) {
         view.addMessageHandler(Message.Code.CHOSEN_CARDS, this::chosenCardsMessageHandler);
         view.addMessageHandler(Message.Code.CHOSEN_CARD, this::chosenCardMessageHandler);
-        view.addMessageHandler(Message.Code.CHOSEN_WORKERS_INITIAL_POSITION, this::chosenWorkersInitialPositionsMessageHandler);
+        view.addMessageHandler(Message.Code.CHOSEN_WORKERS_INITIAL_POSITION, this.controller::chosenWorkersInitialPositionsMessageHandler);
         view.addMessageHandler(Message.Code.CHOSEN_WORKER, this.controller::chosenWorkerMessageHandler);
         view.addMessageHandler(Message.Code.CHOSEN_ACTION, this.controller::chosenActionMessageHandler);
     }
@@ -230,13 +177,20 @@ public class SetupController {
     }
 
     private void nextTurn() {
-        VirtualView currentView;
+        endTurn();
+        startTurn();
+    }
 
+    private void endTurn() {
+        VirtualView currentView;
         currentView = this.playerViews.get(this.model.getCurrentPlayerNickname());
         currentView.sendMessage(new Message(Message.Code.END_TURN));
 
         this.model.nextTurn();
+    }
 
+    private void startTurn() {
+        VirtualView currentView;
         currentView = this.playerViews.get(this.model.getCurrentPlayerNickname());
         currentView.sendMessage(new Message(Message.Code.START_TURN));
     }

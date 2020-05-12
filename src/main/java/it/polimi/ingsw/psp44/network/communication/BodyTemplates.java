@@ -1,7 +1,6 @@
 package it.polimi.ingsw.psp44.network.communication;
 
 import it.polimi.ingsw.psp44.util.Card;
-import it.polimi.ingsw.psp44.util.Position;
 
 public class BodyTemplates {
 
@@ -16,9 +15,11 @@ public class BodyTemplates {
             this.playerNickname = playerNickname;
             this.numberOfPlayers = numberOfPlayers;
         }
+
         public String getPlayerNickname() {
             return playerNickname;
         }
+
         public int getNumberOfPlayers() {
             return numberOfPlayers;
         }
@@ -32,9 +33,11 @@ public class BodyTemplates {
             this.playerNickname = playerNickname;
             this.gameId = gameId;
         }
+
         public String getPlayerNickname() {
             return playerNickname;
         }
+
         public int getGameId() {
             return gameId;
         }

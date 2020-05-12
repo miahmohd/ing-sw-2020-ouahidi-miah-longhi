@@ -5,9 +5,9 @@ import it.polimi.ingsw.psp44.util.Position;
 
 public abstract class Movement extends Action {
 
-    public Movement(Position sourcePosition, Position targetPosition) {
+    public Movement(Position sourcePosition, Position targetPosition, String description) {
 
-        super(sourcePosition, targetPosition);
+        super(sourcePosition, targetPosition, description);
     }
 
     /**

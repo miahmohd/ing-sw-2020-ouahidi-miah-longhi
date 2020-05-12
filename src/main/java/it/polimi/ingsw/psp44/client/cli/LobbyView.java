@@ -17,7 +17,7 @@ public class LobbyView {
     private Map<String, Message.Code> gameOptions;
 
 
-    public LobbyView(Console console){
+    public LobbyView(Console console) {
         this.console = console;
 
         this.gameOptions = new HashMap<>();
@@ -29,7 +29,7 @@ public class LobbyView {
         this(new Console());
     }
 
-    public void newJoin(Message joinOrNew){
+    public void newJoin(Message joinOrNew) {
         String body;
         Message message;
         Message.Code messageCode;
@@ -74,7 +74,7 @@ public class LobbyView {
         changeView();
     }
 
-    public void setServer(VirtualServer virtual){
+    public void setServer(VirtualServer virtual) {
         this.virtualServer = virtual;
 
         virtualServer.addMessageHandler(Message.Code.NEW_OR_JOIN, this::newJoin);

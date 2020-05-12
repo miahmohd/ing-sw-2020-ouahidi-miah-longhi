@@ -5,7 +5,6 @@ import it.polimi.ingsw.psp44.network.communication.Action;
 import it.polimi.ingsw.psp44.network.communication.Cell;
 import it.polimi.ingsw.psp44.util.Position;
 
-import java.awt.font.GraphicAttribute;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,9 +51,9 @@ public class Board {
 
     }
 
-    public String getPlayers(){
+    public String getPlayers() {
         StringBuffer players = new StringBuffer();
-        for(String player : this.playerColors.keySet()){
+        for (String player : this.playerColors.keySet()) {
             players.append(this.playerColors.get(player));
             players.append(player);
             players.append(Graphics.Behaviour.NEW_LINE);
@@ -79,11 +78,11 @@ public class Board {
                 currentPosition = new Position(row, column);
                 currentCell = cells[row][column];
 
-                if(actionsPerPosition.keySet().contains(currentPosition)){
+                if (actionsPerPosition.keySet().contains(currentPosition)) {
 
                     currentActionList = actionsPerPosition.get(currentPosition);
 
-                    if(currentActionList.size() > 1)
+                    if (currentActionList.size() > 1)
                         sb.append(Color.BOTH_HIGHLIGHT);
                     else if (currentActionList.get(0).isBuild())
                         sb.append(Color.BUILD_HIGHLIGHT);
@@ -148,7 +147,7 @@ public class Board {
                 currentPosition = new Position(row, column);
                 currentCell = cells[row][column];
 
-                if(positionsToHighlight.contains(currentPosition))
+                if (positionsToHighlight.contains(currentPosition))
                     sb.append(Color.POSITION_HIGHLIGHT);
                 else
                     sb.append(this.levelColors.get(currentCell.getLevel()));

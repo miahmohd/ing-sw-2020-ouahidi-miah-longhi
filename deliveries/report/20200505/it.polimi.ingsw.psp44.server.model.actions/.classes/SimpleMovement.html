@@ -1,120 +1,117 @@
-
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html id="htmlId">
 <head>
-  <title>Coverage Report :: SimpleMovement</title>
-  <style type="text/css">
-    @import "../../.css/coverage.css";
-  </style>
+    <title>Coverage Report :: SimpleMovement</title>
+    <style type="text/css">
+        @import "../../.css/coverage.css";
+    </style>
 </head>
 
 <body>
 <div class="header"></div>
 
 <div class="content">
-<div class="breadCrumbs">
-    [ <a href="../../index.html">all classes</a> ]
-    [ <a href="../index.html">it.polimi.ingsw.psp44.server.model.actions</a> ]
-</div>
+    <div class="breadCrumbs">
+        [ <a href="../../index.html">all classes</a> ]
+        [ <a href="../index.html">it.polimi.ingsw.psp44.server.model.actions</a> ]
+    </div>
 
-<h1>Coverage Summary for Class: SimpleMovement (it.polimi.ingsw.psp44.server.model.actions)</h1>
+    <h1>Coverage Summary for Class: SimpleMovement (it.polimi.ingsw.psp44.server.model.actions)</h1>
 
-<table class="coverageStats">
-<tr>
-  <th class="name">Class</th>
-<th class="coverageStat 
+    <table class="coverageStats">
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
 ">
-  Class, %
-</th>
-<th class="coverageStat 
+                Class, %
+            </th>
+            <th class="coverageStat
 ">
-  Method, %
-</th>
-<th class="coverageStat 
+                Method, %
+            </th>
+            <th class="coverageStat
 ">
-  Line, %
-</th>
-</tr>
-<tr>
-  <td class="name">SimpleMovement</td>
-<td class="coverageStat">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">SimpleMovement</td>
+            <td class="coverageStat">
   <span class="percent">
     100%
   </span>
-  <span class="absValue">
+                <span class="absValue">
     (1/ 1)
   </span>
-</td>
-<td class="coverageStat">
+            </td>
+            <td class="coverageStat">
   <span class="percent">
     100%
   </span>
-  <span class="absValue">
+                <span class="absValue">
     (3/ 3)
   </span>
-</td>
-<td class="coverageStat">
+            </td>
+            <td class="coverageStat">
   <span class="percent">
     100%
   </span>
-  <span class="absValue">
+                <span class="absValue">
     (7/ 7)
   </span>
-</td>
-</tr>
+            </td>
+        </tr>
 
-</table>
+    </table>
 
-<br/>
-<br/>
+    <br/>
+    <br/>
 
 
-<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server.model.actions;
-<i>2</i>&nbsp;
-<i>3</i>&nbsp;import it.polimi.ingsw.psp44.server.model.Board;
-<i>4</i>&nbsp;import it.polimi.ingsw.psp44.util.Position;
-<i>5</i>&nbsp;
-<i>6</i>&nbsp;import java.util.ArrayList;
-<i>7</i>&nbsp;import java.util.Arrays;
-<i>8</i>&nbsp;import java.util.List;
-<i>9</i>&nbsp;
-<i>10</i>&nbsp;
-<i>11</i>&nbsp;public class SimpleMovement extends Movement {
-<i>12</i>&nbsp;
-<i>13</i>&nbsp;
-<i>14</i>&nbsp;    /**
-<i>15</i>&nbsp;     * Create a simple movement for a worker
-<i>16</i>&nbsp;     *
-<i>17</i>&nbsp;     * @param sourcePosition initial position of the worker
-<i>18</i>&nbsp;     * @param targetPosition final position of the worker
-<i>19</i>&nbsp;     */
-<i>20</i>&nbsp;    public SimpleMovement(Position sourcePosition, Position targetPosition) {
-<b class="fc"><i>21</i>&nbsp;        super(sourcePosition, targetPosition);</b>
-<b class="fc"><i>22</i>&nbsp;    }</b>
-<i>23</i>&nbsp;
-<i>24</i>&nbsp;    @Override
-<i>25</i>&nbsp;    public void execute(Board board) {
-<b class="fc"><i>26</i>&nbsp;        super.execute(board);</b>
-<b class="fc"><i>27</i>&nbsp;        board.setWorker(this.targetPosition, board.getWorker(this.sourcePosition));</b>
-<b class="fc"><i>28</i>&nbsp;        board.setWorker(this.sourcePosition, null);</b>
-<b class="fc"><i>29</i>&nbsp;    }</b>
-<i>30</i>&nbsp;
-<i>31</i>&nbsp;    @Override
-<i>32</i>&nbsp;    public List&lt;Position&gt; getModifiedPositions() {
-<b class="fc"><i>33</i>&nbsp;        return new ArrayList&lt;&gt;(Arrays.asList(</b>
-<i>34</i>&nbsp;                this.sourcePosition,
-<i>35</i>&nbsp;                this.targetPosition
-<i>36</i>&nbsp;        ));
-<i>37</i>&nbsp;    }
-<i>38</i>&nbsp;}
-</div>
+    <div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server.model.actions;
+        <i>2</i>&nbsp;
+        <i>3</i>&nbsp;import it.polimi.ingsw.psp44.server.model.Board;
+        <i>4</i>&nbsp;import it.polimi.ingsw.psp44.util.Position;
+        <i>5</i>&nbsp;
+        <i>6</i>&nbsp;import java.util.ArrayList;
+        <i>7</i>&nbsp;import java.util.Arrays;
+        <i>8</i>&nbsp;import java.util.List;
+        <i>9</i>&nbsp;
+        <i>10</i>&nbsp;
+        <i>11</i>&nbsp;public class SimpleMovement extends Movement {
+        <i>12</i>&nbsp;
+        <i>13</i>&nbsp;
+        <i>14</i>&nbsp; /**
+        <i>15</i>&nbsp; * Create a simple movement for a worker
+        <i>16</i>&nbsp; *
+        <i>17</i>&nbsp; * @param sourcePosition initial position of the worker
+        <i>18</i>&nbsp; * @param targetPosition final position of the worker
+        <i>19</i>&nbsp; */
+        <i>20</i>&nbsp; public SimpleMovement(Position sourcePosition, Position targetPosition) {
+        <b class="fc"><i>21</i>&nbsp; super(sourcePosition, targetPosition);</b>
+        <b class="fc"><i>22</i>&nbsp; }</b>
+        <i>23</i>&nbsp;
+        <i>24</i>&nbsp; @Override
+        <i>25</i>&nbsp; public void execute(Board board) {
+        <b class="fc"><i>26</i>&nbsp; super.execute(board);</b>
+        <b class="fc"><i>27</i>&nbsp; board.setWorker(this.targetPosition, board.getWorker(this.sourcePosition));</b>
+        <b class="fc"><i>28</i>&nbsp; board.setWorker(this.sourcePosition, null);</b>
+        <b class="fc"><i>29</i>&nbsp; }</b>
+        <i>30</i>&nbsp;
+        <i>31</i>&nbsp; @Override
+        <i>32</i>&nbsp; public List&lt;Position&gt; getModifiedPositions() {
+        <b class="fc"><i>33</i>&nbsp; return new ArrayList&lt;&gt;(Arrays.asList(</b>
+        <i>34</i>&nbsp; this.sourcePosition,
+        <i>35</i>&nbsp; this.targetPosition
+        <i>36</i>&nbsp; ));
+        <i>37</i>&nbsp; }
+        <i>38</i>&nbsp;}
+    </div>
 </div>
 
 <div class="footer">
-    
+
     <div style="float:right;">generated on 2020-05-05 08:44</div>
 </div>
 </body>
