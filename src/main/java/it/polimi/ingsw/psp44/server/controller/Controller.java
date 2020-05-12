@@ -227,7 +227,7 @@ public class Controller {
      */
     private void workers() {
         List<Position> workers = model.getBoard().getPlayerWorkersPositions(model.getCurrentPlayerNickname());
-        Position[] workersArray = new Position[workers.size()];
+        Position[] workersArray = workers.toArray(Position[]::new);
         if (workers.isEmpty())
             lost();
         else {
@@ -240,7 +240,7 @@ public class Controller {
      */
     private void initialsWorkers() {
         List<Position> unoccupiedPositions = model.getBoard().getUnoccupiedPosition();
-        Position[] unoccupiedPositionsArray = new Position[unoccupiedPositions.size()];
+        Position[] unoccupiedPositionsArray = unoccupiedPositions.toArray(Position[]::new);
         Message toSend = new Message(
                 Message.Code.CHOOSE_WORKERS_INITIAL_POSITION,
                 BodyFactory.toPositions(unoccupiedPositionsArray));
