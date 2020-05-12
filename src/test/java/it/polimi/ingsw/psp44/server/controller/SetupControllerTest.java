@@ -14,6 +14,7 @@ import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -62,8 +63,14 @@ public class SetupControllerTest {
 //        Send START CHOOSE_CARDS to p1
         setupController.start();
 
+//        Receive unexpected CHOSEN_CARDS from p2
+        setupController.chosenCardsMessageHandler(p2, getNextMessageFrom(p2Connection));
+
 //        Receive CHOSEN_CARDS from p1 and send CHOOSE_CARD to p2
         setupController.chosenCardsMessageHandler(p1, getNextMessageFrom(p1Connection));
+
+//        Receive unexpected CHOSEN_CARD from p3
+        setupController.chosenCardMessageHandler(p3, getNextMessageFrom(p3Connection));
 
 //        Receive CHOSEN_CARD from p2, and send CHOOSE_CARD to p3
         setupController.chosenCardMessageHandler(p2, getNextMessageFrom(p2Connection));
@@ -73,17 +80,18 @@ public class SetupControllerTest {
 
 
 //        Expected messages sent to the views
-        String p1ExpectedOut = new String(Files.readAllBytes(Paths.get(getClass().getResource("/setuptest/threeplayer/p1.out.txt").toURI())));
-        String p2ExpectedOut = new String(Files.readAllBytes(Paths.get(getClass().getResource("/setuptest/threeplayer/p2.out.txt").toURI())));
-        String p3ExpectedOut = new String(Files.readAllBytes(Paths.get(getClass().getResource("/setuptest/threeplayer/p3.out.txt").toURI())));
+        List<String> p1ExpectedOut = Files.readAllLines(Paths.get(getClass().getResource("/setuptest/threeplayer/p1.out.txt").toURI()));
+        List<String> p2ExpectedOut = Files.readAllLines(Paths.get(getClass().getResource("/setuptest/threeplayer/p2.out.txt").toURI()));
+        List<String> p3ExpectedOut = Files.readAllLines(Paths.get(getClass().getResource("/setuptest/threeplayer/p3.out.txt").toURI()));
+
+        String br = System.getProperty("line.separator");
+        assertEquals(String.join(br, p1ExpectedOut) + br, p1ActualOut.toString());
+        assertEquals(String.join(br, p2ExpectedOut) + br, p2ActualOut.toString());
+        assertEquals(String.join(br, p3ExpectedOut) + br, p3ActualOut.toString());
 
         p1ExpectedIn.close();
         p2ExpectedIn.close();
         p3ExpectedIn.close();
-
-        assertEquals(p1ExpectedOut, p1ActualOut.toString());
-        assertEquals(p2ExpectedOut, p2ActualOut.toString());
-        assertEquals(p3ExpectedOut, p3ActualOut.toString());
     }
 
 
