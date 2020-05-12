@@ -5,8 +5,6 @@ import it.polimi.ingsw.psp44.network.IVirtual;
 import it.polimi.ingsw.psp44.network.message.Message;
 
 import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,7 +14,6 @@ public class VirtualServer implements IVirtual<Message>, Runnable {
     private final ExecutorService executor;
     private final IConnection<Message> connection;
     private final Map<Message.Code, IMessageHandlerFunction> router;
-    private final Queue<Message> buffer;
 
     public VirtualServer(IConnection connection) {
         this(connection, new ConcurrentHashMap<>());
@@ -28,19 +25,14 @@ public class VirtualServer implements IVirtual<Message>, Runnable {
         this.router = router;
 
         this.executor = Executors.newFixedThreadPool(2);
-        this.buffer = new PriorityQueue<>();
     }
 
-    public synchronized void addRoute(Message.Code code, IMessageHandlerFunction route) {
-        //TODO: allinearmi con miah per i nomi
-        //System.out.println("i'm adding to routes");
+    public synchronized void addMessageHandler(Message.Code code, IMessageHandlerFunction route) {
         this.router.put(code, route);
-
         notify();
     }
 
-    public void cleanRoutes(){
-        //System.out.println("i'm trying to clean");
+    public void cleanMessageHandlers(){
         this.router.clear();
     }
 
@@ -50,7 +42,6 @@ public class VirtualServer implements IVirtual<Message>, Runnable {
 
             Message message = connection.readLine();
             Message.Code code = message.getCode();
-            //System.out.println(code);
 
             while(!this.router.containsKey(code)){
                 try {

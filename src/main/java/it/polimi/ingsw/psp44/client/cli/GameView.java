@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -31,6 +32,36 @@ public class GameView {
 
     }
 
+    public void chooseWorkersInitialPositionFrom(Message workers) {
+        Position femalePosition, malePosition;
+        Position[] positionsToSend;
+
+        String body;
+        Message message;
+
+        List<Position> positionsToChooseFrom = new ArrayList<>(
+                Arrays.asList(BodyFactory.fromPositions(workers.getBody()))
+        );
+
+        //TODO: check if the chosen position is right positionsToChooseFrom.contains(position)
+        String board = this.board.highlightPositions(positionsToChooseFrom);
+        console.printOnBoardSection(board);
+
+        console.writeLine("choose positions ");
+        console.writeLine("gimme the female ");
+        femalePosition = getCorrectPosition(positionsToChooseFrom);
+        positionsToChooseFrom.remove(femalePosition);
+        console.writeLine("gimme the male ");
+        malePosition = getCorrectPosition(positionsToChooseFrom);
+
+        positionsToSend = new Position[]{femalePosition, malePosition};
+
+        body = BodyFactory.toPositions(positionsToSend);
+
+        message = new Message(Message.Code.CHOSEN_WORKERS_INITIAL_POSITION, body);
+        virtualServer.sendMessage(message);
+    }
+
     public void chooseWorkerFrom(Message workers) {
         Position positionToSend;
 
@@ -47,7 +78,7 @@ public class GameView {
 
         console.writeLine("choose position ");
 
-        positionToSend = console.readPosition();
+        positionToSend = getCorrectPosition(positionsToChooseFrom);
         body = BodyFactory.toPosition(positionToSend);
         message = new Message(Message.Code.CHOSEN_WORKER, body);
 
@@ -72,7 +103,9 @@ public class GameView {
         );
 
         console.writeLine("gimme the position boyyy ");
-        Position chosenPosition = console.readPosition();
+
+        Position chosenPosition = getCorrectPosition(
+                actionsPerPosition.keySet().stream().collect(Collectors.toList()));
 
         List<Action> chosenActions = actionsPerPosition.get(chosenPosition);
 
@@ -91,6 +124,8 @@ public class GameView {
 
     public void start(Message start){
         console.clear();
+        console.printOnBoardSection(board.getBoard());
+        console.printOnPlayersSection(board.getPlayers());
         console.writeLine("it's your turn boy");
     }
 
@@ -121,15 +156,33 @@ public class GameView {
     public void setServer(VirtualServer virtual) {
         this.virtualServer = virtual;
 
-        virtualServer.cleanRoutes();
+        virtualServer.cleanMessageHandlers();
 
-        virtualServer.addRoute(Message.Code.START_TURN, this::start);
-        virtualServer.addRoute(Message.Code.END_TURN, this::end);
-        virtualServer.addRoute(Message.Code.CHOOSE_WORKER, this::chooseWorkerFrom);
-        virtualServer.addRoute(Message.Code.UPDATE, this::update);
-        virtualServer.addRoute(Message.Code.CHOOSE_ACTION, this::chooseActionFrom);
-        virtualServer.addRoute(Message.Code.WON, this::won);
-        virtualServer.addRoute(Message.Code.LOST, this::lost);
+        virtualServer.addMessageHandler(Message.Code.START_TURN, this::start);
+        virtualServer.addMessageHandler(Message.Code.END_TURN, this::end);
+        virtualServer.addMessageHandler(Message.Code.CHOOSE_WORKER, this::chooseWorkerFrom);
+        virtualServer.addMessageHandler(Message.Code.UPDATE, this::update);
+        virtualServer.addMessageHandler(Message.Code.CHOOSE_ACTION, this::chooseActionFrom);
+        virtualServer.addMessageHandler(Message.Code.WON, this::won);
+        virtualServer.addMessageHandler(Message.Code.LOST, this::lost);
+        virtualServer.addMessageHandler(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION, this::chooseWorkersInitialPositionFrom);
+        virtualServer.addMessageHandler(Message.Code.UPDATE, this::update);
 
+    }
+
+    private Position getCorrectPosition(List<Position> correctPositions){
+        Position position;
+        boolean isCorrect;
+
+        isCorrect = false;
+        do {
+            position = console.readPosition();
+            if(!correctPositions.contains(position))
+               console.writeLine("Not a Position ");
+            else
+                isCorrect = true;
+        } while(!isCorrect);
+
+        return position;
     }
 }

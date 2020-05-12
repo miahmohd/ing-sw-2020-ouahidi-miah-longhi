@@ -4,6 +4,8 @@ import it.polimi.ingsw.psp44.client.cli.Graphics.Color;
 import it.polimi.ingsw.psp44.network.communication.Action;
 import it.polimi.ingsw.psp44.network.communication.Cell;
 import it.polimi.ingsw.psp44.util.Position;
+
+import java.awt.font.GraphicAttribute;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +97,7 @@ public class Board {
             }
             sb.append(Graphics.Behaviour.NEW_LINE);
         }
-
+        sb.append(Color.RESET);
         return sb.toString();
     }
 
@@ -138,7 +140,9 @@ public class Board {
     public String highlightPositions(List<Position> positionsToHighlight) {
         Cell currentCell;
         Position currentPosition;
-        cleanBoard();
+
+        StringBuffer sb = new StringBuffer();
+
         for (int row = 0; row < DIMENSION; row++) {
             for (int column = 0; column < DIMENSION; column++) {
                 currentPosition = new Position(row, column);

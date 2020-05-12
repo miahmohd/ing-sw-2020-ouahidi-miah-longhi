@@ -3,6 +3,7 @@ package it.polimi.ingsw.psp44.client.cli;
 import it.polimi.ingsw.psp44.client.VirtualServer;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.message.Message;
+import it.polimi.ingsw.psp44.network.message.MessageHeader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +33,10 @@ public class LobbyView {
         String body;
         Message message;
         Message.Code messageCode;
-        //TODO: ADD header support
+
+        console.clear();
+
+        printHeaders(joinOrNew.getHeader());
 
         int numberOfPlayers;
         int gameId;
@@ -40,7 +44,7 @@ public class LobbyView {
         console.writeLine("Gimme your nickname ");
         this.playerNickname = console.readLine();
 
-        messageCode = this.getMessageCode();
+        messageCode = getMessageOptionCode();
 
         if (messageCode == Message.Code.NEW_GAME) {
             console.writeLine("How many Players ");
@@ -57,6 +61,7 @@ public class LobbyView {
         virtualServer.sendMessage(message);
     }
 
+
     public void gameCreated(Message gameCreated){
         console.writeLine(gameCreated.getBody());
         console.writeLine("game created now wait and don't do anything, please");
@@ -72,9 +77,21 @@ public class LobbyView {
     public void setServer(VirtualServer virtual){
         this.virtualServer = virtual;
 
-        virtualServer.addRoute(Message.Code.NEW_OR_JOIN, this::newJoin);
-        virtualServer.addRoute(Message.Code.GAME_CREATED, this::gameCreated);
-        virtualServer.addRoute(Message.Code.GAME_JOINED, this::gameJoined);
+        virtualServer.addMessageHandler(Message.Code.NEW_OR_JOIN, this::newJoin);
+        virtualServer.addMessageHandler(Message.Code.GAME_CREATED, this::gameCreated);
+        virtualServer.addMessageHandler(Message.Code.GAME_JOINED, this::gameJoined);
+    }
+
+
+    private void printHeaders(Map<MessageHeader, String> header) {
+        if (header == null)
+            return;
+
+        if (header.containsKey(MessageHeader.ERROR))
+            console.writeLine(header.get(MessageHeader.ERROR));
+
+        if (header.containsKey(MessageHeader.ERROR_DESCRIPTION))
+            console.writeLine(header.get(MessageHeader.ERROR_DESCRIPTION));
     }
 
     private void changeView(){
@@ -82,7 +99,7 @@ public class LobbyView {
         setupView.setServer(this.virtualServer);
     }
 
-    private Message.Code getMessageCode(){
+    private Message.Code getMessageOptionCode(){
         String chosenOption;
         do {
             console.writeLine("What you want to do? New Game or Join Game? N/J ");
