@@ -6,8 +6,16 @@ import java.util.Objects;
  * This class shapes an abstract position inside a table
  */
 public class Position {
-    private final int row;
-    private final int column;
+    private int row;
+    private int column;
+
+    /**
+     * Needed for Gson serialization-deserialization
+     * see https://github.com/google/gson/blob/master/UserGuide.md#writing-an-instance-creator
+     */
+    private Position() {
+
+    }
 
     public Position(int row, int column) {
         this.row = row;

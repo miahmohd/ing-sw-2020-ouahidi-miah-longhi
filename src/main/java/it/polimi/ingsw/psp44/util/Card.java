@@ -12,6 +12,13 @@ public class Card {
     private String subtitle;
     private String description;
 
+    /**
+     * Needed for Gson serialization-deserialization
+     * see https://github.com/google/gson/blob/master/UserGuide.md#writing-an-instance-creator
+     */
+    private Card() {
+    }
+
     public int getId() {
         return id;
     }

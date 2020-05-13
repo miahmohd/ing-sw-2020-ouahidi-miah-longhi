@@ -11,6 +11,13 @@ public class BodyTemplates {
         private String playerNickname;
         private int numberOfPlayers;
 
+        /**
+         * Needed for Gson serialization-deserialization
+         * see https://github.com/google/gson/blob/master/UserGuide.md#writing-an-instance-creator
+         */
+        private NewGame() {
+        }
+
         public NewGame(String playerNickname, int numberOfPlayers) {
             this.playerNickname = playerNickname;
             this.numberOfPlayers = numberOfPlayers;
@@ -28,6 +35,13 @@ public class BodyTemplates {
     public static class JoinGame {
         private String playerNickname;
         private int gameId;
+
+        /**
+         * Needed for Gson serialization-deserialization
+         * see https://github.com/google/gson/blob/master/UserGuide.md#writing-an-instance-creator
+         */
+        private JoinGame() {
+        }
 
         public JoinGame(String playerNickname, int gameId) {
             this.playerNickname = playerNickname;
@@ -47,6 +61,13 @@ public class BodyTemplates {
     public static class ChosenCard {
         private Card chosen;
         private Card[] rest;
+
+        /**
+         * Needed for Gson serialization-deserialization
+         * see https://github.com/google/gson/blob/master/UserGuide.md#writing-an-instance-creator
+         */
+        private ChosenCard() {
+        }
 
         public ChosenCard(Card chosen, Card[] rest) {
             this.chosen = chosen;

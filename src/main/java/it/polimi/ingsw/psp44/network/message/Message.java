@@ -10,7 +10,7 @@ public class Message {
     /**
      * Code of message
      */
-    private final Code code;
+    private Code code;
     /**
      * Additional information about the message
      */
@@ -19,6 +19,14 @@ public class Message {
      * Body of the message
      */
     private String body;
+
+    /**
+     * Needed for Gson serialization-deserialization
+     * see https://github.com/google/gson/blob/master/UserGuide.md#writing-an-instance-creator
+     */
+    private Message() {
+
+    }
 
     public Message(Code code) {
         this(code, "");

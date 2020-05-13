@@ -1,6 +1,7 @@
 package it.polimi.ingsw.psp44.server;
 
 import it.polimi.ingsw.psp44.network.SocketConnection;
+import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
@@ -62,14 +63,13 @@ public class Server {
      * @param message message with code NEW_GAME containing information for creating a new lobby
      */
     private void newGameMessageHandler(VirtualView view, Message message) {
-        BodyTemplates.NewGame body = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplates.NewGame.class);
+        BodyTemplates.NewGame body = BodyFactory.fromNewGame(message.getBody());
         Map<MessageHeader, String> headers = new EnumMap<>(MessageHeader.class);
         int nPlayers = body.getNumberOfPlayers();
 
         if (nPlayers != 2 && nPlayers != 3) {
-            headers.put(MessageHeader.ERROR, JsonConvert.getInstance().toJson(true, boolean.class));
-            headers.put(MessageHeader.ERROR_DESCRIPTION,
-                    JsonConvert.getInstance().toJson(String.format(R.getAppProperties().get(ErrorCodes.ILLEGAL_GAME_PARAMS), nPlayers), String.class));
+            headers.put(MessageHeader.ERROR, String.valueOf(true));
+            headers.put(MessageHeader.ERROR_DESCRIPTION, String.format(R.getAppProperties().get(ErrorCodes.ILLEGAL_GAME_PARAMS), nPlayers));
 
             view.sendMessage(new Message(Message.Code.NEW_OR_JOIN, headers));
             return;
@@ -94,8 +94,8 @@ public class Server {
      * @param message message with code NEW_GAME containing information for joining an existing lobby
      */
     private void joinGameMessageHandler(VirtualView view, Message message) {
+        BodyTemplates.JoinGame body = BodyFactory.fromJoinGame(message.getBody());
         Map<MessageHeader, String> headers = new EnumMap<>(MessageHeader.class);
-        BodyTemplates.JoinGame body = JsonConvert.getInstance().fromJson(message.getBody(), BodyTemplates.JoinGame.class);
         String nickname = body.getPlayerNickname();
 
         synchronized (this.lobbies) {
@@ -104,14 +104,12 @@ public class Server {
                     .findFirst()
                     .orElse(null);
 
-            headers.put(MessageHeader.ERROR, JsonConvert.getInstance().toJson(false, boolean.class));
+            headers.put(MessageHeader.ERROR, String.valueOf(false));
 
             if (toJoin == null) {
-                headers.put(MessageHeader.ERROR_DESCRIPTION,
-                        JsonConvert.getInstance().toJson(R.getAppProperties().get(ErrorCodes.UNAVAILABLE_GAME), String.class));
+                headers.put(MessageHeader.ERROR_DESCRIPTION, R.getAppProperties().get(ErrorCodes.UNAVAILABLE_GAME));
             } else if (toJoin.contains(nickname)) {
-                headers.put(MessageHeader.ERROR_DESCRIPTION,
-                        JsonConvert.getInstance().toJson(String.format(R.getAppProperties().get(ErrorCodes.UNAVAILABLE_NICKNAME), nickname), String.class));
+                headers.put(MessageHeader.ERROR_DESCRIPTION, R.getAppProperties().get(ErrorCodes.UNAVAILABLE_NICKNAME));
             } else {
                 view.sendMessage(new Message(Message.Code.GAME_JOINED));
                 toJoin.addPlayer(body.getPlayerNickname(), view);
@@ -119,7 +117,7 @@ public class Server {
                     toJoin.start();
                 return;
             }
-            headers.put(MessageHeader.ERROR, JsonConvert.getInstance().toJson(true, boolean.class));
+            headers.put(MessageHeader.ERROR, String.valueOf(true));
             view.sendMessage(new Message(Message.Code.NEW_OR_JOIN, headers));
         }
     }
@@ -133,14 +131,6 @@ public class Server {
     private void beginCommunication(VirtualView view) {
         view.sendMessage(new Message(Message.Code.NEW_OR_JOIN));
         executor.execute(view);
-    }
-
-    private String getAvailableLobbiesIds() {
-        Integer[] res = this.lobbies.stream()
-                .filter(l -> !l.isFull())
-                .map(Lobby::getId).toArray(Integer[]::new);
-
-        return JsonConvert.getInstance().toJson(res, Integer[].class);
     }
 
 

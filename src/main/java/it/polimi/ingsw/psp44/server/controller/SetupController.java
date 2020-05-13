@@ -168,7 +168,7 @@ public class SetupController {
         allPlayerNicknames = new String[playerViews.keySet().size()];
 
         playerViews.keySet().toArray(allPlayerNicknames);
-        messageBody = JsonConvert.getInstance().toJson(allPlayerNicknames, String[].class);
+        messageBody = BodyFactory.toPlayerNicknames(allPlayerNicknames);
         toSend = new Message(Message.Code.ALL_PLAYER_NICKNAMES, messageBody);
 
         for (VirtualView view : playerViews.values()) {

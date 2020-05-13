@@ -34,6 +34,11 @@ public class BodyFactory {
     }
 
 
+    public static Cell[] fromCells(String body) {
+        return JsonConvert.getInstance().fromJson(body, Cell[].class);
+    }
+
+
     public static String toActions(List<Action> availableActions) {
         it.polimi.ingsw.psp44.network.communication.Action[] actionList = new
                 it.polimi.ingsw.psp44.network.communication.Action[availableActions.size()];
@@ -70,10 +75,17 @@ public class BodyFactory {
         return JsonConvert.getInstance().toJson(body, BodyTemplates.NewGame.class);
     }
 
+    public static BodyTemplates.NewGame fromNewGame(String body) {
+        return JsonConvert.getInstance().fromJson(body, BodyTemplates.NewGame.class);
+    }
 
     public static String toJoinGame(String playerNickname, int gameId) {
         BodyTemplates.JoinGame body = new BodyTemplates.JoinGame(playerNickname, gameId);
         return JsonConvert.getInstance().toJson(body, BodyTemplates.JoinGame.class);
+    }
+
+    public static BodyTemplates.JoinGame fromJoinGame(String body) {
+        return JsonConvert.getInstance().fromJson(body, BodyTemplates.JoinGame.class);
     }
 
     public static String toCards(Card[] cards) {
@@ -107,13 +119,16 @@ public class BodyFactory {
         return JsonConvert.getInstance().toJson(position, Position.class);
     }
 
-    public static String[] fromPlayersNickname(String playersNickname) {
-        return JsonConvert.getInstance().fromJson(playersNickname, String[].class);
+    public static String[] fromPlayerNicknames(String playerNicknames) {
+        return JsonConvert.getInstance().fromJson(playerNicknames, String[].class);
+    }
+
+    public static String toPlayerNicknames(String[] playerNicknames) {
+        return JsonConvert.getInstance().toJson(playerNicknames, String[].class);
     }
 
     public static BodyTemplates.ChosenCard fromChosenCard(String chosenCard) {
         return JsonConvert.getInstance().fromJson(chosenCard, BodyTemplates.ChosenCard.class);
     }
-
 
 }

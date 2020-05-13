@@ -147,7 +147,8 @@ public class GameView {
 
 
     public void update(Message update) {
-        Cell[] cellsToUpdate = JsonConvert.getInstance().fromJson(update.getBody(), Cell[].class);
+//        Cell[] cellsToUpdate = JsonConvert.getInstance().fromJson(update.getBody(), Cell[].class);
+        Cell[] cellsToUpdate = BodyFactory.fromCells(update.getBody());
         this.board.update(cellsToUpdate);
 
         console.printOnBoardSection(this.board.getBoard());

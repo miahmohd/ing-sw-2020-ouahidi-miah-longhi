@@ -87,7 +87,7 @@ public class SetupView {
         List<String> opponents;
 
         allPlayers = new ArrayList<>(
-                Arrays.asList(BodyFactory.fromPlayersNickname(players.getBody()))
+                Arrays.asList(BodyFactory.fromPlayerNicknames(players.getBody()))
         );
 
         allPlayers.remove(this.playerNickname);

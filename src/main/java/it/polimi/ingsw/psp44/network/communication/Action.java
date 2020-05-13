@@ -7,11 +7,19 @@ public class Action {
     //TODO: add id and description, remove dome and level LEOOOOOOOOO
 
 
-    private final Position target;
-    private final boolean build;
-    private final boolean move;
-    private final int id;
-    private final String description;
+    private Position target;
+    private boolean build;
+    private boolean move;
+    private int id;
+    private String description;
+
+    /**
+     * Needed for Gson serialization-deserialization
+     * see https://github.com/google/gson/blob/master/UserGuide.md#writing-an-instance-creator
+     */
+    private Action() {
+
+    }
 
     public Action(int id, String description, Position target, boolean build, boolean move) {
         this.id = id;

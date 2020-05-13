@@ -33,6 +33,7 @@ public class Cell {
         this.playerNickname = playerNickname;
     }
 
+
     /**
      * Initializes an empty Cell
      */
