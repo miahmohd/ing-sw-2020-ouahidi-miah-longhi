@@ -100,8 +100,8 @@ public class Message {
         UPDATE,
         WON,
         LOST,
-        MODIFIED_POSITIONS,
-        PLAYER_NICKNAME,
+
+        ACTIVE_TURN
 
     }
 }

@@ -158,6 +158,13 @@ public class Controller {
         this.currentPlayer = players.get(model.getCurrentPlayerNickname());
         this.currentPlayerView = playerViews.get(model.getCurrentPlayerNickname());
         currentPlayerView.sendMessage(new Message(Message.Code.START_TURN));
+        this.broadcastActivePlayer();
+    }
+
+    private void broadcastActivePlayer() {
+        for (VirtualView player : playerViews.values()) {
+            player.sendMessage(new Message(Message.Code.ACTIVE_TURN, this.model.getCurrentPlayerNickname()));
+        }
     }
 
 
