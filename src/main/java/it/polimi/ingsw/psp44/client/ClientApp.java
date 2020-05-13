@@ -1,6 +1,8 @@
 package it.polimi.ingsw.psp44.client;
 
 
+import it.polimi.ingsw.psp44.client.SocketConnection;
+import it.polimi.ingsw.psp44.client.VirtualServer;
 import it.polimi.ingsw.psp44.client.cli.LobbyView;
 import it.polimi.ingsw.psp44.network.IConnection;
 import it.polimi.ingsw.psp44.network.message.Message;
@@ -16,11 +18,11 @@ public class ClientApp {
         String hostname = DEFAULT_HOSTNAME;
         int port = DEFAULT_PORT;
 
-        if (args.length > 0) {
-            String[] host = args[0].split(":");
-            hostname = host[0];
-            port = Integer.parseInt(host[1]);
-        }
+//        if (args.length > 0) {
+//            String[] host = args[0].split(":");
+//            hostname = host[0];
+//            port = Integer.parseInt(host[1]);
+//        }
 
         try {
             IConnection<Message> socketConnection = new SocketConnection(hostname, port);
