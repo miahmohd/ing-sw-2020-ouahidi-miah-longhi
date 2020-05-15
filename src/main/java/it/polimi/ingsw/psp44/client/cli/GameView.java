@@ -5,14 +5,10 @@ import it.polimi.ingsw.psp44.network.communication.Action;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.communication.Cell;
 import it.polimi.ingsw.psp44.network.message.Message;
-import it.polimi.ingsw.psp44.util.JsonConvert;
+import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.util.Position;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -43,7 +39,6 @@ public class GameView {
                 Arrays.asList(BodyFactory.fromPositions(workers.getBody()))
         );
 
-        //TODO: check if the chosen position is right positionsToChooseFrom.contains(position)
         String board = this.board.highlightPositions(positionsToChooseFrom);
         console.printOnBoardSection(board);
 
@@ -89,8 +84,11 @@ public class GameView {
     public void chooseActionFrom(Message actions) {
         Action chosenAction;
         Map<Position, List<Action>> actionsPerPosition;
+        Map<MessageHeader, String> headers;
+        boolean isTurnEndable;
 
         String body;
+        Map<MessageHeader, String> headersToSend;
         Message message;
 
         List<Action> actionList = new ArrayList<>(Arrays.asList(
@@ -102,24 +100,72 @@ public class GameView {
                 this.board.highlightActions(actionsPerPosition)
         );
 
-        console.writeLine("gimme the position boyyy ");
+        headers = actions.getHeader();
+        if(headers != null)
+            isTurnEndable = Boolean.parseBoolean(headers.get(MessageHeader.IS_TURN_ENDABLE));
+        else
+            isTurnEndable = false;
 
-        Position chosenPosition = getCorrectPosition(
-                actionsPerPosition.keySet().stream().collect(Collectors.toList()));
-
-        List<Action> chosenActions = actionsPerPosition.get(chosenPosition);
-
-        if (chosenActions.size() > 1) {
-            //TODO: MAKE DECIDE
-            chosenAction = chosenActions.stream().findFirst().get();
-        } else
-            chosenAction = chosenActions.stream().findFirst().get();
-
+        chosenAction = getAction(actionsPerPosition, isTurnEndable);
+        headersToSend = new EnumMap<>(MessageHeader.class);
+        if(chosenAction == null)
+            headersToSend.put(MessageHeader.IS_TURN_END, String.valueOf(true));
 
         body = BodyFactory.toAction(chosenAction);
-        message = new Message(Message.Code.CHOSEN_ACTION, body);
+        message = new Message(Message.Code.CHOSEN_ACTION, headersToSend, body);
 
         virtualServer.sendMessage(message);
+    }
+
+    private Action getAction(Map<Position, List<Action>> actionsPerPosition, boolean isTurnEndable) {
+        if(isTurnEndable){
+            console.writeLine("do you want to end your turn? (Y/other key) ");
+            String choice = console.readLine();
+
+            if(isAffirmative(choice)){
+                return null;
+            }
+        }
+
+        console.writeLine("gimme the position boyyy ");
+        Position chosenPosition = getCorrectPosition(
+                new ArrayList<>(actionsPerPosition.keySet()));
+        List<Action> actionsToChooseFrom = actionsPerPosition.get(chosenPosition);
+        return getCorrectAction(actionsToChooseFrom);
+    }
+
+    private boolean isAffirmative(String choice) {
+        return choice.toLowerCase().contains("y");
+    }
+
+    private Action getCorrectAction(List<Action> actionsToChooseFrom) {
+        Action chosenAction;
+
+        if(actionsToChooseFrom.size() == 1)
+            chosenAction = actionsToChooseFrom.stream().findFirst().get();
+
+        else {
+            for(Action action : actionsToChooseFrom){
+                console.writeLine(action.getId());
+                console.writeLine(action.getDescription());
+            }
+
+            do{
+                console.writeLine("Choose brother ");
+                int chosenActionId = console.readNumber();
+                chosenAction = actionsToChooseFrom.stream().filter(action -> action.getId() == chosenActionId)
+                        .findFirst()
+                        .orElse(null);
+
+                if (chosenAction == null)
+                    console.writeLine("incorrect id");
+
+            } while(chosenAction == null);
+
+        }
+
+        return chosenAction;
+
     }
 
     public void start(Message start) {
@@ -134,24 +180,24 @@ public class GameView {
     }
 
     public void lost(Message lost) {
-        // TODO: What to do when you lose
-        // The message body may contain some info
-
+        console.writeLine("YOU LOST, looser");
     }
 
     public void won(Message won) {
-        // TODO: what to do when you win
-        // The message body may contain some info
-
+        console.clear();
+        console.writeLine("you won, good job, very very good job");
     }
 
 
     public void update(Message update) {
-//        Cell[] cellsToUpdate = JsonConvert.getInstance().fromJson(update.getBody(), Cell[].class);
         Cell[] cellsToUpdate = BodyFactory.fromCells(update.getBody());
         this.board.update(cellsToUpdate);
 
         console.printOnBoardSection(this.board.getBoard());
+    }
+
+    public void activeTurn(Message activePlayer) {
+        console.printOnTurnSection(String.format("%s's turn",activePlayer.getBody()));
     }
 
     public void setServer(VirtualServer virtual) {
@@ -168,7 +214,7 @@ public class GameView {
         virtualServer.addMessageHandler(Message.Code.LOST, this::lost);
         virtualServer.addMessageHandler(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION, this::chooseWorkersInitialPositionFrom);
         virtualServer.addMessageHandler(Message.Code.UPDATE, this::update);
-
+        virtualServer.addMessageHandler(Message.Code.ACTIVE_TURN, this::activeTurn);
     }
 
     private Position getCorrectPosition(List<Position> correctPositions){

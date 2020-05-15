@@ -51,6 +51,10 @@ public class Board {
 
     }
 
+    public void setPlayersCard(String myCard, List<String> opponentCards){
+
+    }
+
     public String getPlayers() {
         StringBuffer players = new StringBuffer();
         for (String player : this.playerColors.keySet()) {

@@ -10,18 +10,16 @@ import java.util.Map;
 
 public class LobbyView {
 
-    private Console console;
+    private final Console console;
     private VirtualServer virtualServer;
 
     private String playerNickname;
-    private Map<String, Message.Code> gameOptions;
+    private final Map<String, Message.Code> gameOptions;
 
 
     public LobbyView(Console console) {
         this.console = console;
-
         this.gameOptions = new HashMap<>();
-
         initGameOptions();
     }
 
@@ -63,7 +61,7 @@ public class LobbyView {
 
 
     public void gameCreated(Message gameCreated){
-        console.writeLine(gameCreated.getBody());
+        console.writeLine(String.format("game created with id %s", gameCreated.getBody()));
         console.writeLine("game created now wait and don't do anything, please");
         changeView();
     }

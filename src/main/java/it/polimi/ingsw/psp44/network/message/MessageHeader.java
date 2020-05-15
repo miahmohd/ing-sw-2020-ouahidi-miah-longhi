@@ -7,5 +7,7 @@ public enum MessageHeader {
     CARDINALITY,
     ERROR,
     ERROR_DESCRIPTION,
-    END_METHOD
+
+    IS_TURN_ENDABLE,
+    IS_TURN_END
 }

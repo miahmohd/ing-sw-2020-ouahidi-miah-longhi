@@ -217,7 +217,7 @@ public class Controller {
         if (!availableActions.isEmpty()) {
             actionsMessage.setBody(BodyFactory.toActions(availableActions));
             if (currentPlayer.isEndableTurn())
-                actionsMessage.addHeader(MessageHeader.END_METHOD, String.valueOf(true));
+                actionsMessage.addHeader(MessageHeader.IS_TURN_ENDABLE, String.valueOf(true));
             currentPlayerView.sendMessage(actionsMessage);
         } else {
             if (currentPlayer.isEndableTurn()) {

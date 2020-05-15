@@ -8,16 +8,15 @@ import java.util.Scanner;
  * Based on http://www.termsys.demon.co.uk/vtansi.htm
  */
 public class Console {
-    private static char ESC = 0x1B;
-    private static Position BOARD_SECTION_INITIAL_POSITION = new Position(3,50);
-    private static Position PLAYERS_SECTION_INITIAL_POSITION = new Position(9, 50);
-    private static Position TURN_SECTION_INITIAL_POSITION = new Position(4, 15);
-    private static Position INTERACTION_SECTION_INITIAL_POSITION = new Position(1,0);
+    private static final char ESC = 0x1B;
+    private static final Position BOARD_SECTION_INITIAL_POSITION = new Position(3,50);
+    private static final Position PLAYERS_SECTION_INITIAL_POSITION = new Position(9, 50);
+    private static final Position TURN_SECTION_INITIAL_POSITION = new Position(12, 50);
+    private static final Position INTERACTION_SECTION_INITIAL_POSITION = new Position(1,0);
 
+    private final Scanner input;
     private int currentInteractionRowOffset;
     private int currentInteractionColumnOffset;
-    private Scanner input;
-
 
     public Console() {
         this(0, 0, new Scanner(System.in));
@@ -31,13 +30,11 @@ public class Console {
         this.clear();
     }
 
-
     public void clear() {
         System.out.print(Graphics.Behaviour.CLEAR.toString());
         System.out.flush();
         currentInteractionRowOffset = currentInteractionColumnOffset = 0;
     }
-
 
     public void writeLine(Object obj){
         String message = goToSection(INTERACTION_SECTION_INITIAL_POSITION ,
@@ -57,7 +54,6 @@ public class Console {
         String message = input.nextLine();
         return message;
     }
-
 
     public int readNumber() {
         int number;
@@ -91,17 +87,14 @@ public class Console {
                 row = Integer.parseInt(rowAndColumn[0]);
                 column = Integer.parseInt(rowAndColumn[1]);
                 isPosition = true;
-            } catch (NumberFormatException|NullPointerException e){
-                this.writeLine("Not a Position ");
+            } catch (NumberFormatException|NullPointerException|ArrayIndexOutOfBoundsException e){
+                this.writeLine("Not a valid Position ");
                 isPosition = false;
             }
-
-            //TODO: maybe check bounds
         } while (!isPosition);
 
         return new Position(row, column);
     }
-
 
     public void printOnBoardSection(String board){
         printOnSection(BOARD_SECTION_INITIAL_POSITION, board);
