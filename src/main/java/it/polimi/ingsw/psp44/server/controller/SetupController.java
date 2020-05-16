@@ -1,20 +1,15 @@
 package it.polimi.ingsw.psp44.server.controller;
 
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
-import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.server.model.GameModel;
 import it.polimi.ingsw.psp44.server.model.Player;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
 import it.polimi.ingsw.psp44.util.Card;
-import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.R;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This class manages the setup phase of the game.
@@ -25,6 +20,9 @@ public class SetupController {
 
     private final Map<String, VirtualView> playerViews;
     private final Map<String, CardController> playerCardController;
+
+    private Map<String, String> playerCards;
+    private List<Card> chosenCards;
 
     public SetupController() {
         this(new Controller(), new GameModel(), new HashMap<>(), new HashMap<>());
@@ -63,8 +61,6 @@ public class SetupController {
      * Sends a message containing the list of cards and information on how many cards the player needs to choose.
      */
     public void start() {
-        sendAllPlayerNicknames();
-
         VirtualView currentPlayer;
         Map<MessageHeader, String> headers;
         String body;
@@ -98,6 +94,11 @@ public class SetupController {
 
         nextTurn();
 
+        chosenCards = new ArrayList<>(Arrays.asList(
+                BodyFactory.fromCards(message.getBody())
+        ));
+        playerCards = new HashMap<>();
+
         VirtualView currentPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
         Message toSend = new Message(Message.Code.CHOOSE_CARD, message.getBody());
 
@@ -122,33 +123,40 @@ public class SetupController {
         if (currentView != view)
             return;
 
-        BodyTemplates.ChosenCard body = BodyFactory.fromChosenCard(message.getBody());
-        Card chosen = body.getChosen();
-        Card[] rest = body.getRest();
+        Card chosen = BodyFactory.fromCard(message.getBody());
+        chosenCards.remove(chosen);
+        Card[] restOfCards = chosenCards.toArray(Card[]::new);
+
         cardController = CardFactory.getController(chosen);
         cardController.setContext(controller);
         this.playerCardController.put(this.model.getCurrentPlayerNickname(), cardController);
+        this.playerCards.put(this.model.getCurrentPlayerNickname(), chosen.getTitle());
+
         endTurn();
 
         currentView = playerViews.get(this.model.getCurrentPlayerNickname());
 
         if (this.model.isFullRound()) {
-            cardController = CardFactory.getController(rest[0]);
+            cardController = CardFactory.getController(restOfCards[0]);
             cardController.setContext(controller);
             this.playerCardController.put(this.model.getCurrentPlayerNickname(),cardController);
+            this.playerCards.put(this.model.getCurrentPlayerNickname(), restOfCards[0].getTitle());
+
+            sendAllPlayerCards();
+
             this.controller.setVirtualViews(this.playerViews);
             this.controller.setCardControllers(this.playerCardController);
             this.controller.setModel(this.model);
             this.controller.init(false);
+
+
         } else {
             startTurn();
             toSend = new Message(
                     Message.Code.CHOOSE_CARD,
-                    BodyFactory.toCards(rest));
+                    BodyFactory.toCards(restOfCards));
             currentView.sendMessage(toSend);
         }
-
-
     }
 
 
@@ -160,21 +168,20 @@ public class SetupController {
         view.addMessageHandler(Message.Code.CHOSEN_ACTION, this.controller::chosenActionMessageHandler);
     }
 
-    private void sendAllPlayerNicknames() {
+
+    private void sendAllPlayerCards() {
         Message toSend;
-        String[] allPlayerNicknames;
         String messageBody;
 
-        allPlayerNicknames = new String[playerViews.keySet().size()];
+        messageBody = BodyFactory.toPlayerCards(this.playerCards);
 
-        playerViews.keySet().toArray(allPlayerNicknames);
-        messageBody = BodyFactory.toPlayerNicknames(allPlayerNicknames);
-        toSend = new Message(Message.Code.ALL_PLAYER_NICKNAMES, messageBody);
+        toSend = new Message(Message.Code.ALL_PLAYER_CARDS, messageBody);
 
         for (VirtualView view : playerViews.values()) {
             view.sendMessage(toSend);
         }
     }
+
 
     private void nextTurn() {
         endTurn();

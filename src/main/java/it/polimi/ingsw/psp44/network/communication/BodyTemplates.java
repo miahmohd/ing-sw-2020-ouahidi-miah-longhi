@@ -1,7 +1,5 @@
 package it.polimi.ingsw.psp44.network.communication;
 
-import it.polimi.ingsw.psp44.util.Card;
-
 public class BodyTemplates {
 
     /**
@@ -57,30 +55,30 @@ public class BodyTemplates {
         }
     }
 
-
-    public static class ChosenCard {
-        private Card chosen;
-        private Card[] rest;
+    public static class PlayerCard{
+        private String playerNickname;
+        private String cardName;
 
         /**
          * Needed for Gson serialization-deserialization
          * see https://github.com/google/gson/blob/master/UserGuide.md#writing-an-instance-creator
          */
-        private ChosenCard() {
+        private PlayerCard() {
         }
 
-        public ChosenCard(Card chosen, Card[] rest) {
-            this.chosen = chosen;
-            this.rest = rest;
+        public PlayerCard(String playerNickname, String cardName) {
+            this.playerNickname = playerNickname;
+            this.cardName = cardName;
         }
 
-        public Card getChosen() {
-            return chosen;
+        public String getPlayerNickname() {
+            return playerNickname;
         }
 
-        public Card[] getRest() {
-            return rest;
+        public String getCardName() {
+            return cardName;
         }
     }
+
 
 }

@@ -13,11 +13,11 @@ public class Board {
 
     private static final int DIMENSION = 5;
 
-
     private final Cell[][] cells;
     private final Map<String, Graphics.Color> playerColors;
     private final Map<Integer, Graphics.Color> levelColors;
     private final StringBuffer sb;
+    private final Map <String, String> playerCards;
 
 
     public Board() {
@@ -25,41 +25,32 @@ public class Board {
         this.playerColors = new HashMap<>();
         this.levelColors = new HashMap<>();
         this.sb = new StringBuffer();
-
+        this.playerCards = new HashMap<>();
         initBoard();
         initLevelColors();
     }
 
-
-    /**
-     * Sets the color of the players in the game, colors cannot be chosen
-     * They are set automatically
-     *
-     * @param myPlayer  this client's player
-     * @param opponents this client's opponents
-     */
-    public void setPlayers(String myPlayer, List<String> opponents) {
+    public void setPlayersAndCards(String myPlayer, String myCard, Map<String, String> opponentNamesAndCards) {
         Color[] opponentColors = {Color.OPPONENT_1, Color.OPPONENT_2};
         int count = 0;
 
         this.playerColors.put(myPlayer, Color.MY_PLAYER);
+        this.playerCards.put(myPlayer, myCard);
 
-        for (String opponent : opponents) {
+        for (String opponent : opponentNamesAndCards.keySet()) {
             this.playerColors.put(opponent, opponentColors[count]);
+            this.playerCards.put(opponent, opponentNamesAndCards.get(opponent));
             count++;
         }
-
-    }
-
-    public void setPlayersCard(String myCard, List<String> opponentCards){
-
     }
 
     public String getPlayers() {
-        StringBuffer players = new StringBuffer();
+        StringBuilder players = new StringBuilder();
         for (String player : this.playerColors.keySet()) {
             players.append(this.playerColors.get(player));
             players.append(player);
+            players.append(Graphics.Element.SEPARATOR);
+            players.append(this.playerCards.get(player));
             players.append(Graphics.Behaviour.NEW_LINE);
         }
         players.append(Color.RESET);
@@ -201,5 +192,4 @@ public class Board {
     private void cleanBoard() {
         sb.delete(0, sb.length());
     }
-
 }

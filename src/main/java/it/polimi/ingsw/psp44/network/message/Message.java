@@ -25,7 +25,6 @@ public class Message {
      * see https://github.com/google/gson/blob/master/UserGuide.md#writing-an-instance-creator
      */
     private Message() {
-
     }
 
     public Message(Code code) {
@@ -89,6 +88,7 @@ public class Message {
         CHOSEN_WORKERS_INITIAL_POSITION,
 
         ALL_PLAYER_NICKNAMES,
+        ALL_PLAYER_CARDS,
 
         START_TURN,
         END_TURN,
@@ -102,6 +102,5 @@ public class Message {
         LOST,
 
         ACTIVE_TURN
-
     }
 }

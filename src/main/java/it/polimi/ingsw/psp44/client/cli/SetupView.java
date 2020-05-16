@@ -2,13 +2,12 @@ package it.polimi.ingsw.psp44.client.cli;
 
 import it.polimi.ingsw.psp44.client.VirtualServer;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
+import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.util.Card;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class SetupView {
 
@@ -41,11 +40,8 @@ public class SetupView {
 
         console.writeLine(String.format("You need to choose %d cards from this pile (just id)", cardinality));
 
-        for (Card card : cardList) {
-            console.writeLine(card.getId());
-            console.writeLine(card.getTitle());
-            console.writeLine(Graphics.Behaviour.NEW_LINE);
-        }
+        for (Card card : cardList)
+            displayCard(card);
 
         for (int numberOfCardCounter = 0; numberOfCardCounter < cardinality; numberOfCardCounter++) {
             chosenCards[numberOfCardCounter] = getChosenCard(cardList);
@@ -57,7 +53,7 @@ public class SetupView {
     }
 
     public void chooseCardFrom(Message cards) {
-        Card[] cardList, restOfCards;
+        Card[] cardList;
         Card chosenCard;
 
         String body;
@@ -65,35 +61,42 @@ public class SetupView {
 
         cardList = BodyFactory.fromCards(cards.getBody());
 
-        for (Card card : cardList) {
-            console.writeLine(card.getId());
-            console.writeLine(card.getTitle());
-            console.writeLine(Graphics.Element.EMPTY);
-        }
+        for (Card card : cardList)
+            displayCard(card);
 
         chosenCard = getChosenCard(cardList);
-        restOfCards = Arrays.stream(cardList).filter(card -> !card.equals(chosenCard)).toArray(Card[]::new);
 
-        body = BodyFactory.toChosenCard(chosenCard, restOfCards);
+        body = BodyFactory.toCard(chosenCard);
 
         message = new Message(Message.Code.CHOSEN_CARD, body);
         virtualServer.sendMessage(message);
     }
 
+    private void displayCard(Card card) {
+        console.writeLine(card.getId());
+        console.writeLine(card.getTitle());
+        console.writeLine(Graphics.Element.EMPTY);
+    }
 
 
-    public void allPlayerNicknames(Message players) {
-        List<String> allPlayers;
-        List<String> opponents;
+    public void allPlayerCards(Message players) {
+        BodyTemplates.PlayerCard[] playerCards;
+        Map<String, String> opponentNamesAndCards;
+        String myCard = "";
 
-        allPlayers = new ArrayList<>(
-                Arrays.asList(BodyFactory.fromPlayerNicknames(players.getBody()))
-        );
+        playerCards = BodyFactory.fromPlayerCards(players.getBody());
+        opponentNamesAndCards = new HashMap<>();
 
-        allPlayers.remove(this.playerNickname);
-        opponents = allPlayers;
+        for (BodyTemplates.PlayerCard playerCard : playerCards){
+            if(!playerCard.getPlayerNickname().equals(this.playerNickname))
+                opponentNamesAndCards.put(playerCard.getPlayerNickname() ,playerCard.getCardName());
+            else
+                myCard = playerCard.getCardName();
+        }
 
-        board.setPlayers(this.playerNickname, opponents);
+        board.setPlayersAndCards(this.playerNickname, myCard, opponentNamesAndCards);
+
+        changeView();
     }
 
     public void start(Message start) {
@@ -102,8 +105,8 @@ public class SetupView {
     }
 
     public void end(Message end) {
-        GameView view = new GameView(playerNickname, console, board);
-        view.setServer(this.virtualServer);
+        console.clear();
+        console.writeLine("turn end just stop");
     }
 
     public void setServer(VirtualServer virtual) {
@@ -111,11 +114,16 @@ public class SetupView {
 
         virtualServer.cleanMessageHandlers();
 
-        virtualServer.addMessageHandler(Message.Code.ALL_PLAYER_NICKNAMES, this::allPlayerNicknames);
+        virtualServer.addMessageHandler(Message.Code.ALL_PLAYER_CARDS, this::allPlayerCards);
         virtualServer.addMessageHandler(Message.Code.START_TURN, this::start);
         virtualServer.addMessageHandler(Message.Code.CHOOSE_CARD, this::chooseCardFrom);
         virtualServer.addMessageHandler(Message.Code.CHOOSE_CARDS, this::chooseCardsFrom);
         virtualServer.addMessageHandler(Message.Code.END_TURN, this::end);
+    }
+
+    private void changeView() {
+        GameView view = new GameView(playerNickname, console, board);
+        view.setServer(this.virtualServer);
     }
 
     private Card getChosenCard(Card[] cards) {
@@ -134,8 +142,6 @@ public class SetupView {
                 console.writeLine("not a valid id");
 
         } while (chosenCard == null);
-
-
         return chosenCard;
     }
 }

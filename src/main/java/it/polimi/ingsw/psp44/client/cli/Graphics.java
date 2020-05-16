@@ -88,8 +88,9 @@ public class Graphics {
 
 
         DOME("\uD835\uDEF7 "),
-        EMPTY("  ");
+        EMPTY("  "),
 
+        SEPARATOR(" : ");
 
         private final String escape;
 

@@ -8,6 +8,7 @@ import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.Position;
 
 import java.util.List;
+import java.util.Map;
 
 public class BodyFactory {
 
@@ -92,11 +93,6 @@ public class BodyFactory {
         return JsonConvert.getInstance().toJson(cards, Card[].class);
     }
 
-    public static String toChosenCard(Card chosenCard, Card[] rest) {
-        BodyTemplates.ChosenCard chosenCardBody = new BodyTemplates.ChosenCard(chosenCard, rest);
-        return JsonConvert.getInstance().toJson(chosenCardBody, BodyTemplates.ChosenCard.class);
-    }
-
 
     public static Card[] fromCards(String cards) {
         return JsonConvert.getInstance().fromJson(cards, Card[].class);
@@ -127,8 +123,26 @@ public class BodyFactory {
         return JsonConvert.getInstance().toJson(playerNicknames, String[].class);
     }
 
-    public static BodyTemplates.ChosenCard fromChosenCard(String chosenCard) {
-        return JsonConvert.getInstance().fromJson(chosenCard, BodyTemplates.ChosenCard.class);
+    public static String toCard(Card card) {
+        return JsonConvert.getInstance().toJson(card, Card.class);
     }
 
+    public static Card fromCard(String card) {
+        return JsonConvert.getInstance().fromJson(card, Card.class);
+    }
+
+    public static String toPlayerCards(Map<String, String> playerAndCard) {
+        BodyTemplates.PlayerCard[] playerCards = new BodyTemplates.PlayerCard[playerAndCard.size()];
+        int counter = 0;
+        for (String player : playerAndCard.keySet()){
+            playerCards[counter] = new BodyTemplates.PlayerCard(player, playerAndCard.get(player));
+            counter++;
+        }
+
+        return JsonConvert.getInstance().toJson(playerCards, BodyTemplates.PlayerCard[].class);
+    }
+
+    public static BodyTemplates.PlayerCard[] fromPlayerCards(String playerCards) {
+        return JsonConvert.getInstance().fromJson(playerCards, BodyTemplates.PlayerCard[].class);
+    }
 }
