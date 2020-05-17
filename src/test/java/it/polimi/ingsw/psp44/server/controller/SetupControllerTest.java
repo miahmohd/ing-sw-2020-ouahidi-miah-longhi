@@ -89,6 +89,7 @@ public class SetupControllerTest {
         assertEquals(String.join(br, p2ExpectedOut) + br, p2ActualOut.toString());
         assertEquals(String.join(br, p3ExpectedOut) + br, p3ActualOut.toString());
 
+
         p1ExpectedIn.close();
         p2ExpectedIn.close();
         p3ExpectedIn.close();

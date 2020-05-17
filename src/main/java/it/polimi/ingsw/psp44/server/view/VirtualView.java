@@ -4,6 +4,7 @@ import it.polimi.ingsw.psp44.network.IConnection;
 import it.polimi.ingsw.psp44.network.IVirtual;
 import it.polimi.ingsw.psp44.network.message.IMessageHandlerFunction;
 import it.polimi.ingsw.psp44.network.message.Message;
+import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.util.IObservable;
 import it.polimi.ingsw.psp44.util.IObserver;
 import it.polimi.ingsw.psp44.util.JsonConvert;
@@ -20,6 +21,7 @@ public class VirtualView implements Runnable, IVirtual<Message>, IObserver<Messa
 
     private final IConnection<String> connection;
     private final Map<Message.Code, IMessageHandlerFunction> handlers;
+    private Message lastSend;
 
     public VirtualView(IConnection<String> connection) {
         this.connection = connection;
@@ -54,6 +56,8 @@ public class VirtualView implements Runnable, IVirtual<Message>, IObserver<Messa
     public void sendMessage(Message message) {
         String messageString = JsonConvert.getInstance().toJson(message, Message.class);
         connection.writeLine(messageString);
+            lastSend=message;
+
     }
 
 
@@ -61,7 +65,13 @@ public class VirtualView implements Runnable, IVirtual<Message>, IObserver<Messa
         IMessageHandlerFunction handlerFunction = this.handlers.get(message.getCode());
         if (handlerFunction == null)
             throw new IllegalArgumentException(R.getAppProperties().get(ErrorCodes.MESSAGE_HANDLER_NOT_FOUND));
-        handlerFunction.accept(view, message);
+        try {
+            handlerFunction.accept(view, message);
+        }catch (Exception ex){
+            lastSend.addHeader(MessageHeader.ERROR,ex.getClass().toString());
+            lastSend.addHeader(MessageHeader.ERROR_DESCRIPTION,ex.getMessage());
+            sendMessage(lastSend);
+        }
     }
 
     @Override

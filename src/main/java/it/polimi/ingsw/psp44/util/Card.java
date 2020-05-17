@@ -19,6 +19,8 @@ public class Card {
     private Card() {
     }
 
+
+
     public int getId() {
         return id;
     }

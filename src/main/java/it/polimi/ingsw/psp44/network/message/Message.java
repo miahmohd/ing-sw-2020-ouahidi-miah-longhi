@@ -1,5 +1,6 @@
 package it.polimi.ingsw.psp44.network.message;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -39,10 +40,12 @@ public class Message {
         this(code, null, body);
     }
 
-
     public Message(Code code, Map<MessageHeader, String> headers, String body) {
         this.code = code;
-        this.headers = headers;
+        if(headers==null)
+            this.headers=new HashMap<>();
+        else
+            this.headers = headers;
         this.body = body;
     }
 

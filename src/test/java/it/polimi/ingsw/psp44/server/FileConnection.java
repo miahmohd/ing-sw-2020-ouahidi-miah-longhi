@@ -14,6 +14,7 @@ public class FileConnection implements IConnection<String> {
         reader = new BufferedReader(in);
     }
 
+
     @Override
     public String readLine() {
         try {

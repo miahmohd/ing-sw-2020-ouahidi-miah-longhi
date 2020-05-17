@@ -17,7 +17,7 @@ import java.io.Reader;
 public final class R {
     /**
      * @param index the index of the god
-     * @return a json object with the specified cardSontroller's elements
+     * @return a json object with the specified card controller's elements
      */
     public static JsonObject getCard(int index) {
         InputStream resourceAsStream = R.class.getResourceAsStream("/gods/" + index + ".json");
@@ -27,7 +27,7 @@ public final class R {
     }
 
     /**
-     * @return a json object with the default cardSontroller's elements
+     * @return a json object with the default card controller's elements
      */
     public static JsonObject getCard() {
         return getCard(0);

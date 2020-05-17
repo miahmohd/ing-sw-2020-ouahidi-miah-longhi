@@ -11,6 +11,9 @@ import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.server.model.actions.InitialPlacement;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
 import it.polimi.ingsw.psp44.util.Position;
+import it.polimi.ingsw.psp44.util.R;
+import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
+import it.polimi.ingsw.psp44.util.exception.ProtocolException;
 
 import java.util.List;
 import java.util.Map;
@@ -39,6 +42,7 @@ public class Controller {
         this.model = model;
     }
 
+
     /**
      * Add a build filter to opponents build filter list
      *
@@ -60,6 +64,7 @@ public class Controller {
                 .filter((cardController) -> cardController != currentPlayer)
                 .forEach((cardController) -> cardController.addMoveFilter(filter, lastAction, model.getBoard()));
     }
+
 
     /**
      * Callback that handles and processes "chosen worker" message type.
@@ -89,6 +94,11 @@ public class Controller {
     public void chosenActionMessageHandler(VirtualView view, Message message) {
         Action selectedAction;
         if (view.equals(currentPlayerView)) {
+            if(Boolean.parseBoolean(message.getHeader().get(MessageHeader.IS_TURN_END))) {
+                end(true);
+                nextTurn(false);
+                return;
+            }
             selectedAction = availableActions.get(BodyFactory.fromAction(message.getBody()).getId());
             model.doAction(selectedAction);
             if (currentPlayer.checkVictory(selectedAction, model.getBoard()))
@@ -101,7 +111,6 @@ public class Controller {
             }
         }
     }
-
 
     /**
      * Callback that handles the workers initial positions chosen by the player.
@@ -119,6 +128,7 @@ public class Controller {
             init(model.isFullRound());
         }
     }
+
 
     /**
      * The initialization phase of the match. Each player has to place his workers
@@ -151,6 +161,7 @@ public class Controller {
         }
     }
 
+
     /**
      * The start of a turn player, fetch current player view and controller and send the position of his worker
      */
@@ -161,12 +172,14 @@ public class Controller {
         this.broadcastActivePlayer();
     }
 
+    /**
+     * notices all player sanding them the current player's nickname
+     */
     private void broadcastActivePlayer() {
         for (VirtualView player : playerViews.values()) {
             player.sendMessage(new Message(Message.Code.ACTIVE_TURN, this.model.getCurrentPlayerNickname()));
         }
     }
-
 
     /**
      * end the turn and change the player
@@ -202,7 +215,7 @@ public class Controller {
     /**
      * Called when current player wins the match
      */
-    public void won() {
+    private void won() {
         currentPlayerView.sendMessage(new Message(Message.Code.WON));
     }
 
@@ -211,7 +224,8 @@ public class Controller {
      * Call lost routine if no actions are available and turn is not endable
      * Call endable routine if the turn can be ended!=
      */
-    private void actions() {
+    private void
+    actions() {
         availableActions = currentPlayer.getAvailableAction(model.getBoard(), model.getWorker());
         Message actionsMessage = new Message(Message.Code.CHOOSE_ACTION);
         if (!availableActions.isEmpty()) {
@@ -258,9 +272,11 @@ public class Controller {
      * Creates two initial placement actions that places the player's workers at the selected position
      * and performs it
      *
-     * @param chosenPositions
+     * @param chosenPositions positions where place the current player's workers
      */
     private void setWorkersInitialPositions(Position[] chosenPositions) {
+        if(chosenPositions.length!=2)
+            throw new ProtocolException(String.format(R.getAppProperties().get(ErrorCodes.ILLEGAL_GAME_PARAMS), chosenPositions.length));
         String currentPlayerNickname = this.model.getCurrentPlayerNickname();
         Worker female = new Worker(currentPlayerNickname, Worker.Sex.FEMALE);
         Worker male = new Worker(currentPlayerNickname, Worker.Sex.MALE);

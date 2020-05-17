@@ -15,7 +15,76 @@
     "id": 3,
     "title": "Athena",
     "subtitle": "Goddess of Wisdom",
-    "description": "Opponent’s Turn: If one of your\nWorkers moved up on your last\nturn, opponent Workers cannot\nmove up this turn."
+    "description": "Opponent’s Turn: If one of your\nWorkers moved up on your last turn,\nopponent Workers cannot\nmove up this turn."
+  },
+  {
+    "id": 4,
+    "title": "Atlas",
+    "subtitle": "Titan shouldering the Heavens" ,
+    "description": "Your Build: Your Worker may\nbuild a dome at any level."
+  },
+  {
+    "id": 5,
+    "title": "Demeter",
+    "subtitle": "Goddess of the Harvest" ,
+    "description": "Your Build: Your Worker may\nbuild one additional time, \nbut not on the same space."
+  },
+  {
+    "id": 6,
+  "title": "Hephaestus",
+  "subtitle": "God of Blacksmiths" ,
+  "description": "Your Build: Your Worker may\nbuild one additional block (not dome)\n on top of your first block."
+  },
+  {
+    "id": 8,
+    "title": "Minotaur",
+    "subtitle": "Bull-headed Monster" ,
+    "description": "Your Move: Your Worker may\nmove into an opponent Worker’s\nspace, if their Worker can be\nforced one space straight backwards to an\nunoccupied space at any level."
+  },
+  {
+    "id": 9,
+    "title": "Pan",
+    "subtitle": "God of the Wild" ,
+    "description": "Win Condition: You also win if\nyour Worker moves down two or\nmore levels."
+  },
+  {
+    "id": 10,
+    "title": "Prometheus",
+    "subtitle": "Titan Benefactor of Mankind" ,
+    "description": "Your Turn: If your Worker does\nnot move up, it may build both\nbefore and after moving."
+  },
+  {
+    "id": 12,
+    "title": "Ares",
+    "subtitle": "God of War" ,
+    "description": "End of Your Turn: You may\nremove an unoccupied block\n(not dome) neighboring your\nunmoved Worker."
+  },
+  {
+    "id": 15,
+    "title": "Charon",
+    "subtitle": "Ferryman to the Underworld" ,
+    "description": "Your Move: Before your\nWorker moves, you may force a\nneighboring opponent Worker\nto the space directly on the other side of your\nWorker, if that space is unoccupied."
+  },
+  {
+    "id": 21,
+    "title": "Hestia",
+    "subtitle": "Goddess of Hearth and Home" ,
+    "description": "Your Build: Your Worker may\nbuild one additional time, but this\ncannot be on a perimeter space."
+  },
+  {
+    "id": 28,
+    "title": "Hestia",
+    "subtitle": "Goddess of the Moon",
+    "description": "Your Build: Instead of your normal build, your\nfemale Worker may build a dome at any level\nregardless of which Worker moved."
+  },
+  {
+    "id": 30,
+    "title": "Zeus",
+    "subtitle": "God of the Sky",
+    "description": "Your Build: Your Worker may\nbuild a block under itself."
   }
+
+
+
 ]
 
