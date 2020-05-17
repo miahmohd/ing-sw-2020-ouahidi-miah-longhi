@@ -1,5 +1,6 @@
 package it.polimi.ingsw.psp44.client.cli;
 
+import it.polimi.ingsw.psp44.client.IGameView;
 import it.polimi.ingsw.psp44.client.VirtualServer;
 import it.polimi.ingsw.psp44.network.communication.Action;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
@@ -12,7 +13,7 @@ import java.util.*;
 
 import static java.util.stream.Collectors.groupingBy;
 
-public class GameView {
+public class GameView implements IGameView {
     private VirtualServer virtualServer;
     private Console console;
 
@@ -28,6 +29,7 @@ public class GameView {
 
     }
 
+    @Override
     public void chooseWorkersInitialPositionFrom(Message workers) {
         Position femalePosition, malePosition;
         Position[] positionsToSend;
@@ -57,6 +59,7 @@ public class GameView {
         virtualServer.sendMessage(message);
     }
 
+    @Override
     public void chooseWorkerFrom(Message workers) {
         Position positionToSend;
 
@@ -81,6 +84,7 @@ public class GameView {
 
     }
 
+    @Override
     public void chooseActionFrom(Message actions) {
         Action chosenAction;
         Map<Position, List<Action>> actionsPerPosition;
@@ -116,6 +120,62 @@ public class GameView {
 
         virtualServer.sendMessage(message);
     }
+
+    @Override
+    public void start(Message start) {
+        console.clear();
+        console.printOnBoardSection(board.getBoard());
+        console.printOnPlayersSection(board.getPlayers());
+        console.writeLine("it's your turn boy");
+    }
+
+    @Override
+    public void end(Message end) {
+        console.writeLine("ora stai fermo");
+    }
+
+    @Override
+    public void lost(Message lost) {
+        console.writeLine("YOU LOST, looser");
+    }
+
+    @Override
+    public void won(Message won) {
+        console.clear();
+        console.writeLine("you won, good job, very very good job");
+    }
+
+    @Override
+    public void update(Message update) {
+        Cell[] cellsToUpdate = BodyFactory.fromCells(update.getBody());
+        this.board.update(cellsToUpdate);
+
+        console.printOnBoardSection(this.board.getBoard());
+    }
+
+    @Override
+    public void activeTurn(Message activePlayer) {
+        console.printOnTurnSection(String.format("%s's turn",activePlayer.getBody()));
+    }
+
+    @Override
+    public void setServer(VirtualServer virtual) {
+        this.virtualServer = virtual;
+
+        virtualServer.cleanMessageHandlers();
+
+        virtualServer.addMessageHandler(Message.Code.START_TURN, this::start);
+        virtualServer.addMessageHandler(Message.Code.END_TURN, this::end);
+        virtualServer.addMessageHandler(Message.Code.CHOOSE_WORKER, this::chooseWorkerFrom);
+        virtualServer.addMessageHandler(Message.Code.UPDATE, this::update);
+        virtualServer.addMessageHandler(Message.Code.CHOOSE_ACTION, this::chooseActionFrom);
+        virtualServer.addMessageHandler(Message.Code.WON, this::won);
+        virtualServer.addMessageHandler(Message.Code.LOST, this::lost);
+        virtualServer.addMessageHandler(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION, this::chooseWorkersInitialPositionFrom);
+        virtualServer.addMessageHandler(Message.Code.UPDATE, this::update);
+        virtualServer.addMessageHandler(Message.Code.ACTIVE_TURN, this::activeTurn);
+    }
+
 
     private Action getAction(Map<Position, List<Action>> actionsPerPosition, boolean isTurnEndable) {
         if(isTurnEndable){
@@ -168,54 +228,6 @@ public class GameView {
 
     }
 
-    public void start(Message start) {
-        console.clear();
-        console.printOnBoardSection(board.getBoard());
-        console.printOnPlayersSection(board.getPlayers());
-        console.writeLine("it's your turn boy");
-    }
-
-    public void end(Message end) {
-        console.writeLine("ora stai fermo");
-    }
-
-    public void lost(Message lost) {
-        console.writeLine("YOU LOST, looser");
-    }
-
-    public void won(Message won) {
-        console.clear();
-        console.writeLine("you won, good job, very very good job");
-    }
-
-
-    public void update(Message update) {
-        Cell[] cellsToUpdate = BodyFactory.fromCells(update.getBody());
-        this.board.update(cellsToUpdate);
-
-        console.printOnBoardSection(this.board.getBoard());
-    }
-
-    public void activeTurn(Message activePlayer) {
-        console.printOnTurnSection(String.format("%s's turn",activePlayer.getBody()));
-    }
-
-    public void setServer(VirtualServer virtual) {
-        this.virtualServer = virtual;
-
-        virtualServer.cleanMessageHandlers();
-
-        virtualServer.addMessageHandler(Message.Code.START_TURN, this::start);
-        virtualServer.addMessageHandler(Message.Code.END_TURN, this::end);
-        virtualServer.addMessageHandler(Message.Code.CHOOSE_WORKER, this::chooseWorkerFrom);
-        virtualServer.addMessageHandler(Message.Code.UPDATE, this::update);
-        virtualServer.addMessageHandler(Message.Code.CHOOSE_ACTION, this::chooseActionFrom);
-        virtualServer.addMessageHandler(Message.Code.WON, this::won);
-        virtualServer.addMessageHandler(Message.Code.LOST, this::lost);
-        virtualServer.addMessageHandler(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION, this::chooseWorkersInitialPositionFrom);
-        virtualServer.addMessageHandler(Message.Code.UPDATE, this::update);
-        virtualServer.addMessageHandler(Message.Code.ACTIVE_TURN, this::activeTurn);
-    }
 
     private Position getCorrectPosition(List<Position> correctPositions){
         Position position;

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.psp44.client.cli;
 
+import it.polimi.ingsw.psp44.client.ILobbyView;
 import it.polimi.ingsw.psp44.client.VirtualServer;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.message.Message;
@@ -8,7 +9,7 @@ import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LobbyView {
+public class LobbyView implements ILobbyView {
 
     private final Console console;
     private VirtualServer virtualServer;
@@ -27,6 +28,7 @@ public class LobbyView {
         this(new Console());
     }
 
+    @Override
     public void newJoin(Message joinOrNew) {
         String body;
         Message message;
@@ -59,19 +61,21 @@ public class LobbyView {
         virtualServer.sendMessage(message);
     }
 
-
+    @Override
     public void gameCreated(Message gameCreated){
         console.writeLine(String.format("game created with id %s", gameCreated.getBody()));
         console.writeLine("game created now wait and don't do anything, please");
         changeView();
     }
 
+    @Override
     public void gameJoined(Message gameJoined) {
         console.writeLine(gameJoined.getBody());
         console.writeLine("game joined now wait and don't do anything, please");
         changeView();
     }
 
+    @Override
     public void setServer(VirtualServer virtual) {
         this.virtualServer = virtual;
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.psp44.client.cli;
 
+import it.polimi.ingsw.psp44.client.ISetupView;
 import it.polimi.ingsw.psp44.client.VirtualServer;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
@@ -9,7 +10,7 @@ import it.polimi.ingsw.psp44.util.Card;
 
 import java.util.*;
 
-public class SetupView {
+public class SetupView implements ISetupView {
 
     private Console console;
     private VirtualServer virtualServer;
@@ -28,6 +29,7 @@ public class SetupView {
         this.board = board;
     }
 
+    @Override
     public void chooseCardsFrom(Message cards) {
         Card[] cardList, chosenCards;
         String body;
@@ -52,6 +54,7 @@ public class SetupView {
         virtualServer.sendMessage(response);
     }
 
+    @Override
     public void chooseCardFrom(Message cards) {
         Card[] cardList;
         Card chosenCard;
@@ -72,13 +75,7 @@ public class SetupView {
         virtualServer.sendMessage(message);
     }
 
-    private void displayCard(Card card) {
-        console.writeLine(card.getId());
-        console.writeLine(card.getTitle());
-        console.writeLine(Graphics.Element.EMPTY);
-    }
-
-
+    @Override
     public void allPlayerCards(Message players) {
         BodyTemplates.PlayerCard[] playerCards;
         Map<String, String> opponentNamesAndCards;
@@ -98,17 +95,17 @@ public class SetupView {
 
         changeView();
     }
-
+    @Override
     public void start(Message start) {
         console.clear();
         console.writeLine("it's your turn boy");
     }
-
+    @Override
     public void end(Message end) {
         console.clear();
         console.writeLine("turn end just stop");
     }
-
+    @Override
     public void setServer(VirtualServer virtual) {
         this.virtualServer = virtual;
 
@@ -119,6 +116,12 @@ public class SetupView {
         virtualServer.addMessageHandler(Message.Code.CHOOSE_CARD, this::chooseCardFrom);
         virtualServer.addMessageHandler(Message.Code.CHOOSE_CARDS, this::chooseCardsFrom);
         virtualServer.addMessageHandler(Message.Code.END_TURN, this::end);
+    }
+
+    private void displayCard(Card card) {
+        console.writeLine(card.getId());
+        console.writeLine(card.getTitle());
+        console.writeLine(Graphics.Element.EMPTY);
     }
 
     private void changeView() {
