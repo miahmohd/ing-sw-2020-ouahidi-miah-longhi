@@ -1,0 +1,122 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: DomeBuild</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.psp44.server.model.actions</a> ]
+</div>
+
+<h1>Coverage Summary for Class: DomeBuild (it.polimi.ingsw.psp44.server.model.actions)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DomeBuild</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/ 8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server.model.actions;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.psp44.server.model.Board;
+<i>4</i>&nbsp;import it.polimi.ingsw.psp44.util.ModelCodes;
+<i>5</i>&nbsp;import it.polimi.ingsw.psp44.util.Position;
+<i>6</i>&nbsp;import it.polimi.ingsw.psp44.util.R;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public class DomeBuild extends Build {
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;    /**
+<i>11</i>&nbsp;     * Build a dome at the target position.
+<i>12</i>&nbsp;     *
+<i>13</i>&nbsp;     * @param targetPosition position where the dome is built.
+<i>14</i>&nbsp;     */
+<i>15</i>&nbsp;    public DomeBuild(Position targetPosition) {
+<b class="fc"><i>16</i>&nbsp;        super(targetPosition, R.getAppProperties().get(ModelCodes.DOME_BUILD_DESCRIPTION));</b>
+<b class="fc"><i>17</i>&nbsp;    }</b>
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    /**
+<i>20</i>&nbsp;     * Build a dome at the target position.
+<i>21</i>&nbsp;     *
+<i>22</i>&nbsp;     * @param targetPosition position where the dome is built.
+<i>23</i>&nbsp;     * @param isUnbuild      if true the operation is an unbuild operation.
+<i>24</i>&nbsp;     */
+<i>25</i>&nbsp;    public DomeBuild(Position targetPosition, boolean isUnbuild) {
+<b class="fc"><i>26</i>&nbsp;        super(targetPosition, isUnbuild, R.getAppProperties().get(ModelCodes.DOME_BUILD_DESCRIPTION));</b>
+<b class="fc"><i>27</i>&nbsp;    }</b>
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    @Override
+<i>30</i>&nbsp;    public void execute(Board board) {
+<b class="fc"><i>31</i>&nbsp;        if (this.isUnbuild)</b>
+<b class="fc"><i>32</i>&nbsp;            board.removeDome(this.targetPosition);</b>
+<i>33</i>&nbsp;        else
+<b class="fc"><i>34</i>&nbsp;            board.buildDome(this.targetPosition);</b>
+<i>35</i>&nbsp;
+<b class="fc"><i>36</i>&nbsp;    }</b>
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-19 08:05</div>
+</div>
+</body>
+</html>

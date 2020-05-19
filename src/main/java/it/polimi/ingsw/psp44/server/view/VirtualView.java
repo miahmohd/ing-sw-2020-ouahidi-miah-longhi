@@ -56,7 +56,7 @@ public class VirtualView implements Runnable, IVirtual<Message>, IObserver<Messa
     public void sendMessage(Message message) {
         String messageString = JsonConvert.getInstance().toJson(message, Message.class);
         connection.writeLine(messageString);
-            lastSend=message;
+        lastSend=message;
 
     }
 
