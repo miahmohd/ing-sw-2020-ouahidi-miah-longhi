@@ -1,5 +1,7 @@
 package it.polimi.ingsw.psp44.network;
 
+import java.io.IOException;
+
 /**
  * Interface for the communication between the user (of the class) and a remote host.
  */
@@ -11,7 +13,7 @@ public interface IConnection<T> {
      *
      * @return the message just read
      */
-    T readLine();
+    T readLine() throws IOException;
 
 
     /**
@@ -19,4 +21,8 @@ public interface IConnection<T> {
      */
     void writeLine(T message);
 
+    /**
+     * Closes the connection
+     */
+    void close();
 }

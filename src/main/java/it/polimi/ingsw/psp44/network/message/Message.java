@@ -104,6 +104,9 @@ public class Message {
         WON,
         LOST,
 
-        ACTIVE_TURN
+        ACTIVE_TURN,
+
+        PING,
+        CLIENT_DISCONNECTED
     }
 }

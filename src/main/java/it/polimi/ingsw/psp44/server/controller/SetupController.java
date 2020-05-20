@@ -10,6 +10,8 @@ import it.polimi.ingsw.psp44.util.Card;
 import it.polimi.ingsw.psp44.util.R;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 /**
  * This class manages the setup phase of the game.
@@ -21,21 +23,16 @@ public class SetupController {
     private final Map<String, VirtualView> playerViews;
     private final Map<String, CardController> playerCardController;
 
+    // TODO mettere la carta dentro il cardontroller cosi da togliere questo
     private Map<String, String> playerCards;
     private List<Card> chosenCards;
 
-    public SetupController() {
-        this(new Controller(), new GameModel(), new HashMap<>(), new HashMap<>());
-    }
 
-    public SetupController(Controller controller,
-                           GameModel model,
-                           Map<String, VirtualView> playerViews,
-                           Map<String, CardController> playerCardController) {
-        this.controller = controller;
-        this.model = model;
-        this.playerViews = playerViews;
-        this.playerCardController = playerCardController;
+    public SetupController() {
+        this.model = new GameModel();
+        this.controller = new Controller();
+        this.playerViews = new HashMap<>();
+        this.playerCardController = new HashMap<>();
     }
 
 
@@ -45,14 +42,6 @@ public class SetupController {
         this.model.addPlayer(player);
         this.model.addObserver(view);
         this.setHandlers(view);
-    }
-
-
-    /**
-     * @return the number of players currently registered.
-     */
-    public Set<String> getRegisteredPlayers() {
-        return this.playerViews.keySet();
     }
 
 
@@ -106,7 +95,6 @@ public class SetupController {
     }
 
 
-
     /**
      * Callback that handles the card chosen by the player.
      * Creates the CardController associated with the chosen card and redirects the rest of the cards to the next player.
@@ -139,7 +127,7 @@ public class SetupController {
         if (this.model.isFullRound()) {
             cardController = CardFactory.getController(restOfCards[0]);
             cardController.setContext(controller);
-            this.playerCardController.put(this.model.getCurrentPlayerNickname(),cardController);
+            this.playerCardController.put(this.model.getCurrentPlayerNickname(), cardController);
             this.playerCards.put(this.model.getCurrentPlayerNickname(), restOfCards[0].getTitle());
 
             sendAllPlayerCards();
@@ -149,7 +137,6 @@ public class SetupController {
             this.controller.setModel(this.model);
             this.controller.init(false);
 
-
         } else {
             startTurn();
             toSend = new Message(
@@ -157,6 +144,15 @@ public class SetupController {
                     BodyFactory.toCards(restOfCards));
             currentView.sendMessage(toSend);
         }
+    }
+
+
+
+    /**
+     * @return the number of players currently registered.
+     */
+    public Set<String> getRegisteredPlayers() {
+        return this.playerViews.keySet();
     }
 
 

@@ -3,13 +3,16 @@ package it.polimi.ingsw.psp44.client;
 
 import it.polimi.ingsw.psp44.client.cli.LobbyView;
 import it.polimi.ingsw.psp44.network.IConnection;
-import it.polimi.ingsw.psp44.network.message.Message;
+import it.polimi.ingsw.psp44.network.SocketConnection;
+import it.polimi.ingsw.psp44.util.ConfigCodes;
+import it.polimi.ingsw.psp44.util.R;
 
 import java.io.IOException;
+import java.net.Socket;
 
 public class ClientApp {
-    private static final String DEFAULT_HOSTNAME = "localhost";
-    private static final int DEFAULT_PORT = 8080;
+    private static final String DEFAULT_HOSTNAME = R.getAppProperties().get(ConfigCodes.HOSTNAME);
+    private static final int DEFAULT_PORT = Integer.parseInt(R.getAppProperties().get(ConfigCodes.PORT));
 
 
     public static void main(String[] args) {
@@ -23,7 +26,8 @@ public class ClientApp {
 //        }
 
         try {
-            IConnection<Message> socketConnection = new SocketConnection(hostname, port);
+            Socket socket = new Socket(hostname, port);
+            IConnection<String> socketConnection = new SocketConnection(socket);
             ILobbyView view = new LobbyView();
             VirtualServer virtualServer = new VirtualServer(socketConnection);
 

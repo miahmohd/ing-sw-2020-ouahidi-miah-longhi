@@ -1,6 +1,6 @@
 package it.polimi.ingsw.psp44.util;
 
-public class ModelCodes {
+public final class ModelCodes {
     public static final String DOME_BUILD_DESCRIPTION = "DOME_BUILD_DESCRIPTION";
     public static final String INITIAL_PLACEMENT_DESCRIPTION = "INITIAL_PLACEMENT_DESCRIPTION";
     public static final String PUSH_FORWARD_MOVEMENT_DESCRIPTION = "PUSH_FORWARD_MOVEMENT_DESCRIPTION";

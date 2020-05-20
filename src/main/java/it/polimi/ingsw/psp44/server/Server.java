@@ -6,7 +6,6 @@ import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
-import it.polimi.ingsw.psp44.util.JsonConvert;
 import it.polimi.ingsw.psp44.util.R;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 
@@ -23,7 +22,7 @@ public class Server {
     private final int port;
 
     //TODO servono?
-    private final List<VirtualView> connections = Collections.synchronizedList(new ArrayList<>());
+    private final List<VirtualView> views = Collections.synchronizedList(new ArrayList<>());
 
     private final List<Lobby> lobbies;
 
@@ -42,7 +41,7 @@ public class Server {
                 Socket socket = server.accept();
 
                 VirtualView view = new VirtualView(new SocketConnection(socket));
-                this.connections.add(view);
+                this.views.add(view);
 
                 setHandlers(view);
                 beginCommunication(view);
@@ -62,7 +61,7 @@ public class Server {
      * @param view    the VirtualView that sent the message
      * @param message message with code NEW_GAME containing information for creating a new lobby
      */
-    private void newGameMessageHandler(VirtualView view, Message message) {
+    public void newGameMessageHandler(VirtualView view, Message message) {
         BodyTemplates.NewGame body = BodyFactory.fromNewGame(message.getBody());
         Map<MessageHeader, String> headers = new EnumMap<>(MessageHeader.class);
         int nPlayers = body.getNumberOfPlayers();
@@ -93,7 +92,7 @@ public class Server {
      * @param view    the VirtualView that sent the message
      * @param message message with code NEW_GAME containing information for joining an existing lobby
      */
-    private void joinGameMessageHandler(VirtualView view, Message message) {
+    public void joinGameMessageHandler(VirtualView view, Message message) {
         BodyTemplates.JoinGame body = BodyFactory.fromJoinGame(message.getBody());
         Map<MessageHeader, String> headers = new EnumMap<>(MessageHeader.class);
         String nickname = body.getPlayerNickname();
@@ -123,15 +122,32 @@ public class Server {
     }
 
 
+    /**
+     * Callback that handles and process CLIENT_DISCONNECTED message type.
+     * This callback is called when the client disconnects before joining any Lobby.
+     * Simply closes the connection with the view.
+     * Once the view joins a Lobby, this callback will be overwritten with additional processing.
+     *
+     * @param view    the view that disconnected
+     * @param message message with code CLIENT_DISCONNECTED
+     */
+    public void clientDisconnectedMessageHandler(VirtualView view, Message message) {
+        System.out.println("Disconnecting server");
+        view.close();
+    }
+
+
     private void setHandlers(VirtualView view) {
         view.addMessageHandler(Message.Code.NEW_GAME, this::newGameMessageHandler);
         view.addMessageHandler(Message.Code.JOIN_GAME, this::joinGameMessageHandler);
+        view.addMessageHandler(Message.Code.CLIENT_DISCONNECTED, this::clientDisconnectedMessageHandler);
     }
 
     private void beginCommunication(VirtualView view) {
         view.sendMessage(new Message(Message.Code.NEW_OR_JOIN));
         executor.execute(view);
     }
+
 
 
 }

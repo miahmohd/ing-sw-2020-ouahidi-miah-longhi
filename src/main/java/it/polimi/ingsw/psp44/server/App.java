@@ -1,13 +1,14 @@
 package it.polimi.ingsw.psp44.server;
 
 
-import it.polimi.ingsw.psp44.server.Server;
+import it.polimi.ingsw.psp44.util.ConfigCodes;
+import it.polimi.ingsw.psp44.util.R;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class App {
-    private static int DEFAULT_PORT = 8080;
+    private static int DEFAULT_PORT = Integer.parseInt(R.getAppProperties().get(ConfigCodes.PORT));
 
     public static void main(String[] args) {
         int port = DEFAULT_PORT;

@@ -1,5 +1,8 @@
 package it.polimi.ingsw.psp44.network;
 
+import it.polimi.ingsw.psp44.util.ConfigCodes;
+import it.polimi.ingsw.psp44.util.R;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,36 +14,33 @@ import java.net.Socket;
  */
 public class SocketConnection implements IConnection<String> {
 
+    private static final int TIMEOUT = Integer.parseInt(R.getAppProperties().get(ConfigCodes.TIMEOUT));
+
     private final Socket socket;
+    private final PrintWriter writer;
+    private final BufferedReader reader;
 
-    private PrintWriter writer;
-    private BufferedReader reader;
 
-
-    public SocketConnection(Socket socket) {
+    public SocketConnection(Socket socket) throws IOException {
         this.socket = socket;
-
-        try {
-
-            this.writer = new PrintWriter(socket.getOutputStream(), true);
-            this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        this.socket.setSoTimeout(TIMEOUT);
+        this.writer = new PrintWriter(socket.getOutputStream(), true);
+        this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
 
-    public String readLine() {
-        try {
-            return this.reader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String readLine() throws IOException {
+        return this.reader.readLine();
     }
 
     public void writeLine(String msg) {
         this.writer.println(msg);
+    }
+
+    public void close(){
+        try {
+            this.socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

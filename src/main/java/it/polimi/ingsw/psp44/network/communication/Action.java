@@ -4,8 +4,6 @@ import it.polimi.ingsw.psp44.util.Position;
 
 public class Action {
 
-    //TODO: add id and description, remove dome and level LEOOOOOOOOO
-
 
     private Position target;
     private boolean build;

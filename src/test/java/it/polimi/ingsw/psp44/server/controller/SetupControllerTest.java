@@ -2,6 +2,7 @@ package it.polimi.ingsw.psp44.server.controller;
 
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.server.FileConnection;
+import it.polimi.ingsw.psp44.server.model.GameModel;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
 import it.polimi.ingsw.psp44.util.JsonConvert;
 import org.junit.Before;
@@ -96,7 +97,7 @@ public class SetupControllerTest {
     }
 
 
-    private Message getNextMessageFrom(FileConnection c) {
+    private Message getNextMessageFrom(FileConnection c) throws IOException {
         return JsonConvert.getInstance().fromJson(c.readLine(), Message.class);
     }
 
