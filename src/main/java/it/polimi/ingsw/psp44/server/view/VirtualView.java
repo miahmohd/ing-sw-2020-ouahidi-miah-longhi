@@ -90,7 +90,8 @@ public class VirtualView implements Runnable, IVirtual, IObserver<Message> {
 
     @Override
     public void update(IObservable<Message> observable, Message arg) {
-        this.sendMessage(arg);
+        String messageString = JsonConvert.getInstance().toJson(arg, Message.class);
+        connection.writeLine(messageString);
     }
 
 

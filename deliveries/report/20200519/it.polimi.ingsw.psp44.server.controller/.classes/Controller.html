@@ -1,0 +1,372 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Controller</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.psp44.server.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Controller (it.polimi.ingsw.psp44.server.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Controller</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    40%
+  </span>
+  <span class="absValue">
+    (8/ 20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    23.4%
+  </span>
+  <span class="absValue">
+    (26/ 111)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;
+<i>4</i>&nbsp;import it.polimi.ingsw.psp44.network.communication.BodyFactory;
+<i>5</i>&nbsp;import it.polimi.ingsw.psp44.network.message.Message;
+<i>6</i>&nbsp;import it.polimi.ingsw.psp44.network.message.MessageHeader;
+<i>7</i>&nbsp;import it.polimi.ingsw.psp44.server.controller.filters.Filter;
+<i>8</i>&nbsp;import it.polimi.ingsw.psp44.server.model.GameModel;
+<i>9</i>&nbsp;import it.polimi.ingsw.psp44.server.model.Worker;
+<i>10</i>&nbsp;import it.polimi.ingsw.psp44.server.model.actions.Action;
+<i>11</i>&nbsp;import it.polimi.ingsw.psp44.server.model.actions.InitialPlacement;
+<i>12</i>&nbsp;import it.polimi.ingsw.psp44.server.view.VirtualView;
+<i>13</i>&nbsp;import it.polimi.ingsw.psp44.util.Position;
+<i>14</i>&nbsp;import it.polimi.ingsw.psp44.util.R;
+<i>15</i>&nbsp;import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
+<i>16</i>&nbsp;import it.polimi.ingsw.psp44.util.exception.ProtocolException;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;import java.util.List;
+<i>19</i>&nbsp;import java.util.Map;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;/**
+<i>22</i>&nbsp; * This class implements the logic of the match.
+<i>23</i>&nbsp; */
+<i>24</i>&nbsp;
+<b class="fc"><i>25</i>&nbsp;public class Controller {</b>
+<i>26</i>&nbsp;    private Map&lt;String, CardController&gt; players;
+<i>27</i>&nbsp;    private Map&lt;String, VirtualView&gt; playerViews;
+<i>28</i>&nbsp;    private CardController currentPlayer;
+<i>29</i>&nbsp;    private VirtualView currentPlayerView;
+<i>30</i>&nbsp;    private GameModel model;
+<i>31</i>&nbsp;    private List&lt;Action&gt; availableActions;
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    public void setVirtualViews(Map&lt;String, VirtualView&gt; playerViews) {
+<b class="fc"><i>34</i>&nbsp;        this.playerViews = playerViews;</b>
+<b class="fc"><i>35</i>&nbsp;    }</b>
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    public void setCardControllers(Map&lt;String, CardController&gt; players) {
+<b class="fc"><i>38</i>&nbsp;        this.players = players;</b>
+<b class="fc"><i>39</i>&nbsp;    }</b>
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    public void setModel(GameModel model) {
+<b class="fc"><i>42</i>&nbsp;        this.model = model;</b>
+<b class="fc"><i>43</i>&nbsp;    }</b>
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    /**
+<i>47</i>&nbsp;     * Add a build filter to opponents build filter list
+<i>48</i>&nbsp;     *
+<i>49</i>&nbsp;     * @param filter to apply to opponents filter
+<i>50</i>&nbsp;     */
+<i>51</i>&nbsp;    public void appliesOpponentsBuildFilter(Filter filter, Action lastAction) {
+<b class="nc"><i>52</i>&nbsp;        players.values().stream()</b>
+<b class="nc"><i>53</i>&nbsp;                .filter((cardController) -&gt; cardController != currentPlayer)</b>
+<b class="nc"><i>54</i>&nbsp;                .forEach((cardController) -&gt; cardController.addBuildFilter(filter, lastAction, model.getBoard()));</b>
+<b class="nc"><i>55</i>&nbsp;    }</b>
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    /**
+<i>58</i>&nbsp;     * Add a move filter to opponents move filter list
+<i>59</i>&nbsp;     *
+<i>60</i>&nbsp;     * @param filter to apply to opponents filter
+<i>61</i>&nbsp;     */
+<i>62</i>&nbsp;    public void appliesOpponentsMoveFilter(Filter filter, Action lastAction) {
+<b class="nc"><i>63</i>&nbsp;        players.values().stream()</b>
+<b class="nc"><i>64</i>&nbsp;                .filter((cardController) -&gt; cardController != currentPlayer)</b>
+<b class="nc"><i>65</i>&nbsp;                .forEach((cardController) -&gt; cardController.addMoveFilter(filter, lastAction, model.getBoard()));</b>
+<b class="nc"><i>66</i>&nbsp;    }</b>
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;    /**
+<i>70</i>&nbsp;     * Callback that handles and processes &quot;chosen worker&quot; message type.
+<i>71</i>&nbsp;     * Next the view must choose the action to perform
+<i>72</i>&nbsp;     *
+<i>73</i>&nbsp;     * @param view    the VirtualView that sended the message
+<i>74</i>&nbsp;     * @param message the message containing information about the selected worker
+<i>75</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if the message does not require further processing, &lt;code&gt;false&lt;/code&gt;  otherwise.
+<i>76</i>&nbsp;     */
+<i>77</i>&nbsp;    public void chosenWorkerMessageHandler(VirtualView view, Message message) {
+<i>78</i>&nbsp;        Position selectedWorkerPosition;
+<b class="nc"><i>79</i>&nbsp;        if (view.equals(currentPlayerView)) {</b>
+<b class="nc"><i>80</i>&nbsp;            selectedWorkerPosition = BodyFactory.fromPosition(message.getBody());</b>
+<b class="nc"><i>81</i>&nbsp;            model.setWorker(selectedWorkerPosition);</b>
+<b class="nc"><i>82</i>&nbsp;            actions();</b>
+<i>83</i>&nbsp;        }
+<b class="nc"><i>84</i>&nbsp;    }</b>
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;    /**
+<i>87</i>&nbsp;     * Callback that handles and processes &quot;chosen action&quot; message type.
+<i>88</i>&nbsp;     * Next perform the action and the transition to next state
+<i>89</i>&nbsp;     *
+<i>90</i>&nbsp;     * @param view    the VirtualView that sended the message
+<i>91</i>&nbsp;     * @param message the message containing information about the selected worker
+<i>92</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if the message does not require further processing, &lt;code&gt;false&lt;/code&gt;  otherwise.
+<i>93</i>&nbsp;     */
+<i>94</i>&nbsp;    public void chosenActionMessageHandler(VirtualView view, Message message) {
+<i>95</i>&nbsp;        Action selectedAction;
+<b class="nc"><i>96</i>&nbsp;        if (view.equals(currentPlayerView)) {</b>
+<b class="nc"><i>97</i>&nbsp;            if(Boolean.parseBoolean(message.getHeader().get(MessageHeader.IS_TURN_END))) {</b>
+<b class="nc"><i>98</i>&nbsp;                end(true);</b>
+<b class="nc"><i>99</i>&nbsp;                nextTurn(false);</b>
+<b class="nc"><i>100</i>&nbsp;                return;</b>
+<i>101</i>&nbsp;            }
+<b class="nc"><i>102</i>&nbsp;            selectedAction = availableActions.get(BodyFactory.fromAction(message.getBody()).getId());</b>
+<b class="nc"><i>103</i>&nbsp;            model.doAction(selectedAction);</b>
+<b class="nc"><i>104</i>&nbsp;            if (currentPlayer.checkVictory(selectedAction, model.getBoard()))</b>
+<b class="nc"><i>105</i>&nbsp;                won();</b>
+<b class="nc"><i>106</i>&nbsp;            if (currentPlayer.nextState(selectedAction, model.getBoard())) {</b>
+<b class="nc"><i>107</i>&nbsp;                actions();</b>
+<i>108</i>&nbsp;            } else {
+<b class="nc"><i>109</i>&nbsp;                end(false);</b>
+<b class="nc"><i>110</i>&nbsp;                nextTurn(false);</b>
+<i>111</i>&nbsp;            }
+<i>112</i>&nbsp;        }
+<b class="nc"><i>113</i>&nbsp;    }</b>
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;    /**
+<i>116</i>&nbsp;     * Callback that handles the workers initial positions chosen by the player.
+<i>117</i>&nbsp;     * The first position is for the female worker, the second one is for the male worker.
+<i>118</i>&nbsp;     * It places the workers on the board.     *
+<i>119</i>&nbsp;     *
+<i>120</i>&nbsp;     * @param view    the player that chose the card.
+<i>121</i>&nbsp;     * @param message message with code CHOSEN_WORKERS_INITIAL_POSITION containing information about the chose positions.
+<i>122</i>&nbsp;     */
+<i>123</i>&nbsp;    public void chosenWorkersInitialPositionsMessageHandler(VirtualView view, Message message) {
+<b class="nc"><i>124</i>&nbsp;        if (currentPlayerView.equals(view)) {</b>
+<b class="nc"><i>125</i>&nbsp;            Position[] chosenPositions = BodyFactory.fromPositions(message.getBody());</b>
+<b class="nc"><i>126</i>&nbsp;            setWorkersInitialPositions(chosenPositions);</b>
+<b class="nc"><i>127</i>&nbsp;            end(false);</b>
+<b class="nc"><i>128</i>&nbsp;            init(model.isFullRound());</b>
+<i>129</i>&nbsp;        }
+<b class="nc"><i>130</i>&nbsp;    }</b>
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;
+<i>133</i>&nbsp;    /**
+<i>134</i>&nbsp;     * The initialization phase of the match. Each player has to place his workers
+<i>135</i>&nbsp;     * when each player has placed his workers start with the first game turn
+<i>136</i>&nbsp;     *
+<i>137</i>&nbsp;     * @param gameReady all player&#39;s workers have been placed, the game can start
+<i>138</i>&nbsp;     */
+<i>139</i>&nbsp;    public void init(boolean gameReady) {
+<b class="fc"><i>140</i>&nbsp;        if (gameReady)</b>
+<b class="nc"><i>141</i>&nbsp;            nextTurn(false);</b>
+<i>142</i>&nbsp;        else {
+<b class="fc"><i>143</i>&nbsp;            start();</b>
+<b class="fc"><i>144</i>&nbsp;            initialsWorkers();</b>
+<i>145</i>&nbsp;        }
+<i>146</i>&nbsp;
+<b class="fc"><i>147</i>&nbsp;    }</b>
+<i>148</i>&nbsp;
+<i>149</i>&nbsp;    /**
+<i>150</i>&nbsp;     * Called each time that a turn change, if the current player has won because the previous one was blocked notice the client
+<i>151</i>&nbsp;     * and end the match. Otherwise sends him its workers positions
+<i>152</i>&nbsp;     *
+<i>153</i>&nbsp;     * @param hasWon if &lt;code&gt;true&lt;/code&gt; the current player has won the game
+<i>154</i>&nbsp;     */
+<i>155</i>&nbsp;    private void nextTurn(boolean hasWon) {
+<b class="nc"><i>156</i>&nbsp;        start();</b>
+<b class="nc"><i>157</i>&nbsp;        if (hasWon) {</b>
+<b class="nc"><i>158</i>&nbsp;            won();</b>
+<i>159</i>&nbsp;        } else {
+<b class="nc"><i>160</i>&nbsp;            workers();</b>
+<i>161</i>&nbsp;        }
+<b class="nc"><i>162</i>&nbsp;    }</b>
+<i>163</i>&nbsp;
+<i>164</i>&nbsp;
+<i>165</i>&nbsp;    /**
+<i>166</i>&nbsp;     * The start of a turn player, fetch current player view and controller and send the position of his worker
+<i>167</i>&nbsp;     */
+<i>168</i>&nbsp;    private void start() {
+<b class="fc"><i>169</i>&nbsp;        this.currentPlayer = players.get(model.getCurrentPlayerNickname());</b>
+<b class="fc"><i>170</i>&nbsp;        this.currentPlayerView = playerViews.get(model.getCurrentPlayerNickname());</b>
+<b class="fc"><i>171</i>&nbsp;        currentPlayerView.sendMessage(new Message(Message.Code.START_TURN));</b>
+<b class="fc"><i>172</i>&nbsp;        this.broadcastActivePlayer();</b>
+<b class="fc"><i>173</i>&nbsp;    }</b>
+<i>174</i>&nbsp;
+<i>175</i>&nbsp;    /**
+<i>176</i>&nbsp;     * notices all player sanding them the current player&#39;s nickname
+<i>177</i>&nbsp;     */
+<i>178</i>&nbsp;    private void broadcastActivePlayer() {
+<b class="fc"><i>179</i>&nbsp;        for (VirtualView player : playerViews.values()) {</b>
+<b class="fc"><i>180</i>&nbsp;            player.sendMessage(new Message(Message.Code.ACTIVE_TURN, this.model.getCurrentPlayerNickname()));</b>
+<b class="fc"><i>181</i>&nbsp;        }</b>
+<b class="fc"><i>182</i>&nbsp;    }</b>
+<i>183</i>&nbsp;
+<i>184</i>&nbsp;    /**
+<i>185</i>&nbsp;     * end the turn and change the player
+<i>186</i>&nbsp;     */
+<i>187</i>&nbsp;    private void end(Boolean nextStatus) {
+<b class="nc"><i>188</i>&nbsp;        if (nextStatus)</b>
+<b class="nc"><i>189</i>&nbsp;            currentPlayer.nextState(null, model.getBoard());</b>
+<b class="nc"><i>190</i>&nbsp;        currentPlayerView.sendMessage(new Message(Message.Code.END_TURN));</b>
+<b class="nc"><i>191</i>&nbsp;        model.nextTurn();</b>
+<b class="nc"><i>192</i>&nbsp;    }</b>
+<i>193</i>&nbsp;
+<i>194</i>&nbsp;    /**
+<i>195</i>&nbsp;     * Called when current player loose the game.
+<i>196</i>&nbsp;     * - 3 players match: remove current player from the game
+<i>197</i>&nbsp;     * - 2 players match: end the match, the opponent win
+<i>198</i>&nbsp;     */
+<i>199</i>&nbsp;    private void lost() {
+<b class="nc"><i>200</i>&nbsp;        model.removePlayer(model.getCurrentPlayerNickname());</b>
+<b class="nc"><i>201</i>&nbsp;        players.remove(model.getCurrentPlayerNickname());</b>
+<b class="nc"><i>202</i>&nbsp;        currentPlayerView.sendMessage(new Message(Message.Code.LOST));</b>
+<b class="nc"><i>203</i>&nbsp;        model.nextTurn();</b>
+<b class="nc"><i>204</i>&nbsp;        nextTurn(model.getNumberOfPlayer() == 2);</b>
+<b class="nc"><i>205</i>&nbsp;        if (model.getNumberOfPlayer() == 3) {</b>
+<b class="nc"><i>206</i>&nbsp;            end(false);</b>
+<b class="nc"><i>207</i>&nbsp;            nextTurn(false);</b>
+<i>208</i>&nbsp;        } else {
+<b class="nc"><i>209</i>&nbsp;            end(false);</b>
+<b class="nc"><i>210</i>&nbsp;            nextTurn(true);</b>
+<i>211</i>&nbsp;        }
+<i>212</i>&nbsp;
+<b class="nc"><i>213</i>&nbsp;    }</b>
+<i>214</i>&nbsp;
+<i>215</i>&nbsp;    /**
+<i>216</i>&nbsp;     * Called when current player wins the match
+<i>217</i>&nbsp;     */
+<i>218</i>&nbsp;    private void won() {
+<b class="nc"><i>219</i>&nbsp;        currentPlayerView.sendMessage(new Message(Message.Code.WON));</b>
+<b class="nc"><i>220</i>&nbsp;    }</b>
+<i>221</i>&nbsp;
+<i>222</i>&nbsp;    /**
+<i>223</i>&nbsp;     * Sends available actions to current player
+<i>224</i>&nbsp;     * Call lost routine if no actions are available and turn is not endable
+<i>225</i>&nbsp;     * Call endable routine if the turn can be ended!=
+<i>226</i>&nbsp;     */
+<i>227</i>&nbsp;    private void
+<i>228</i>&nbsp;    actions() {
+<b class="nc"><i>229</i>&nbsp;        availableActions = currentPlayer.getAvailableAction(model.getBoard(), model.getWorker());</b>
+<b class="nc"><i>230</i>&nbsp;        Message actionsMessage = new Message(Message.Code.CHOOSE_ACTION);</b>
+<b class="nc"><i>231</i>&nbsp;        if (!availableActions.isEmpty()) {</b>
+<b class="nc"><i>232</i>&nbsp;            actionsMessage.setBody(BodyFactory.toActions(availableActions));</b>
+<b class="nc"><i>233</i>&nbsp;            if (currentPlayer.isEndableTurn())</b>
+<b class="nc"><i>234</i>&nbsp;                actionsMessage.addHeader(MessageHeader.IS_TURN_ENDABLE, String.valueOf(true));</b>
+<b class="nc"><i>235</i>&nbsp;            currentPlayerView.sendMessage(actionsMessage);</b>
+<i>236</i>&nbsp;        } else {
+<b class="nc"><i>237</i>&nbsp;            if (currentPlayer.isEndableTurn()) {</b>
+<b class="nc"><i>238</i>&nbsp;                end(true);</b>
+<b class="nc"><i>239</i>&nbsp;                this.nextTurn(false);</b>
+<i>240</i>&nbsp;            } else
+<b class="nc"><i>241</i>&nbsp;                lost();</b>
+<i>242</i>&nbsp;        }
+<b class="nc"><i>243</i>&nbsp;    }</b>
+<i>244</i>&nbsp;
+<i>245</i>&nbsp;    /**
+<i>246</i>&nbsp;     * Sends workers list to current player.
+<i>247</i>&nbsp;     * Call lost routine if list is empty
+<i>248</i>&nbsp;     */
+<i>249</i>&nbsp;    private void workers() {
+<b class="nc"><i>250</i>&nbsp;        List&lt;Position&gt; workers = model.getBoard().getPlayerWorkersPositions(model.getCurrentPlayerNickname());</b>
+<b class="nc"><i>251</i>&nbsp;        Position[] workersArray = workers.toArray(Position[]::new);</b>
+<b class="nc"><i>252</i>&nbsp;        if (workers.isEmpty())</b>
+<b class="nc"><i>253</i>&nbsp;            lost();</b>
+<i>254</i>&nbsp;        else {
+<b class="nc"><i>255</i>&nbsp;            currentPlayerView.sendMessage(new Message(Message.Code.CHOOSE_WORKER, BodyFactory.toPositions(workersArray)));</b>
+<i>256</i>&nbsp;        }
+<b class="nc"><i>257</i>&nbsp;    }</b>
+<i>258</i>&nbsp;
+<i>259</i>&nbsp;    /**
+<i>260</i>&nbsp;     * Sends a list of unoccupied position to the current player.
+<i>261</i>&nbsp;     */
+<i>262</i>&nbsp;    private void initialsWorkers() {
+<b class="fc"><i>263</i>&nbsp;        List&lt;Position&gt; unoccupiedPositions = model.getBoard().getUnoccupiedPosition();</b>
+<b class="fc"><i>264</i>&nbsp;        Position[] unoccupiedPositionsArray = unoccupiedPositions.toArray(Position[]::new);</b>
+<b class="fc"><i>265</i>&nbsp;        Message toSend = new Message(</b>
+<i>266</i>&nbsp;                Message.Code.CHOOSE_WORKERS_INITIAL_POSITION,
+<b class="fc"><i>267</i>&nbsp;                BodyFactory.toPositions(unoccupiedPositionsArray));</b>
+<b class="fc"><i>268</i>&nbsp;        currentPlayerView.sendMessage(toSend);</b>
+<b class="fc"><i>269</i>&nbsp;    }</b>
+<i>270</i>&nbsp;
+<i>271</i>&nbsp;    /**
+<i>272</i>&nbsp;     * Creates two initial placement actions that places the player&#39;s workers at the selected position
+<i>273</i>&nbsp;     * and performs it
+<i>274</i>&nbsp;     *
+<i>275</i>&nbsp;     * @param chosenPositions positions where place the current player&#39;s workers
+<i>276</i>&nbsp;     */
+<i>277</i>&nbsp;    private void setWorkersInitialPositions(Position[] chosenPositions) {
+<b class="nc"><i>278</i>&nbsp;        if(chosenPositions.length!=2)</b>
+<b class="nc"><i>279</i>&nbsp;            throw new ProtocolException(String.format(R.getAppProperties().get(ErrorCodes.ILLEGAL_GAME_PARAMS), chosenPositions.length));</b>
+<b class="nc"><i>280</i>&nbsp;        String currentPlayerNickname = this.model.getCurrentPlayerNickname();</b>
+<b class="nc"><i>281</i>&nbsp;        Worker female = new Worker(currentPlayerNickname, Worker.Sex.FEMALE);</b>
+<b class="nc"><i>282</i>&nbsp;        Worker male = new Worker(currentPlayerNickname, Worker.Sex.MALE);</b>
+<b class="nc"><i>283</i>&nbsp;        InitialPlacement femalePlacement = new InitialPlacement(chosenPositions[0], female);</b>
+<b class="nc"><i>284</i>&nbsp;        InitialPlacement malePlacement = new InitialPlacement(chosenPositions[1], male);</b>
+<b class="nc"><i>285</i>&nbsp;        this.model.doAction(femalePlacement);</b>
+<b class="nc"><i>286</i>&nbsp;        this.model.doAction(malePlacement);</b>
+<b class="nc"><i>287</i>&nbsp;    }</b>
+<i>288</i>&nbsp;
+<i>289</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-19 08:05</div>
+</div>
+</body>
+</html>
