@@ -1,48 +1,42 @@
 package it.polimi.ingsw.psp44.server.view;
 
 import it.polimi.ingsw.psp44.network.IConnection;
-import it.polimi.ingsw.psp44.network.IVirtual;
+import it.polimi.ingsw.psp44.network.Virtual;
 import it.polimi.ingsw.psp44.network.message.IMessageHandlerFunction;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
-import it.polimi.ingsw.psp44.util.*;
+import it.polimi.ingsw.psp44.util.IObservable;
+import it.polimi.ingsw.psp44.util.IObserver;
+import it.polimi.ingsw.psp44.util.JsonConvert;
+import it.polimi.ingsw.psp44.util.R;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Class representing the view of a single player.
  */
-public class VirtualView implements Runnable, IVirtual, IObserver<Message> {
+public class VirtualView extends Virtual implements Runnable, IObserver<Message> {
 
-    private static final int TIMEOUT = Integer.parseInt(R.getAppProperties().get(ConfigCodes.TIMEOUT));
-    private static final ScheduledExecutorService scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
 
-    private final IConnection<String> connection;
     private final Map<Message.Code, IMessageHandlerFunction> handlers;
-
-    private ScheduledFuture<?> scheduledFuture;
     private Message lastSend;
 
     public VirtualView(IConnection<String> connection) {
-        this.connection = connection;
-        this.handlers = new EnumMap<>(Message.Code.class);
+        super(connection);
+        this.handlers = Collections.synchronizedMap(new EnumMap<>(Message.Code.class));
     }
 
     @Override
     public void run() {
         String rawJson;
         Message message;
-
-        startPingDaemon();
+        this.addMessageHandler(Message.Code.PING, (v, m) -> System.out.println("Ping received from " + v));
 
         try {
 
@@ -60,7 +54,7 @@ public class VirtualView implements Runnable, IVirtual, IObserver<Message> {
             this.routeMessage(this, new Message(Message.Code.CLIENT_DISCONNECTED));
 
         } catch (SocketTimeoutException exception) {
-            System.out.println("SocketTimeoutException for "+this);
+            System.out.println("SocketTimeoutException for " + this);
             this.routeMessage(this, new Message(Message.Code.CLIENT_DISCONNECTED));
         } catch (SocketException ignored) {
             System.out.println("SocketException " + ignored.getMessage() + this);
@@ -82,25 +76,14 @@ public class VirtualView implements Runnable, IVirtual, IObserver<Message> {
 
     @Override
     public void sendMessage(Message message) {
-        String messageString = JsonConvert.getInstance().toJson(message, Message.class);
-        connection.writeLine(messageString);
+        super.sendMessage(message);
         lastSend = message;
     }
 
 
     @Override
     public void update(IObservable<Message> observable, Message arg) {
-        String messageString = JsonConvert.getInstance().toJson(arg, Message.class);
-        connection.writeLine(messageString);
-    }
-
-
-    /**
-     * Closes the connection with the view and the scheduled task tha sends PING messages.
-     */
-    public void close() {
-        this.scheduledFuture.cancel(true);
-        this.connection.close();
+        super.sendMessage(arg);
     }
 
 
@@ -118,22 +101,6 @@ public class VirtualView implements Runnable, IVirtual, IObserver<Message> {
             this.lastSend.addHeader(MessageHeader.ERROR_DESCRIPTION, ex.getMessage());
             this.sendMessage(this.lastSend);
         }
-    }
-
-    /**
-     * Starts a daemon that sends a PING message to the client repeatedly after TIMEOUT / 2 seconds.
-     * The client is reachable if the server receives a PING message response.
-     * If after TIMEOUT second the server did not receive a PING response, the socket throws a SocketTimeoutException.
-     */
-    private void startPingDaemon() {
-        int delay = TIMEOUT / 2;
-        this.scheduledFuture = scheduledExecutor.scheduleAtFixedRate(this::sendPing, delay, delay, TimeUnit.MILLISECONDS);
-        this.addMessageHandler(Message.Code.PING, (v, m) -> System.out.println("Ping received from " + v));
-    }
-
-    private void sendPing() {
-        Message msg = new Message(Message.Code.PING);
-        this.connection.writeLine(JsonConvert.getInstance().toJson(msg, Message.class));
     }
 
 }
