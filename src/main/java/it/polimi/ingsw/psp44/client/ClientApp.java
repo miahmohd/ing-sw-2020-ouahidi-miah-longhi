@@ -37,6 +37,7 @@ public class ClientApp {
             server.start();
 
             server.join();
+            System.out.println("fina main");
         } catch (IOException | InterruptedException e) {
             System.err.println("ERROR: " + e.getMessage());
         }

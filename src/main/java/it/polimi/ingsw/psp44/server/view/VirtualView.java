@@ -60,10 +60,10 @@ public class VirtualView implements Runnable, IVirtual, IObserver<Message> {
             this.routeMessage(this, new Message(Message.Code.CLIENT_DISCONNECTED));
 
         } catch (SocketTimeoutException exception) {
-            System.out.println("SocketTimeoutException");
+            System.out.println("SocketTimeoutException for "+this);
             this.routeMessage(this, new Message(Message.Code.CLIENT_DISCONNECTED));
         } catch (SocketException ignored) {
-            System.out.println("SocketException" + ignored.getMessage());
+            System.out.println("SocketException " + ignored.getMessage() + this);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -19,6 +19,8 @@ public class VirtualServer implements IVirtual, Runnable {
     private final IConnection<String> connection;
     private final Map<Message.Code, IMessageHandlerFunction> router;
 
+    private final Object _lock;
+
     public VirtualServer(IConnection<String> connection) {
         this(connection, new ConcurrentHashMap<>());
     }
@@ -27,14 +29,15 @@ public class VirtualServer implements IVirtual, Runnable {
     public VirtualServer(IConnection<String> connection, Map<Message.Code, IMessageHandlerFunction> router) {
         this.connection = connection;
         this.router = router;
-
-        this.executor = Executors.newFixedThreadPool(3); // FIXME se due si blocca perchè? Secondo me non dovrebbe non capisco il perchè.
-
+        this.executor = Executors.newFixedThreadPool(2);
+        this._lock = new Object();
     }
 
-    public synchronized void addMessageHandler(Message.Code code, IMessageHandlerFunction route) {
-        this.router.put(code, route);
-        notifyAll();
+    public void addMessageHandler(Message.Code code, IMessageHandlerFunction route) {
+        synchronized (_lock) {
+            this.router.put(code, route);
+            _lock.notifyAll();
+        }
     }
 
     public void cleanMessageHandlers() {
@@ -44,38 +47,33 @@ public class VirtualServer implements IVirtual, Runnable {
     }
 
     @Override
-    public synchronized void run() {
+    public void run() {
         String rawJson;
         setPingResponse();
         try {
-            while ((rawJson = connection.readLine()) != null) {
+            while ((rawJson = this.connection.readLine()) != null) {
 
                 Message message = JsonConvert.getInstance().fromJson(rawJson, Message.class);
                 Message.Code code = message.getCode();
 
-                while (!this.router.containsKey(code)) {
-                    try {
-                        wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                synchronized (_lock) {
+                    while (!this.router.containsKey(code)) {
+                        _lock.wait();
                     }
                 }
-//                System.out.println("Launched " + code);
 
-                executor.execute(() -> router.get(code).accept(message));
+                this.executor.execute(() -> router.get(code).accept(message));
 
             }
             System.out.println("readline = null");
 
 
-        } catch (SocketTimeoutException exception) {
+        } catch (SocketTimeoutException e) {
             System.out.println("SocketTimeoutException");
-        } catch (SocketException exception) {
+        } catch (SocketException e) {
             System.out.println("SocketException");
-        } catch (IOException exception) {
-            System.out.println("IO ex");
-        } finally {
-            System.out.println("fuori");
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
 
     }
