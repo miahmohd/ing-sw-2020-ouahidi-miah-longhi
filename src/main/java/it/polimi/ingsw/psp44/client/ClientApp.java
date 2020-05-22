@@ -2,6 +2,7 @@ package it.polimi.ingsw.psp44.client;
 
 
 import it.polimi.ingsw.psp44.client.cli.LobbyView;
+import it.polimi.ingsw.psp44.client.gui.LobbyController;
 import it.polimi.ingsw.psp44.network.IConnection;
 import it.polimi.ingsw.psp44.network.SocketConnection;
 import it.polimi.ingsw.psp44.util.ConfigCodes;
@@ -28,7 +29,7 @@ public class ClientApp {
         try {
             Socket socket = new Socket(hostname, port);
             IConnection<String> socketConnection = new SocketConnection(socket);
-            ILobbyView view = new LobbyView();
+            IView view = new LobbyController();
             VirtualServer virtualServer = new VirtualServer(socketConnection);
 
             view.setServer(virtualServer);
