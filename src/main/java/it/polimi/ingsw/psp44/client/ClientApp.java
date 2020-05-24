@@ -1,8 +1,7 @@
 package it.polimi.ingsw.psp44.client;
 
 
-import it.polimi.ingsw.psp44.client.cli.LobbyView;
-import it.polimi.ingsw.psp44.client.gui.LobbyController;
+import it.polimi.ingsw.psp44.client.gui.LobbyView;
 import it.polimi.ingsw.psp44.network.IConnection;
 import it.polimi.ingsw.psp44.network.SocketConnection;
 import it.polimi.ingsw.psp44.util.ConfigCodes;
@@ -26,22 +25,23 @@ public class ClientApp {
 //            port = Integer.parseInt(host[1]);
 //        }
 
-        try {
-            Socket socket = new Socket(hostname, port);
-            IConnection<String> socketConnection = new SocketConnection(socket);
-            IView view = new LobbyController();
-            VirtualServer virtualServer = new VirtualServer(socketConnection);
+         try {
 
-            view.setServer(virtualServer);
+             Socket socket = new Socket(hostname, port);
+             IConnection<String> socketConnection = new SocketConnection(socket);
+             IView view = new LobbyView();
+             VirtualServer virtualServer = new VirtualServer(socketConnection);
 
-            Thread server = new Thread(virtualServer);
-            server.start();
+             view.setServer(virtualServer);
 
-            server.join();
-            System.out.println("fina main");
-        } catch (IOException | InterruptedException e) {
+             Thread server = new Thread(virtualServer);
+             server.start();
+
+             server.join();
+             System.out.println("fina main");
+
+         } catch (IOException | InterruptedException e) {
             System.err.println("ERROR: " + e.getMessage());
-        }
-
+         }
     }
 }
