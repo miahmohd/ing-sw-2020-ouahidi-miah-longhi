@@ -1,7 +1,7 @@
 package it.polimi.ingsw.psp44.client;
 
 import it.polimi.ingsw.psp44.network.IConnection;
-import it.polimi.ingsw.psp44.network.IVirtual;
+import it.polimi.ingsw.psp44.network.Virtual;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.util.JsonConvert;
 
@@ -13,25 +13,27 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class VirtualServer implements IVirtual, Runnable {
+public class VirtualServer extends Virtual implements Runnable {
 
+    /**
+     * This ExecutorService creates daemon threads in order to read from System.in
+     * The JVM exits when the only threads running are all daemon threads.
+     */
     private final ExecutorService executor;
-    private final IConnection<String> connection;
     private final Map<Message.Code, IMessageHandlerFunction> router;
-
     private final Object _lock;
 
     public VirtualServer(IConnection<String> connection) {
-        this(connection, new ConcurrentHashMap<>());
-    }
-
-
-    public VirtualServer(IConnection<String> connection, Map<Message.Code, IMessageHandlerFunction> router) {
-        this.connection = connection;
-        this.router = router;
-        this.executor = Executors.newFixedThreadPool(2);
+        super(connection);
+        this.router = new ConcurrentHashMap<>();
         this._lock = new Object();
+        this.executor = Executors.newFixedThreadPool(2, r -> {
+            Thread t = new Thread(r);
+            t.setDaemon(true);
+            return t;
+        });
     }
+
 
     public void addMessageHandler(Message.Code code, IMessageHandlerFunction route) {
         synchronized (_lock) {
@@ -43,30 +45,18 @@ public class VirtualServer implements IVirtual, Runnable {
     public void cleanMessageHandlers() {
         // FIXME la clear toglie anche gli handler per ping e chiusura
         this.router.clear();
-        setPingResponse();
+
     }
 
     @Override
     public void run() {
         String rawJson;
-        setPingResponse();
         try {
+
             while ((rawJson = this.connection.readLine()) != null) {
-
                 Message message = JsonConvert.getInstance().fromJson(rawJson, Message.class);
-                Message.Code code = message.getCode();
-
-                synchronized (_lock) {
-                    while (!this.router.containsKey(code)) {
-                        _lock.wait();
-                    }
-                }
-
-                this.executor.execute(() -> router.get(code).accept(message));
-
+                this.routeMessage(message);
             }
-            System.out.println("readline = null");
-
 
         } catch (SocketTimeoutException e) {
             System.out.println("SocketTimeoutException");
@@ -76,19 +66,22 @@ public class VirtualServer implements IVirtual, Runnable {
             e.printStackTrace();
         }
 
+        this.executor.shutdownNow();
+        this.close();
     }
 
-    @Override
-    public void sendMessage(Message message) {
-        String messageString = JsonConvert.getInstance().toJson(message, Message.class);
-        connection.writeLine(messageString);
-    }
 
-    /**
-     * After the clients receives the PING message, it replays back with a PING message
-     */
-    private void setPingResponse() {
-        this.addMessageHandler(Message.Code.PING, m -> this.sendMessage(new Message(Message.Code.PING)));
+    private void routeMessage(Message message) throws InterruptedException {
+        Message.Code code = message.getCode();
+        if (code == Message.Code.PING)
+            return;
+
+        synchronized (_lock) {
+            while (!this.router.containsKey(code)) {
+                _lock.wait();
+            }
+        }
+        this.executor.execute(() -> router.get(code).accept(message));
     }
 
 }
