@@ -1,0 +1,174 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CompoundState</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.psp44.server.controller.states</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CompoundState (it.polimi.ingsw.psp44.server.controller.states)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CompoundState</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    84%
+  </span>
+  <span class="absValue">
+    (21/ 25)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server.controller.states;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
+<i>4</i>&nbsp;import it.polimi.ingsw.psp44.server.model.Board;
+<i>5</i>&nbsp;import it.polimi.ingsw.psp44.server.model.actions.Action;
+<i>6</i>&nbsp;import it.polimi.ingsw.psp44.util.Position;
+<i>7</i>&nbsp;import it.polimi.ingsw.psp44.util.R;
+<i>8</i>&nbsp;import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
+<i>9</i>&nbsp;import it.polimi.ingsw.psp44.util.exception.FilterException;
+<i>10</i>&nbsp;import it.polimi.ingsw.psp44.util.exception.StateException;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import java.util.ArrayList;
+<i>13</i>&nbsp;import java.util.List;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;/**
+<i>16</i>&nbsp; * CompoundState extends State.
+<i>17</i>&nbsp; * Has simple collection methods (add and remove)
+<i>18</i>&nbsp; * Architecture based on the composite pattern (https://en.wikipedia.org/wiki/Composite_pattern)
+<i>19</i>&nbsp; */
+<i>20</i>&nbsp;public class CompoundState extends State {
+<i>21</i>&nbsp;    private final List&lt;State&gt; simpleStates;
+<i>22</i>&nbsp;
+<b class="fc"><i>23</i>&nbsp;    public CompoundState() {</b>
+<b class="fc"><i>24</i>&nbsp;        this.simpleStates = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>25</i>&nbsp;    }</b>
+<i>26</i>&nbsp;
+<b class="fc"><i>27</i>&nbsp;    public CompoundState(State... states) {</b>
+<b class="fc"><i>28</i>&nbsp;        this.simpleStates = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>29</i>&nbsp;        for (State s : states) {</b>
+<b class="fc"><i>30</i>&nbsp;            this.simpleStates.add(s);</b>
+<i>31</i>&nbsp;        }
+<b class="fc"><i>32</i>&nbsp;    }</b>
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    /**
+<i>35</i>&nbsp;     * Compute the available actions that the player can perform
+<i>36</i>&nbsp;     *
+<i>37</i>&nbsp;     * @param board          representation of the playing field
+<i>38</i>&nbsp;     * @param selectedWorker worker selected from the player
+<i>39</i>&nbsp;     * @param moveFilter     filter to apply to move actions
+<i>40</i>&nbsp;     * @param buildFilter    filter to apply to build actions
+<i>41</i>&nbsp;     * @return list of available actions
+<i>42</i>&nbsp;     */
+<i>43</i>&nbsp;    @Override
+<i>44</i>&nbsp;    public List&lt;Action&gt; getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
+<b class="fc"><i>45</i>&nbsp;        ArrayList&lt;Action&gt; availableActions = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>46</i>&nbsp;        if (simpleStates.isEmpty())</b>
+<b class="nc"><i>47</i>&nbsp;            throw new StateException(R.getAppProperties().get(ErrorCodes.NO_STATE_IN_COLLECTION));</b>
+<b class="fc"><i>48</i>&nbsp;        for (State s : simpleStates)</b>
+<b class="fc"><i>49</i>&nbsp;            availableActions.addAll(s.getAvailableActions(board, selectedWorker, moveFilter, buildFilter));</b>
+<b class="fc"><i>50</i>&nbsp;        return availableActions;</b>
+<i>51</i>&nbsp;    }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    /**
+<i>54</i>&nbsp;     * Adds a state to the list of states in the list
+<i>55</i>&nbsp;     *
+<i>56</i>&nbsp;     * @param newState the state to add
+<i>57</i>&nbsp;     * @throws IllegalArgumentException if newState is null
+<i>58</i>&nbsp;     */
+<i>59</i>&nbsp;    public void addState(State newState) {
+<b class="fc"><i>60</i>&nbsp;        if (newState == null)</b>
+<b class="nc"><i>61</i>&nbsp;            throw new IllegalArgumentException(R.getAppProperties().get(ErrorCodes.NULL_STATE));</b>
+<b class="fc"><i>62</i>&nbsp;        this.simpleStates.add(newState);</b>
+<b class="fc"><i>63</i>&nbsp;    }</b>
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    /**
+<i>66</i>&nbsp;     * Removes a state form the list of states
+<i>67</i>&nbsp;     *
+<i>68</i>&nbsp;     * @param targetState, the state to remove
+<i>69</i>&nbsp;     * @throws IllegalArgumentException if Filter is null
+<i>70</i>&nbsp;     * @throws FilterException          if filter is not in the list
+<i>71</i>&nbsp;     */
+<i>72</i>&nbsp;    public void removeState(State targetState) {
+<b class="fc"><i>73</i>&nbsp;        if (targetState == null)</b>
+<b class="nc"><i>74</i>&nbsp;            throw new IllegalArgumentException(R.getAppProperties().get(ErrorCodes.NULL_STATE));</b>
+<b class="fc"><i>75</i>&nbsp;        if (!simpleStates.contains(targetState))</b>
+<b class="nc"><i>76</i>&nbsp;            throw new StateException(R.getAppProperties().get(ErrorCodes.STATE_NOT_IN_COLLECTION));</b>
+<b class="fc"><i>77</i>&nbsp;        this.simpleStates.remove(targetState);</b>
+<b class="fc"><i>78</i>&nbsp;    }</b>
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;    /**
+<i>82</i>&nbsp;     * Get the list of simple state in this compound state
+<i>83</i>&nbsp;     *
+<i>84</i>&nbsp;     * @return a list of State
+<i>85</i>&nbsp;     */
+<i>86</i>&nbsp;    public List&lt;State&gt; getSimpleStates() {
+<b class="fc"><i>87</i>&nbsp;        return simpleStates;</b>
+<i>88</i>&nbsp;    }
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;
+<i>91</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-26 13:13</div>
+</div>
+</body>
+</html>
