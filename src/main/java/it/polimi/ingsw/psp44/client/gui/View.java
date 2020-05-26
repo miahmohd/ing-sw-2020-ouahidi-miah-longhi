@@ -27,6 +27,7 @@ public class View extends Application {
         try {
             view = loader.load();
         } catch (IOException e) {
+            System.out.println(e);
             //TODO gestire questa cosa
             e.printStackTrace();
         }
@@ -38,6 +39,8 @@ public class View extends Application {
             stage.setScene(scene);
             stage.show();
         });
+
+        isLaunched = true;
     }
 
 
