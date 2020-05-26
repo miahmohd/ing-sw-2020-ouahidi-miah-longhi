@@ -36,20 +36,52 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.3.0</version>
 
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-
                 <executions>
+
+<!--                    Create server jar-->
                     <execution>
-                        <id>make-assembly</id>
+                        <id>make-server</id>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <archive>
+                                <manifest>
+                                    <mainClass>it.polimi.ingsw.psp44.server.App</mainClass>
+                                </manifest>
+                            </archive>
+                            <finalName>server-santorini</finalName>
+                        </configuration>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
                         </goals>
                     </execution>
+
+<!--                    Create cli jar-->
+                    <execution>
+                        <id>make-cli</id>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <archive>
+                                <manifest>
+                                    <mainClass>it.polimi.ingsw.psp44.client.ClientApp</mainClass>
+                                </manifest>
+                            </archive>
+                            <finalName>cli-client-santorini</finalName>
+                        </configuration>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+
+
+
                 </executions>
             </plugin>
 
