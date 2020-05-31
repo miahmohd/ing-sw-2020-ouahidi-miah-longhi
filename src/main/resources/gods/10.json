@@ -42,7 +42,8 @@
         "it.polimi.ingsw.psp44.server.controller.states.SimpleBuildState"
       ],
       "final-state": [
-        "it.polimi.ingsw.psp44.server.controller.states.SimpleMoveState"
+        "it.polimi.ingsw.psp44.server.controller.states.SimpleMoveState",
+        "it.polimi.ingsw.psp44.server.controller.states.SimpleBuildState"
       ],
       "condition": -1,
       "move-filters": [],
