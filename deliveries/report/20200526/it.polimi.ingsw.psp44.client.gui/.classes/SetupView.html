@@ -1,0 +1,164 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SetupView</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.psp44.client.gui</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SetupView (it.polimi.ingsw.psp44.client.gui)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SetupView</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 14)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.client.gui;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.psp44.client.ISetupView;
+<i>4</i>&nbsp;import it.polimi.ingsw.psp44.client.VirtualServer;
+<i>5</i>&nbsp;import it.polimi.ingsw.psp44.network.message.Message;
+<i>6</i>&nbsp;import javafx.beans.property.SimpleListProperty;
+<i>7</i>&nbsp;import javafx.collections.FXCollections;
+<i>8</i>&nbsp;import javafx.event.ActionEvent;
+<i>9</i>&nbsp;import javafx.fxml.FXML;
+<i>10</i>&nbsp;import javafx.fxml.Initializable;
+<i>11</i>&nbsp;import javafx.scene.control.ListView;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import java.net.URL;
+<i>14</i>&nbsp;import java.util.ResourceBundle;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;//https://stackoverflow.com/questions/47511132/javafx-custom-listview
+<i>17</i>&nbsp;public class SetupView implements Initializable, ISetupView {
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    private VirtualServer virtualServer;
+<i>20</i>&nbsp;    private String playerNickname;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    @FXML
+<i>23</i>&nbsp;    //https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/list-view.htm#CEGGEDBF
+<i>24</i>&nbsp;    public ListView&lt;String&gt; cardList;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    SimpleListProperty&lt;String&gt; ekkle;
+<i>27</i>&nbsp;
+<b class="nc"><i>28</i>&nbsp;    public SetupView(String playerNickname){</b>
+<b class="nc"><i>29</i>&nbsp;        this.playerNickname = playerNickname;</b>
+<b class="nc"><i>30</i>&nbsp;        ekkle = new SimpleListProperty&lt;&gt;(FXCollections.observableArrayList());</b>
+<i>31</i>&nbsp;    }
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    @Override
+<i>34</i>&nbsp;    public void chooseCardsFrom(Message cards) {
+<b class="nc"><i>35</i>&nbsp;        View.setViewAndShow(&quot;Setup&quot;, &quot;/gui/setup.fxml&quot;, this);</b>
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    }
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    @Override
+<i>40</i>&nbsp;    public void chooseCardFrom(Message cards) {
+<i>41</i>&nbsp;    }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    @Override
+<i>44</i>&nbsp;    public void allPlayerCards(Message players) {
+<i>45</i>&nbsp;    }
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    @Override
+<i>48</i>&nbsp;    public void start(Message start) {
+<i>49</i>&nbsp;    }
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;    @Override
+<i>52</i>&nbsp;    public void end(Message end) {
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    @Override
+<i>57</i>&nbsp;    public void setServer(VirtualServer virtual) {
+<b class="nc"><i>58</i>&nbsp;        this.virtualServer = virtual;</b>
+<i>59</i>&nbsp;
+<b class="nc"><i>60</i>&nbsp;        virtualServer.cleanMessageHandlers();</b>
+<i>61</i>&nbsp;
+<b class="nc"><i>62</i>&nbsp;        virtualServer.addMessageHandler(Message.Code.ALL_PLAYER_CARDS, this::allPlayerCards);</b>
+<b class="nc"><i>63</i>&nbsp;        virtualServer.addMessageHandler(Message.Code.START_TURN, this::start);</b>
+<b class="nc"><i>64</i>&nbsp;        virtualServer.addMessageHandler(Message.Code.CHOOSE_CARD, this::chooseCardFrom);</b>
+<b class="nc"><i>65</i>&nbsp;        virtualServer.addMessageHandler(Message.Code.CHOOSE_CARDS, this::chooseCardsFrom);</b>
+<b class="nc"><i>66</i>&nbsp;        virtualServer.addMessageHandler(Message.Code.END_TURN, this::end);</b>
+<i>67</i>&nbsp;    }
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;    @Override
+<i>70</i>&nbsp;    public void initialize(URL url, ResourceBundle resourceBundle) {
+<b class="nc"><i>71</i>&nbsp;        cardList.itemsProperty().bindBidirectional(ekkle);</b>
+<b class="nc"><i>72</i>&nbsp;        cardList.getSelectionModel().selectedItemProperty().addListener(</b>
+<i>73</i>&nbsp;                (observable, oldValue, newValue) -&gt; {
+<i>74</i>&nbsp;                    // Your action here
+<b class="nc"><i>75</i>&nbsp;                    System.out.println(&quot;Selected item: &quot; + newValue);</b>
+<i>76</i>&nbsp;                });
+<i>77</i>&nbsp;    }
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;    private void startGame(ActionEvent actionEvent){
+<i>80</i>&nbsp;    }
+<i>81</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-26 13:13</div>
+</div>
+</body>
+</html>
