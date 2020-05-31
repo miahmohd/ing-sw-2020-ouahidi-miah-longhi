@@ -16,7 +16,6 @@ public class Board {
     private final Cell[][] cells;
     private final Map<String, Graphics.Color> playerColors;
     private final Map<Integer, Graphics.Color> levelColors;
-    private final StringBuffer sb;
     private final Map <String, String> playerCards;
 
 
@@ -24,7 +23,6 @@ public class Board {
         this.cells = new Cell[DIMENSION][DIMENSION];
         this.playerColors = new HashMap<>();
         this.levelColors = new HashMap<>();
-        this.sb = new StringBuffer();
         this.playerCards = new HashMap<>();
         initBoard();
         initLevelColors();
@@ -117,7 +115,7 @@ public class Board {
      */
     public String getBoard() {
         Cell currentCell;
-        cleanBoard();
+        StringBuffer sb = new StringBuffer();
         for (int row = 0; row < DIMENSION; row++) {
             for (int column = 0; column < DIMENSION; column++) {
                 currentCell = cells[row][column];
@@ -189,7 +187,4 @@ public class Board {
         return cellBuffer;
     }
 
-    private void cleanBoard() {
-        sb.delete(0, sb.length());
-    }
 }

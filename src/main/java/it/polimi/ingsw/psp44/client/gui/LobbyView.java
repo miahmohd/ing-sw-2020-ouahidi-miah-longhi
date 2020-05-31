@@ -136,7 +136,6 @@ public class LobbyView implements ILobbyView, Initializable {
     private void changeView() {
         SetupView setupController = new SetupView(nicknameText.get());
         setupController.setServer(this.virtualServer);
-
     }
 
 
