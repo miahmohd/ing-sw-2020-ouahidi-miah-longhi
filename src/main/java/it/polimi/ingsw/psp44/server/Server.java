@@ -41,6 +41,7 @@ public class Server {
                 Socket socket = server.accept();
 
                 VirtualView view = new VirtualView(new SocketConnection(socket));
+                view.startPingTask();
                 this.views.add(view);
 
                 setHandlers(view);

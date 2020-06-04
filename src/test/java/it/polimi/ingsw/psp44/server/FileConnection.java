@@ -22,6 +22,7 @@ public class FileConnection implements IConnection<String> {
 
     @Override
     public void writeLine(String message) {
+        if(!message.contains("ACTIVE_TURN"))
         writer.println(message);
     }
 

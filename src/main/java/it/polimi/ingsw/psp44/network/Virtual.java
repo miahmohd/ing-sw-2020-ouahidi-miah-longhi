@@ -34,7 +34,6 @@ public class Virtual {
      */
     public Virtual(IConnection<String> connection) {
         this.connection = connection;
-        startPingTask();
     }
 
     /**
@@ -61,7 +60,7 @@ public class Virtual {
      * The client is reachable if the server receives a PING message response.
      * If after TIMEOUT second the server did not receive a PING response, the socket throws a SocketTimeoutException.
      */
-    private void startPingTask() {
+    public void startPingTask() {
         int delay = TIMEOUT / 2;
         Runnable task = () -> this.sendMessage(new Message(Message.Code.PING));
         this.scheduledFuture = scheduledExecutor.scheduleAtFixedRate(task, delay, delay, TimeUnit.MILLISECONDS);
