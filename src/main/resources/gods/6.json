@@ -21,7 +21,8 @@
       "condition": -1,
       "move-filters": [],
       "build-filters": [
-        "it.polimi.ingsw.psp44.server.controller.filters.FilterOnlyLastPosition"
+        "it.polimi.ingsw.psp44.server.controller.filters.FilterOnlyLastPosition",
+        "it.polimi.ingsw.psp44.server.controller.filters.FilterMaxLevel"
       ],
       "final": true
     },
@@ -45,7 +46,8 @@
     "it.polimi.ingsw.psp44.server.controller.filters.FilterMyWorkers",
     "it.polimi.ingsw.psp44.server.controller.filters.FilterDome",
     "it.polimi.ingsw.psp44.server.controller.filters.FilterOtherWorkers",
-    "it.polimi.ingsw.psp44.server.controller.filters.FilterOnlyLastPosition"
+    "it.polimi.ingsw.psp44.server.controller.filters.FilterOnlyLastPosition",
+    "it.polimi.ingsw.psp44.server.controller.filters.FilterMaxLevel"
   ],
   "move-filters": [
     "it.polimi.ingsw.psp44.server.controller.filters.FilterDome",
