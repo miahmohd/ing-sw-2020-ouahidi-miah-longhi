@@ -94,16 +94,12 @@ public class SetupView implements Initializable, ISetupView {
                 myCard = playerCard.getCardName();
         }
 
-        changeView();
-
-    }
-
-    private void changeView() {
-        GameView gameView = new GameView();
+        GameView gameView = new GameView(this.playerNickname, myCard, opponentNamesAndCards);
         gameView.setServer(virtualServer);
 
         View.setViewAndShow("Santorini", "/gui/game.fxml", gameView);
     }
+
 
     @Override
     public void start(Message start) {

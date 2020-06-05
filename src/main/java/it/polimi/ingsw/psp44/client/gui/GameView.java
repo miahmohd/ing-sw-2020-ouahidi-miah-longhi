@@ -9,15 +9,9 @@ import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.util.Position;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -25,14 +19,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -40,163 +30,129 @@ public class GameView implements IGameView, Initializable {
 
     private static final int DIMENSION = 5;
     private VirtualServer virtualServer;
-    private String playerNickname;
-    private HashMap<String, String> opponentNamesAndCards;
+
 
     private SimpleStringProperty[][] board;
     private SimpleBooleanProperty[][] boardDisabled;
     private SimpleObjectProperty<EventHandler<ActionEvent>>[][] boardAction;
 
+    private SimpleBooleanProperty isTurnEndable;
 
+    private SimpleStringProperty playerAndCards;
     private int cardinality;
     private List<Position> workerPositions;
+
+    private SimpleStringProperty turnProperty;
+
+    private Map<Position, List<Action>> actionsPerPosition;
 
     @FXML
     private GridPane boardGridPane;
     @FXML
     private Label playersLabel;
+    @FXML
+    private Label turnLabel;
+    @FXML
+    private Button endTurnButton;
 
 
-    public GameView(){
+    public GameView(String playerNickname, String myCard, Map<String, String> opponentNamesAndCards) {
         board = new SimpleStringProperty[DIMENSION][DIMENSION];
         boardDisabled = new SimpleBooleanProperty[DIMENSION][DIMENSION];
         boardAction = new SimpleObjectProperty[DIMENSION][DIMENSION];
 
+        isTurnEndable = new SimpleBooleanProperty(true);
+
+        turnProperty = new SimpleStringProperty("");
+
+        String players = String.format("%s : %s\n", playerNickname, myCard);
+
+        for (String player : opponentNamesAndCards.keySet()){
+            players += String.format("%s : %s\n", player, opponentNamesAndCards.get(player));
+        }
+
+        playerAndCards = new SimpleStringProperty(players);
         initializeAll();
     }
 
 
-    private void initializeAll(){
-        for (int row = 0; row < DIMENSION; row++){
-            for (int column = 0; column < DIMENSION; column++){
-                //inizializzo la property con EMPTY
-                board[row][column] = new SimpleStringProperty("0:NO-WORKERS");
-                boardDisabled[row][column] = new SimpleBooleanProperty(false);
-                boardAction[row][column] = new SimpleObjectProperty<>(this::doNothing);
-            }
-        }
-    }
-
     @Override
     public void chooseWorkersInitialPositionFrom(Message workers) {
-        //View.setViewAndShow("Santorini", "/gui/game.fxml", this);
-
         List<Position> positionsToChooseFrom = new ArrayList<>(
                 Arrays.asList(BodyFactory.fromPositions(workers.getBody()))
         );
-
-        for(Position position : positionsToChooseFrom){
-            boardDisabled[position.getRow()][position.getColumn()].set(false);
-            boardAction[position.getRow()][position.getColumn()].set(this::sendWorkers);
-        }
+        disablePositionsAndSetAction(positionsToChooseFrom, this::sendWorkers);
         cardinality = 2;
         workerPositions = new ArrayList<>();
     }
-
     @Override
     public void chooseWorkerFrom(Message workers) {
         List<Position> positionsToChooseFrom = new ArrayList<>(
                 Arrays.asList(BodyFactory.fromPositions(workers.getBody()))
         );
-
-        for(Position position : positionsToChooseFrom){
-            boardDisabled[position.getRow()][position.getColumn()].set(false);
-            boardAction[position.getRow()][position.getColumn()].set(this::sendWorker);
-        }
-
+        disablePositionsAndSetAction(positionsToChooseFrom, this::sendWorker);
         cardinality = 1;
         workerPositions = new ArrayList<>();
     }
-
-
-    private void sendWorker(ActionEvent actionEvent){
-        int row, column;
-        Node node = (Node)actionEvent.getSource();
-
-        row = boardGridPane.getColumnIndex(node);
-        column = boardGridPane.getRowIndex(node);
-
-        System.out.println(String.format("%d, %d", row, column));
-
-        workerPositions.add(new Position(row, column));
-        boardDisabled[row][column].set(true);
-
-        if(workerPositions.size() == this.cardinality){
-            virtualServer.sendMessage(new Message(Message.Code.CHOOSE_WORKER,
-                    BodyFactory.toPosition(new Position(row, column))));
-        }
-    }
-
-    private void sendWorkers(ActionEvent actionEvent){
-        int row, column;
-        Node node = (Node)actionEvent.getSource();
-
-        row = boardGridPane.getColumnIndex(node);
-        column = boardGridPane.getRowIndex(node);
-
-        System.out.println(String.format("%d, %d", row, column));
-
-        workerPositions.add(new Position(row, column));
-        //boardDisabled[row][column].set(true);
-
-        if(workerPositions.size() == this.cardinality){
-            virtualServer.sendMessage(new Message(Message.Code.CHOSEN_WORKERS_INITIAL_POSITION,
-                    BodyFactory.toPositions(workerPositions.toArray(Position[]::new))));
-        }
-    }
-
     @Override
     public void chooseActionFrom(Message actions) {
-        Action chosenAction;
-        Map<Position, List<Action>> actionsPerPosition;
         Map<MessageHeader, String> headers;
-        boolean isTurnEndable;
 
         List<Action> actionList = new ArrayList<>(Arrays.asList(
                 BodyFactory.fromActions(actions.getBody())
         ));
-        actionsPerPosition = actionList.stream().collect(groupingBy(Action::getTarget));
-    }
 
+        this.actionsPerPosition = actionList.stream().collect(groupingBy(Action::getTarget));
+
+        disablePositionsAndSetAction(actionsPerPosition.keySet(), this::sendAction);
+
+        headers = actions.getHeader();
+        if(headers != null)
+            this.isTurnEndable.set(!Boolean.parseBoolean(headers.get(MessageHeader.IS_TURN_ENDABLE)));
+        else
+            this.isTurnEndable.set(true);
+    }
     @Override
     public void start(Message start) {
-        //TODO: THIS IS CURRENTLY A PLAY FIELD
-        //View.setViewAndShow("Santorini", "/gui/game.fxml", this);
-
+        //TODO: questo metodo Diventa a bit inutile
         System.out.println("ekkomi nello start di gameview");
     }
-
-
     @Override
     public void end(Message end) {
-        System.out.println("ora stai fermo");
+        //this is utile
+        disableAllBoard();
     }
-
     @Override
     public void lost(Message lost) {
+        //TODO: todo questo
         System.out.println("YOU LOST, looser");
     }
-
     @Override
     public void won(Message won) {
+        //TODO: todo anche questo
         System.out.println("you won, good job, very very good job");
     }
-
     @Override
     public void update(Message update) {
         Cell[] cellsToUpdate = BodyFactory.fromCells(update.getBody());
         for (Cell cell : cellsToUpdate){
             SimpleStringProperty stringProperty = board[cell.getPosition().getRow()][cell.getPosition().getColumn()];
-            Platform.runLater(()-> stringProperty.set(String.format("%d:%s", cell.getLevel(), cell.getPlayerNickname())));
 
+            Platform.runLater(()-> {
+                    if (cell.getPlayerNickname() == null)
+                        stringProperty.set(String.format("%d:%s", cell.getLevel(), ""));
+                    else
+                        stringProperty.set(String.format("%d:%s", cell.getLevel(), cell.getPlayerNickname()));
+                    }
+            );
         }
     }
-
     @Override
     public void activeTurn(Message activePlayer) {
-        System.out.println(String.format("%s's turn",activePlayer.getBody()));
+        Platform.runLater(() ->
+            turnProperty.set(String.format("%s's turn",activePlayer.getBody()))
+        );
     }
-
     @Override
     public void setServer(VirtualServer virtual) {
         this.virtualServer = virtual;
@@ -215,11 +171,9 @@ public class GameView implements IGameView, Initializable {
         virtualServer.addMessageHandler(Message.Code.ACTIVE_TURN, this::activeTurn);
     }
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Button buttonToAdd;
-
 
         //INIZIALIZZO la board;
         for (int row = 0; row < DIMENSION; row++){
@@ -232,32 +186,91 @@ public class GameView implements IGameView, Initializable {
                 buttonToAdd.disableProperty().bindBidirectional(boardDisabled[row][column]);
 
                 buttonToAdd.onActionProperty().bindBidirectional(boardAction[row][column]);
-                //Aggiungo alla cosa
+
                 boardGridPane.add(buttonToAdd, row, column);
             }
         }
+        endTurnButton.disableProperty().bindBidirectional(isTurnEndable);
+        playersLabel.textProperty().bindBidirectional(playerAndCards);
 
-        playersLabel.setText("qua ci vanno i player" +
-                "sii \n vediamo se vai a capo");
-
+        turnLabel.textProperty().bindBidirectional(turnProperty);
     }
 
-
-    private void doNothing(ActionEvent actionEvent){
-        /*
+    private void sendAction(ActionEvent actionEvent){
         int row, column;
         Node node = (Node)actionEvent.getSource();
 
         row = boardGridPane.getColumnIndex(node);
         column = boardGridPane.getRowIndex(node);
 
-        System.out.println(String.format("%d, %d", row, column));
+        Position actionPosition = new Position(row, column);
 
-        board[row][column].set("CLICKED");
-        //System.out.println("ci soooono");
+        List<Action> actions = this.actionsPerPosition.get(actionPosition);
+        virtualServer.sendMessage(
+                new Message(Message.Code.CHOSEN_ACTION, BodyFactory.toAction(actions.stream().findFirst().get()))
+        );
 
-        //System.out.println(ekkel.getParent());
-        //System.out.println((Button)ekkle.getSource());
-        */
+    }
+    private void sendWorker(ActionEvent actionEvent){
+        int row, column;
+        Node node = (Node)actionEvent.getSource();
+
+        row = boardGridPane.getColumnIndex(node);
+        column = boardGridPane.getRowIndex(node);
+
+
+        workerPositions.add(new Position(row, column));
+        boardDisabled[row][column].set(true);
+
+        if(workerPositions.size() == this.cardinality){
+            virtualServer.sendMessage(new Message(Message.Code.CHOSEN_WORKER,
+                    BodyFactory.toPosition(new Position(row, column))));
+        }
+    }
+    private void sendWorkers(ActionEvent actionEvent){
+        int row, column;
+        Node node = (Node)actionEvent.getSource();
+
+        row = boardGridPane.getColumnIndex(node);
+        column = boardGridPane.getRowIndex(node);
+
+        workerPositions.add(new Position(row, column));
+        boardDisabled[row][column].set(true);
+
+        if(workerPositions.size() == this.cardinality) {
+            virtualServer.sendMessage(new Message(Message.Code.CHOSEN_WORKERS_INITIAL_POSITION,
+                    BodyFactory.toPositions(workerPositions.toArray(Position[]::new))));
+        }
+    }
+
+
+    private void disableAllBoard() {
+        for (int row = 0; row < DIMENSION; row++){
+            for (int column = 0; column < DIMENSION; column++){
+                boardDisabled[row][column].set(true);
+            }
+        }
+    }
+    private void initializeAll(){
+        for (int row = 0; row < DIMENSION; row++){
+            for (int column = 0; column < DIMENSION; column++){
+                //inizializzo la property con EMPTY
+                board[row][column] = new SimpleStringProperty("0:");
+                boardDisabled[row][column] = new SimpleBooleanProperty(false);
+                boardAction[row][column] = new SimpleObjectProperty<>();
+            }
+        }
+    }
+    private void disablePositionsAndSetAction(Collection<Position> positionsToChooseFrom, EventHandler<ActionEvent> action) {
+        for (int row = 0; row < DIMENSION; row++) {
+            for (int column = 0; column < DIMENSION; column++) {
+                if(positionsToChooseFrom.contains(new Position(row, column))) {
+                    boardDisabled[row][column].set(false);
+                    boardAction[row][column].set(action);
+                }
+                else
+                    boardDisabled[row][column].set(true);
+            }
+        }
     }
 }

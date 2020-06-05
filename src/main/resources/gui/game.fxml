@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -36,7 +35,7 @@
             </GridPane>
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="playersLabel"></Label>
+                  <Label fx:id="playersLabel" />
                </children>
             </Pane>
          </items>
@@ -51,7 +50,10 @@
             <Color blue="0.625" green="0.625" red="0.625" fx:id="x4" />
           </textFill>
         </Label>
-        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
+        <Pane nodeOrientation="RIGHT_TO_LEFT" prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Button fx:id="endTurnButton" mnemonicParsing="false" text="End Turn" />
+               </children></Pane>
       </children>
       <padding>
         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
