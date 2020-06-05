@@ -98,8 +98,11 @@ public class ControllerTest {
         //playerViews1.put("p10", p10);
         // 5 vs 6 vs 9
         VirtualView p5 = new VirtualView(p5Connection);
+        p5.startPingTask();
         VirtualView p6 = new VirtualView(p6Connection);
+        p6.startPingTask();
         VirtualView p9 = new VirtualView(p9Connection);
+        p9.startPingTask();
         playerViews2.put("p5", p5);
         playerViews2.put("p6", p6);
         playerViews2.put("p9", p9);
@@ -157,34 +160,20 @@ public class ControllerTest {
         do{
             do {
                 sent=getNextMessageFrom(p5Connection);
-                if(sent==null)
-                    p5end=true;
-                else {
                     routeMessage(match2, p5, sent);
                     recived = getLastMessage(p5ActualOut);
-                }
-            } while(!p5end&&recived.getCode() != Message.Code.END_TURN);
+            } while(recived.getCode() != Message.Code.END_TURN);
             do {
                 sent=getNextMessageFrom(p6Connection);
-                if(sent==null) {
-                    p6end=true;
-                }
-                else {
                     routeMessage(match2, p6, sent);
                     recived = getLastMessage(p6ActualOut);
-                }
-            } while (!p6end&&recived.getCode() != Message.Code.END_TURN);
+            } while (recived.getCode() != Message.Code.END_TURN);
             do {
                 sent=getNextMessageFrom(p9Connection);
-                if(sent==null) {
-                    p9end=true;
-                }
-                else {
                     routeMessage(match2, p9, sent);
                     recived = getLastMessage(p9ActualOut);
-                }
-            } while (!p9end&&recived.getCode() != Message.Code.END_TURN);
-        }while ((!p5end)&&(!p6end)&&(!p9end));
+            } while (recived.getCode() != Message.Code.END_TURN);
+        }while (!isFinished(p9ActualOut));
 
         //Expected messages sent to the views
         //List<String> p1ExpectedOut = Files.readAllLines(Paths.get(getClass().getResource("/controllertest/threeplayer/p1.out.txt").toURI()));
@@ -208,6 +197,13 @@ public class ControllerTest {
         p5ExpectedIn.close();
         p6ExpectedIn.close();
         p9ExpectedIn.close();
+
+    }
+
+    private boolean isFinished(StringWriter p9ActualOut) {
+        String br = System.getProperty("line.separator");
+        String[] messages = p9ActualOut.toString().split(br);
+        return messages[messages.length - 2].contains("WON");
 
     }
 

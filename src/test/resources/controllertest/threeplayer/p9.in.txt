@@ -7,4 +7,3 @@
 {"code":"CHOSEN_ACTION","headers":{},"body":"{\"target\":{\"row\":2,\"column\":1},\"build\":true,\"move\":false,\"id\":1,\"description\":\"Build a new level at target position.\"}"}
 {"code":"CHOSEN_WORKER","headers":{},"body":"{\"row\":2,\"column\":2}"}
 {"code":"CHOSEN_ACTION","headers":{},"body":"{\"target\":{\"row\":1,\"column\":2},\"build\":false,\"move\":true,\"id\":0,\"description\":\"Move to target position.\"}"}
-{"code":"CHOSEN_ACTION","headers":{},"body":"{\"target\":{\"row\":0,\"column\":1},\"build\":true,\"move\":false,\"id\":0,\"description\":\"Build a new level at target position.\"}"}

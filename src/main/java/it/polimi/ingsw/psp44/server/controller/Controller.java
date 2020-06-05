@@ -101,8 +101,10 @@ public class Controller {
             }
             selectedAction = availableActions.get(BodyFactory.fromAction(message.getBody()).getId());
             model.doAction(selectedAction);
-            if (currentPlayer.checkVictory(selectedAction, model.getBoard()))
+            if (currentPlayer.checkVictory(selectedAction, model.getBoard())) {
                 won();
+                return;
+            }
             if (currentPlayer.nextState(selectedAction, model.getBoard())) {
                 actions();
             } else {
@@ -200,6 +202,9 @@ public class Controller {
         model.removePlayer(model.getCurrentPlayerNickname());
         players.remove(model.getCurrentPlayerNickname());
         currentPlayerView.sendMessage(new Message(Message.Code.LOST));
+        currentPlayerView.sendMessage(new Message(Message.Code.END_TURN));
+        currentPlayerView.close();
+        playerViews.remove(model.getCurrentPlayerNickname());
         model.nextTurn();
         nextTurn(model.getNumberOfPlayer() == 2);
         if (model.getNumberOfPlayer() == 3) {
@@ -217,6 +222,18 @@ public class Controller {
      */
     private void won() {
         currentPlayerView.sendMessage(new Message(Message.Code.WON));
+        currentPlayerView.sendMessage(new Message(Message.Code.END_TURN));
+        currentPlayerView.close();
+        players.remove(model.getCurrentPlayerNickname());
+        playerViews.remove(model.getCurrentPlayerNickname());
+        for(VirtualView player: playerViews.values()){
+            player.sendMessage(new Message(Message.Code.START_TURN));
+            player.sendMessage(new Message(Message.Code.LOST));
+            player.sendMessage(new Message(Message.Code.END_TURN));
+            player.close();
+        }
+        playerViews.clear();
+        players.clear();
     }
 
     /**

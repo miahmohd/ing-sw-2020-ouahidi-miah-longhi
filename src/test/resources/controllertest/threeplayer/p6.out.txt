@@ -18,3 +18,6 @@
 {"code":"CHOOSE_ACTION","headers":{},"body":"[{\"target\":{\"row\":0,\"column\":3},\"build\":true,\"move\":false,\"id\":0,\"description\":\"Build a new level at target position.\"},{\"target\":{\"row\":0,\"column\":4},\"build\":true,\"move\":false,\"id\":1,\"description\":\"Build a new level at target position.\"},{\"target\":{\"row\":1,\"column\":3},\"build\":true,\"move\":false,\"id\":2,\"description\":\"Build a new level at target position.\"},{\"target\":{\"row\":2,\"column\":3},\"build\":true,\"move\":false,\"id\":3,\"description\":\"Build a new level at target position.\"},{\"target\":{\"row\":2,\"column\":4},\"build\":true,\"move\":false,\"id\":4,\"description\":\"Build a new level at target position.\"}]"}
 {"code":"CHOOSE_ACTION","headers":{"IS_TURN_ENDABLE":"true"},"body":"[{\"target\":{\"row\":2,\"column\":4},\"build\":true,\"move\":false,\"id\":0,\"description\":\"Build a new level at target position.\"}]"}
 {"code":"END_TURN","headers":{},"body":""}
+{"code":"START_TURN","headers":{},"body":""}
+{"code":"LOST","headers":{},"body":""}
+{"code":"END_TURN","headers":{},"body":""}
