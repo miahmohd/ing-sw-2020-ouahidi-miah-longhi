@@ -34,6 +34,4 @@ public class FileConnection implements IConnection<String> {
             e.printStackTrace();
         }
     }
-
-
 }

@@ -1,7 +1,8 @@
 package it.polimi.ingsw.psp44.client;
 
 
-import it.polimi.ingsw.psp44.client.cli.LobbyView;
+import it.polimi.ingsw.psp44.client.gui.GameView;
+import it.polimi.ingsw.psp44.client.gui.LobbyView;
 import it.polimi.ingsw.psp44.network.IConnection;
 import it.polimi.ingsw.psp44.network.SocketConnection;
 import it.polimi.ingsw.psp44.util.ConfigCodes;
@@ -25,6 +26,11 @@ public class ClientApp {
 //            port = Integer.parseInt(host[1]);
 //        }
 
+        /**
+        GameView ekkle = new GameView();
+        ekkle.start(null);
+        */
+        ///**
          try {
 
              Socket socket = new Socket(hostname, port);
@@ -43,5 +49,6 @@ public class ClientApp {
          } catch (IOException | InterruptedException e) {
             System.err.println("ERROR: " + e.getMessage());
          }
+         //*/
     }
 }
