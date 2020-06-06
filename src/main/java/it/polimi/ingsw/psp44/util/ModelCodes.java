@@ -6,7 +6,9 @@ public final class ModelCodes {
     public static final String PUSH_FORWARD_MOVEMENT_DESCRIPTION = "PUSH_FORWARD_MOVEMENT_DESCRIPTION";
     public static final String SWAP_MOVEMENT_DESCRIPTION = "SWAP_MOVEMENT_DESCRIPTION";
     public static final String SIMPLE_BUILD_DESCRIPTION = "SIMPLE_BUILD_DESCRIPTION";
+    public static final String SIMPLE_UNBUILD_DESCRIPTION = "SIMPLE_UNBUILD_DESCRIPTION";
     public static final String SIMPLE_MOVEMENT_DESCRIPTION = "SIMPLE_MOVEMENT_DESCRIPTION";
+    public static final String FORCE_BACKWARDS_MOVEMENT_DESCRIPTION = "FORCE_BACKWARDS_MOVEMENT_DESCRIPTION";
 
     private ModelCodes() {
     }

@@ -16,7 +16,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -155,8 +154,6 @@ public class ControllerTest {
 
         match2.init(false);
         Message sent=null,recived=null;
-        boolean p5end,p6end,p9end;
-        p5end=p6end=p9end=false;
         do{
             do {
                 sent=getNextMessageFrom(p5Connection);

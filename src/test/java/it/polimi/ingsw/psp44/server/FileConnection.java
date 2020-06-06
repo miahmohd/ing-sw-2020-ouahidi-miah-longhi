@@ -8,6 +8,7 @@ public class FileConnection implements IConnection<String> {
 
     private PrintWriter writer;
     private BufferedReader reader;
+    private boolean active=true;
 
     public FileConnection(Reader in, Writer out) {
         writer = new PrintWriter(out, true);
@@ -22,12 +23,13 @@ public class FileConnection implements IConnection<String> {
 
     @Override
     public void writeLine(String message) {
-        if(!message.contains("ACTIVE_TURN"))
+        if(!message.contains("ACTIVE_TURN")&&!message.contains("PING"))
         writer.println(message);
     }
 
     @Override
     public void close() {
+        active=false;
         writer.close();
         try {
             reader.close();
@@ -37,4 +39,7 @@ public class FileConnection implements IConnection<String> {
     }
 
 
+    public boolean isActive() {
+       return active;
+    }
 }

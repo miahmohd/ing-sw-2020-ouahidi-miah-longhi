@@ -1,5 +1,6 @@
 package it.polimi.ingsw.psp44.network.communication;
 
+import it.polimi.ingsw.psp44.server.controller.CardController;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.Worker;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
@@ -131,11 +132,11 @@ public class BodyFactory {
         return JsonConvert.getInstance().fromJson(card, Card.class);
     }
 
-    public static String toPlayerCards(Map<String, String> playerAndCard) {
+    public static String toPlayerCards(Map<String, CardController> playerAndCard) {
         BodyTemplates.PlayerCard[] playerCards = new BodyTemplates.PlayerCard[playerAndCard.size()];
         int counter = 0;
         for (String player : playerAndCard.keySet()){
-            playerCards[counter] = new BodyTemplates.PlayerCard(player, playerAndCard.get(player));
+            playerCards[counter] = new BodyTemplates.PlayerCard(player, playerAndCard.get(player).getCardName());
             counter++;
         }
 

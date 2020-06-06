@@ -15,6 +15,7 @@ import it.polimi.ingsw.psp44.util.R;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 import it.polimi.ingsw.psp44.util.exception.ProtocolException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,7 @@ import java.util.Map;
  */
 
 public class Controller {
+
     private Map<String, CardController> players;
     private Map<String, VirtualView> playerViews;
     private CardController currentPlayer;
@@ -199,19 +201,16 @@ public class Controller {
      * - 2 players match: end the match, the opponent win
      */
     private void lost() {
-        model.removePlayer(model.getCurrentPlayerNickname());
-        players.remove(model.getCurrentPlayerNickname());
+        String loser=model.getCurrentPlayerNickname();
+        model.removePlayer(loser);
+        players.remove(loser);
         currentPlayerView.sendMessage(new Message(Message.Code.LOST));
-        currentPlayerView.sendMessage(new Message(Message.Code.END_TURN));
+        end(false);
         currentPlayerView.close();
-        playerViews.remove(model.getCurrentPlayerNickname());
-        model.nextTurn();
-        nextTurn(model.getNumberOfPlayer() == 2);
-        if (model.getNumberOfPlayer() == 3) {
-            end(false);
+        playerViews.remove(loser);
+        if (model.getNumberOfPlayer() == 2) {
             nextTurn(false);
         } else {
-            end(false);
             nextTurn(true);
         }
 
@@ -223,7 +222,6 @@ public class Controller {
     private void won() {
         currentPlayerView.sendMessage(new Message(Message.Code.WON));
         currentPlayerView.sendMessage(new Message(Message.Code.END_TURN));
-        currentPlayerView.close();
         players.remove(model.getCurrentPlayerNickname());
         playerViews.remove(model.getCurrentPlayerNickname());
         for(VirtualView player: playerViews.values()){
@@ -234,6 +232,8 @@ public class Controller {
         }
         playerViews.clear();
         players.clear();
+        currentPlayerView.close();
+
     }
 
     /**
@@ -265,8 +265,12 @@ public class Controller {
      */
     private void workers() {
         List<Position> workers = model.getBoard().getPlayerWorkersPositions(model.getCurrentPlayerNickname());
-        Position[] workersArray = workers.toArray(Position[]::new);
-        if (workers.isEmpty())
+        List<Position> activeWorkers = new ArrayList<>();
+        workers.stream().filter((worker)->!currentPlayer.getAvailableAction(model.getBoard(),worker).isEmpty())
+                .forEach((worker)->activeWorkers.add(worker));
+        Position[] workersArray = activeWorkers.toArray(Position[]::new);
+
+        if (activeWorkers.isEmpty())
             lost();
         else {
             currentPlayerView.sendMessage(new Message(Message.Code.CHOOSE_WORKER, BodyFactory.toPositions(workersArray)));

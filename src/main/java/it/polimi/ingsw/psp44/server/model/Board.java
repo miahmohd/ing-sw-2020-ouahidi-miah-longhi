@@ -306,5 +306,20 @@ public class Board {
         this.selectedWorker = selectedWorkerPosition;
     }
 
+    /**
+     * Check if there aren't block built at the specified position
+     * @param p the position to check
+     * @return <code>true</code> if there aren't block, <code>false</code> otherwise
+     */
+    public boolean isGroundLevel(Position p) {
+        if (p == null)
+            throw new IllegalArgumentException(R.getAppProperties().get(ErrorCodes.NULL_POS));
+        if (!isPositionInBounds(p))
+            throw new IllegalArgumentException(R.getAppProperties().get(ErrorCodes.OUT_OF_BOUNDS));
+
+        Space targetSpace = this.field[p.getRow()][p.getColumn()];
+        return targetSpace.isGroundLevel();
+
+    }
 }
 

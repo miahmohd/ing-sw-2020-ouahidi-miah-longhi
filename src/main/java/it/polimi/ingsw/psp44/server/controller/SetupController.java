@@ -10,8 +10,6 @@ import it.polimi.ingsw.psp44.util.Card;
 import it.polimi.ingsw.psp44.util.R;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 /**
  * This class manages the setup phase of the game.
@@ -23,8 +21,7 @@ public class SetupController {
     private final Map<String, VirtualView> playerViews;
     private final Map<String, CardController> playerCardController;
 
-    // TODO mettere la carta dentro il cardontroller cosi da togliere questo
-    private Map<String, String> playerCards;
+
     private List<Card> chosenCards;
 
 
@@ -86,8 +83,6 @@ public class SetupController {
         chosenCards = new ArrayList<>(Arrays.asList(
                 BodyFactory.fromCards(message.getBody())
         ));
-        playerCards = new HashMap<>();
-
         VirtualView currentPlayer = this.playerViews.get(this.model.getCurrentPlayerNickname());
         Message toSend = new Message(Message.Code.CHOOSE_CARD, message.getBody());
 
@@ -118,7 +113,6 @@ public class SetupController {
         cardController = CardFactory.getController(chosen);
         cardController.setContext(controller);
         this.playerCardController.put(this.model.getCurrentPlayerNickname(), cardController);
-        this.playerCards.put(this.model.getCurrentPlayerNickname(), chosen.getTitle());
 
         endTurn();
 
@@ -128,7 +122,6 @@ public class SetupController {
             cardController = CardFactory.getController(restOfCards[0]);
             cardController.setContext(controller);
             this.playerCardController.put(this.model.getCurrentPlayerNickname(), cardController);
-            this.playerCards.put(this.model.getCurrentPlayerNickname(), restOfCards[0].getTitle());
 
             sendAllPlayerCards();
 
@@ -169,7 +162,7 @@ public class SetupController {
         Message toSend;
         String messageBody;
 
-        messageBody = BodyFactory.toPlayerCards(this.playerCards);
+        messageBody = BodyFactory.toPlayerCards(this.playerCardController);
 
         toSend = new Message(Message.Code.ALL_PLAYER_CARDS, messageBody);
 
