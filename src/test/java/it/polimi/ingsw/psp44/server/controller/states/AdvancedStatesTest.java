@@ -5,7 +5,9 @@ import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.GameModel;
 import it.polimi.ingsw.psp44.server.model.Worker;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
+import it.polimi.ingsw.psp44.server.model.actions.DomeBuild;
 import it.polimi.ingsw.psp44.server.model.actions.ForceBackwardsMovement;
+import it.polimi.ingsw.psp44.server.model.actions.SimpleBuild;
 import it.polimi.ingsw.psp44.util.Position;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +17,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class ForceBackwardsMoveStateTest {
+public class AdvancedStatesTest {
     private State stateUnderTest;
     private Position[] field;
     private Worker[] testWorker;
@@ -27,20 +29,8 @@ public class ForceBackwardsMoveStateTest {
 
     @Before
     public void setUp() {
-        testWorker= new Worker[9];
         gm = new GameModel();
         boardTest= gm.getBoard();
-
-        testWorker[0] = new Worker("p1", Worker.Sex.FEMALE);
-        testWorker[1] = new Worker("p1", Worker.Sex.MALE);
-        testWorker[2] = new Worker("p1", Worker.Sex.FEMALE);
-        testWorker[3] = new Worker("p1", Worker.Sex.MALE);
-        testWorker[4] = new Worker("p1", Worker.Sex.MALE);
-
-        testWorker[5] = new Worker("a1", Worker.Sex.MALE);
-        testWorker[6] = new Worker("a1", Worker.Sex.MALE);
-        testWorker[7] = new Worker("a2", Worker.Sex.MALE);
-        testWorker[8] = new Worker("a2", Worker.Sex.MALE);
 
         field = new Position[25];
         activeBuildFilter = new FilterCollection();
@@ -53,6 +43,28 @@ public class ForceBackwardsMoveStateTest {
             }
             level = (level + 1) % 4;
         }
+
+
+        activeBuildFilter.add(new FilterDome());
+        activeBuildFilter.add(new FilterMyWorkers());
+        activeBuildFilter.add(new FilterOtherWorkers());
+
+
+    }
+
+    @Test
+    public void forceBackwardsMoveState() {
+        testWorker= new Worker[9];
+        testWorker[0] = new Worker("p1", Worker.Sex.FEMALE);
+        testWorker[1] = new Worker("p1", Worker.Sex.MALE);
+        testWorker[2] = new Worker("p1", Worker.Sex.FEMALE);
+        testWorker[3] = new Worker("p1", Worker.Sex.MALE);
+        testWorker[4] = new Worker("p1", Worker.Sex.MALE);
+
+        testWorker[5] = new Worker("a1", Worker.Sex.MALE);
+        testWorker[6] = new Worker("a1", Worker.Sex.MALE);
+        testWorker[7] = new Worker("a2", Worker.Sex.MALE);
+        testWorker[8] = new Worker("a2", Worker.Sex.MALE);
         boardTest.buildDome(field[21]);
         boardTest.setWorker(field[4], testWorker[0]);
         boardTest.setWorker(field[8], testWorker[1]);
@@ -63,17 +75,6 @@ public class ForceBackwardsMoveStateTest {
         boardTest.setWorker(field[11], testWorker[6]);
         boardTest.setWorker(field[7], testWorker[7]);
         boardTest.setWorker(field[3], testWorker[8]);
-
-        activeBuildFilter.add(new FilterDome());
-        activeBuildFilter.add(new FilterMyWorkers());
-        activeBuildFilter.add(new FilterOtherWorkers());
-        activeBuildFilter.add(new FilterUpByTwo());
-
-
-    }
-
-    @Test
-    public void getAvailableActions() {
         stateUnderTest = new ForceBackwardsMoveState();
 
         allowedActionActual = stateUnderTest.getAvailableActions(boardTest, field[20], null, activeBuildFilter);
@@ -108,6 +109,66 @@ public class ForceBackwardsMoveStateTest {
 
         allowedActionActual = stateUnderTest.getAvailableActions(boardTest, field[4], null, activeBuildFilter);
         assertTrue(allowedActionActual.isEmpty());
+
+    }
+
+    @Test
+    public void femaleDomeBuildTest(){
+        testWorker= new Worker[6];
+        testWorker[0] = new Worker("p1", Worker.Sex.FEMALE);
+        testWorker[1] = new Worker("p1", Worker.Sex.MALE);
+        testWorker[2] = new Worker("p2", Worker.Sex.FEMALE);
+        testWorker[3] = new Worker("p2", Worker.Sex.MALE);
+        testWorker[4] = new Worker("p3", Worker.Sex.FEMALE);
+        testWorker[5] = new Worker("a3", Worker.Sex.MALE);
+        boardTest.setWorker(field[12], testWorker[0]);
+        boardTest.setWorker(field[6], testWorker[1]);
+        boardTest.setWorker(field[20], testWorker[2]);
+        boardTest.setWorker(field[4], testWorker[3]);
+        boardTest.setWorker(field[22], testWorker[4]);
+        boardTest.setWorker(field[2], testWorker[5]);
+        boardTest.buildDome(field[16]);
+        boardTest.buildDome(field[8]);
+        boardTest.buildDome(field[18]);
+        stateUnderTest = new FemaleDomeBuildState();
+
+        allowedActionActual = stateUnderTest.getAvailableActions(boardTest, field[6], null, activeBuildFilter);
+        allowedActionExpected.add(new SimpleBuild(field[0]));
+        allowedActionExpected.add(new SimpleBuild(field[1]));
+        allowedActionExpected.add(new SimpleBuild(field[5]));
+        allowedActionExpected.add(new SimpleBuild(field[10]));
+        allowedActionExpected.add(new DomeBuild(field[7]));
+        allowedActionExpected.add(new DomeBuild(field[11]));
+        allowedActionExpected.add(new DomeBuild(field[13]));
+        allowedActionExpected.add(new DomeBuild(field[17]));
+
+        assertTrue(allowedActionExpected.size() == allowedActionActual.size());
+        assertTrue(allowedActionExpected.containsAll(allowedActionActual));
+        allowedActionActual.clear();
+        allowedActionExpected.clear();
+
+        allowedActionActual = stateUnderTest.getAvailableActions(boardTest, field[4], null, activeBuildFilter);
+        allowedActionExpected.add(new DomeBuild(field[3]));
+        allowedActionExpected.add(new DomeBuild(field[15]));
+        allowedActionExpected.add(new DomeBuild(field[21]));
+        allowedActionExpected.add(new SimpleBuild(field[9]));
+
+        assertTrue(allowedActionExpected.size() == allowedActionActual.size());
+        assertTrue(allowedActionExpected.containsAll(allowedActionActual));
+        allowedActionActual.clear();
+        allowedActionExpected.clear();
+
+        allowedActionActual = stateUnderTest.getAvailableActions(boardTest, field[22], null, activeBuildFilter);
+        allowedActionExpected.add(new SimpleBuild(field[17]));
+        allowedActionExpected.add(new SimpleBuild(field[21]));
+        allowedActionExpected.add(new DomeBuild(field[21]));
+        allowedActionExpected.add(new DomeBuild(field[17]));
+        allowedActionExpected.add(new DomeBuild(field[23]));
+        assertTrue(allowedActionExpected.size() == allowedActionActual.size());
+        assertTrue(allowedActionExpected.containsAll(allowedActionActual));
+        allowedActionActual.clear();
+        allowedActionExpected.clear();
+
 
     }
 
