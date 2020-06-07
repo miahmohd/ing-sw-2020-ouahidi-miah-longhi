@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
 //https://stackoverflow.com/questions/47511132/javafx-custom-listview
-public class SetupView implements Initializable, ISetupView {
+public class LobbyProperty implements Initializable, ISetupView {
 
     private VirtualServer virtualServer;
     private String playerNickname;
@@ -47,7 +47,7 @@ public class SetupView implements Initializable, ISetupView {
 
     private Card[] chooseCards;
 
-    public SetupView(String playerNickname){
+    public LobbyProperty(String playerNickname){
         this.playerNickname = playerNickname;
 
         this.chooseCardsProperty = new SimpleListProperty<>(FXCollections.observableArrayList());

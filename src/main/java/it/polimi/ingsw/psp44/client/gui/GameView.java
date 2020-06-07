@@ -243,7 +243,6 @@ public class GameView implements IGameView, Initializable {
         }
     }
 
-
     private void disableAllBoard() {
         for (int row = 0; row < DIMENSION; row++){
             for (int column = 0; column < DIMENSION; column++){
