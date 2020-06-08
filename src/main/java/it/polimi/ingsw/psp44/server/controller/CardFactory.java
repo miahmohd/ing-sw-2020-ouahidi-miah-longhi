@@ -27,7 +27,7 @@ public class CardFactory {
      * @return the card controller of the selected god
      */
     public static CardController getController(Card chosen) {
-        return buildCardController(R.getCard(chosen.getId()));
+        return buildCardController(chosen.getId(),chosen.getTitle(),R.getCard(chosen.getId()));
     }
 
     /**
@@ -36,7 +36,7 @@ public class CardFactory {
      * @return the default card controller
      */
     public static CardController getDefaultController() {
-        return buildCardController(R.getCard());
+        return buildCardController(0,"",R.getCard());
     }
 
     /**
@@ -45,7 +45,7 @@ public class CardFactory {
      * @param jsonCard informations to build the card controller
      * @return Card controller of the selected god
      */
-    private static CardController buildCardController(JsonObject jsonCard) {
+    private static CardController buildCardController(int cardID, String cardName, JsonObject jsonCard) {
         List<Transition> transitionList = new ArrayList<>();
         List<VictoryCondition> victoryConditionList = new ArrayList<>();
         FilterCollection buildFilter = new FilterCollection();
@@ -135,7 +135,7 @@ public class CardFactory {
             }
         });
 
-        return new CardController(transitionList, victoryConditionList, buildFilter, moveFilter);
+        return new CardController(transitionList, victoryConditionList, buildFilter, moveFilter, cardID,cardName);
 
     }
 
@@ -161,6 +161,8 @@ public class CardFactory {
                 return Transition.Condition.MOVE;
             case 1:
                 return Transition.Condition.BUILD;
+            case 2:
+                return Transition.Condition.FORCE_OPONENTS_WORKER;
         }
         return null;
     }

@@ -12,9 +12,6 @@ import java.util.List;
  */
 public class SecondBuildState extends SimpleBuildState {
 
-    public SecondBuildState() {
-        this.finalState = true;
-    }
 
     /**
      * Compute the available actions that the player can perform

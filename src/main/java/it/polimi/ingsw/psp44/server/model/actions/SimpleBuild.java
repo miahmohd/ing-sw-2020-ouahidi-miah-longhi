@@ -24,7 +24,8 @@ public class SimpleBuild extends Build {
      * @param isUnbuild      if true the operation is an unbuild operation.
      */
     public SimpleBuild(Position targetPosition, boolean isUnbuild) {
-        super(targetPosition, isUnbuild, R.getAppProperties().get(ModelCodes.SIMPLE_BUILD_DESCRIPTION));
+        super(targetPosition, isUnbuild, isUnbuild?R.getAppProperties().get(ModelCodes.SIMPLE_UNBUILD_DESCRIPTION):
+                R.getAppProperties().get(ModelCodes.SIMPLE_BUILD_DESCRIPTION));
     }
 
     @Override

@@ -22,14 +22,18 @@ import java.util.Map;
  * Class representing the view of a single player.
  */
 public class VirtualView extends Virtual implements Runnable, IObserver<Message> {
-
-
+    private int lobbyId;
     private final Map<Message.Code, IMessageHandlerFunction> handlers;
     private Message lastSend;
 
     public VirtualView(IConnection<String> connection) {
         super(connection);
+        this.lobbyId=-1;
         this.handlers = Collections.synchronizedMap(new EnumMap<>(Message.Code.class));
+    }
+
+    public void setLobbyId(int lobbyId) {
+        this.lobbyId = lobbyId;
     }
 
     @Override
@@ -52,12 +56,15 @@ public class VirtualView extends Virtual implements Runnable, IObserver<Message>
             }
             System.out.println("readline = null");
             this.routeMessage(this, new Message(Message.Code.CLIENT_DISCONNECTED));
+            this.routeMessage(this,new Message(Message.Code.LOBBY_DISCONNECTED,""+lobbyId));
 
         } catch (SocketTimeoutException exception) {
             System.out.println("SocketTimeoutException for " + this);
             this.routeMessage(this, new Message(Message.Code.CLIENT_DISCONNECTED));
+            this.routeMessage(this,new Message(Message.Code.LOBBY_DISCONNECTED,""+lobbyId));
         } catch (SocketException ignored) {
             System.out.println("SocketException " + ignored.getMessage() + this);
+            this.routeMessage(this,new Message(Message.Code.LOBBY_DISCONNECTED,""+lobbyId));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -102,6 +109,7 @@ public class VirtualView extends Virtual implements Runnable, IObserver<Message>
             this.sendMessage(this.lastSend);
         }
     }
+
 
 }
 

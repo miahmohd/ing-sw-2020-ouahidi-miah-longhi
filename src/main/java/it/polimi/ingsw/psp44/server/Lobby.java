@@ -13,7 +13,6 @@ import java.util.List;
 public class Lobby {
 
     private static int idGen = 0;
-
     private final int maxPlayers;
     private final int id;
     private final SetupController setupController;
@@ -39,6 +38,7 @@ public class Lobby {
     public void addPlayer(String nickname, VirtualView view) {
         this.playersInWaiting.add(view);
         this.setupController.addPlayer(nickname, view);
+        view.setLobbyId(this.id);
         view.addMessageHandler(Message.Code.CLIENT_DISCONNECTED, this::clientDisconnectedMessageHandler);
     }
 
@@ -53,7 +53,6 @@ public class Lobby {
      * @param message message with code CLIENT_DISCONNECTED
      */
     public void clientDisconnectedMessageHandler(VirtualView view, Message message) {
-        //TODO rimuovo anche la Lobby dal server?
         System.out.println("Disconnecting lobby");
         playersInWaiting.forEach(VirtualView::close);
     }

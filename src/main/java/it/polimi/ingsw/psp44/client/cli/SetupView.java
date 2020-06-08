@@ -46,7 +46,7 @@ public class SetupView implements ISetupView {
             displayCard(card);
 
         for (int numberOfCardCounter = 0; numberOfCardCounter < cardinality; numberOfCardCounter++) {
-            chosenCards[numberOfCardCounter] = getChosenCard(cardList);
+            chosenCards[numberOfCardCounter] = getChosenCard(cardList, chosenCards);
         }
 
         body = BodyFactory.toCards(chosenCards);
@@ -129,9 +129,8 @@ public class SetupView implements ISetupView {
         view.setServer(this.virtualServer);
     }
 
-    private Card getChosenCard(Card[] cards) {
+    private Card getChosenCard(Card[] cards, Card[] chosenCards) {
         Card chosenCard;
-
         console.writeLine("gimmie the id ");
         do {
             int chosenCardId = console.readNumber();
@@ -140,11 +139,25 @@ public class SetupView implements ISetupView {
                     card -> card.getId() == chosenCardId)
                     .findFirst()
                     .orElse(null);
-
+            chosenCard=cardAlreadyChosen(chosenCard,chosenCards);
             if (chosenCard == null)
-                console.writeLine("not a valid id");
+                console.writeLine("not a valid id, gimmie a correct one ");
 
         } while (chosenCard == null);
         return chosenCard;
+    }
+    private Card getChosenCard(Card[] cards){
+     return getChosenCard(cards,new Card[0]);
+    }
+
+    private Card cardAlreadyChosen(Card chosenCard, Card[] chosenCards){
+        if(chosenCard==null)
+            return null;
+        if(Arrays.stream(chosenCards).noneMatch((card)->{
+            if(card==null) return false;
+            return card.getId()==chosenCard.getId();}
+            ))
+            return chosenCard;
+        return null;
     }
 }

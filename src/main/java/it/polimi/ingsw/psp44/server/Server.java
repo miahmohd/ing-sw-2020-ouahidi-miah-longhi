@@ -20,10 +20,6 @@ public class Server {
 
     private final ExecutorService executor;
     private final int port;
-
-    //TODO servono?
-    private final List<VirtualView> views = Collections.synchronizedList(new ArrayList<>());
-
     private final List<Lobby> lobbies;
 
     public Server(int port) {
@@ -41,7 +37,7 @@ public class Server {
                 Socket socket = server.accept();
 
                 VirtualView view = new VirtualView(new SocketConnection(socket));
-                this.views.add(view);
+                view.startPingTask();
 
                 setHandlers(view);
                 beginCommunication(view);
@@ -77,7 +73,6 @@ public class Server {
         synchronized (this.lobbies) {
             Lobby lobby = new Lobby(body.getNumberOfPlayers());
             lobby.addPlayer(body.getPlayerNickname(), view);
-
             this.lobbies.add(lobby);
 
             view.sendMessage(new Message(Message.Code.GAME_CREATED, String.valueOf(lobby.getId())));
@@ -141,13 +136,23 @@ public class Server {
         view.addMessageHandler(Message.Code.NEW_GAME, this::newGameMessageHandler);
         view.addMessageHandler(Message.Code.JOIN_GAME, this::joinGameMessageHandler);
         view.addMessageHandler(Message.Code.CLIENT_DISCONNECTED, this::clientDisconnectedMessageHandler);
+        view.addMessageHandler(Message.Code.LOBBY_DISCONNECTED, this::lobbyDisconnectedMessageHandler);
+    }
+
+    private void lobbyDisconnectedMessageHandler(VirtualView virtualView, Message message) {
+        int lobbyIdToRemove=Integer.parseInt(message.getBody());
+        if(lobbyIdToRemove>=0){
+            synchronized (this.lobbies){
+                lobbies.remove(lobbies.stream().filter((lobby)->lobby.getId()==lobbyIdToRemove).findFirst().get());
+            }
+        }
+
+
     }
 
     private void beginCommunication(VirtualView view) {
         view.sendMessage(new Message(Message.Code.NEW_OR_JOIN));
         executor.execute(view);
     }
-
-
 
 }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.psp44.server.controller;
 import it.polimi.ingsw.psp44.server.controller.filters.DynamicFilter;
 import it.polimi.ingsw.psp44.server.controller.states.State;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
+import it.polimi.ingsw.psp44.server.model.actions.ForceBackwardsMovement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,14 +88,20 @@ public class Transition {
      * @return
      */
     public boolean checkCondition(Action lastAction) {
-        if (condition == Condition.MOVE)
-            return lastAction.isMovement();
-        else
+
+        if (condition == Condition.MOVE){
+            return lastAction.isMovement()&&(!(lastAction instanceof ForceBackwardsMovement));
+        }
+        if(condition==Condition.BUILD)
             return lastAction.isBuild();
+        if(condition==Condition.FORCE_OPONENTS_WORKER)
+            return lastAction instanceof ForceBackwardsMovement;
+        return false;
     }
 
     public enum Condition {
         MOVE,
-        BUILD
+        BUILD,
+        FORCE_OPONENTS_WORKER
     }
 }

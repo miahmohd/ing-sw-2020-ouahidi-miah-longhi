@@ -19,6 +19,8 @@ import java.util.List;
  * with the actions that the player can perform.
  */
 public class CardController {
+    private final int cardId;
+    private final String cardName;
     private Controller context;
     /**
      * A list of the possible states transitions for the card
@@ -46,8 +48,9 @@ public class CardController {
             List<Transition> transitionsList,
             List<VictoryCondition> victoryConditionsList,
             FilterCollection buildFilter,
-            FilterCollection moveFilter) {
-
+            FilterCollection moveFilter, int cardId, String cardName) {
+        this.cardId=cardId;
+        this.cardName= cardName;
         this.context = null;
         this.currentState = transitionsList.stream().filter((t) -> t.getNextState().isInitialState()).findFirst().get().getNextState();
         this.transitionsList = transitionsList;
@@ -55,6 +58,14 @@ public class CardController {
         this.buildFilter = buildFilter;
         this.moveFilter = moveFilter;
 
+    }
+
+    public int getCardId() {
+        return cardId;
+    }
+
+    public String getCardName() {
+        return cardName;
     }
 
     public void setContext(Controller context) {

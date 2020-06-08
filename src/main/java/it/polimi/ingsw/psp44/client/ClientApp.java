@@ -36,6 +36,7 @@ public class ClientApp {
              IConnection<String> socketConnection = new SocketConnection(socket);
              IView view = new LobbyView();
              VirtualServer virtualServer = new VirtualServer(socketConnection);
+             virtualServer.startPingTask();
 
              view.setServer(virtualServer);
 
