@@ -1,0 +1,236 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Server</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.psp44.server</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Server (it.polimi.ingsw.psp44.server)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Server</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 55)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.psp44.network.SocketConnection;
+<i>4</i>&nbsp;import it.polimi.ingsw.psp44.network.communication.BodyFactory;
+<i>5</i>&nbsp;import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
+<i>6</i>&nbsp;import it.polimi.ingsw.psp44.network.message.Message;
+<i>7</i>&nbsp;import it.polimi.ingsw.psp44.network.message.MessageHeader;
+<i>8</i>&nbsp;import it.polimi.ingsw.psp44.server.view.VirtualView;
+<i>9</i>&nbsp;import it.polimi.ingsw.psp44.util.R;
+<i>10</i>&nbsp;import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import java.io.IOException;
+<i>13</i>&nbsp;import java.net.ServerSocket;
+<i>14</i>&nbsp;import java.net.Socket;
+<i>15</i>&nbsp;import java.util.*;
+<i>16</i>&nbsp;import java.util.concurrent.ExecutorService;
+<i>17</i>&nbsp;import java.util.concurrent.Executors;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;public class Server {
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    private final ExecutorService executor;
+<i>22</i>&nbsp;    private final int port;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    //TODO servono?
+<b class="nc"><i>25</i>&nbsp;    private final List&lt;VirtualView&gt; views = Collections.synchronizedList(new ArrayList&lt;&gt;());</b>
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    private final List&lt;Lobby&gt; lobbies;
+<i>28</i>&nbsp;
+<b class="nc"><i>29</i>&nbsp;    public Server(int port) {</b>
+<b class="nc"><i>30</i>&nbsp;        this.port = port;</b>
+<b class="nc"><i>31</i>&nbsp;        this.executor = Executors.newFixedThreadPool(100);</b>
+<b class="nc"><i>32</i>&nbsp;        this.lobbies = new ArrayList&lt;&gt;();</b>
+<i>33</i>&nbsp;    }
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    /**
+<i>36</i>&nbsp;     * Waits for new players
+<i>37</i>&nbsp;     */
+<i>38</i>&nbsp;    public void start() {
+<b class="nc"><i>39</i>&nbsp;        try (ServerSocket server = new ServerSocket(port)) {</b>
+<i>40</i>&nbsp;            while (true) {
+<b class="nc"><i>41</i>&nbsp;                Socket socket = server.accept();</b>
+<i>42</i>&nbsp;
+<b class="nc"><i>43</i>&nbsp;                VirtualView view = new VirtualView(new SocketConnection(socket));</b>
+<b class="nc"><i>44</i>&nbsp;                this.views.add(view);</b>
+<i>45</i>&nbsp;
+<b class="nc"><i>46</i>&nbsp;                setHandlers(view);</b>
+<b class="nc"><i>47</i>&nbsp;                beginCommunication(view);</b>
+<b class="nc"><i>48</i>&nbsp;            }</b>
+<i>49</i>&nbsp;
+<b class="nc"><i>50</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>51</i>&nbsp;            e.printStackTrace();</b>
+<i>52</i>&nbsp;        }
+<i>53</i>&nbsp;    }
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    /**
+<i>57</i>&nbsp;     * Callback that handles and processes &quot;new lobby&quot; message type.
+<i>58</i>&nbsp;     * It creates a lobby with a given size and joins the first player.
+<i>59</i>&nbsp;     * If the lobby cannot be created then it redirect the player to NEW_OR_JOIN.
+<i>60</i>&nbsp;     *
+<i>61</i>&nbsp;     * @param view    the VirtualView that sent the message
+<i>62</i>&nbsp;     * @param message message with code NEW_GAME containing information for creating a new lobby
+<i>63</i>&nbsp;     */
+<i>64</i>&nbsp;    public void newGameMessageHandler(VirtualView view, Message message) {
+<b class="nc"><i>65</i>&nbsp;        BodyTemplates.NewGame body = BodyFactory.fromNewGame(message.getBody());</b>
+<b class="nc"><i>66</i>&nbsp;        Map&lt;MessageHeader, String&gt; headers = new EnumMap&lt;&gt;(MessageHeader.class);</b>
+<b class="nc"><i>67</i>&nbsp;        int nPlayers = body.getNumberOfPlayers();</b>
+<i>68</i>&nbsp;
+<b class="nc"><i>69</i>&nbsp;        if (nPlayers != 2 &amp;&amp; nPlayers != 3) {</b>
+<b class="nc"><i>70</i>&nbsp;            headers.put(MessageHeader.ERROR, String.valueOf(true));</b>
+<b class="nc"><i>71</i>&nbsp;            headers.put(MessageHeader.ERROR_DESCRIPTION, String.format(R.getAppProperties().get(ErrorCodes.ILLEGAL_GAME_PARAMS), nPlayers));</b>
+<i>72</i>&nbsp;
+<b class="nc"><i>73</i>&nbsp;            view.sendMessage(new Message(Message.Code.NEW_OR_JOIN, headers));</b>
+<i>74</i>&nbsp;            return;
+<i>75</i>&nbsp;        }
+<i>76</i>&nbsp;
+<b class="nc"><i>77</i>&nbsp;        synchronized (this.lobbies) {</b>
+<b class="nc"><i>78</i>&nbsp;            Lobby lobby = new Lobby(body.getNumberOfPlayers());</b>
+<b class="nc"><i>79</i>&nbsp;            lobby.addPlayer(body.getPlayerNickname(), view);</b>
+<i>80</i>&nbsp;
+<b class="nc"><i>81</i>&nbsp;            this.lobbies.add(lobby);</b>
+<i>82</i>&nbsp;
+<b class="nc"><i>83</i>&nbsp;            view.sendMessage(new Message(Message.Code.GAME_CREATED, String.valueOf(lobby.getId())));</b>
+<b class="nc"><i>84</i>&nbsp;        }</b>
+<i>85</i>&nbsp;    }
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;    /**
+<i>88</i>&nbsp;     * Callback that handles and processes &quot;join lobby&quot; message type.
+<i>89</i>&nbsp;     * If the player successfully joined it start the setup phase of the game.
+<i>90</i>&nbsp;     * If the game to join does not exist or is full, it redirects the player to NEW_OR_JOIN.
+<i>91</i>&nbsp;     *
+<i>92</i>&nbsp;     * @param view    the VirtualView that sent the message
+<i>93</i>&nbsp;     * @param message message with code NEW_GAME containing information for joining an existing lobby
+<i>94</i>&nbsp;     */
+<i>95</i>&nbsp;    public void joinGameMessageHandler(VirtualView view, Message message) {
+<b class="nc"><i>96</i>&nbsp;        BodyTemplates.JoinGame body = BodyFactory.fromJoinGame(message.getBody());</b>
+<b class="nc"><i>97</i>&nbsp;        Map&lt;MessageHeader, String&gt; headers = new EnumMap&lt;&gt;(MessageHeader.class);</b>
+<b class="nc"><i>98</i>&nbsp;        String nickname = body.getPlayerNickname();</b>
+<i>99</i>&nbsp;
+<b class="nc"><i>100</i>&nbsp;        synchronized (this.lobbies) {</b>
+<b class="nc"><i>101</i>&nbsp;            Lobby toJoin = this.lobbies.stream()</b>
+<b class="nc"><i>102</i>&nbsp;                    .filter(lobby -&gt; !lobby.isFull() &amp;&amp; lobby.getId() == body.getGameId())</b>
+<b class="nc"><i>103</i>&nbsp;                    .findFirst()</b>
+<b class="nc"><i>104</i>&nbsp;                    .orElse(null);</b>
+<i>105</i>&nbsp;
+<b class="nc"><i>106</i>&nbsp;            headers.put(MessageHeader.ERROR, String.valueOf(false));</b>
+<i>107</i>&nbsp;
+<b class="nc"><i>108</i>&nbsp;            if (toJoin == null) {</b>
+<b class="nc"><i>109</i>&nbsp;                headers.put(MessageHeader.ERROR_DESCRIPTION, R.getAppProperties().get(ErrorCodes.UNAVAILABLE_GAME));</b>
+<b class="nc"><i>110</i>&nbsp;            } else if (toJoin.contains(nickname)) {</b>
+<b class="nc"><i>111</i>&nbsp;                headers.put(MessageHeader.ERROR_DESCRIPTION, R.getAppProperties().get(ErrorCodes.UNAVAILABLE_NICKNAME));</b>
+<i>112</i>&nbsp;            } else {
+<b class="nc"><i>113</i>&nbsp;                view.sendMessage(new Message(Message.Code.GAME_JOINED));</b>
+<b class="nc"><i>114</i>&nbsp;                toJoin.addPlayer(body.getPlayerNickname(), view);</b>
+<b class="nc"><i>115</i>&nbsp;                if (toJoin.isFull())</b>
+<b class="nc"><i>116</i>&nbsp;                    toJoin.start();</b>
+<b class="nc"><i>117</i>&nbsp;                return;</b>
+<i>118</i>&nbsp;            }
+<b class="nc"><i>119</i>&nbsp;            headers.put(MessageHeader.ERROR, String.valueOf(true));</b>
+<b class="nc"><i>120</i>&nbsp;            view.sendMessage(new Message(Message.Code.NEW_OR_JOIN, headers));</b>
+<b class="nc"><i>121</i>&nbsp;        }</b>
+<i>122</i>&nbsp;    }
+<i>123</i>&nbsp;
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;    /**
+<i>126</i>&nbsp;     * Callback that handles and process CLIENT_DISCONNECTED message type.
+<i>127</i>&nbsp;     * This callback is called when the client disconnects before joining any Lobby.
+<i>128</i>&nbsp;     * Simply closes the connection with the view.
+<i>129</i>&nbsp;     * Once the view joins a Lobby, this callback will be overwritten with additional processing.
+<i>130</i>&nbsp;     *
+<i>131</i>&nbsp;     * @param view    the view that disconnected
+<i>132</i>&nbsp;     * @param message message with code CLIENT_DISCONNECTED
+<i>133</i>&nbsp;     */
+<i>134</i>&nbsp;    public void clientDisconnectedMessageHandler(VirtualView view, Message message) {
+<b class="nc"><i>135</i>&nbsp;        System.out.println(&quot;Disconnecting server&quot;);</b>
+<b class="nc"><i>136</i>&nbsp;        view.close();</b>
+<i>137</i>&nbsp;    }
+<i>138</i>&nbsp;
+<i>139</i>&nbsp;
+<i>140</i>&nbsp;    private void setHandlers(VirtualView view) {
+<b class="nc"><i>141</i>&nbsp;        view.addMessageHandler(Message.Code.NEW_GAME, this::newGameMessageHandler);</b>
+<b class="nc"><i>142</i>&nbsp;        view.addMessageHandler(Message.Code.JOIN_GAME, this::joinGameMessageHandler);</b>
+<b class="nc"><i>143</i>&nbsp;        view.addMessageHandler(Message.Code.CLIENT_DISCONNECTED, this::clientDisconnectedMessageHandler);</b>
+<i>144</i>&nbsp;    }
+<i>145</i>&nbsp;
+<i>146</i>&nbsp;    private void beginCommunication(VirtualView view) {
+<b class="nc"><i>147</i>&nbsp;        view.sendMessage(new Message(Message.Code.NEW_OR_JOIN));</b>
+<b class="nc"><i>148</i>&nbsp;        executor.execute(view);</b>
+<i>149</i>&nbsp;    }
+<i>150</i>&nbsp;
+<i>151</i>&nbsp;
+<i>152</i>&nbsp;
+<i>153</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-26 13:13</div>
+</div>
+</body>
+</html>

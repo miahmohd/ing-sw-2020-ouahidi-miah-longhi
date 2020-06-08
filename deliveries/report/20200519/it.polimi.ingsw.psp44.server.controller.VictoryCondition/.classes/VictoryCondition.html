@@ -1,0 +1,121 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: VictoryCondition</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.psp44.server.controller.VictoryCondition</a> ]
+</div>
+
+<h1>Coverage Summary for Class: VictoryCondition (it.polimi.ingsw.psp44.server.controller.VictoryCondition)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">VictoryCondition</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server.controller.VictoryCondition;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.psp44.server.model.Board;
+<i>4</i>&nbsp;import it.polimi.ingsw.psp44.server.model.actions.Action;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;/**
+<i>7</i>&nbsp; * Abstract Class that defines the model for a Victory Condition class
+<i>8</i>&nbsp; * Defines @see filter
+<i>9</i>&nbsp; */
+<i>10</i>&nbsp;public abstract class VictoryCondition {
+<i>11</i>&nbsp;    /**
+<i>12</i>&nbsp;     * Victory condition are usually checked after move actions.
+<i>13</i>&nbsp;     * if there is an exception and a victory condition must be checked
+<i>14</i>&nbsp;     */
+<i>15</i>&nbsp;    protected boolean afterBuild;
+<i>16</i>&nbsp;
+<b class="fc"><i>17</i>&nbsp;    public VictoryCondition() {</b>
+<b class="fc"><i>18</i>&nbsp;        this.afterBuild = false;</b>
+<b class="fc"><i>19</i>&nbsp;    }</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    public boolean isAfterBuild() {
+<b class="fc"><i>22</i>&nbsp;        return afterBuild;</b>
+<i>23</i>&nbsp;    }
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    /**
+<i>26</i>&nbsp;     * Check whether the player has won, with his last action
+<i>27</i>&nbsp;     *
+<i>28</i>&nbsp;     * @param lastAction the last action performed by the player
+<i>29</i>&nbsp;     * @param gameBoard  the game field
+<i>30</i>&nbsp;     */
+<i>31</i>&nbsp;    public abstract boolean check(Action lastAction, Board gameBoard);
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;}
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-19 08:05</div>
+</div>
+</body>
+</html>

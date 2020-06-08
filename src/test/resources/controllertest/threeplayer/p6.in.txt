@@ -1,0 +1,12 @@
+{"code":"CHOSEN_WORKERS_INITIAL_POSITION","headers":{},"body":"[{\"row\":2,\"column\":2},{\"row\":3,\"column\":3}]"}
+{"code":"CHOSEN_WORKER","headers":{},"body":"{\"row\":2,\"column\":2}"}
+{"code":"CHOSEN_ACTION","headers":{},"body":"{\"target\":{\"row\":2,\"column\":3},\"build\":false,\"move\":true,\"id\":3,\"description\":\"Move to target position.\"}"}
+{"code":"CHOSEN_ACTION","headers":{},"body":"{\"target\":{\"row\":2,\"column\":2},\"build\":true,\"move\":false,\"id\":3,\"description\":\"Build a new level at target position.\"}"}
+{"code":"CHOSEN_ACTION","headers":{},"body":"{\"target\":{\"row\":2,\"column\":2},\"build\":true,\"move\":false,\"id\":0,\"description\":\"Build a new level at target position.\"}"}
+{"code":"CHOSEN_WORKER","headers":{},"body":"{\"row\":2,\"column\":3}"}
+{"code":"CHOSEN_ACTION","headers":{},"body":"{\"target\":{\"row\":1,\"column\":3},\"build\":false,\"move\":true,\"id\":0,\"description\":\"Move to target position.\"}"}
+{"code":"CHOSEN_ACTION","headers":{},"body":"{\"target\":{\"row\":1,\"column\":2},\"build\":true,\"move\":false,\"id\":3,\"description\":\"Build a new level at target position.\"}"}
+{"code":"CHOSEN_WORKER","headers":{},"body":"{\"row\":1,\"column\":3}"}
+{"code":"CHOSEN_ACTION","headers":{},"body":"{\"target\":{\"row\":1,\"column\":4},\"build\":false,\"move\":true,\"id\":3,\"description\":\"Move to target position.\"}"}
+{"code":"CHOSEN_ACTION","headers":{},"body":"{\"target\":{\"row\":2,\"column\":4},\"build\":true,\"move\":false,\"id\":4,\"description\":\"Build a new level at target position.\"}"}
+{"code":"CHOSEN_ACTION","headers":{},"body":"{\"target\":{\"row\":2,\"column\":4},\"build\":true,\"move\":false,\"id\":0,\"description\":\"Build a new level at target position.\"}"}

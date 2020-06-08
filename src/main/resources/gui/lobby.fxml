@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox stylesheets="@assets/css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <HBox>
+            <children>
+                <Button fx:id="newGameButton" styleClass="newGameButton" text="New Game"/>
+                <Button fx:id="joinGameButton" styleClass="joinGameButton" text="Join Game"/>
+            </children>
+            <VBox.margin>
+                <Insets bottom="100" />
+            </VBox.margin>
+        </HBox>
+        <TextField promptText="Nickname"/>
+        <TextField promptText="Number Of Players">
+            <VBox.margin>
+                <Insets bottom="150"/>
+            </VBox.margin>
+        </TextField>
+        <Button text="Start" styleClass="startButton">
+        </Button>
+    </children>
+</VBox>

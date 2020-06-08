@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+    <title>Coverage Report :: Action</title>
+    <style type="text/css">
+        @import "../../.css/coverage.css";
+    </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+    <div class="breadCrumbs">
+        [ <a href="../../index.html">all classes</a> ]
+        [ <a href="../index.html">it.polimi.ingsw.psp44.client.cli</a> ]
+    </div>
+
+    <h1>Coverage Summary for Class: Action (it.polimi.ingsw.psp44.client.cli)</h1>
+
+    <table class="coverageStats">
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
+">
+                Class, %
+            </th>
+            <th class="coverageStat
+">
+                Method, %
+            </th>
+            <th class="coverageStat
+">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">Action</td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 1)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 7)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+                <span class="absValue">
+    (0/ 13)
+  </span>
+            </td>
+        </tr>
+
+    </table>
+
+    <br/>
+    <br/>
+
+
+    <div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.client.cli;
+        <i>2</i>&nbsp;
+        <i>3</i>&nbsp;import it.polimi.ingsw.psp44.util.Position;
+        <i>4</i>&nbsp;
+        <i>5</i>&nbsp;/**
+        <i>6</i>&nbsp; * Representation of an action
+        <i>7</i>&nbsp; */
+        <i>8</i>&nbsp;public class Action {
+        <i>9</i>&nbsp;
+        <i>10</i>&nbsp; /**
+        <i>11</i>&nbsp; * Action ID, each action has a unique id
+        <i>12</i>&nbsp; */
+        <i>13</i>&nbsp; private final int id;
+        <i>14</i>&nbsp;
+        <i>15</i>&nbsp; /**
+        <i>16</i>&nbsp; * Position to which the action is targeted
+        <i>17</i>&nbsp; */
+        <i>18</i>&nbsp; private final Position target;
+        <i>19</i>&nbsp;
+        <i>20</i>&nbsp; private final boolean build;
+        <i>21</i>&nbsp; private final boolean move;
+        <i>22</i>&nbsp;
+        <i>23</i>&nbsp; /**
+        <i>24</i>&nbsp; * Not set if the action is move
+        <i>25</i>&nbsp; */
+        <i>26</i>&nbsp; private final int level;
+        <i>27</i>&nbsp;
+        <i>28</i>&nbsp;
+        <i>29</i>&nbsp; /**
+        <i>30</i>&nbsp; * Not set if the action is move
+        <i>31</i>&nbsp; */
+        <i>32</i>&nbsp; private final boolean dome;
+        <i>33</i>&nbsp;
+        <b class="nc"><i>34</i>&nbsp; public Action(int id, Position target, boolean build, boolean move, int level,
+            boolean dome) {</b>
+        <b class="nc"><i>35</i>&nbsp; this.id = id;</b>
+        <b class="nc"><i>36</i>&nbsp; this.target = target;</b>
+        <b class="nc"><i>37</i>&nbsp; this.build = build;</b>
+        <b class="nc"><i>38</i>&nbsp; this.move = move;</b>
+        <b class="nc"><i>39</i>&nbsp; this.level = level;</b>
+        <b class="nc"><i>40</i>&nbsp; this.dome = dome;</b>
+        <i>41</i>&nbsp; }
+        <i>42</i>&nbsp;
+        <i>43</i>&nbsp; public int getID() {
+        <b class="nc"><i>44</i>&nbsp; return id;</b>
+        <i>45</i>&nbsp; }
+        <i>46</i>&nbsp;
+        <i>47</i>&nbsp; public Position getTarget() {
+        <b class="nc"><i>48</i>&nbsp; return target;</b>
+        <i>49</i>&nbsp; }
+        <i>50</i>&nbsp;
+        <i>51</i>&nbsp; public boolean isBuild() {
+        <b class="nc"><i>52</i>&nbsp; return build;</b>
+        <i>53</i>&nbsp; }
+        <i>54</i>&nbsp;
+        <i>55</i>&nbsp; public boolean isMove() {
+        <b class="nc"><i>56</i>&nbsp; return move;</b>
+        <i>57</i>&nbsp; }
+        <i>58</i>&nbsp;
+        <i>59</i>&nbsp; public int getLevel() {
+        <b class="nc"><i>60</i>&nbsp; return level;</b>
+        <i>61</i>&nbsp; }
+        <i>62</i>&nbsp;
+        <i>63</i>&nbsp; public boolean isDome() {
+        <b class="nc"><i>64</i>&nbsp; return dome;</b>
+        <i>65</i>&nbsp; }
+        <i>66</i>&nbsp;}
+    </div>
+</div>
+
+<div class="footer">
+
+    <div style="float:right;">generated on 2020-04-29 19:16</div>
+</div>
+</body>
+</html>
