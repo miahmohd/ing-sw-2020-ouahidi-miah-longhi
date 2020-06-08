@@ -26,8 +26,8 @@ public class ClientApp {
 //        }
 
         /**
-        GameView ekkle = new GameView();
-        ekkle.start(null);
+        LobbyView ekkle = new LobbyView();
+        ekkle.newJoin(null);
         */
         ///**
          try {

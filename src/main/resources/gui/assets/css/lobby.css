@@ -1,22 +1,25 @@
-HBox, VBox, Button {
-    -fx-alignment: center;
-    -fx-font-size: 16;
-    -fx-text-alignment: center;
+@font-face {
+    font-family: 'LillyBelle';
+    src: url('../fonts/LillyBelle.ttf');
 }
 
+.root {
+    -fx-alignment: center;
+    -fx-font-size: 20;
+    -fx-text-alignment: center;
+    -fx-font-family: 'LillyBelle';
+}
 
 VBox {
     -fx-padding: 75;
-    -fx-min-height: 600px;
-    -fx-min-width: 600px;
+    -fx-min-height: 550px;
+    -fx-min-width: 625px;
     -fx-background-image: url('../images/Santorini.png');
-    -fx-background-size: 600px 600px;
+    -fx-background-size: auto;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
     -fx-spacing: 10;
-
 }
-
 
 HBox {
     -fx-spacing: 25;
@@ -26,14 +29,17 @@ HBox {
 Button {
     -fx-min-height: 50px;
     -fx-min-width: 175px;
+    -fx-border-radius: 10px;
     -fx-background-size: 175px 50px;
     -fx-background-repeat: no-repeat;
     -fx-text-fill: #eeeeee;
 }
 
 
-TextField {
-    -fx-font-size: 20;
+.infoPanel {
+    -fx-opacity: 100;
+    -fx-padding: 10;
+    -fx-text-fill: #eeeeee;
 }
 
 .newGameButton, .joinGameButton {
@@ -50,5 +56,9 @@ TextField {
 
 .startButton:hover{
     -fx-background-image: url('../images/btn_green_pressed.png');
+}
+
+#infoLabel {
+    -fx-text-fill: #eeeeee;
 }
 
