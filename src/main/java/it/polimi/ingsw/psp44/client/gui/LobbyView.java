@@ -100,14 +100,14 @@ public class LobbyView implements ILobbyView, Initializable {
         newGameButton.disableProperty().bindBidirectional(isNewGame);
         joinGameButton.disableProperty().bindBidirectional(isJoinGame);
 
-        numberOfPlayersLabel.disableProperty().bindBidirectional(isNewGame);
-        gameIdLabel.disableProperty().bindBidirectional(isJoinGame);
+/*        numberOfPlayersLabel.disableProperty().bindBidirectional(isNewGame);
+        gameIdLabel.disableProperty().bindBidirectional(isJoinGame);*/
 
-        startButton.setOnAction(this::startGame);
+/*        startButton.setOnAction(this::startGame);*/
 
-        nicknameField.textProperty().bindBidirectional(nicknameText);
-        gameIdField.textProperty().bindBidirectional(gameIdText);
-        numberOfPlayersField.textProperty().bindBidirectional(numberOfPlayersText);
+/*        nicknameField.textProperty().bindBidirectional(nicknameText);*/
+/*        gameIdField.textProperty().bindBidirectional(gameIdText);
+        numberOfPlayersField.textProperty().bindBidirectional(numberOfPlayersText);*/
     }
 
     private void setGameOption(ActionEvent actionEvent){
@@ -134,16 +134,7 @@ public class LobbyView implements ILobbyView, Initializable {
     }
 
     private void changeView() {
-        SetupView setupController = new SetupView(nicknameText.get());
+        LobbyProperty setupController = new LobbyProperty(nicknameText.get());
         setupController.setServer(this.virtualServer);
     }
-
-
-    public SimpleBooleanProperty visibleProperty(){
-        return visibleError;
-    }
-    public boolean getVisible(){
-        return visibleError.get();
-    }
-
 }

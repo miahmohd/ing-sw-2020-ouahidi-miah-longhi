@@ -1,0 +1,54 @@
+HBox, VBox, Button {
+    -fx-alignment: center;
+    -fx-font-size: 16;
+    -fx-text-alignment: center;
+}
+
+
+VBox {
+    -fx-padding: 75;
+    -fx-min-height: 600px;
+    -fx-min-width: 600px;
+    -fx-background-image: url('../images/Santorini.png');
+    -fx-background-size: 600px 600px;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-spacing: 10;
+
+}
+
+
+HBox {
+    -fx-spacing: 25;
+    -fx-alignment: center;
+}
+
+Button {
+    -fx-min-height: 50px;
+    -fx-min-width: 175px;
+    -fx-background-size: 175px 50px;
+    -fx-background-repeat: no-repeat;
+    -fx-text-fill: #eeeeee;
+}
+
+
+TextField {
+    -fx-font-size: 20;
+}
+
+.newGameButton, .joinGameButton {
+    -fx-background-image: url('../images/btn_blue.png');
+}
+
+.startButton {
+    -fx-background-image: url('../images/btn_green.png');
+}
+
+.joinGameButton:hover, .newGameButton:hover {
+    -fx-background-image: url('../images/btn_blue_pressed.png');
+}
+
+.startButton:hover{
+    -fx-background-image: url('../images/btn_green_pressed.png');
+}
+

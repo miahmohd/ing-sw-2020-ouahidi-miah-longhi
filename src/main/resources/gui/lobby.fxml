@@ -2,56 +2,28 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.VBox?>
 
-
-<GridPane alignment="center" hgap="10" vgap="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
-<padding><Insets bottom="10" left="25" right="25" top="25" /></padding>
-
-    <Label fx:id="nicknameLabel" text="Nickname" GridPane.rowIndex="1" />
-    <TextField fx:id="nicknameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-    <Label fx:id="numberOfPlayersLabel" text="N° Players" GridPane.rowIndex="2" />
-    <TextField fx:id="numberOfPlayersField" layoutX="122.0" layoutY="71.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
-
-    <Label fx:id="gameIdLabel" text="game id" GridPane.rowIndex="2" />
-    <TextField fx:id="gameIdField" layoutX="122.0" layoutY="71.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
-
-    <HBox alignment="bottom_right" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
-        <Button fx:id="startButton" text="Start"/>
-    </HBox>
-
-<Text GridPane.columnIndex="1" GridPane.rowIndex="6" />
-<HBox alignment="CENTER" layoutX="122.0" layoutY="143.0" spacing="0" GridPane.columnSpan="2">
+<VBox stylesheets="@assets/css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Button fx:id="newGameButton" alignment="BASELINE_LEFT" text="New Game"/>
-        <Button fx:id="joinGameButton" mnemonicParsing="false" text="Join Game" />
+        <HBox>
+            <children>
+                <Button fx:id="newGameButton" styleClass="newGameButton" text="New Game"/>
+                <Button fx:id="joinGameButton" styleClass="joinGameButton" text="Join Game"/>
+            </children>
+            <VBox.margin>
+                <Insets bottom="100" />
+            </VBox.margin>
+        </HBox>
+        <TextField promptText="Nickname"/>
+        <TextField promptText="Number Of Players">
+            <VBox.margin>
+                <Insets bottom="150"/>
+            </VBox.margin>
+        </TextField>
+        <Button text="Start" styleClass="startButton">
+        </Button>
     </children>
-</HBox>
-<Label fx:id="errorLabel" text="Error Section" textFill="RED" GridPane.columnSpan="2" GridPane.rowIndex="6" >
-</Label>
-
-<columnConstraints>
-    <ColumnConstraints />
-    <ColumnConstraints />
-</columnConstraints>
-
-<rowConstraints>
-    <RowConstraints />
-    <RowConstraints />
-    <RowConstraints />
-    <RowConstraints />
-    <RowConstraints />
-    <RowConstraints />
-    <RowConstraints />
-</rowConstraints>
-
-</GridPane>
+</VBox>
