@@ -47,13 +47,6 @@ public class LobbyView implements ILobbyView, Initializable {
         View.setViewAndShow("Lobby View", "/gui/lobby.fxml", this);
     }
 
-    private void readHeaders(Map<MessageHeader, String> header) {
-        if(header == null) return;
-
-        if (header.containsKey(MessageHeader.ERROR_DESCRIPTION))
-            Platform.runLater(() -> property.setInfoText(header.get(MessageHeader.ERROR_DESCRIPTION)));
-    }
-
     @Override
     public void gameCreated(Message gameCreated) {
         property.setInfoText(String.format("game created with id %s, now wait for the other players", gameCreated.getBody()));
@@ -121,5 +114,12 @@ public class LobbyView implements ILobbyView, Initializable {
     private void changeView() {
         SetupView setupController = new SetupView(property.getNicknameText());
         setupController.setServer(this.virtualServer);
+    }
+
+    private void readHeaders(Map<MessageHeader, String> header) {
+        if(header == null) return;
+
+        if (header.containsKey(MessageHeader.ERROR_DESCRIPTION))
+            Platform.runLater(() -> property.setInfoText(header.get(MessageHeader.ERROR_DESCRIPTION)));
     }
 }

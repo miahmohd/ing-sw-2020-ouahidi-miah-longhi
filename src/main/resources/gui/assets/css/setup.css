@@ -1,0 +1,41 @@
+@font-face {
+    font-family: 'LillyBelle';
+    src: url('../fonts/LillyBelle.ttf');
+}
+
+.root {
+    -fx-alignment: center;
+    -fx-font-size: 20;
+    -fx-text-alignment: center;
+    -fx-font-family: 'LillyBelle';
+}
+
+HBox {
+    -fx-min-height: 600;
+    -fx-min-width: 600;
+    -fx-max-width: 900;
+    -fx-padding: 0;
+}
+
+VBox {
+    -fx-min-height: inherit;
+    -fx-min-width: 300;
+    -fx-padding: 0;
+}
+
+.cardList {
+    -fx-min-height: 600;
+    -fx-min-width: 600;
+    -fx-padding: 0;
+}
+
+.chosenCardsList {
+    -fx-min-height: 550;
+    -fx-min-width: 300;
+    -fx-padding: 0;
+}
+
+/**https://stackoverflow.com/questions/52021219/javafx-listview-remove-spacing-padding-margin-between-cells*/
+.list-cell {
+    -fx-padding: 0;
+}

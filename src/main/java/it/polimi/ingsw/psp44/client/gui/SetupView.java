@@ -33,14 +33,14 @@ public class SetupView implements Initializable, ISetupView {
 
     @FXML
     //https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/list-view.htm#CEGGEDBF
-    public ListView<String> cardList;
+    public ListView<Card> cardList;
+    //public ListView<String> cardList;
     public ListView<String> chosenCards;
-    public Button clearButton;
+    //public Button clearButton;
     public Button startButton;
 
-
-
-    private SimpleListProperty<String> chooseCardsProperty;
+    private SimpleListProperty<Card> chooseCardsProperty;
+    //private SimpleListProperty<String> chooseCardsProperty;
     private SimpleListProperty<String> chosenCardsProperty;
     private SimpleBooleanProperty isStartGame;
     private SimpleBooleanProperty isNotStartGame;
@@ -65,17 +65,20 @@ public class SetupView implements Initializable, ISetupView {
         this.chooseCards = BodyFactory.fromCards(cards.getBody());
 
         for (Card card : this.chooseCards)
-            chooseCardsProperty.add(card.getTitle());
+            chooseCardsProperty.add(card);
+
+        //chooseCardsProperty.add(card.getTitle());
     }
 
     @Override
     public void chooseCardFrom(Message cards) {
         this.cardinality = 1;
         this.chooseCards = BodyFactory.fromCards(cards.getBody());
-        for (Card card : this.chooseCards)
-            chooseCardsProperty.add(card.getTitle());
-    }
 
+        for (Card card : this.chooseCards)
+            chooseCardsProperty.add(card);
+        //chooseCardsProperty.add(card.getTitle());
+    }
 
     //https://docs.oracle.com/javafx/2/fxml_get_started/custom_control.htm
     @Override
@@ -100,6 +103,17 @@ public class SetupView implements Initializable, ISetupView {
         View.setViewAndShow("Santorini", "/gui/game.fxml", gameView);
     }
 
+    public void prova(){
+        chooseCardsProperty.addAll(
+                new Card(1, "Apollo", "God of Staminchia",
+                        "Your Move: Your Worker may\nmove into an opponent Worker’s\nspace by forcing their Worker to\nthe space yours just vacated."),
+                new Card(2, "Artemis", "God of altra minchia",
+                        "Your Move: Your Worker may\nmove one additional time, but not\nback to its initial space."),
+                new Card(3, "Artemis", "God of altra minchia",
+                "Your Move: Your Worker may\nmove one additional time, but not\nback to its initial space.")
+        );
+        View.setViewAndShow("Setup", "/gui/setup.fxml", this);
+    }
 
     @Override
     public void start(Message start) {
@@ -134,19 +148,22 @@ public class SetupView implements Initializable, ISetupView {
         startButton.disableProperty().bindBidirectional(isNotStartGame);
 
         cardList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        cardList.getSelectionModel().selectedItemProperty().addListener(
+
+        cardList.setCellFactory(cardListView -> new CardListViewCell());
+
+        /*cardList.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     chosenCardsProperty.add(newValue);
 
                     if(chosenCardsProperty.size() == cardinality)
                         refreshGame();
-                });
+                });*/
         /**
          * TODO: https://stackoverflow.com/questions/27350618/remove-item-from-listview-in-addlistener
          */
 
         startButton.setOnAction(this::startGame);
-        clearButton.setOnAction(this::clearSelection);
+        //clearButton.setOnAction(this::clearSelection);
 
     }
     private void refreshGame() {
