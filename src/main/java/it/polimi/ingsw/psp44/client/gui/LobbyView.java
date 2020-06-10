@@ -49,13 +49,16 @@ public class LobbyView implements ILobbyView, Initializable {
 
     @Override
     public void gameCreated(Message gameCreated) {
-        property.setInfoText(String.format("game created with id %s, now wait for the other players", gameCreated.getBody()));
+        Platform.runLater(()->
+                property.setInfoText(String.format("game created with id %s, now wait for the other players", gameCreated.getBody())));
+
         changeView();
     }
 
     @Override
     public void gameJoined(Message gameJoined) {
-        property.setInfoText("game joined, wait for the others");
+        Platform.runLater(()->
+                property.setInfoText("game joined, wait for the others"));
         changeView();
     }
 

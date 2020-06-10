@@ -1,0 +1,47 @@
+@font-face {
+    font-family: 'LillyBelle';
+    src: url('../fonts/LillyBelle.ttf');
+}
+
+#root {
+    -fx-background-image: url('../images/chosen_panel.png');
+    -fx-background-size: 300 300;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-min-width: 275;
+    -fx-min-height: 300;
+}
+
+#root:hover .godImage {
+    -fx-effect: dropshadow(gaussian, white, 1, 10, 10, 10);
+}
+
+#root:hover .title {
+    -fx-font-size: 20;
+    -fx-padding: 0em 0em 1.2em 0em;
+}
+
+Label {
+    -fx-text-alignment: right;
+}
+
+.godImage {
+    -fx-min-width: 250px;
+    -fx-min-height: 300px;
+    -fx-background-size: auto;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+.titlePane {
+    -fx-padding: 0;
+    -fx-min-height: 100px;
+    -fx-min-width: 200px;
+    -fx-alignment: bottom-center;
+}
+
+.title {
+    -fx-font-size: 22;
+    -fx-text-fill: #eeeeee;
+    -fx-padding: 0em 0em 1em 0em;
+}

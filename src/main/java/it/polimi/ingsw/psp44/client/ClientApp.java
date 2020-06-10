@@ -2,6 +2,7 @@ package it.polimi.ingsw.psp44.client;
 
 
 import it.polimi.ingsw.psp44.client.gui.LobbyView;
+import it.polimi.ingsw.psp44.client.gui.SetupView;
 import it.polimi.ingsw.psp44.network.IConnection;
 import it.polimi.ingsw.psp44.network.SocketConnection;
 import it.polimi.ingsw.psp44.util.ConfigCodes;
@@ -25,12 +26,9 @@ public class ClientApp {
 //            port = Integer.parseInt(host[1]);
 //        }
 
-        /**
-        LobbyView ekkle = new LobbyView();
-        ekkle.newJoin(null);
-        */
-        ///**
-         try {
+        /*SetupView ekkle = new SetupView("");
+        ekkle.prova();*/
+        try {
 
              Socket socket = new Socket(hostname, port);
              IConnection<String> socketConnection = new SocketConnection(socket);
@@ -44,11 +42,10 @@ public class ClientApp {
              server.start();
 
              server.join();
-             System.out.println("fina main");
+             System.out.println("fine main");
 
-         } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             System.err.println("ERROR: " + e.getMessage());
-         }
-         //*/
+        }
     }
 }

@@ -24,11 +24,10 @@ HBox {
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
 }
-
-.godImage:hover{
-    -fx-effect: dropshadow(three-pass-box, white, 10, 10, 10, 10);
-    -fx-min-height: 300px;
-    -fx-min-width: 275px;
+HBox:hover .godImage{
+        -fx-effect: dropshadow(three-pass-box, white, 10, 10, 10, 10);
+        -fx-min-height: 300px;
+        -fx-min-width: 275px;
 }
 
 .titlePane {

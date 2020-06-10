@@ -5,26 +5,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
-public class CardListViewCell extends ListCell<Card> {
+public class ChosenCardListViewCell extends ListCell<Card> {
     @FXML
     private Label title;
-
-    @FXML
-    private Label subtitle;
-
-    @FXML
-    private Label description;
-
     @FXML
     private Pane godImage;
-
     @FXML
-    private HBox root;
-
+    private StackPane root;
 
     private FXMLLoader mLLoader;
 
@@ -38,7 +30,7 @@ public class CardListViewCell extends ListCell<Card> {
         } else {
             if (mLLoader == null) {
 
-                mLLoader = new FXMLLoader(getClass().getResource("/gui/custom/CardListCell.fxml"));
+                mLLoader = new FXMLLoader(getClass().getResource("/gui/custom/ChosenCardListCell.fxml"));
                 mLLoader.setController(this);
 
                 try {
@@ -49,16 +41,12 @@ public class CardListViewCell extends ListCell<Card> {
             }
 
             title.setText(card.getTitle());
-            description.setText(card.getDescription());
-            subtitle.setText(card.getSubtitle());
 
             String image = getClass().getResource(String.format("/gui/assets/images/gods/%d.png", card.getId())).toExternalForm();
             godImage.setStyle("-fx-background-image: url('" + image + "'); ");
-
             setText(null);
             setGraphic(root);
         }
     }
 
-    
 }

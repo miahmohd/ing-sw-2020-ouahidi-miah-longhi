@@ -24,7 +24,7 @@
         <VBox.margin>
             <Insets bottom="85"/>
         </VBox.margin>
-        <Label fx:id="infoLabel"/>
+        <Label styleClass="infoPanel" fx:id="infoLabel"/>
     </Pane>
 
     <Button fx:id="startButton" text="Start" styleClass="startButton">

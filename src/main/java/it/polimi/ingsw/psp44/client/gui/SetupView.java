@@ -2,6 +2,7 @@ package it.polimi.ingsw.psp44.client.gui;
 
 import it.polimi.ingsw.psp44.client.ISetupView;
 import it.polimi.ingsw.psp44.client.VirtualServer;
+import it.polimi.ingsw.psp44.client.gui.properties.SetupProperty;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
 import it.polimi.ingsw.psp44.network.message.Message;
@@ -15,14 +16,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
 
 //https://stackoverflow.com/questions/47511132/javafx-custom-listview
 public class SetupView implements Initializable, ISetupView {
@@ -34,18 +34,17 @@ public class SetupView implements Initializable, ISetupView {
     @FXML
     //https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/list-view.htm#CEGGEDBF
     public ListView<Card> cardList;
-    //public ListView<String> cardList;
-    public ListView<String> chosenCards;
-    //public Button clearButton;
+    public ListView<Card> chosenCards;
     public Button startButton;
+    public VBox chosenCardsSection;
+
 
     private SimpleListProperty<Card> chooseCardsProperty;
-    //private SimpleListProperty<String> chooseCardsProperty;
-    private SimpleListProperty<String> chosenCardsProperty;
+    private SimpleListProperty<Card> chosenCardsProperty;
     private SimpleBooleanProperty isStartGame;
     private SimpleBooleanProperty isNotStartGame;
+    private SimpleBooleanProperty visibleAndManaged;
 
-    private Card[] chooseCards;
 
     public SetupView(String playerNickname){
         this.playerNickname = playerNickname;
@@ -54,6 +53,8 @@ public class SetupView implements Initializable, ISetupView {
         this.chosenCardsProperty = new SimpleListProperty<>(FXCollections.observableArrayList());
         this.isStartGame = new SimpleBooleanProperty(false);
         this.isNotStartGame = new SimpleBooleanProperty(true);
+
+        this.visibleAndManaged = new SimpleBooleanProperty(true);
     }
 
     //TODO: MERGE THESE TWO
@@ -62,22 +63,17 @@ public class SetupView implements Initializable, ISetupView {
         this.cardinality = Integer.parseInt(
                 cards.getHeader().get(MessageHeader.CARDINALITY));
 
-        this.chooseCards = BodyFactory.fromCards(cards.getBody());
-
-        for (Card card : this.chooseCards)
-            chooseCardsProperty.add(card);
-
-        //chooseCardsProperty.add(card.getTitle());
+        chooseCardsProperty.addAll(Arrays.asList(
+                BodyFactory.fromCards(cards.getBody())
+        ));
     }
 
     @Override
     public void chooseCardFrom(Message cards) {
         this.cardinality = 1;
-        this.chooseCards = BodyFactory.fromCards(cards.getBody());
-
-        for (Card card : this.chooseCards)
-            chooseCardsProperty.add(card);
-        //chooseCardsProperty.add(card.getTitle());
+        chooseCardsProperty.addAll(Arrays.asList(
+                BodyFactory.fromCards(cards.getBody())
+        ));
     }
 
     //https://docs.oracle.com/javafx/2/fxml_get_started/custom_control.htm
@@ -101,18 +97,6 @@ public class SetupView implements Initializable, ISetupView {
         gameView.setServer(virtualServer);
 
         View.setViewAndShow("Santorini", "/gui/game.fxml", gameView);
-    }
-
-    public void prova(){
-        chooseCardsProperty.addAll(
-                new Card(1, "Apollo", "God of Staminchia",
-                        "Your Move: Your Worker may\nmove into an opponent Worker’s\nspace by forcing their Worker to\nthe space yours just vacated."),
-                new Card(2, "Artemis", "God of altra minchia",
-                        "Your Move: Your Worker may\nmove one additional time, but not\nback to its initial space."),
-                new Card(3, "Artemis", "God of altra minchia",
-                "Your Move: Your Worker may\nmove one additional time, but not\nback to its initial space.")
-        );
-        View.setViewAndShow("Setup", "/gui/setup.fxml", this);
     }
 
     @Override
@@ -141,34 +125,59 @@ public class SetupView implements Initializable, ISetupView {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         cardList.itemsProperty().bindBidirectional(chooseCardsProperty);
-        cardList.disableProperty().bindBidirectional(isStartGame);
-
         chosenCards.itemsProperty().bindBidirectional(chosenCardsProperty);
 
+        cardList.disableProperty().bindBidirectional(isStartGame);
         startButton.disableProperty().bindBidirectional(isNotStartGame);
 
-        cardList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        cardList.setCellFactory(cardListView -> new CardListViewCell());
-
-        /*cardList.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    chosenCardsProperty.add(newValue);
-
-                    if(chosenCardsProperty.size() == cardinality)
-                        refreshGame();
-                });*/
-        /**
-         * TODO: https://stackoverflow.com/questions/27350618/remove-item-from-listview-in-addlistener
-         */
+        chosenCardsSection.visibleProperty().bindBidirectional(visibleAndManaged);
+        chosenCardsSection.managedProperty().bindBidirectional(visibleAndManaged);
 
         startButton.setOnAction(this::startGame);
-        //clearButton.setOnAction(this::clearSelection);
 
-    }
-    private void refreshGame() {
-        isStartGame.set(!isStartGame.get());
-        isNotStartGame.set(!isNotStartGame.get());
+        cardList.setCellFactory(cardListView -> {
+            CardListViewCell card = new CardListViewCell();
+
+            card.setOnMouseClicked(mouseEvent -> {
+                visibleAndManaged.set(false);
+
+                Card selectedCard = card.getItem();
+                chooseCardsProperty.remove(selectedCard);
+                chosenCardsProperty.add(selectedCard);
+                cardList.getSelectionModel().clearSelection();
+
+                if(chosenCardsProperty.size() > 0) visibleAndManaged.set(true);
+
+                if(chosenCardsProperty.size() == cardinality){
+                    isStartGame.set(true);
+                    isNotStartGame.set(false);
+                }
+            });
+            return card;
+        });
+
+
+        chosenCards.setCellFactory(cardListView -> {
+            ChosenCardListViewCell card = new ChosenCardListViewCell();
+            card.setOnMouseClicked(mouseEvent -> {
+                Card selectedCard = card.getItem();
+                chosenCardsProperty.remove(selectedCard);
+                chooseCardsProperty.add(selectedCard);
+                chosenCards.getSelectionModel().clearSelection();
+
+                if(chosenCardsProperty.size() == 0) visibleAndManaged.set(true);
+
+                if(chosenCardsProperty.size() < cardinality){
+                    isStartGame.set(false);
+                    isNotStartGame.set(true);
+                }
+
+            });
+
+            return card;
+        });
+
+
     }
 
     private void startGame(ActionEvent actionEvent){
@@ -176,25 +185,16 @@ public class SetupView implements Initializable, ISetupView {
         Message message;
         Message.Code messageCode;
 
-        Stream<Card> cardStream = Arrays.stream(this.chooseCards).filter(
-                card -> chosenCardsProperty.contains(card.getTitle()));
-
 
         if(cardinality == 1){
             messageCode = Message.Code.CHOSEN_CARD;
-            body = BodyFactory.toCard(cardStream.findFirst().get());
+            body = BodyFactory.toCard(chosenCardsProperty.stream().findFirst().get());
 
         }else {
             messageCode = Message.Code.CHOSEN_CARDS;
-            body = BodyFactory.toCards(cardStream.toArray(Card[]::new));
+            body = BodyFactory.toCards(chosenCardsProperty.toArray(Card[]::new));
         }
         message = new Message(messageCode, body);
         virtualServer.sendMessage(message);
-    }
-
-    private void clearSelection(ActionEvent actionEvent){
-        chosenCardsProperty.clear();
-        isNotStartGame.set(true);
-        isStartGame.set(false);
     }
 }

@@ -10,7 +10,8 @@
     <children>
         <ListView styleClass="cardList" fx:id="cardList"/>
         <!--https://stackoverflow.com/questions/28558165/javafx-setvisible-doesnt-hide-the-element-->
-        <VBox visible="false" managed="false">
+        <!--visible="false" managed="false"-->
+        <VBox visible="false" managed="false" fx:id="chosenCardsSection">
             <children>
                 <ListView styleClass="chosenCardsList" fx:id="chosenCards"/>
                 <Button fx:id="startButton" text="Si io ci sono"/>

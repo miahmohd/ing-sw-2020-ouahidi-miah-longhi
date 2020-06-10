@@ -59,6 +59,6 @@ Button {
 }
 
 #infoLabel {
-    -fx-text-fill: #eeeeee;
+    -fx-text-fill: red;
 }
 
