@@ -12,16 +12,14 @@ public class SetupProperty {
     private SimpleListProperty<Card> chosenCards;
     private SimpleBooleanProperty isStartGame;
     private SimpleBooleanProperty isNotStartGame;
-    private SimpleBooleanProperty visibleAndManaged;
     private SimpleBooleanProperty isGameStarted;
     private SimpleStringProperty startText;
 
     private int maxChosenCardsSize;
 
-    public SetupProperty(boolean isStartGame, boolean visibleAndManaged, ObservableList chooseCardsProperty, ObservableList chosenCardsProperty, String startText) {
+    public SetupProperty(boolean isStartGame, ObservableList chooseCardsProperty, ObservableList chosenCardsProperty, String startText) {
         this.isStartGame = new SimpleBooleanProperty(isStartGame);
         this.isNotStartGame = new SimpleBooleanProperty(!isStartGame);
-        this.visibleAndManaged = new SimpleBooleanProperty(visibleAndManaged);
         this.startText = new SimpleStringProperty(startText);
 
         this.chooseCards = new SimpleListProperty<>(chooseCardsProperty);
@@ -61,9 +59,6 @@ public class SetupProperty {
     public SimpleBooleanProperty isNotStartGameProperty() {
         return isNotStartGame;
     }
-    public SimpleBooleanProperty visibleAndManagedProperty() {
-        return visibleAndManaged;
-    }
 
     public SimpleStringProperty startTextProperty() {
         return startText;
@@ -82,7 +77,6 @@ public class SetupProperty {
     }
 
     private void updateStatus() {
-        visibleAndManaged.set(!chosenCards.isEmpty());
         isStartGame.set(isChosenCardsAtMaxSize());
         isNotStartGame.set(!isChosenCardsAtMaxSize());
     }

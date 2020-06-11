@@ -11,7 +11,7 @@
 }
 
 HBox {
-    -fx-min-height: 900;
+    -fx-min-height: 600;
     -fx-min-width: 600;
     -fx-max-width: 900;
     -fx-padding: 0;
@@ -23,6 +23,12 @@ VBox {
     -fx-padding: 0;
 }
 
+#chosenCards {
+    -fx-background-size: auto;
+    -fx-background-repeat: no-repeat;
+    -fx-background-image: url("../images/other_panel.png");
+}
+
 .cardList {
     -fx-min-height: inherit;
     -fx-min-width: 600;
@@ -32,7 +38,7 @@ VBox {
 
 
 .chosenCardsList {
-    -fx-min-height: 850;
+    -fx-min-height: 550;
     -fx-min-width: 300;
     -fx-max-width: 300;
     -fx-padding: 0;
@@ -41,6 +47,7 @@ VBox {
 /**https://stackoverflow.com/questions/52021219/javafx-listview-remove-spacing-padding-margin-between-cells*/
 .list-cell {
     -fx-padding: 0;
+    -fx-background-color: null;
 }
 
 #startButton {
@@ -49,7 +56,7 @@ VBox {
     -fx-background-size: 300px 50px;
     -fx-background-repeat: no-repeat;
     -fx-text-fill: #eeeeee;
-    -fx-text-alignment: justify;
+    -fx-text-alignment: center;
     -fx-background-image: url('../images/btn_blue.png');
 }
 

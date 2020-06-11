@@ -31,13 +31,12 @@ public class SetupView implements Initializable, ISetupView {
     public ListView<Card> cardList;
     public ListView<Card> chosenCards;
     public Button startButton;
-    public VBox chosenCardsSection;
 
     private SetupProperty property;
 
     public SetupView(String playerNickname){
         this.playerNickname = playerNickname;
-        this.property = new SetupProperty(false, false, FXCollections.observableArrayList(), FXCollections.observableArrayList(), "Play");
+        this.property = new SetupProperty(false, FXCollections.observableArrayList(), FXCollections.observableArrayList(), "Play");
     }
 
     //TODO: MERGE THESE TWO
@@ -110,12 +109,7 @@ public class SetupView implements Initializable, ISetupView {
         startButton.disableProperty().bindBidirectional(property.isNotStartGameProperty());
 
         chosenCards.disableProperty().bindBidirectional(property.isGameStartedProperty());
-
         startButton.textProperty().bindBidirectional(property.startTextProperty());
-        //TODO: if possible set this, otherwise lascia stare
-        //chosenCardsSection.visibleProperty().bindBidirectional(property.visibleAndManagedProperty());
-        //chosenCardsSection.managedProperty().bindBidirectional(property.visibleAndManagedProperty());
-
         startButton.setOnAction(this::startGame);
 
         cardList.setCellFactory(cardListView -> {
