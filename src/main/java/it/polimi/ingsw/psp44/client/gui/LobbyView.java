@@ -51,7 +51,6 @@ public class LobbyView implements ILobbyView, Initializable {
     public void gameCreated(Message gameCreated) {
         Platform.runLater(()->
                 property.setInfoText(String.format("game created with id %s, now wait for the other players", gameCreated.getBody())));
-
         changeView();
     }
 

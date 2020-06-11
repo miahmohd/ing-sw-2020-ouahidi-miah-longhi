@@ -8,8 +8,7 @@ import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.util.Card;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleListProperty;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,61 +18,40 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-//https://stackoverflow.com/questions/47511132/javafx-custom-listview
 public class SetupView implements Initializable, ISetupView {
 
     private VirtualServer virtualServer;
     private String playerNickname;
-    private int cardinality;
 
     @FXML
-    //https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/list-view.htm#CEGGEDBF
     public ListView<Card> cardList;
     public ListView<Card> chosenCards;
     public Button startButton;
     public VBox chosenCardsSection;
 
-
-    private SimpleListProperty<Card> chooseCardsProperty;
-    private SimpleListProperty<Card> chosenCardsProperty;
-    private SimpleBooleanProperty isStartGame;
-    private SimpleBooleanProperty isNotStartGame;
-    private SimpleBooleanProperty visibleAndManaged;
-
+    private SetupProperty property;
 
     public SetupView(String playerNickname){
         this.playerNickname = playerNickname;
-
-        this.chooseCardsProperty = new SimpleListProperty<>(FXCollections.observableArrayList());
-        this.chosenCardsProperty = new SimpleListProperty<>(FXCollections.observableArrayList());
-        this.isStartGame = new SimpleBooleanProperty(false);
-        this.isNotStartGame = new SimpleBooleanProperty(true);
-
-        this.visibleAndManaged = new SimpleBooleanProperty(true);
+        this.property = new SetupProperty(false, false, FXCollections.observableArrayList(), FXCollections.observableArrayList(), "Play");
     }
 
     //TODO: MERGE THESE TWO
     @Override
     public void chooseCardsFrom(Message cards) {
-        this.cardinality = Integer.parseInt(
-                cards.getHeader().get(MessageHeader.CARDINALITY));
-
-        chooseCardsProperty.addAll(Arrays.asList(
-                BodyFactory.fromCards(cards.getBody())
-        ));
+        this.property.setMaxChosenCardsSize(Integer.parseInt(
+                cards.getHeader().get(MessageHeader.CARDINALITY)));
+        this.property.addCards(BodyFactory.fromCards(cards.getBody()));
     }
 
     @Override
     public void chooseCardFrom(Message cards) {
-        this.cardinality = 1;
-        chooseCardsProperty.addAll(Arrays.asList(
-                BodyFactory.fromCards(cards.getBody())
-        ));
+        this.property.setMaxChosenCardsSize(1);
+        this.property.addCards(BodyFactory.fromCards(cards.getBody()));
     }
 
     //https://docs.oracle.com/javafx/2/fxml_get_started/custom_control.htm
@@ -106,7 +84,8 @@ public class SetupView implements Initializable, ISetupView {
 
     @Override
     public void end(Message end) {
-
+        Platform.runLater(() -> property.setStartText("Now Wait"));
+        property.disableAll();
     }
 
     @Override
@@ -124,14 +103,18 @@ public class SetupView implements Initializable, ISetupView {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        cardList.itemsProperty().bindBidirectional(chooseCardsProperty);
-        chosenCards.itemsProperty().bindBidirectional(chosenCardsProperty);
+        cardList.itemsProperty().bindBidirectional(property.chooseCardsProperty());
+        chosenCards.itemsProperty().bindBidirectional(property.chosenCardsProperty());
 
-        cardList.disableProperty().bindBidirectional(isStartGame);
-        startButton.disableProperty().bindBidirectional(isNotStartGame);
+        cardList.disableProperty().bindBidirectional(property.isStartGameProperty());
+        startButton.disableProperty().bindBidirectional(property.isNotStartGameProperty());
 
-        chosenCardsSection.visibleProperty().bindBidirectional(visibleAndManaged);
-        chosenCardsSection.managedProperty().bindBidirectional(visibleAndManaged);
+        chosenCards.disableProperty().bindBidirectional(property.isGameStartedProperty());
+
+        startButton.textProperty().bindBidirectional(property.startTextProperty());
+        //TODO: if possible set this, otherwise lascia stare
+        //chosenCardsSection.visibleProperty().bindBidirectional(property.visibleAndManagedProperty());
+        //chosenCardsSection.managedProperty().bindBidirectional(property.visibleAndManagedProperty());
 
         startButton.setOnAction(this::startGame);
 
@@ -139,45 +122,23 @@ public class SetupView implements Initializable, ISetupView {
             CardListViewCell card = new CardListViewCell();
 
             card.setOnMouseClicked(mouseEvent -> {
-                visibleAndManaged.set(false);
-
                 Card selectedCard = card.getItem();
-                chooseCardsProperty.remove(selectedCard);
-                chosenCardsProperty.add(selectedCard);
+                property.moveCardFromChooseToChosen(selectedCard);
                 cardList.getSelectionModel().clearSelection();
-
-                if(chosenCardsProperty.size() > 0) visibleAndManaged.set(true);
-
-                if(chosenCardsProperty.size() == cardinality){
-                    isStartGame.set(true);
-                    isNotStartGame.set(false);
-                }
             });
             return card;
         });
-
 
         chosenCards.setCellFactory(cardListView -> {
             ChosenCardListViewCell card = new ChosenCardListViewCell();
             card.setOnMouseClicked(mouseEvent -> {
                 Card selectedCard = card.getItem();
-                chosenCardsProperty.remove(selectedCard);
-                chooseCardsProperty.add(selectedCard);
+                property.moveCardFromChosenToChoose(selectedCard);
                 chosenCards.getSelectionModel().clearSelection();
-
-                if(chosenCardsProperty.size() == 0) visibleAndManaged.set(true);
-
-                if(chosenCardsProperty.size() < cardinality){
-                    isStartGame.set(false);
-                    isNotStartGame.set(true);
-                }
-
             });
 
             return card;
         });
-
-
     }
 
     private void startGame(ActionEvent actionEvent){
@@ -185,14 +146,14 @@ public class SetupView implements Initializable, ISetupView {
         Message message;
         Message.Code messageCode;
 
-
-        if(cardinality == 1){
+        Card[] chosenCards = this.property.getChosenCards();
+        if(chosenCards.length == 1){
             messageCode = Message.Code.CHOSEN_CARD;
-            body = BodyFactory.toCard(chosenCardsProperty.stream().findFirst().get());
-
-        }else {
+            body = BodyFactory.toCard(chosenCards[0]);
+        }
+        else {
             messageCode = Message.Code.CHOSEN_CARDS;
-            body = BodyFactory.toCards(chosenCardsProperty.toArray(Card[]::new));
+            body = BodyFactory.toCards(chosenCards);
         }
         message = new Message(messageCode, body);
         virtualServer.sendMessage(message);
