@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.image.Image?>
 
-<StackPane fx:id="root" stylesheets="@../assets/css/ChosenCardListCell.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="root" stylesheets="@../assets/css/custom/ChosenCardListCell.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
        <Pane fx:id="godImage" styleClass="godImage"/>
        <StackPane styleClass="titlePane">

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.psp44.client.gui;
+package it.polimi.ingsw.psp44.client.gui.custom;
 
 import it.polimi.ingsw.psp44.util.Card;
 import javafx.fxml.FXML;

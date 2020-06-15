@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'LillyBelle';
-    src: url('../fonts/LillyBelle.ttf');
+    src: url('../../fonts/LillyBelle.ttf');
 }
 
 #root {
-    -fx-background-image: url('../images/chosen_panel.png');
+    -fx-background-image: url('../../images/chosen_panel.png');
     -fx-background-size: 300 300;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;

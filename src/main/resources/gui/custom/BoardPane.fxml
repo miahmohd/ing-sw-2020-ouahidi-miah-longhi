@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<fx:root stylesheets="@../assets/css/custom/BoardPane.css" type="javafx.scene.layout.GridPane" xmlns:fx="http://javafx.com/fxml">
+</fx:root>

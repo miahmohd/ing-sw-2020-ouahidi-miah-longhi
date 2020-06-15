@@ -2,6 +2,8 @@ package it.polimi.ingsw.psp44.client.gui;
 
 import it.polimi.ingsw.psp44.client.ISetupView;
 import it.polimi.ingsw.psp44.client.VirtualServer;
+import it.polimi.ingsw.psp44.client.gui.custom.CardListViewCell;
+import it.polimi.ingsw.psp44.client.gui.custom.ChosenCardListViewCell;
 import it.polimi.ingsw.psp44.client.gui.properties.SetupProperty;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
@@ -15,7 +17,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.HashMap;
