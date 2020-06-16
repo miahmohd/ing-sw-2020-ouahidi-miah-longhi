@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.Pane?>
-<fx:root fx:id="cellPane" stylesheets="@../assets/css/custom/CellPane.css" type="javafx.scene.layout.StackPane" xmlns:fx="http://javafx.com/fxml">
+<fx:root fx:id="root" stylesheets="@../assets/css/custom/CellPane.css" type="javafx.scene.layout.StackPane" xmlns:fx="http://javafx.com/fxml">
     <Pane fx:id="layer1" styleClass="layer1" />
     <Pane fx:id="layer2" styleClass="layer2" />
     <Pane fx:id="layer3" styleClass="layer3" />

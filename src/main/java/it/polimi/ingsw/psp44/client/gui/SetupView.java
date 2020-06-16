@@ -57,24 +57,11 @@ public class SetupView implements Initializable, ISetupView {
     //https://docs.oracle.com/javafx/2/fxml_get_started/custom_control.htm
     @Override
     public void allPlayerCards(Message players) {
-        BodyTemplates.PlayerCard[] playerCards;
-        Map<String, String> opponentNamesAndCards;
-        String myCard = "";
-
-        playerCards = BodyFactory.fromPlayerCards(players.getBody());
-        opponentNamesAndCards = new HashMap<>();
-
-        for (BodyTemplates.PlayerCard playerCard : playerCards){
-            if(!playerCard.getPlayerNickname().equals(this.playerNickname))
-                opponentNamesAndCards.put(playerCard.getPlayerNickname() ,playerCard.getCardName());
-            else
-                myCard = playerCard.getCardName();
-        }
-
-        GameView gameView = new GameView(this.playerNickname, myCard, opponentNamesAndCards);
-        gameView.setServer(virtualServer);
-
+        BodyTemplates.PlayerCard[] playerCards = BodyFactory.fromPlayerCards(players.getBody());
+        GameView gameView = new GameView(this.playerNickname, playerCards);
         View.setViewAndShow("Santorini", "/gui/game.fxml", gameView);
+
+        gameView.setServer(virtualServer);
     }
 
     @Override

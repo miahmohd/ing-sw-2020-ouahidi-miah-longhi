@@ -2,8 +2,10 @@ package it.polimi.ingsw.psp44.client.gui;
 
 import it.polimi.ingsw.psp44.client.IGameView;
 import it.polimi.ingsw.psp44.client.VirtualServer;
+import it.polimi.ingsw.psp44.client.gui.custom.BoardPane;
 import it.polimi.ingsw.psp44.network.communication.Action;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
+import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
 import it.polimi.ingsw.psp44.network.communication.Cell;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
@@ -19,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
@@ -28,69 +31,58 @@ import static java.util.stream.Collectors.groupingBy;
 
 public class GameView implements IGameView, Initializable {
 
-    private static final int DIMENSION = 5;
+    private final int DIMENSION = 5;
     private VirtualServer virtualServer;
 
-
-    private SimpleStringProperty[][] board;
-    private SimpleBooleanProperty[][] boardDisabled;
-    private SimpleObjectProperty<EventHandler<ActionEvent>>[][] boardAction;
+/*    private SimpleBooleanProperty[][] boardDisabled;
+    private SimpleObjectProperty<EventHandler<ActionEvent>>[][] boardAction;*/
 
     private SimpleBooleanProperty isTurnEndable;
 
     private SimpleStringProperty playerAndCards;
+
     private int cardinality;
     private List<Position> workerPositions;
 
     private SimpleStringProperty turnProperty;
 
     private Map<Position, List<Action>> actionsPerPosition;
+    private Map<String, String> playerColors;
 
-    @FXML
-    private GridPane boardGridPane;
-    @FXML
-    private Label playersLabel;
-    @FXML
-    private Label turnLabel;
-    @FXML
-    private Button endTurnButton;
+    @FXML private BoardPane board;
+    //@FXML private Label playersLabel;
+    //@FXML private Label turnLabel;
+    //@FXML private Button endTurnButton;
 
 
-    public GameView(String playerNickname, String myCard, Map<String, String> opponentNamesAndCards) {
-        board = new SimpleStringProperty[DIMENSION][DIMENSION];
-        boardDisabled = new SimpleBooleanProperty[DIMENSION][DIMENSION];
-        boardAction = new SimpleObjectProperty[DIMENSION][DIMENSION];
+    public GameView(String playerNickname, BodyTemplates.PlayerCard[] playersAndCards) {
+        playerColors = new HashMap<>();
+        String[] colors = {"BLUE", "GREY", "WHITE"};
 
-        isTurnEndable = new SimpleBooleanProperty(true);
-
-        turnProperty = new SimpleStringProperty("");
-
-        String players = String.format("%s : %s\n", playerNickname, myCard);
-
-        for (String player : opponentNamesAndCards.keySet()){
-            players += String.format("%s : %s\n", player, opponentNamesAndCards.get(player));
+        int i = 0;
+        for(BodyTemplates.PlayerCard playerAndCard : playersAndCards){
+            playerColors.put(playerAndCard.getPlayerNickname(), colors[i]);
+            i++;
         }
-
-        playerAndCards = new SimpleStringProperty(players);
-        initializeAll();
     }
-
 
     @Override
     public void chooseWorkersInitialPositionFrom(Message workers) {
+        System.out.println("GameView.chooseWorkersInitialPositionFrom");
         List<Position> positionsToChooseFrom = new ArrayList<>(
                 Arrays.asList(BodyFactory.fromPositions(workers.getBody()))
         );
-        disablePositionsAndSetAction(positionsToChooseFrom, this::sendWorkers);
+        board.setActionIn(positionsToChooseFrom, this::sendWorkers);
         cardinality = 2;
         workerPositions = new ArrayList<>();
     }
+
     @Override
     public void chooseWorkerFrom(Message workers) {
         List<Position> positionsToChooseFrom = new ArrayList<>(
                 Arrays.asList(BodyFactory.fromPositions(workers.getBody()))
         );
-        disablePositionsAndSetAction(positionsToChooseFrom, this::sendWorker);
+        board.setActionIn(positionsToChooseFrom, this::sendWorker);
         cardinality = 1;
         workerPositions = new ArrayList<>();
     }
@@ -103,28 +95,20 @@ public class GameView implements IGameView, Initializable {
         ));
 
         this.actionsPerPosition = actionList.stream().collect(groupingBy(Action::getTarget));
-
-        disablePositionsAndSetAction(actionsPerPosition.keySet(), this::sendAction);
-
+        board.setActionIn(actionsPerPosition.keySet(), this::sendAction);
         headers = actions.getHeader();
-        if(headers != null)
-            this.isTurnEndable.set(!Boolean.parseBoolean(headers.get(MessageHeader.IS_TURN_ENDABLE)));
-        else
-            this.isTurnEndable.set(true);
     }
     @Override
     public void start(Message start) {
-        //TODO: questo metodo Diventa a bit inutile
-        System.out.println("ekkomi nello start di gameview");
+        System.out.println("GameView.start");
+        board.disableProperty().set(false);
     }
     @Override
     public void end(Message end) {
-        //this is utile
-        disableAllBoard();
+        board.disableProperty().set(true);
     }
     @Override
     public void lost(Message lost) {
-        //TODO: todo questo
         System.out.println("YOU LOST, looser");
     }
     @Override
@@ -135,23 +119,13 @@ public class GameView implements IGameView, Initializable {
     @Override
     public void update(Message update) {
         Cell[] cellsToUpdate = BodyFactory.fromCells(update.getBody());
-        for (Cell cell : cellsToUpdate){
-            SimpleStringProperty stringProperty = board[cell.getPosition().getRow()][cell.getPosition().getColumn()];
-
-            Platform.runLater(()-> {
-                    if (cell.getPlayerNickname() == null)
-                        stringProperty.set(String.format("%d:%s", cell.getLevel(), ""));
-                    else
-                        stringProperty.set(String.format("%d:%s", cell.getLevel(), cell.getPlayerNickname()));
-                    }
-            );
-        }
+        board.update(cellsToUpdate);
     }
     @Override
     public void activeTurn(Message activePlayer) {
-        Platform.runLater(() ->
+/*        Platform.runLater(() ->
             turnProperty.set(String.format("%s's turn",activePlayer.getBody()))
-        );
+        );*/
     }
     @Override
     public void setServer(VirtualServer virtual) {
@@ -173,35 +147,20 @@ public class GameView implements IGameView, Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Button buttonToAdd;
-
-        //INIZIALIZZO la board;
-        for (int row = 0; row < DIMENSION; row++){
-            for (int column = 0; column < DIMENSION; column++){
-                //inizializzo il bottone
-                buttonToAdd = new Button();
-                buttonToAdd.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                buttonToAdd.textProperty().bindBidirectional(board[row][column]);
-
-                buttonToAdd.disableProperty().bindBidirectional(boardDisabled[row][column]);
-
-                buttonToAdd.onActionProperty().bindBidirectional(boardAction[row][column]);
-
-                boardGridPane.add(buttonToAdd, row, column);
-            }
-        }
-        endTurnButton.disableProperty().bindBidirectional(isTurnEndable);
-        playersLabel.textProperty().bindBidirectional(playerAndCards);
-
-        turnLabel.textProperty().bindBidirectional(turnProperty);
+        board.setDimension(DIMENSION);
+        board.setPlayerColors(playerColors);
+        System.out.println("GameView.initialize");
+        //endTurnButton.disableProperty().bindBidirectional(isTurnEndable);
+        //playersLabel.textProperty().bindBidirectional(playerAndCards);
+        //turnLabel.textProperty().bindBidirectional(turnProperty);
     }
 
-    private void sendAction(ActionEvent actionEvent){
+    private void sendAction(MouseEvent actionEvent){
         int row, column;
         Node node = (Node)actionEvent.getSource();
 
-        row = boardGridPane.getColumnIndex(node);
-        column = boardGridPane.getRowIndex(node);
+        row = board.getColumnIndex(node);
+        column = board.getRowIndex(node);
 
         Position actionPosition = new Position(row, column);
 
@@ -211,65 +170,36 @@ public class GameView implements IGameView, Initializable {
         );
 
     }
-    private void sendWorker(ActionEvent actionEvent){
+    private void sendWorker(MouseEvent actionEvent){
         int row, column;
         Node node = (Node)actionEvent.getSource();
 
-        row = boardGridPane.getColumnIndex(node);
-        column = boardGridPane.getRowIndex(node);
-
+        row = board.getColumnIndex(node);
+        column = board.getRowIndex(node);
 
         workerPositions.add(new Position(row, column));
-        boardDisabled[row][column].set(true);
+        board.disableCell(row, column);
 
         if(workerPositions.size() == this.cardinality){
             virtualServer.sendMessage(new Message(Message.Code.CHOSEN_WORKER,
                     BodyFactory.toPosition(new Position(row, column))));
         }
     }
-    private void sendWorkers(ActionEvent actionEvent){
+
+    private void sendWorkers(MouseEvent actionEvent){
+        System.out.println("GameView.sendWorkers");
         int row, column;
         Node node = (Node)actionEvent.getSource();
 
-        row = boardGridPane.getColumnIndex(node);
-        column = boardGridPane.getRowIndex(node);
+        row = board.getColumnIndex(node);
+        column = board.getRowIndex(node);
 
         workerPositions.add(new Position(row, column));
-        boardDisabled[row][column].set(true);
+        board.disableCell(row, column);
 
         if(workerPositions.size() == this.cardinality) {
             virtualServer.sendMessage(new Message(Message.Code.CHOSEN_WORKERS_INITIAL_POSITION,
                     BodyFactory.toPositions(workerPositions.toArray(Position[]::new))));
-        }
-    }
-
-    private void disableAllBoard() {
-        for (int row = 0; row < DIMENSION; row++){
-            for (int column = 0; column < DIMENSION; column++){
-                boardDisabled[row][column].set(true);
-            }
-        }
-    }
-    private void initializeAll(){
-        for (int row = 0; row < DIMENSION; row++){
-            for (int column = 0; column < DIMENSION; column++){
-                //inizializzo la property con EMPTY
-                board[row][column] = new SimpleStringProperty("0:");
-                boardDisabled[row][column] = new SimpleBooleanProperty(false);
-                boardAction[row][column] = new SimpleObjectProperty<>();
-            }
-        }
-    }
-    private void disablePositionsAndSetAction(Collection<Position> positionsToChooseFrom, EventHandler<ActionEvent> action) {
-        for (int row = 0; row < DIMENSION; row++) {
-            for (int column = 0; column < DIMENSION; column++) {
-                if(positionsToChooseFrom.contains(new Position(row, column))) {
-                    boardDisabled[row][column].set(false);
-                    boardAction[row][column].set(action);
-                }
-                else
-                    boardDisabled[row][column].set(true);
-            }
         }
     }
 }

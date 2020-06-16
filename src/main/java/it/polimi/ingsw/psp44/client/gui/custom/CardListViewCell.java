@@ -10,21 +10,11 @@ import javafx.scene.layout.*;
 import java.io.IOException;
 
 public class CardListViewCell extends ListCell<Card> {
-    @FXML
-    private Label title;
-
-    @FXML
-    private Label subtitle;
-
-    @FXML
-    private Label description;
-
-    @FXML
-    private Pane godImage;
-
-    @FXML
-    private HBox root;
-
+    @FXML private Label title;
+    @FXML private Label subtitle;
+    @FXML private Label description;
+    @FXML private Pane godImage;
+    @FXML private HBox root;
 
     private FXMLLoader mLLoader;
 
