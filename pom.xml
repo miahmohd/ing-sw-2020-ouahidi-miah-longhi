@@ -23,11 +23,11 @@
                 <version>3.8.1</version>
             </plugin>
 
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.4</version>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.jacoco</groupId>-->
+<!--                <artifactId>jacoco-maven-plugin</artifactId>-->
+<!--                <version>0.8.4</version>-->
+<!--            </plugin>-->
 
 
             <!--            plugin for creating jar with dependencies-->
@@ -52,6 +52,7 @@
                                 </manifest>
                             </archive>
                             <finalName>server-santorini</finalName>
+                            <outputDirectory>deliveries/jars</outputDirectory>
                         </configuration>
                         <phase>package</phase>
                         <goals>
@@ -73,6 +74,29 @@
                                 </manifest>
                             </archive>
                             <finalName>cli-client-santorini</finalName>
+                            <outputDirectory>deliveries/jars</outputDirectory>
+                        </configuration>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+
+<!--                    Create cli jar-->
+                    <execution>
+                        <id>make-gui</id>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <archive>
+                                <manifest>
+                                    <mainClass>it.polimi.ingsw.psp44.client.ClientApp</mainClass>
+                                </manifest>
+                            </archive>
+                            <finalName>gui-client-santorini</finalName>
+                            <outputDirectory>deliveries/jars</outputDirectory>
                         </configuration>
                         <phase>package</phase>
                         <goals>
@@ -116,6 +140,7 @@
             <artifactId>javafx-controls</artifactId>
             <version>14</version>
         </dependency>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
@@ -125,35 +150,35 @@
     </dependencies>
 
     <!--    add coverage report to SonarQube-->
-    <profiles>
-        <profile>
-            <id>coverage</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>prepare-agent</id>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>report</id>
-                                <goals>
-                                    <goal>report</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+<!--    <profiles>-->
+<!--        <profile>-->
+<!--            <id>coverage</id>-->
+<!--            <activation>-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--            </activation>-->
+<!--            <build>-->
+<!--                <plugins>-->
+<!--                    <plugin>-->
+<!--                        <groupId>org.jacoco</groupId>-->
+<!--                        <artifactId>jacoco-maven-plugin</artifactId>-->
+<!--                        <executions>-->
+<!--                            <execution>-->
+<!--                                <id>prepare-agent</id>-->
+<!--                                <goals>-->
+<!--                                    <goal>prepare-agent</goal>-->
+<!--                                </goals>-->
+<!--                            </execution>-->
+<!--                            <execution>-->
+<!--                                <id>report</id>-->
+<!--                                <goals>-->
+<!--                                    <goal>report</goal>-->
+<!--                                </goals>-->
+<!--                            </execution>-->
+<!--                        </executions>-->
+<!--                    </plugin>-->
+<!--                </plugins>-->
+<!--            </build>-->
+<!--        </profile>-->
+<!--    </profiles>-->
 
 </project>
