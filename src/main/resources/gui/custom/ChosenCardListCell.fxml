@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.image.Image?>
+
+<StackPane fx:id="root" stylesheets="@../assets/css/custom/ChosenCardListCell.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+       <Pane fx:id="godImage" styleClass="godImage"/>
+       <StackPane styleClass="titlePane">
+           <ImageView fitHeight="150.0" fitWidth="200.0" preserveRatio="true">
+               <image>
+                   <Image url="@../assets/images/gameGodFrameName2.png" />
+               </image>
+           </ImageView>
+           <children>
+               <Label fx:id="title" styleClass="title" text="Label"/>
+           </children>
+       </StackPane>
+   </children>
+</StackPane>
