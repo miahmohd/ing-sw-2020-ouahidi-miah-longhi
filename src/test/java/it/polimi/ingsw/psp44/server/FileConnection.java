@@ -11,7 +11,8 @@ public class FileConnection implements IConnection<String> {
     private boolean active=true;
 
     public FileConnection(Reader in, Writer out) {
-        writer = new PrintWriter(out, true);
+
+        writer = new PrintWriter( out, true);
         reader = new BufferedReader(in);
     }
 
