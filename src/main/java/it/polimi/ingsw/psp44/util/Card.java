@@ -19,7 +19,12 @@ public class Card {
     private Card() {
     }
 
-
+    public Card(int id, String title, String subtitle, String description) {
+        this.id = id;
+        this.title = title;
+        this.subtitle = subtitle;
+        this.description = description;
+    }
 
     public int getId() {
         return id;

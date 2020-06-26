@@ -1,0 +1,23 @@
+.layer1{
+    -fx-background-position: bottom -10px center;
+    -fx-background-size: 250 125;
+    -fx-background-repeat: no-repeat;
+}
+
+.layer2 {
+    -fx-background-position: center;
+    -fx-background-size: 200 100;
+    -fx-background-repeat: no-repeat;
+}
+
+.layer3 {
+    -fx-background-position: top 10px center;
+    -fx-background-size: 200 100;
+    -fx-background-repeat: no-repeat;
+}
+
+.layer4 {
+    -fx-background-position: top center;
+    -fx-background-size: 150 75;
+    -fx-background-repeat: no-repeat;
+}

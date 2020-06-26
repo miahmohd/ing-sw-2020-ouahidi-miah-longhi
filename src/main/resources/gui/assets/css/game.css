@@ -1,0 +1,10 @@
+BorderPane {
+    -fx-border-insets: 10 10 10 10;
+    -fx-background-image: url("../images/game/SantoriniBoard.png");
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: auto;
+    -fx-pref-width: 1000;
+    -fx-pref-height: 1000;
+    -fx-padding: 110 110 100 110; /*top, right, bottom, left*/
+}
