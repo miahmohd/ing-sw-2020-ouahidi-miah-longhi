@@ -20,7 +20,6 @@ public class Lobby extends IPromise {
     private List<VirtualView> playersInWaiting;
 
 
-
     public Lobby(int maxPlayers) {
         this.maxPlayers = maxPlayers;
         this.id = idGen++;
@@ -39,7 +38,7 @@ public class Lobby extends IPromise {
     public void addPlayer(String nickname, VirtualView view) {
         this.playersInWaiting.add(view);
         this.setupController.addPlayer(nickname, view);
-
+        view.setLobbyID(this.id);
         view.addMessageHandler(Message.Code.CLIENT_DISCONNECTED, this::clientDisconnectedMessageHandler);
     }
 
@@ -54,7 +53,7 @@ public class Lobby extends IPromise {
      * @param message message with code CLIENT_DISCONNECTED
      */
     public void clientDisconnectedMessageHandler(VirtualView view, Message message) {
-        System.out.println("Disconnecting from lobby");
+        System.out.println("Disconnecting from lobby "+ this.id);
         playersInWaiting.forEach(VirtualView::close);
     }
 

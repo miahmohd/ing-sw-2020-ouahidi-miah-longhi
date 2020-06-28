@@ -24,12 +24,24 @@ import java.util.Map;
 public class VirtualView extends Virtual implements Runnable, IObserver<Message> {
 
     private final Map<Message.Code, IMessageHandlerFunction> handlers;
+
+
+    private int lobbyID;
     private Message lastSend;
     private boolean errorFlag = true;
 
     public VirtualView(IConnection<String> connection) {
         super(connection);
+        this.lobbyID = -1;
         this.handlers = Collections.synchronizedMap(new EnumMap<>(Message.Code.class));
+    }
+
+    public int getLobbyID() {
+        return lobbyID;
+    }
+
+    public void setLobbyID(int lobbyID) {
+        this.lobbyID = lobbyID;
     }
 
 
@@ -57,12 +69,16 @@ public class VirtualView extends Virtual implements Runnable, IObserver<Message>
 
             if (this.errorFlag) {
                 this.routeMessage(this, new Message(Message.Code.CLIENT_DISCONNECTED));
+                this.routeMessage(this, new Message(Message.Code.LOBBY_DISCONNECTED));
             }
 
+
         } catch (SocketException | SocketTimeoutException ex) {
+
             if (this.errorFlag) {
                 System.out.println(ex.getMessage() + "for " + this);
                 this.routeMessage(this, new Message(Message.Code.CLIENT_DISCONNECTED));
+                this.routeMessage(this, new Message(Message.Code.LOBBY_DISCONNECTED));
             }
 
         } catch (IOException e) {
@@ -114,7 +130,6 @@ public class VirtualView extends Virtual implements Runnable, IObserver<Message>
             this.sendMessage(this.lastSend);
         }
     }
-
 
 }
 

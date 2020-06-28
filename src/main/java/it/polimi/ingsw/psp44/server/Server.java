@@ -142,11 +142,28 @@ public class Server {
         view.close();
     }
 
+    /**
+     * Callback that handles and process LOBBY_DISCONNECTED message type.
+     * This callback is called when the player disconnect unexpectedly and the lobby need to be freed.
+     *
+     * @param view    the view that disconnected
+     * @param message message with code CLIENT_DISCONNECTED
+     */
+    public void lobbyDisconnectedMessageHandler(VirtualView view, Message message) {
+        int toDelID = view.getLobbyID();
+        if (toDelID < 0)
+            return;
+        synchronized (this.lobbies) {
+            this.lobbies.stream().filter(l -> l.getId() == toDelID).findFirst().ifPresent(this.lobbies::remove);
+        }
+    }
+
 
     private void setHandlers(VirtualView view) {
         view.addMessageHandler(Message.Code.NEW_GAME, this::newGameMessageHandler);
         view.addMessageHandler(Message.Code.JOIN_GAME, this::joinGameMessageHandler);
         view.addMessageHandler(Message.Code.CLIENT_DISCONNECTED, this::clientDisconnectedMessageHandler);
+        view.addMessageHandler(Message.Code.LOBBY_DISCONNECTED, this::lobbyDisconnectedMessageHandler);
     }
 
 
