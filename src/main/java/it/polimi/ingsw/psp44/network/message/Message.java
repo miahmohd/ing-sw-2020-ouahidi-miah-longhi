@@ -108,7 +108,8 @@ public class Message {
         ACTIVE_TURN,
 
         PING,
-        LOBBY_DISCONNECTED,
-        CLIENT_DISCONNECTED
+        CLIENT_DISCONNECTED,
+        NETWORK_ERROR
+
     }
 }

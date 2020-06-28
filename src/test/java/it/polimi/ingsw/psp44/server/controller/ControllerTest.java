@@ -159,7 +159,7 @@ public class ControllerTest {
                 sent=getNextMessageFrom(p5Connection);
                     routeMessage(match2, p5, sent);
                     recived = getLastMessage(p5ActualOut);
-            } while(recived.getCode() != Message.Code.END_TURN);
+            } while(recived.getCode() != Message.Code.END_TURN && recived.getCode() != Message.Code.LOST && recived.getCode() != Message.Code.WON);
             do {
                 sent=getNextMessageFrom(p6Connection);
                     routeMessage(match2, p6, sent);
@@ -169,7 +169,7 @@ public class ControllerTest {
                 sent=getNextMessageFrom(p9Connection);
                     routeMessage(match2, p9, sent);
                     recived = getLastMessage(p9ActualOut);
-            } while (recived.getCode() != Message.Code.END_TURN);
+            } while (recived.getCode() != Message.Code.END_TURN && recived.getCode() != Message.Code.LOST && recived.getCode() != Message.Code.WON);
         }while (!isFinished(p9ActualOut));
 
         //Expected messages sent to the views
@@ -200,7 +200,7 @@ public class ControllerTest {
     private boolean isFinished(StringWriter p9ActualOut) {
         String br = System.getProperty("line.separator");
         String[] messages = p9ActualOut.toString().split(br);
-        return messages[messages.length - 2].contains("WON");
+        return messages[messages.length - 1].contains("WON");
 
     }
 

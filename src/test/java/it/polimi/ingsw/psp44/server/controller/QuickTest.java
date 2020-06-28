@@ -94,13 +94,13 @@ public class QuickTest {
                 in=getNextMessageFrom(p15Connection);
                 routeMessage(match1, p15,in);
                 out=getLastMessage(p15ActualOut);
-            } while (out.getCode() != Message.Code.END_TURN);
+            } while (out.getCode() != Message.Code.END_TURN && out.getCode() != Message.Code.LOST && out.getCode() != Message.Code.WON);
             if(p12Connection.isActive()) {
                 do {
                     in = getNextMessageFrom(p12Connection);
                     routeMessage(match1, p12, in);
                     out = getLastMessage(p12ActualOut);
-                } while (out.getCode() != Message.Code.END_TURN);
+                } while (out.getCode() != Message.Code.END_TURN && out.getCode() != Message.Code.LOST && out.getCode() != Message.Code.WON);
             }
         }while(!isFinished(p15ActualOut));
 
@@ -122,7 +122,7 @@ public class QuickTest {
     private boolean isFinished(StringWriter p9ActualOut) {
         String br = System.getProperty("line.separator");
         String[] messages = p9ActualOut.toString().split(br);
-        return messages[messages.length - 2].contains("WON");
+        return messages[messages.length - 1].contains("WON");
 
     }
 

@@ -3,6 +3,7 @@ package it.polimi.ingsw.psp44.server;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.server.controller.SetupController;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
+import it.polimi.ingsw.psp44.util.IPromise;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * A class representing a single game. It is self-sustained.
  */
-public class Lobby {
+public class Lobby extends IPromise {
 
     private static int idGen = 0;
     private final int maxPlayers;
@@ -38,7 +39,7 @@ public class Lobby {
     public void addPlayer(String nickname, VirtualView view) {
         this.playersInWaiting.add(view);
         this.setupController.addPlayer(nickname, view);
-        view.setLobbyId(this.id);
+
         view.addMessageHandler(Message.Code.CLIENT_DISCONNECTED, this::clientDisconnectedMessageHandler);
     }
 
@@ -53,7 +54,7 @@ public class Lobby {
      * @param message message with code CLIENT_DISCONNECTED
      */
     public void clientDisconnectedMessageHandler(VirtualView view, Message message) {
-        System.out.println("Disconnecting lobby");
+        System.out.println("Disconnecting from lobby");
         playersInWaiting.forEach(VirtualView::close);
     }
 
@@ -69,8 +70,9 @@ public class Lobby {
     /**
      * Start the setup phase of the game.
      */
-    public void start() {
-        this.setupController.start();
+    public Lobby start() {
+        this.setupController.start().then(this::resolve);
+        return this;
     }
 
     public long getId() {

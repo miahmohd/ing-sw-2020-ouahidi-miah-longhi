@@ -15,4 +15,3 @@
 {"code":"CHOOSE_WORKER","headers":{},"body":"[{\"row\":2,\"column\":2},{\"row\":4,\"column\":4}]"}
 {"code":"CHOOSE_ACTION","headers":{},"body":"[{\"target\":{\"row\":1,\"column\":2},\"build\":false,\"move\":true,\"id\":0,\"description\":\"Move to target position.\"},{\"target\":{\"row\":1,\"column\":3},\"build\":false,\"move\":true,\"id\":1,\"description\":\"Move to target position.\"},{\"target\":{\"row\":2,\"column\":1},\"build\":false,\"move\":true,\"id\":2,\"description\":\"Move to target position.\"},{\"target\":{\"row\":2,\"column\":3},\"build\":false,\"move\":true,\"id\":3,\"description\":\"Move to target position.\"},{\"target\":{\"row\":3,\"column\":1},\"build\":false,\"move\":true,\"id\":4,\"description\":\"Move to target position.\"},{\"target\":{\"row\":3,\"column\":2},\"build\":false,\"move\":true,\"id\":5,\"description\":\"Move to target position.\"}]"}
 {"code":"WON","headers":{},"body":""}
-{"code":"END_TURN","headers":{},"body":""}

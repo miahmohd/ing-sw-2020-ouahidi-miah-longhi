@@ -22,49 +22,49 @@ import java.util.Map;
  * Class representing the view of a single player.
  */
 public class VirtualView extends Virtual implements Runnable, IObserver<Message> {
-    private int lobbyId;
+
     private final Map<Message.Code, IMessageHandlerFunction> handlers;
     private Message lastSend;
+    private boolean errorFlag = true;
 
     public VirtualView(IConnection<String> connection) {
         super(connection);
-        this.lobbyId=-1;
         this.handlers = Collections.synchronizedMap(new EnumMap<>(Message.Code.class));
     }
 
-    public void setLobbyId(int lobbyId) {
-        this.lobbyId = lobbyId;
-    }
 
     @Override
     public void run() {
         String rawJson;
         Message message;
-        this.addMessageHandler(Message.Code.PING, (v, m) -> System.out.println("Ping received from " + v));
 
         try {
 
             /* On Linux:
              * If the client disconnect (ie ctrl+c), .readLine() returns null.
              * If there is a problem on the network (ie package loss) .readLine() throws SocketTimeoutException.
-             * If the server closes the socket .readLine(), throws SocketException
+             * If another thread closes the socket, .readLine() throws SocketException
              * see https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/Socket.html#close()
+             *
+             * On Windows:
+             * If the client disconnect (ie ctrl+c), .readLine() throws SocketException
+             * see https://stackoverflow.com/questions/22931811/differences-on-java-sockets-between-windows-and-linux-how-to-handle-them
              */
             while ((rawJson = this.connection.readLine()) != null) {
                 message = JsonConvert.getInstance().fromJson(rawJson, Message.class);
                 this.routeMessage(this, message);
             }
-            System.out.println("readline = null");
-            this.routeMessage(this, new Message(Message.Code.CLIENT_DISCONNECTED));
-            this.routeMessage(this,new Message(Message.Code.LOBBY_DISCONNECTED,""+lobbyId));
 
-        } catch (SocketTimeoutException exception) {
-            System.out.println("SocketTimeoutException for " + this);
-            this.routeMessage(this, new Message(Message.Code.CLIENT_DISCONNECTED));
-            this.routeMessage(this,new Message(Message.Code.LOBBY_DISCONNECTED,""+lobbyId));
-        } catch (SocketException ignored) {
-            System.out.println("SocketException " + ignored.getMessage() + this);
-            this.routeMessage(this,new Message(Message.Code.LOBBY_DISCONNECTED,""+lobbyId));
+            if (this.errorFlag) {
+                this.routeMessage(this, new Message(Message.Code.CLIENT_DISCONNECTED));
+            }
+
+        } catch (SocketException | SocketTimeoutException ex) {
+            if (this.errorFlag) {
+                System.out.println(ex.getMessage() + "for " + this);
+                this.routeMessage(this, new Message(Message.Code.CLIENT_DISCONNECTED));
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -87,6 +87,11 @@ public class VirtualView extends Virtual implements Runnable, IObserver<Message>
         lastSend = message;
     }
 
+    @Override
+    public void close() {
+        this.errorFlag = false;
+        super.close();
+    }
 
     @Override
     public void update(IObservable<Message> observable, Message arg) {
@@ -95,8 +100,8 @@ public class VirtualView extends Virtual implements Runnable, IObserver<Message>
 
 
     private void routeMessage(VirtualView view, Message message) {
-//        if (message.getCode() == Message.Code.PING)
-//            return;
+        if (message.getCode() == Message.Code.PING)
+            return;
 
         IMessageHandlerFunction handlerFunction = this.handlers.get(message.getCode());
         if (handlerFunction == null)
