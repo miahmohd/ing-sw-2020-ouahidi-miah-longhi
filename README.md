@@ -25,7 +25,7 @@ First start the server:
 ```shell script
 $ java -jar server.jar
 ```
-Now you can start client:
+Now you can start the client:
 ```shell script
 $ java -jar gui.jar
 ```
