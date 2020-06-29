@@ -9,8 +9,6 @@
 <HBox HBox.hgrow="ALWAYS" stylesheets="@assets/css/setup.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <ListView styleClass="cardList" fx:id="cardList"/>
-        <!--https://stackoverflow.com/questions/28558165/javafx-setvisible-doesnt-hide-the-element-->
-        <!--visible="false" managed="false"-->
         <VBox fx:id="chosenCardsSection" HBox.hgrow="ALWAYS">
             <children>
                 <ListView styleClass="chosenCardsList" fx:id="chosenCards"/>

@@ -1,3 +1,15 @@
+@font-face {
+    font-family: 'LillyBelle';
+    src: url('../fonts/LillyBelle.ttf');
+}
+
+.root {
+    -fx-alignment: center;
+    -fx-font-size: 20;
+    -fx-text-alignment: center;
+    -fx-font-family: 'LillyBelle';
+}
+
 BorderPane {
     -fx-border-insets: 10 10 10 10;
     -fx-background-image: url("../images/game/SantoriniBoard.png");
@@ -7,4 +19,45 @@ BorderPane {
     -fx-pref-width: 1000;
     -fx-pref-height: 1000;
     -fx-padding: 110 110 100 110; /*top, right, bottom, left*/
+}
+
+#playersButton {
+    -fx-background-image: url("../images/game/workermalewhite.png");
+    -fx-background-color: null;
+    -fx-pref-height: 75;
+    -fx-pref-width: 75;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 150 75;
+}
+
+#playersButton:hover {
+    -fx-opacity: 100%;
+}
+
+.players {
+    -fx-pref-width: 300;
+    -fx-pref-height: 300;
+}
+
+#turnSection {
+    -fx-max-height: 100;
+    -fx-max-width: 100;
+}
+
+#playersList {
+    -fx-max-width: 500;
+}
+
+#endTurnButton{
+    -fx-min-height: 50px;
+    -fx-min-width: 175px;
+    -fx-background-size: 175px 50px;
+    -fx-background-repeat: no-repeat;
+    -fx-text-fill: #eeeeee;
+    -fx-background-image: url('../images/btn_blue.png');
+}
+
+#endTurnButton:hover {
+    -fx-background-image: url('../images/btn_blue_pressed.png');
 }

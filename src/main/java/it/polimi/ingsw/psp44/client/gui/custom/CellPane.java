@@ -38,6 +38,7 @@ public class CellPane extends StackPane implements Initializable {
         fxmlLoader.setController(this);
 
         layers = new HashMap<>();
+        this.disableProperty().set(true);
         try {
             fxmlLoader.load();
         } catch (IOException exception) {
@@ -46,9 +47,7 @@ public class CellPane extends StackPane implements Initializable {
     }
 
     public void setCell(Cell cell, Map<String, String> playerColors) {
-        //TODO: Write it better
-        System.out.println("CellPane.setCell");
-
+        //TODO: sistemare questa cosa
         for(Pane layer : layers.values()){
             layer.setStyle("-fx-background-image: null;");
         }
@@ -83,14 +82,12 @@ public class CellPane extends StackPane implements Initializable {
         }
     }
 
-
     private void highlight() {
         if(this.disableProperty().get())
             root.setStyle("-fx-background-color: null;");
         else
-            root.setStyle("-fx-background-color: #3773C9; -fx-opacity: 30%");
+            root.setStyle("-fx-background-color: #3773C9; -fx-opacity: 50%");
     }
-
 
 
     @Override

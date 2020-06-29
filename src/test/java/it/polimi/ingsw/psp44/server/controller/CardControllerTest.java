@@ -11,6 +11,7 @@ import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.server.model.actions.DomeBuild;
 import it.polimi.ingsw.psp44.server.model.actions.SimpleBuild;
 import it.polimi.ingsw.psp44.server.model.actions.SimpleMovement;
+import it.polimi.ingsw.psp44.util.Card;
 import it.polimi.ingsw.psp44.util.Position;
 import org.junit.Before;
 import org.junit.Test;
@@ -71,7 +72,7 @@ public class CardControllerTest {
         transitionList.add(new Transition(finalState, initialState, null, Arrays.asList(new FilterOnlyLastPosition()), null));
 
         victoryConditions = Arrays.asList(new BaseVictoryCondition());
-        controller = new CardController(transitionList, victoryConditions, activeBuildFilter, activeMoveFilter,11 ,"Test");
+        controller = new CardController(transitionList, victoryConditions, activeBuildFilter, activeMoveFilter,new Card(11, "Test", "", ""));
         gm = new GameModel();
         boardTest = gm.getBoard();
 

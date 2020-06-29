@@ -6,6 +6,7 @@ import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.controller.states.State;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
+import it.polimi.ingsw.psp44.util.Card;
 import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 import it.polimi.ingsw.psp44.util.property.AppProperties;
@@ -19,8 +20,9 @@ import java.util.List;
  * with the actions that the player can perform.
  */
 public class CardController {
-    private final int cardId;
-    private final String cardName;
+
+    private Card card;
+
     private Controller context;
     /**
      * A list of the possible states transitions for the card
@@ -48,9 +50,8 @@ public class CardController {
             List<Transition> transitionsList,
             List<VictoryCondition> victoryConditionsList,
             FilterCollection buildFilter,
-            FilterCollection moveFilter, int cardId, String cardName) {
-        this.cardId=cardId;
-        this.cardName= cardName;
+            FilterCollection moveFilter, Card card) {
+        this.card = card;
         this.context = null;
         this.currentState = transitionsList.stream().filter((t) -> t.getNextState().isInitialState()).findFirst().get().getNextState();
         this.transitionsList = transitionsList;
@@ -60,12 +61,8 @@ public class CardController {
 
     }
 
-    public int getCardId() {
-        return cardId;
-    }
-
-    public String getCardName() {
-        return cardName;
+    public Card getCard() {
+        return card;
     }
 
     public void setContext(Controller context) {

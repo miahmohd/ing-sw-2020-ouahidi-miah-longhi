@@ -4,6 +4,7 @@ import it.polimi.ingsw.psp44.network.communication.Cell;
 import it.polimi.ingsw.psp44.util.Position;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.MouseEvent;
@@ -13,13 +14,14 @@ import javafx.scene.layout.RowConstraints;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 public class BoardPane extends GridPane {
     private final SimpleIntegerProperty dimension;
 
     private CellPane[][] cells;
-    private Map<String, String> playerColors;
+    private final Map<String, String> playerColors;
 
     public BoardPane(){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/custom/BoardPane.fxml"));
@@ -27,6 +29,8 @@ public class BoardPane extends GridPane {
         fxmlLoader.setController(this);
 
         dimension = new SimpleIntegerProperty();
+        this.playerColors = new HashMap<>();
+
         try {
             fxmlLoader.load();
         } catch (IOException exception) {
@@ -58,6 +62,8 @@ public class BoardPane extends GridPane {
         for(int row = 0; row < this.dimension.get(); row++){
             for(int column = 0; column < this.dimension.get(); column++){
                 cells[row][column] = new CellPane();
+                //this.disableProperty().addListener(cells[row][column]);
+                //cells[row][column].disableProperty().bind(this.disableProperty());
                 this.add(cells[row][column], row, column);
             }
         }
@@ -93,10 +99,20 @@ public class BoardPane extends GridPane {
 
     public void update(Cell[] cellsToUpdate) {
         for (Cell cell : cellsToUpdate)
-            cells[cell.getPosition().getRow()][cell.getPosition().getColumn()].setCell(cell, playerColors);
+            cells[cell.getPosition().getRow()][cell.getPosition().getColumn()].setCell(cell, this.playerColors);
     }
 
-    public void setPlayerColors(Map<String, String> playerColors) {
-        this.playerColors = playerColors;
+    public void setPlayerColors(ObservableList<PlayerAndCard> playersAndCards){
+        for(PlayerAndCard playerAndCard : playersAndCards) {
+            this.playerColors.put(playerAndCard.getPlayerNickname(), playerAndCard.getColor());
+        }
+    }
+
+    public void disableAllCells() {
+        for(int row = 0; row < this.dimension.get(); row++){
+            for(int column = 0; column < this.dimension.get(); column++)
+                this.disableCell(row, column);
+
+        }
     }
 }
