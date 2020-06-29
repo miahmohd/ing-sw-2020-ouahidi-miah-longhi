@@ -13,6 +13,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -86,9 +88,9 @@ public class SetupControllerTest {
         List<String> p3ExpectedOut = Files.readAllLines(Paths.get(getClass().getResource("/setuptest/threeplayer/p3.out.txt").toURI()));
 
         String br = System.getProperty("line.separator");
-        assertEquals(String.join(br, p1ExpectedOut) + br, p1ActualOut.toString());
-        assertEquals(String.join(br, p2ExpectedOut) + br, p2ActualOut.toString());
-        assertEquals(String.join(br, p3ExpectedOut) + br, p3ActualOut.toString());
+        assertEquals(String.join(br, p1ExpectedOut) + br, new String(p1ActualOut.toString().getBytes(), StandardCharsets.UTF_8));
+        assertEquals(String.join(br, p2ExpectedOut) + br, new String(p2ActualOut.toString().getBytes(), StandardCharsets.UTF_8));
+        assertEquals(String.join(br, p3ExpectedOut) + br, new String(p3ActualOut.toString().getBytes(), StandardCharsets.UTF_8));
 
 
         p1ExpectedIn.close();
