@@ -51,6 +51,8 @@ public abstract class Filter {
         return active;
     }
 
+    public void setActive(boolean active){ this.active=active;}
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

@@ -113,6 +113,11 @@ public class CardController {
                 .findFirst()
                 .orElse(null);
         executeTransition(activeTransition, lastAction, board);
+        if(currentState.isInitialState())
+            moveFilter.getFilters().stream().forEach(filter ->{
+                if(filter.isExternal())
+                    filter.setActive(false);
+            });
         return !currentState.isInitialState();
     }
 
