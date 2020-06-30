@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.StackPane?>
 
 <?import it.polimi.ingsw.psp44.client.gui.custom.BoardPane?>
+<?import javafx.scene.control.Label?>
 <StackPane stylesheets="@assets/css/game.css" xmlns="http://javafx.com/javafx/11.0.1"
            xmlns:fx="http://javafx.com/fxml/1">
     <BorderPane>
@@ -23,6 +24,7 @@
         </center>
     </BorderPane>
     <Button fx:id="playersButton" styleClass="players" StackPane.alignment="TOP_RIGHT"/>
-    <ListView fx:id="playersList" StackPane.alignment="TOP_CENTER"/>
+    <ListView visible="false" managed="false" fx:id="playersList" StackPane.alignment="TOP_CENTER"/>
     <Button fx:id="endTurnButton" text="end turn" StackPane.alignment="BOTTOM_RIGHT"/>
+    <Label fx:id="infoLabel" StackPane.alignment="BOTTOM_CENTER"/>
 </StackPane>

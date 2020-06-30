@@ -62,8 +62,6 @@ public class BoardPane extends GridPane {
         for(int row = 0; row < this.dimension.get(); row++){
             for(int column = 0; column < this.dimension.get(); column++){
                 cells[row][column] = new CellPane();
-                //this.disableProperty().addListener(cells[row][column]);
-                //cells[row][column].disableProperty().bind(this.disableProperty());
                 this.add(cells[row][column], row, column);
             }
         }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.psp44.client.gui.custom;
 
 import it.polimi.ingsw.psp44.util.Card;
+import it.polimi.ingsw.psp44.util.R;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;

@@ -61,3 +61,8 @@ BorderPane {
 #endTurnButton:hover {
     -fx-background-image: url('../images/btn_blue_pressed.png');
 }
+
+#infoLabel {
+    -fx-text-fill: #3773C9;
+    -fx-padding: 10%;
+}
