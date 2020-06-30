@@ -19,8 +19,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 public class SetupView implements Initializable, ISetupView {

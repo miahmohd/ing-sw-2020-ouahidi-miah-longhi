@@ -1,0 +1,31 @@
+@font-face {
+    font-family: 'LillyBelle';
+    src: url('../../fonts/LillyBelle.ttf');
+}
+
+#root {
+    -fx-font-family: 'LillyBelle';
+    -fx-text-alignment: center;
+}
+
+#workerPane {
+    -fx-min-width: 100px;
+    -fx-min-height: 100px;
+    -fx-background-size: 200 100;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+#godPane {
+    -fx-min-width: 100px;
+    -fx-min-height: 100px;
+    -fx-background-size: 75 100;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+
+#playerNickname {
+    -fx-padding: 40 40 40 40;
+    -fx-font-size: 20;
+}

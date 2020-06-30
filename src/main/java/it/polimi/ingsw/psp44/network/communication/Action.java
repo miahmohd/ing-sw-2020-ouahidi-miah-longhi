@@ -47,4 +47,9 @@ public class Action {
         return move;
     }
 
+    @Override
+    public String toString() {
+        return this.description;
+    }
+
 }

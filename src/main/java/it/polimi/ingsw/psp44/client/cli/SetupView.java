@@ -15,7 +15,6 @@ public class SetupView implements ISetupView {
     private Console console;
     private VirtualServer virtualServer;
 
-
     private String playerNickname;
     private Board board;
 
@@ -86,9 +85,9 @@ public class SetupView implements ISetupView {
 
         for (BodyTemplates.PlayerCard playerCard : playerCards){
             if(!playerCard.getPlayerNickname().equals(this.playerNickname))
-                opponentNamesAndCards.put(playerCard.getPlayerNickname() ,playerCard.getCardName());
+                opponentNamesAndCards.put(playerCard.getPlayerNickname() ,playerCard.getCard().getTitle());
             else
-                myCard = playerCard.getCardName();
+                myCard = playerCard.getCard().getTitle();
         }
 
         board.setPlayersAndCards(this.playerNickname, myCard, opponentNamesAndCards);

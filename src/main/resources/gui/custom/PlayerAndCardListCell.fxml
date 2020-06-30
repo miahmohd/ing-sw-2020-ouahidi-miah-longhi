@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+
+
+<HBox fx:id="root" stylesheets="@../assets/css/custom/PlayerAndCardListCell.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane fx:id="workerPane"/>
+      <Pane fx:id="godPane"/>
+      <Label text="Label" fx:id="playerNickname"/>
+   </children>
+</HBox>

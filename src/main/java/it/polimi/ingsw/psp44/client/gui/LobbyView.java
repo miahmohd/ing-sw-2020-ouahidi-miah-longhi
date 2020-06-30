@@ -24,18 +24,12 @@ public class LobbyView implements ILobbyView, Initializable {
     private VirtualServer virtualServer;
     private LobbyProperty property;
 
-    @FXML
-    private Label infoLabel;
-    @FXML
-    private Button joinGameButton;
-    @FXML
-    private Button newGameButton;
-    @FXML
-    private Button startButton;
-    @FXML
-    private TextField nicknameField;
-    @FXML
-    private TextField gameOptionField;
+    @FXML private Label infoLabel;
+    @FXML private Button joinGameButton;
+    @FXML private Button newGameButton;
+    @FXML private Button startButton;
+    @FXML private TextField nicknameField;
+    @FXML private TextField gameOptionField;
 
     public LobbyView() {
         this.property = new LobbyProperty(true, "Number Of Players", "Game Id", "", "");

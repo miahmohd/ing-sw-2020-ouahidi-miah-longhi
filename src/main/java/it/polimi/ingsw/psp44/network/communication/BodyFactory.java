@@ -136,7 +136,7 @@ public class BodyFactory {
         BodyTemplates.PlayerCard[] playerCards = new BodyTemplates.PlayerCard[playerAndCard.size()];
         int counter = 0;
         for (String player : playerAndCard.keySet()){
-            playerCards[counter] = new BodyTemplates.PlayerCard(player, playerAndCard.get(player).getCardName());
+            playerCards[counter] = new BodyTemplates.PlayerCard(player, playerAndCard.get(player).getCard());
             counter++;
         }
 

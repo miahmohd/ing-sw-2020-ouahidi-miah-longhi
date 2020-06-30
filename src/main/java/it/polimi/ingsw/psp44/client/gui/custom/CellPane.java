@@ -2,14 +2,9 @@ package it.polimi.ingsw.psp44.client.gui.custom;
 
 import it.polimi.ingsw.psp44.network.communication.Cell;
 import it.polimi.ingsw.psp44.util.R;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
@@ -24,13 +19,18 @@ public class CellPane extends StackPane implements Initializable {
     private final String DOME = "DOME";
     private final String WORKER_PREFIX = "WORKER";
 
+    private final String BACKGROUND_IMAGE_STYLE = "-fx-background-image: url('%s');";
+    private final String BACKGROUND_COLOR_STYLE = "-fx-background-color: %s;";
+    private final String OPACITY_STYLE = "-fx-opacity: %s";
+    private final String HIGHLIGHT_COLOR = "#3773C9";
+
     @FXML private Pane layer1;
     @FXML private Pane layer2;
     @FXML private Pane layer3;
     @FXML private Pane layer4;
     @FXML private StackPane root;
 
-    private Map<Integer, Pane> layers;
+    private final Map<Integer, Pane> layers;
 
     public CellPane(){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/custom/CellPane.fxml"));
@@ -38,6 +38,7 @@ public class CellPane extends StackPane implements Initializable {
         fxmlLoader.setController(this);
 
         layers = new HashMap<>();
+        this.disableProperty().set(true);
         try {
             fxmlLoader.load();
         } catch (IOException exception) {
@@ -46,59 +47,61 @@ public class CellPane extends StackPane implements Initializable {
     }
 
     public void setCell(Cell cell, Map<String, String> playerColors) {
-        //TODO: Write it better
-        System.out.println("CellPane.setCell");
+        cleanLayers();
+        setLayers(cell);
+        setPlayerAndDome(cell, playerColors);
+    }
 
-        for(Pane layer : layers.values()){
-            layer.setStyle("-fx-background-image: null;");
-        }
+    private void setPlayerAndDome(Cell cell, Map<String, String> playerColors) {
+        String block = null;
+        Pane targetLayer;
+        if(!cell.isEmpty())
+            block = R.getAssetPathProperties().get(WORKER_PREFIX+cell.getSex()+playerColors.get(cell.getPlayerNickname()));
+        if(cell.isDome())
+            block = R.getAssetPathProperties().get(DOME);
 
-        if(!cell.isEmpty() && cell.getLevel() == 0) {
-            String worker = R.getAssetPathProperties().get(WORKER_PREFIX+cell.getSex()+playerColors.get(cell.getPlayerNickname()));
-            layers.get(2).setStyle("-fx-background-image: url('" + worker + "'); ");
-            return;
-        }
+        if(cell.getLevel() == 0)
+            targetLayer = layers.get(2); //Layer 2 is just for beauty
+        else
+            targetLayer = layers.get(cell.getLevel()+1);
 
-        if(cell.isDome() && cell.getLevel() == 0) {
-            String dome = R.getAssetPathProperties().get(DOME);
-            layers.get(2).setStyle("-fx-background-image: url('" + dome + "'); ");
-            return;
-        }
+        targetLayer.setStyle(String.format(BACKGROUND_IMAGE_STYLE, block));
+    }
+
+    private void setLayers(Cell cell) {
+        String building;
 
         for(int level= 1; level <= cell.getLevel(); level++){
-            String building = R.getAssetPathProperties().get(BUILDING_PREFIX+level);
-            layers.get(level).setStyle("-fx-background-image: url('" + building + "'); ");
-        }
-
-
-        if(cell.isDome()){
-            String dome = R.getAssetPathProperties().get(DOME);
-            layers.get(cell.getLevel()+1).setStyle("-fx-background-image: url('" + dome + "'); ");
-            return;
-        }
-
-        if(!cell.isEmpty()){
-            String worker = R.getAssetPathProperties().get(WORKER_PREFIX+cell.getSex()+playerColors.get(cell.getPlayerNickname()));
-            layers.get(cell.getLevel()+1).setStyle("-fx-background-image: url('" + worker + "'); ");
+            building = R.getAssetPathProperties().get(BUILDING_PREFIX+level);
+            layers.get(level).setStyle(String.format(BACKGROUND_IMAGE_STYLE, building));
         }
     }
 
+    private void cleanLayers() {
+        for(Pane layer : layers.values()){
+            layer.setStyle(String.format(BACKGROUND_IMAGE_STYLE, null));
+        }
+    }
 
     private void highlight() {
-        if(this.disableProperty().get())
-            root.setStyle("-fx-background-color: null;");
-        else
-            root.setStyle("-fx-background-color: #3773C9; -fx-opacity: 30%");
+        String color;
+        String opacity;
+        if(this.disableProperty().get()){
+            color = null;
+            opacity = "100%";
+        }
+        else{
+            color = HIGHLIGHT_COLOR;
+            opacity = "50%";
+        }
+        root.setStyle(String.format(BACKGROUND_COLOR_STYLE, color) + String.format(OPACITY_STYLE, opacity));
     }
-
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initLayers();
-        root.disableProperty().addListener(disable -> {
-            highlight();
-        });
+        root.disableProperty().addListener(disable -> highlight());
     }
 
     private void initLayers(){
