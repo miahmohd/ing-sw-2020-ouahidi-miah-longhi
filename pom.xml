@@ -51,7 +51,7 @@
                                     <mainClass>it.polimi.ingsw.psp44.server.App</mainClass>
                                 </manifest>
                             </archive>
-                            <finalName>server-santorini</finalName>
+                            <finalName>server</finalName>
                             <outputDirectory>deliveries/jars</outputDirectory>
                         </configuration>
                         <phase>package</phase>
@@ -73,7 +73,7 @@
                                     <mainClass>it.polimi.ingsw.psp44.client.ClientApp</mainClass>
                                 </manifest>
                             </archive>
-                            <finalName>cli-client-santorini</finalName>
+                            <finalName>cli</finalName>
                             <outputDirectory>deliveries/jars</outputDirectory>
                         </configuration>
                         <phase>package</phase>
@@ -95,7 +95,7 @@
                                     <mainClass>it.polimi.ingsw.psp44.client.ClientApp</mainClass>
                                 </manifest>
                             </archive>
-                            <finalName>gui-client-santorini</finalName>
+                            <finalName>gui</finalName>
                             <outputDirectory>deliveries/jars</outputDirectory>
                         </configuration>
                         <phase>package</phase>

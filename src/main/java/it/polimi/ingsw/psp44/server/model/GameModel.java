@@ -75,9 +75,10 @@ public class GameModel extends IObservable<Message> {
         for (Position position : playerWorkers)
             gameBoard.setWorker(position, null);
 
-        //TODO notify(); ci sta anche creare delle mosse ma non esageriamo
-
         this.players.removeIf((p) -> p.getNickname().equals(player));
+
+        Message toSend = new Message(Message.Code.UPDATE, BodyFactory.toCells(playerWorkers, this.gameBoard));
+        this.notifyObservers(toSend);
     }
 
     /**

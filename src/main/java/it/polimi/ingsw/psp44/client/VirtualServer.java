@@ -22,6 +22,7 @@ public class VirtualServer extends Virtual implements Runnable {
     private final ExecutorService executor;
     private final Map<Message.Code, IMessageHandlerFunction> router;
     private final Object _lock;
+    private boolean errorFlag = true;
 
     public VirtualServer(IConnection<String> connection) {
         super(connection);
@@ -43,9 +44,7 @@ public class VirtualServer extends Virtual implements Runnable {
     }
 
     public void cleanMessageHandlers() {
-        // FIXME la clear toglie anche gli handler per ping e chiusura
         this.router.clear();
-
     }
 
     @Override
@@ -53,16 +52,32 @@ public class VirtualServer extends Virtual implements Runnable {
         String rawJson;
         try {
 
+            /* On Linux:
+             * If the client disconnect (ie ctrl+c), .readLine() returns null.
+             * If there is a problem on the network (ie package loss) .readLine() throws SocketTimeoutException.
+             * If another thread closes the socket, .readLine() throws SocketException
+             * see https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/Socket.html#close()
+             *
+             * On Windows:
+             * If the client disconnect (ie ctrl+c), .readLine() throws SocketException
+             * see https://stackoverflow.com/questions/22931811/differences-on-java-sockets-between-windows-and-linux-how-to-handle-them
+             */
             while ((rawJson = this.connection.readLine()) != null) {
                 Message message = JsonConvert.getInstance().fromJson(rawJson, Message.class);
                 this.routeMessage(message);
             }
 
-        } catch (SocketTimeoutException e) {
-            System.out.println("SocketTimeoutException");
-        } catch (SocketException e) {
-            System.out.println("SocketException");
-        } catch (IOException | InterruptedException e) {
+            if (this.errorFlag) {
+//                route error message to the view
+                System.out.println("errore network dopo ciclo");
+            }
+
+        } catch (SocketException | SocketTimeoutException e) {
+            if (this.errorFlag) {
+//                this.routeMessage(new Message(Message.Code.NETWORK_ERROR));
+                System.out.println("errore network");
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -71,16 +86,24 @@ public class VirtualServer extends Virtual implements Runnable {
     }
 
 
-    private void routeMessage(Message message) throws InterruptedException {
+    private void routeMessage(Message message) {
         Message.Code code = message.getCode();
         if (code == Message.Code.PING)
             return;
 
+//        Can close without errors if won or lost.
+        this.errorFlag = code != Message.Code.WON && code != Message.Code.LOST;
+
         synchronized (_lock) {
             while (!this.router.containsKey(code)) {
-                _lock.wait();
+                try {
+                    _lock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
+
         this.executor.execute(() -> router.get(code).accept(message));
     }
 

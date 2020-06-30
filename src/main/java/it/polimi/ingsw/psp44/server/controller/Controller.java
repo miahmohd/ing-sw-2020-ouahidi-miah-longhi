@@ -10,6 +10,7 @@ import it.polimi.ingsw.psp44.server.model.Worker;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.server.model.actions.InitialPlacement;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
+import it.polimi.ingsw.psp44.util.IPromise;
 import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.R;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
@@ -23,7 +24,7 @@ import java.util.Map;
  * This class implements the logic of the match.
  */
 
-public class Controller {
+public class Controller extends IPromise {
 
     private Map<String, CardController> players;
     private Map<String, VirtualView> playerViews;
@@ -44,6 +45,11 @@ public class Controller {
         this.model = model;
     }
 
+
+    public Controller startGame() {
+        this.init(false);
+        return this;
+    }
 
     /**
      * Add a build filter to opponents build filter list
@@ -96,7 +102,7 @@ public class Controller {
     public void chosenActionMessageHandler(VirtualView view, Message message) {
         Action selectedAction;
         if (view.equals(currentPlayerView)) {
-            if(Boolean.parseBoolean(message.getHeader().get(MessageHeader.IS_TURN_END))) {
+            if (Boolean.parseBoolean(message.getHeader().get(MessageHeader.IS_TURN_END))) {
                 end(true);
                 nextTurn(false);
                 return;
@@ -201,13 +207,19 @@ public class Controller {
      * - 2 players match: end the match, the opponent win
      */
     private void lost() {
-        String loser=model.getCurrentPlayerNickname();
+        String loser = model.getCurrentPlayerNickname();
+
         model.removePlayer(loser);
+        model.deleteObserver(currentPlayerView);
         players.remove(loser);
-        currentPlayerView.sendMessage(new Message(Message.Code.LOST));
-        end(false);
-        currentPlayerView.close();
         playerViews.remove(loser);
+
+        currentPlayerView.sendMessage(new Message(Message.Code.LOST));
+//        currentPlayerView.sendMessage(new Message(Message.Code.END_TURN));
+        currentPlayerView.close();
+
+        this.model.nextTurn();
+
         if (model.getNumberOfPlayer() == 2) {
             nextTurn(false);
         } else {
@@ -221,19 +233,24 @@ public class Controller {
      */
     private void won() {
         currentPlayerView.sendMessage(new Message(Message.Code.WON));
-        currentPlayerView.sendMessage(new Message(Message.Code.END_TURN));
-        players.remove(model.getCurrentPlayerNickname());
-        playerViews.remove(model.getCurrentPlayerNickname());
-        for(VirtualView player: playerViews.values()){
-            player.sendMessage(new Message(Message.Code.START_TURN));
-            player.sendMessage(new Message(Message.Code.LOST));
-            player.sendMessage(new Message(Message.Code.END_TURN));
-            player.close();
-        }
-        playerViews.clear();
-        players.clear();
+//        currentPlayerView.sendMessage(new Message(Message.Code.END_TURN));
         currentPlayerView.close();
 
+        players.remove(model.getCurrentPlayerNickname());
+        playerViews.remove(model.getCurrentPlayerNickname());
+
+        for (VirtualView player : playerViews.values()) {
+            player.sendMessage(new Message(Message.Code.START_TURN));
+            player.sendMessage(new Message(Message.Code.LOST));
+//            player.sendMessage(new Message(Message.Code.END_TURN));
+            player.close();
+        }
+
+        playerViews.clear();
+        players.clear();
+
+//        Complete the promise, and frees the resources occupied for the current game.
+        this.resolve();
     }
 
     /**
@@ -241,8 +258,7 @@ public class Controller {
      * Call lost routine if no actions are available and turn is not endable
      * Call endable routine if the turn can be ended!=
      */
-    private void
-    actions() {
+    private void actions() {
         availableActions = currentPlayer.getAvailableAction(model.getBoard(), model.getWorker());
         Message actionsMessage = new Message(Message.Code.CHOOSE_ACTION);
         if (!availableActions.isEmpty()) {
@@ -266,8 +282,8 @@ public class Controller {
     private void workers() {
         List<Position> workers = model.getBoard().getPlayerWorkersPositions(model.getCurrentPlayerNickname());
         List<Position> activeWorkers = new ArrayList<>();
-        workers.stream().filter((worker)->!currentPlayer.getAvailableAction(model.getBoard(),worker).isEmpty())
-                .forEach((worker)->activeWorkers.add(worker));
+        workers.stream().filter((worker) -> !currentPlayer.getAvailableAction(model.getBoard(), worker).isEmpty())
+                .forEach(activeWorkers::add);
         Position[] workersArray = activeWorkers.toArray(Position[]::new);
 
         if (activeWorkers.isEmpty())
@@ -296,7 +312,7 @@ public class Controller {
      * @param chosenPositions positions where place the current player's workers
      */
     private void setWorkersInitialPositions(Position[] chosenPositions) {
-        if(chosenPositions.length!=2)
+        if (chosenPositions.length != 2)
             throw new ProtocolException(String.format(R.getAppProperties().get(ErrorCodes.ILLEGAL_GAME_PARAMS), chosenPositions.length));
         String currentPlayerNickname = this.model.getCurrentPlayerNickname();
         Worker female = new Worker(currentPlayerNickname, Worker.Sex.FEMALE);

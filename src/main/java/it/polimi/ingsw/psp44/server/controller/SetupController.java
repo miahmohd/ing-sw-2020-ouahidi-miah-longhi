@@ -7,6 +7,7 @@ import it.polimi.ingsw.psp44.server.model.GameModel;
 import it.polimi.ingsw.psp44.server.model.Player;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
 import it.polimi.ingsw.psp44.util.Card;
+import it.polimi.ingsw.psp44.util.IPromise;
 import it.polimi.ingsw.psp44.util.R;
 
 import java.util.*;
@@ -14,7 +15,7 @@ import java.util.*;
 /**
  * This class manages the setup phase of the game.
  */
-public class SetupController {
+public class SetupController extends IPromise {
     private final Controller controller;
     private final GameModel model;
 
@@ -46,7 +47,7 @@ public class SetupController {
      * Starts the setup phase of the game.
      * Sends a message containing the list of cards and information on how many cards the player needs to choose.
      */
-    public void start() {
+    public SetupController start() {
         VirtualView currentPlayer;
         Map<MessageHeader, String> headers;
         String body;
@@ -64,6 +65,7 @@ public class SetupController {
 
         startTurn();
         currentPlayer.sendMessage(toSend);
+        return this;
     }
 
 
@@ -128,7 +130,7 @@ public class SetupController {
             this.controller.setVirtualViews(this.playerViews);
             this.controller.setCardControllers(this.playerCardController);
             this.controller.setModel(this.model);
-            this.controller.init(false);
+            this.controller.startGame().then(this::resolve);
 
         } else {
             startTurn();

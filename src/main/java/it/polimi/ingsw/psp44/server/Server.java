@@ -12,7 +12,10 @@ import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -75,6 +78,7 @@ public class Server {
             lobby.addPlayer(body.getPlayerNickname(), view);
             this.lobbies.add(lobby);
 
+
             view.sendMessage(new Message(Message.Code.GAME_CREATED, String.valueOf(lobby.getId())));
         }
     }
@@ -105,11 +109,19 @@ public class Server {
             } else if (toJoin.contains(nickname)) {
                 headers.put(MessageHeader.ERROR_DESCRIPTION, R.getAppProperties().get(ErrorCodes.UNAVAILABLE_NICKNAME));
             } else {
+
                 view.sendMessage(new Message(Message.Code.GAME_JOINED));
                 toJoin.addPlayer(body.getPlayerNickname(), view);
+
                 if (toJoin.isFull())
-                    toJoin.start();
+                    toJoin.start().then(() -> {
+                        synchronized (this.lobbies) {
+                            this.lobbies.remove(toJoin);
+                        }
+                    });
+
                 return;
+
             }
             headers.put(MessageHeader.ERROR, String.valueOf(true));
             view.sendMessage(new Message(Message.Code.NEW_OR_JOIN, headers));
@@ -127,8 +139,23 @@ public class Server {
      * @param message message with code CLIENT_DISCONNECTED
      */
     public void clientDisconnectedMessageHandler(VirtualView view, Message message) {
-        System.out.println("Disconnecting server");
         view.close();
+    }
+
+    /**
+     * Callback that handles and process LOBBY_DISCONNECTED message type.
+     * This callback is called when the player disconnect unexpectedly and the lobby need to be freed.
+     *
+     * @param view    the view that disconnected
+     * @param message message with code CLIENT_DISCONNECTED
+     */
+    public void lobbyDisconnectedMessageHandler(VirtualView view, Message message) {
+        int toDelID = view.getLobbyID();
+        if (toDelID < 0)
+            return;
+        synchronized (this.lobbies) {
+            this.lobbies.stream().filter(l -> l.getId() == toDelID).findFirst().ifPresent(this.lobbies::remove);
+        }
     }
 
 
@@ -139,16 +166,6 @@ public class Server {
         view.addMessageHandler(Message.Code.LOBBY_DISCONNECTED, this::lobbyDisconnectedMessageHandler);
     }
 
-    private void lobbyDisconnectedMessageHandler(VirtualView virtualView, Message message) {
-        int lobbyIdToRemove=Integer.parseInt(message.getBody());
-        if(lobbyIdToRemove>=0){
-            synchronized (this.lobbies){
-                lobbies.remove(lobbies.stream().filter((lobby)->lobby.getId()==lobbyIdToRemove).findFirst().get());
-            }
-        }
-
-
-    }
 
     private void beginCommunication(VirtualView view) {
         view.sendMessage(new Message(Message.Code.NEW_OR_JOIN));
