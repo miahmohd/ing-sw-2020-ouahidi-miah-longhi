@@ -7,13 +7,13 @@ import java.util.List;
  * This class represents a task that may be explicitly completed, and supports functions that triggers upon completion.
  * Inspired from https://developer.mozilla.org/it/docs/Web/JavaScript/Reference/Global_Objects/Promise
  */
-public class IPromise {
+public class Promise {
     private final List<Runnable> callbacks = new ArrayList<>();
 
-    public IPromise() {
+    public Promise() {
     }
 
-    public IPromise then(Runnable cb) {
+    public Promise then(Runnable cb) {
         this.callbacks.add(cb);
         return this;
     }

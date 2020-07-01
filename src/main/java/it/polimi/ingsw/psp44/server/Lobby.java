@@ -3,7 +3,7 @@ package it.polimi.ingsw.psp44.server;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.server.controller.SetupController;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
-import it.polimi.ingsw.psp44.util.IPromise;
+import it.polimi.ingsw.psp44.util.Promise;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * A class representing a single game. It is self-sustained.
  */
-public class Lobby extends IPromise {
+public class Lobby extends Promise {
 
     private static int idGen = 0;
     private final int maxPlayers;
@@ -53,8 +53,12 @@ public class Lobby extends IPromise {
      * @param message message with code CLIENT_DISCONNECTED
      */
     public void clientDisconnectedMessageHandler(VirtualView view, Message message) {
-        System.out.println("Disconnecting from lobby "+ this.id);
-        playersInWaiting.forEach(VirtualView::close);
+        System.out.println("Disconnecting from lobby " + this.id);
+        playersInWaiting.forEach(v -> {
+            if (v == view)
+                return;
+            v.close();
+        });
     }
 
 
