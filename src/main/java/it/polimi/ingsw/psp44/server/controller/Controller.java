@@ -10,7 +10,7 @@ import it.polimi.ingsw.psp44.server.model.Worker;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.server.model.actions.InitialPlacement;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
-import it.polimi.ingsw.psp44.util.IPromise;
+import it.polimi.ingsw.psp44.util.Promise;
 import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.R;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
@@ -24,7 +24,7 @@ import java.util.Map;
  * This class implements the logic of the match.
  */
 
-public class Controller extends IPromise {
+public class Controller extends Promise {
 
     private Map<String, CardController> players;
     private Map<String, VirtualView> playerViews;
@@ -215,7 +215,7 @@ public class Controller extends IPromise {
         playerViews.remove(loser);
 
         currentPlayerView.sendMessage(new Message(Message.Code.LOST));
-        currentPlayerView.setClosable();
+        currentPlayerView.close();
 
         this.model.nextTurn();
 
@@ -232,7 +232,7 @@ public class Controller extends IPromise {
      */
     private void won() {
         currentPlayerView.sendMessage(new Message(Message.Code.WON));
-        currentPlayerView.setClosable();
+        currentPlayerView.close();
 
         players.remove(model.getCurrentPlayerNickname());
         playerViews.remove(model.getCurrentPlayerNickname());
@@ -240,7 +240,7 @@ public class Controller extends IPromise {
         for (VirtualView player : playerViews.values()) {
             player.sendMessage(new Message(Message.Code.START_TURN));
             player.sendMessage(new Message(Message.Code.LOST));
-            player.setClosable();
+            player.close();
         }
 
         playerViews.clear();

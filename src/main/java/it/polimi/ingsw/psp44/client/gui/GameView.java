@@ -106,7 +106,7 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView implements I
         Platform.runLater(() -> {
             InfoView infoView = new InfoView("You lost!");
             infoView.setServer(this.virtualServer);
-            View.showNewWindow("Santorini", "/gui/info.fxml", infoView);
+            ViewScene.showNewWindow("Santorini", "/gui/info.fxml", infoView);
         });
     }
 
@@ -115,7 +115,7 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView implements I
         Platform.runLater(() -> {
             InfoView infoView = new InfoView("You won!");
             infoView.setServer(this.virtualServer);
-            View.showNewWindow("Santorini", "/gui/info.fxml", infoView);
+            ViewScene.showNewWindow("Santorini", "/gui/info.fxml", infoView);
         });
     }
 
@@ -138,23 +138,6 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView implements I
         });
     }
 
-    @Override
-    public void setServer(VirtualServer virtual) {
-        this.virtualServer = virtual;
-
-        virtualServer.cleanMessageHandlers();
-
-        virtualServer.addMessageHandler(Message.Code.START_TURN, this::start);
-        virtualServer.addMessageHandler(Message.Code.END_TURN, this::end);
-        virtualServer.addMessageHandler(Message.Code.CHOOSE_WORKER, this::chooseWorkerFrom);
-        virtualServer.addMessageHandler(Message.Code.UPDATE, this::update);
-        virtualServer.addMessageHandler(Message.Code.CHOOSE_ACTION, this::chooseActionFrom);
-        virtualServer.addMessageHandler(Message.Code.WON, this::won);
-        virtualServer.addMessageHandler(Message.Code.LOST, this::lost);
-        virtualServer.addMessageHandler(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION, this::chooseWorkersInitialPositionFrom);
-        virtualServer.addMessageHandler(Message.Code.UPDATE, this::update);
-        virtualServer.addMessageHandler(Message.Code.ACTIVE_TURN, this::activeTurn);
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

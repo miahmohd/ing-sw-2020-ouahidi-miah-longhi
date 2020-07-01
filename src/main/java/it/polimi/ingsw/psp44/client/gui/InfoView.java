@@ -1,7 +1,9 @@
 package it.polimi.ingsw.psp44.client.gui;
 
-import it.polimi.ingsw.psp44.client.IView;
+
+import it.polimi.ingsw.psp44.client.View;
 import it.polimi.ingsw.psp44.client.VirtualServer;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -10,7 +12,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class InfoView implements IView, Initializable {
+public class InfoView extends View implements Initializable {
 
     private VirtualServer virtualServer;
     private String infoMessage;
@@ -31,7 +33,11 @@ public class InfoView implements IView, Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        btnClose.setOnAction(ae -> this.virtualServer.close());
+        btnClose.setOnAction(ae -> {
+            this.virtualServer.close();
+            Platform.exit();
+            System.exit(0);
+        });
         textInfo.setText(this.infoMessage);
     }
 }

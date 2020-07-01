@@ -7,7 +7,7 @@ import it.polimi.ingsw.psp44.server.model.GameModel;
 import it.polimi.ingsw.psp44.server.model.Player;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
 import it.polimi.ingsw.psp44.util.Card;
-import it.polimi.ingsw.psp44.util.IPromise;
+import it.polimi.ingsw.psp44.util.Promise;
 import it.polimi.ingsw.psp44.util.R;
 
 import java.util.*;
@@ -15,7 +15,7 @@ import java.util.*;
 /**
  * This class manages the setup phase of the game.
  */
-public class SetupController extends IPromise {
+public class SetupController extends Promise {
     private final Controller controller;
     private final GameModel model;
 

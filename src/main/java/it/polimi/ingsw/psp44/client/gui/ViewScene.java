@@ -1,5 +1,6 @@
 package it.polimi.ingsw.psp44.client.gui;
 
+import it.polimi.ingsw.psp44.client.View;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +15,7 @@ public class ViewScene extends Application {
     private static Stage stage = null;
     private static boolean isLaunched = false;
 
-    public static void setViewAndShow(String title, String viewPath, Object controller){
+    public static void setViewAndShow(String title, String viewPath, View controller){
         if(!isLaunched) {
             new Thread(() -> launch(ViewScene.class)).start();
         }
@@ -42,10 +43,10 @@ public class ViewScene extends Application {
         isLaunched = true;
     }
 
-    public static void showNewWindow(String title, String viewPath, IView controller) {
+    public static void showNewWindow(String title, String viewPath, View controller) {
         Parent root;
         try {
-            FXMLLoader loader = new FXMLLoader(View.class.getResource(viewPath));
+            FXMLLoader loader = new FXMLLoader(ViewScene.class.getResource(viewPath));
             loader.setController(controller);
             root = loader.load();
             Stage newStage = new Stage();
@@ -64,7 +65,7 @@ public class ViewScene extends Application {
      * https://stackoverflow.com/questions/30814258/javafx-pass-parameters-while-instantiating-controller-class
      */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         stage = primaryStage;
         isLaunched = false;
         stage.setOnCloseRequest((windowEvent -> {

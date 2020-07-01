@@ -110,7 +110,8 @@ public class Message {
         PING,
         CLIENT_DISCONNECTED,
         LOBBY_DISCONNECTED,
-        NETWORK_ERROR
+        NETWORK_ERROR,
+        DISCONNECTED
 
     }
 }
