@@ -33,7 +33,7 @@ public class LobbyView extends it.polimi.ingsw.psp44.client.LobbyView implements
     @Override
     public void newJoin(Message joinOrNew) {
         readHeaders(joinOrNew.getHeader());
-        View.setViewAndShow("Lobby View", "/gui/lobby.fxml", this);
+        ViewScene.setViewAndShow("Lobby View", "/gui/lobby.fxml", this);
     }
 
     @Override

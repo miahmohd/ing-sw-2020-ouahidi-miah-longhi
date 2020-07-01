@@ -9,18 +9,20 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class View extends Application {
+public class ViewScene extends Application {
 
     private static Stage stage = null;
     private static boolean isLaunched = false;
 
-    public static void setViewAndShow(String title, String viewPath, it.polimi.ingsw.psp44.client.View controller){
+    public static void setViewAndShow(String title, String viewPath, Object controller){
         if(!isLaunched) {
-            new Thread(() -> launch(View.class)).start();
+            new Thread(() -> launch(ViewScene.class)).start();
         }
 
-        FXMLLoader loader = new FXMLLoader(View.class.getResource(viewPath));
-        loader.setController(controller);
+        FXMLLoader loader = new FXMLLoader(ViewScene.class.getResource(viewPath));
+
+        if(controller != null)
+            loader.setController(controller);
 
         Parent view;
         try {
@@ -51,6 +53,7 @@ public class View extends Application {
             Platform.exit();
             System.exit(0);
         }));
+        stage.setResizable(false);
     }
 
 }

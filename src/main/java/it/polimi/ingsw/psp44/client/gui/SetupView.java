@@ -1,6 +1,5 @@
 package it.polimi.ingsw.psp44.client.gui;
 
-import it.polimi.ingsw.psp44.client.VirtualServer;
 import it.polimi.ingsw.psp44.client.gui.custom.CardListViewCell;
 import it.polimi.ingsw.psp44.client.gui.custom.ChosenCardListViewCell;
 import it.polimi.ingsw.psp44.client.gui.properties.SetupProperty;
@@ -51,14 +50,14 @@ public class SetupView extends it.polimi.ingsw.psp44.client.SetupView implements
     public void allPlayerCards(Message players) {
         BodyTemplates.PlayerCard[] playerCards = BodyFactory.fromPlayerCards(players.getBody());
         GameView gameView = new GameView(this.playerNickname, playerCards);
-        View.setViewAndShow("Santorini", "/gui/game.fxml", gameView);
+        ViewScene.setViewAndShow("Santorini", "/gui/game.fxml", gameView);
 
         gameView.setServer(virtualServer);
     }
 
     @Override
     public void start(Message start) {
-        View.setViewAndShow("Setup", "/gui/setup.fxml", this);
+        ViewScene.setViewAndShow("Setup", "/gui/setup.fxml", this);
     }
 
     @Override
