@@ -1,7 +1,5 @@
 package it.polimi.ingsw.psp44.client.cli;
 
-import it.polimi.ingsw.psp44.client.IGameView;
-import it.polimi.ingsw.psp44.client.VirtualServer;
 import it.polimi.ingsw.psp44.network.communication.Action;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.communication.Cell;
@@ -13,20 +11,14 @@ import java.util.*;
 
 import static java.util.stream.Collectors.groupingBy;
 
-public class GameView implements IGameView {
-    private VirtualServer virtualServer;
-    private Console console;
-
-
-    private String playerNickname;
-    private Board board;
-
+public class GameView extends it.polimi.ingsw.psp44.client.GameView {
+    private final Console console;
+    private final Board board;
 
     public GameView(String playerNickname, Console console, Board board) {
         this.playerNickname = playerNickname;
         this.console = console;
         this.board = board;
-
     }
 
     @Override
@@ -158,24 +150,6 @@ public class GameView implements IGameView {
         console.printOnTurnSection(String.format("%s's turn",activePlayer.getBody()));
     }
 
-    @Override
-    public void setServer(VirtualServer virtual) {
-        this.virtualServer = virtual;
-
-        virtualServer.cleanMessageHandlers();
-
-        virtualServer.addMessageHandler(Message.Code.START_TURN, this::start);
-        virtualServer.addMessageHandler(Message.Code.END_TURN, this::end);
-        virtualServer.addMessageHandler(Message.Code.CHOOSE_WORKER, this::chooseWorkerFrom);
-        virtualServer.addMessageHandler(Message.Code.UPDATE, this::update);
-        virtualServer.addMessageHandler(Message.Code.CHOOSE_ACTION, this::chooseActionFrom);
-        virtualServer.addMessageHandler(Message.Code.WON, this::won);
-        virtualServer.addMessageHandler(Message.Code.LOST, this::lost);
-        virtualServer.addMessageHandler(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION, this::chooseWorkersInitialPositionFrom);
-        virtualServer.addMessageHandler(Message.Code.UPDATE, this::update);
-        virtualServer.addMessageHandler(Message.Code.ACTIVE_TURN, this::activeTurn);
-    }
-
 
     private Action getAction(Map<Position, List<Action>> actionsPerPosition, boolean isTurnEndable) {
         if(isTurnEndable){
@@ -227,7 +201,6 @@ public class GameView implements IGameView {
         return chosenAction;
 
     }
-
 
     private Position getCorrectPosition(List<Position> correctPositions){
         Position position;

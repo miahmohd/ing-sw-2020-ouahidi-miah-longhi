@@ -1,6 +1,5 @@
 package it.polimi.ingsw.psp44.client.gui;
 
-import it.polimi.ingsw.psp44.client.IView;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -10,26 +9,26 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class View extends Application {
+public class ViewScene extends Application {
 
     private static Stage stage = null;
     private static boolean isLaunched = false;
 
-    public static void setViewAndShow(String title, String viewPath, IView controller) {
-        if (!isLaunched) {
-            new Thread(() -> View.launch(View.class)).start();
+    public static void setViewAndShow(String title, String viewPath, Object controller){
+        if(!isLaunched) {
+            new Thread(() -> launch(ViewScene.class)).start();
         }
 
-        FXMLLoader loader = new FXMLLoader(View.class.getResource(viewPath));
-        loader.setController(controller);
+        FXMLLoader loader = new FXMLLoader(ViewScene.class.getResource(viewPath));
 
-        Parent view = null;
+        if(controller != null)
+            loader.setController(controller);
+
+        Parent view;
         try {
             view = loader.load();
         } catch (IOException e) {
-            System.out.println(e);
-            //TODO gestire questa cosa
-            e.printStackTrace();
+            return;
         }
         Scene scene = new Scene(view);
 
@@ -72,7 +71,7 @@ public class View extends Application {
             Platform.exit();
             System.exit(0);
         }));
+        stage.setResizable(false);
     }
-
 
 }

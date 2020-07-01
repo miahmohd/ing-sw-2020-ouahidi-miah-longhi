@@ -1,8 +1,8 @@
 package it.polimi.ingsw.psp44.client;
 
 
-import it.polimi.ingsw.psp44.client.gui.InfoView;
 import it.polimi.ingsw.psp44.client.gui.LobbyView;
+import it.polimi.ingsw.psp44.client.gui.ViewScene;
 import it.polimi.ingsw.psp44.network.IConnection;
 import it.polimi.ingsw.psp44.network.SocketConnection;
 import it.polimi.ingsw.psp44.util.ConfigCodes;
@@ -26,13 +26,11 @@ public class ClientApp {
 //            port = Integer.parseInt(host[1]);
 //        }
 
-        //View.setViewAndShow("Prova", "/gui/game.fxml", null);
-/*        GameView ekkle = new GameView();
-        ekkle.prova();*/
+        ViewScene.setViewAndShow("Prova", "/gui/startup.fxml", null);
         try {
              Socket socket = new Socket(hostname, port);
              IConnection<String> socketConnection = new SocketConnection(socket);
-             IView view = new LobbyView();
+             View view = new LobbyView();
              VirtualServer virtualServer = new VirtualServer(socketConnection);
              virtualServer.startPingTask();
 

@@ -106,18 +106,13 @@ public class CardController {
      * @throws IllegalArgumentException there aren't active transitions
      */
     public boolean nextState(Action lastAction, Board board) {
-
         Transition activeTransition = transitionsList.stream()
                 .filter((t) -> currentState.equals(t.getCurrentState())
                         && (t.isUnconditional() || t.checkCondition(lastAction)))
                 .findFirst()
                 .orElse(null);
         executeTransition(activeTransition, lastAction, board);
-        if(currentState.isInitialState())
-            moveFilter.getFilters().stream().forEach(filter ->{
-                if(filter.isExternal())
-                    filter.setActive(false);
-            });
+
         return !currentState.isInitialState();
     }
 

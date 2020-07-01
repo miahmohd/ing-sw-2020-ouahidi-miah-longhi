@@ -1,7 +1,5 @@
 package it.polimi.ingsw.psp44.client.gui;
 
-import it.polimi.ingsw.psp44.client.IGameView;
-import it.polimi.ingsw.psp44.client.VirtualServer;
 import it.polimi.ingsw.psp44.client.gui.custom.BoardPane;
 import it.polimi.ingsw.psp44.client.gui.custom.PlayerAndCard;
 import it.polimi.ingsw.psp44.client.gui.custom.PlayerAndCardListViewCell;
@@ -30,19 +28,14 @@ import java.util.*;
 
 import static java.util.stream.Collectors.groupingBy;
 
-public class GameView implements IGameView, Initializable {
+public class GameView extends it.polimi.ingsw.psp44.client.GameView implements Initializable {
 
     private final int DIMENSION = 5;
     private final String[] colors = {"BLUE", "GREY", "WHITE"};
 
-    private VirtualServer virtualServer;
-
-
-    private GameProperty property;
-
+    private final GameProperty property;
     private final List<Position> workerPositions;
     private Map<Position, List<Action>> actionsPerPosition;
-    private final String playerNickname;
 
     @FXML
     private BoardPane board;
