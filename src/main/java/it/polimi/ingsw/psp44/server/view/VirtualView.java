@@ -44,6 +44,10 @@ public class VirtualView extends Virtual implements Runnable, IObserver<Message>
         this.lobbyID = lobbyID;
     }
 
+    public void setClosable(){
+        this.errorFlag = false;
+    }
+
 
     @Override
     public void run() {
@@ -84,6 +88,9 @@ public class VirtualView extends Virtual implements Runnable, IObserver<Message>
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+//       todo clear handlers
+
     }
 
     /**
@@ -118,6 +125,8 @@ public class VirtualView extends Virtual implements Runnable, IObserver<Message>
     private void routeMessage(VirtualView view, Message message) {
         if (message.getCode() == Message.Code.PING)
             return;
+
+        System.out.println(view+":\t\t" + message.getCode() );
 
         IMessageHandlerFunction handlerFunction = this.handlers.get(message.getCode());
         if (handlerFunction == null)

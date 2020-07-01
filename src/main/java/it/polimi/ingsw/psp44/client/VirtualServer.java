@@ -74,15 +74,14 @@ public class VirtualServer extends Virtual implements Runnable {
 
         } catch (SocketException | SocketTimeoutException e) {
             if (this.errorFlag) {
-//                this.routeMessage(new Message(Message.Code.NETWORK_ERROR));
                 System.out.println("errore network");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        this.executor.shutdownNow();
-        this.close();
+//        this.executor.shutdownNow();
+//        this.close();
     }
 
 
@@ -91,6 +90,11 @@ public class VirtualServer extends Virtual implements Runnable {
         if (code == Message.Code.PING)
             return;
 
+        if (code == Message.Code.NETWORK_ERROR) {
+//           todo Errore network
+            System.out.println("Un'altro client si è disconnesso");
+            return;
+        }
 //        Can close without errors if won or lost.
         this.errorFlag = code != Message.Code.WON && code != Message.Code.LOST;
 

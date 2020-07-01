@@ -53,8 +53,13 @@ public class Lobby extends IPromise {
      * @param message message with code CLIENT_DISCONNECTED
      */
     public void clientDisconnectedMessageHandler(VirtualView view, Message message) {
-        System.out.println("Disconnecting from lobby "+ this.id);
-        playersInWaiting.forEach(VirtualView::close);
+        System.out.println("Disconnecting from lobby " + this.id);
+        playersInWaiting.forEach(v -> {
+            if (v == view)
+                return;
+            v.sendMessage(new Message(Message.Code.NETWORK_ERROR));
+            v.setClosable();
+        });
     }
 
 

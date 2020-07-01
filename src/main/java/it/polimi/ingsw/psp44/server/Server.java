@@ -107,7 +107,7 @@ public class Server {
             if (toJoin == null) {
                 headers.put(MessageHeader.ERROR_DESCRIPTION, R.getAppProperties().get(ErrorCodes.UNAVAILABLE_GAME));
             } else if (toJoin.contains(nickname)) {
-                headers.put(MessageHeader.ERROR_DESCRIPTION, R.getAppProperties().get(ErrorCodes.UNAVAILABLE_NICKNAME));
+                headers.put(MessageHeader.ERROR_DESCRIPTION, String.format(R.getAppProperties().get(ErrorCodes.UNAVAILABLE_NICKNAME), nickname));
             } else {
 
                 view.sendMessage(new Message(Message.Code.GAME_JOINED));

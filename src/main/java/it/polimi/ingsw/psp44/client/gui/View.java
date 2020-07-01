@@ -15,8 +15,8 @@ public class View extends Application {
     private static Stage stage = null;
     private static boolean isLaunched = false;
 
-    public static void setViewAndShow(String title, String viewPath, IView controller){
-        if(!isLaunched) {
+    public static void setViewAndShow(String title, String viewPath, IView controller) {
+        if (!isLaunched) {
             new Thread(() -> View.launch(View.class)).start();
         }
 
@@ -41,6 +41,23 @@ public class View extends Application {
         });
 
         isLaunched = true;
+    }
+
+    public static void showNewWindow(String title, String viewPath, IView controller) {
+        Parent root;
+        try {
+            FXMLLoader loader = new FXMLLoader(View.class.getResource(viewPath));
+            loader.setController(controller);
+            root = loader.load();
+            Stage newStage = new Stage();
+            newStage.setTitle(title);
+            newStage.setScene(new Scene(root));
+            newStage.setX(stage.getX() + stage.getWidth() / 3);
+            newStage.setY(stage.getY() + stage.getWidth() / 3);
+            newStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
