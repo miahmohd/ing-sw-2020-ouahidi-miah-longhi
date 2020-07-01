@@ -42,7 +42,7 @@ public class StartupView {
                 socket = new Socket(host, port);
                 connected = true;
             } catch (IOException e) {
-                System.out.println("Connection refused, try again.");
+                console.writeLine("Connection refused, try again.");
             }
         } while (!connected);
 
@@ -63,19 +63,19 @@ public class StartupView {
             server.join();
 
         } catch (IOException | InterruptedException e) {
-            System.err.println("ERROR: " + e.getMessage());
+            console.writeLine("ERROR: " + e.getMessage());
         }
     }
 
     private void setErrorHandlers() {
         virtualServer.addErrorHandler(Message.Code.NETWORK_ERROR, () -> {
             this.console.clear();
-            this.console.writeLine("Network error.\nIt seems there are problems on the network,\ntry later maybe.");
+            this.console.writeLine("Network error.\nIt seems there are problems on the network,\ntry later maybe.\n");
         });
 
         virtualServer.addErrorHandler(Message.Code.DISCONNECTED, () -> {
             this.console.clear();
-            this.console.writeLine("The server kicked you out,\nthe game was forcefully ended.");
+            this.console.writeLine("The server kicked you out,\nthe game was forcefully ended.\n");
         });
     }
 }

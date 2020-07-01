@@ -89,7 +89,7 @@ public class VirtualView extends Virtual implements Runnable, IObserver<Message>
             e.printStackTrace();
         }
 
-//       todo clear handlers
+        this.handlers.clear();
 
     }
 

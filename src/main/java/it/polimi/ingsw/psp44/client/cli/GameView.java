@@ -97,14 +97,14 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView {
         );
 
         headers = actions.getHeader();
-        if(headers != null)
+        if (headers != null)
             isTurnEndable = Boolean.parseBoolean(headers.get(MessageHeader.IS_TURN_ENDABLE));
         else
             isTurnEndable = false;
 
         chosenAction = getAction(actionsPerPosition, isTurnEndable);
         headersToSend = new EnumMap<>(MessageHeader.class);
-        if(chosenAction == null)
+        if (chosenAction == null)
             headersToSend.put(MessageHeader.IS_TURN_END, String.valueOf(true));
 
         body = BodyFactory.toAction(chosenAction);
@@ -128,13 +128,16 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView {
 
     @Override
     public void lost(Message lost) {
-        console.writeLine("YOU LOST, looser");
+        console.clear();
+        console.writeLine("You lost, looser");
+        this.virtualServer.close();
     }
 
     @Override
     public void won(Message won) {
         console.clear();
-        console.writeLine("you won, good job, very very good job");
+        console.writeLine("You won, good job!");
+        this.virtualServer.close();
     }
 
     @Override
@@ -147,21 +150,21 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView {
 
     @Override
     public void activeTurn(Message activePlayer) {
-        console.printOnTurnSection(String.format("%s's turn",activePlayer.getBody()));
+        console.printOnTurnSection(String.format("%s's turn", activePlayer.getBody()));
     }
 
 
     private Action getAction(Map<Position, List<Action>> actionsPerPosition, boolean isTurnEndable) {
-        if(isTurnEndable){
+        if (isTurnEndable) {
             console.writeLine("do you want to end your turn? (Y/other key) ");
             String choice = console.readLine();
 
-            if(isAffirmative(choice)){
+            if (isAffirmative(choice)) {
                 return null;
             }
         }
 
-        console.writeLine("gimme the position boyyy ");
+        console.writeLine("gimme the position boy ");
         Position chosenPosition = getCorrectPosition(
                 new ArrayList<>(actionsPerPosition.keySet()));
         List<Action> actionsToChooseFrom = actionsPerPosition.get(chosenPosition);
@@ -175,16 +178,16 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView {
     private Action getCorrectAction(List<Action> actionsToChooseFrom) {
         Action chosenAction;
 
-        if(actionsToChooseFrom.size() == 1)
+        if (actionsToChooseFrom.size() == 1)
             chosenAction = actionsToChooseFrom.stream().findFirst().get();
 
         else {
-            for(Action action : actionsToChooseFrom){
+            for (Action action : actionsToChooseFrom) {
                 console.writeLine(action.getId());
                 console.writeLine(action.getDescription());
             }
 
-            do{
+            do {
                 console.writeLine("Choose brother ");
                 int chosenActionId = console.readNumber();
                 chosenAction = actionsToChooseFrom.stream().filter(action -> action.getId() == chosenActionId)
@@ -194,7 +197,7 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView {
                 if (chosenAction == null)
                     console.writeLine("incorrect id");
 
-            } while(chosenAction == null);
+            } while (chosenAction == null);
 
         }
 
@@ -202,18 +205,18 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView {
 
     }
 
-    private Position getCorrectPosition(List<Position> correctPositions){
+    private Position getCorrectPosition(List<Position> correctPositions) {
         Position position;
         boolean isCorrect;
 
         isCorrect = false;
         do {
             position = console.readPosition();
-            if(!correctPositions.contains(position))
-               console.writeLine("Not a Position ");
+            if (!correctPositions.contains(position))
+                console.writeLine("Not a Position ");
             else
                 isCorrect = true;
-        } while(!isCorrect);
+        } while (!isCorrect);
 
         return position;
     }

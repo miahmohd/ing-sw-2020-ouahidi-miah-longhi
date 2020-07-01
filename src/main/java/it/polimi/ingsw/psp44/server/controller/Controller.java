@@ -215,7 +215,7 @@ public class Controller extends Promise {
         playerViews.remove(loser);
 
         currentPlayerView.sendMessage(new Message(Message.Code.LOST));
-        currentPlayerView.close();
+        currentPlayerView.setClosable();
 
         this.model.nextTurn();
 
@@ -232,7 +232,7 @@ public class Controller extends Promise {
      */
     private void won() {
         currentPlayerView.sendMessage(new Message(Message.Code.WON));
-        currentPlayerView.close();
+        currentPlayerView.setClosable();
 
         players.remove(model.getCurrentPlayerNickname());
         playerViews.remove(model.getCurrentPlayerNickname());
@@ -240,7 +240,7 @@ public class Controller extends Promise {
         for (VirtualView player : playerViews.values()) {
             player.sendMessage(new Message(Message.Code.START_TURN));
             player.sendMessage(new Message(Message.Code.LOST));
-            player.close();
+            player.setClosable();
         }
 
         playerViews.clear();
