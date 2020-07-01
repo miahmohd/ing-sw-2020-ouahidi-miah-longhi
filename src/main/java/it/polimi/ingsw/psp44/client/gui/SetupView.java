@@ -1,6 +1,5 @@
 package it.polimi.ingsw.psp44.client.gui;
 
-import it.polimi.ingsw.psp44.client.ISetupView;
 import it.polimi.ingsw.psp44.client.VirtualServer;
 import it.polimi.ingsw.psp44.client.gui.custom.CardListViewCell;
 import it.polimi.ingsw.psp44.client.gui.custom.ChosenCardListViewCell;
@@ -21,24 +20,19 @@ import javafx.scene.control.ListView;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SetupView implements Initializable, ISetupView {
+public class SetupView extends it.polimi.ingsw.psp44.client.SetupView implements Initializable{
+    private final SetupProperty property;
 
-    private VirtualServer virtualServer;
-    private String playerNickname;
+    @FXML private ListView<Card> cardList;
+    @FXML public ListView<Card> chosenCards;
+    @FXML public Button startButton;
 
-    @FXML
-    public ListView<Card> cardList;
-    public ListView<Card> chosenCards;
-    public Button startButton;
-
-    private SetupProperty property;
 
     public SetupView(String playerNickname){
         this.playerNickname = playerNickname;
         this.property = new SetupProperty(false, FXCollections.observableArrayList(), FXCollections.observableArrayList(), "Play");
     }
 
-    //TODO: MERGE THESE TWO
     @Override
     public void chooseCardsFrom(Message cards) {
         this.property.setMaxChosenCardsSize(Integer.parseInt(
@@ -71,19 +65,6 @@ public class SetupView implements Initializable, ISetupView {
     public void end(Message end) {
         Platform.runLater(() -> property.setStartText("Now Wait"));
         property.disableAll();
-    }
-
-    @Override
-    public void setServer(VirtualServer virtual) {
-        this.virtualServer = virtual;
-
-        virtualServer.cleanMessageHandlers();
-
-        virtualServer.addMessageHandler(Message.Code.ALL_PLAYER_CARDS, this::allPlayerCards);
-        virtualServer.addMessageHandler(Message.Code.START_TURN, this::start);
-        virtualServer.addMessageHandler(Message.Code.CHOOSE_CARD, this::chooseCardFrom);
-        virtualServer.addMessageHandler(Message.Code.CHOOSE_CARDS, this::chooseCardsFrom);
-        virtualServer.addMessageHandler(Message.Code.END_TURN, this::end);
     }
 
     @Override
@@ -127,7 +108,7 @@ public class SetupView implements Initializable, ISetupView {
         Message.Code messageCode;
 
         Card[] chosenCards = this.property.getChosenCards();
-        if(chosenCards.length == 1){
+        if(chosenCards.length == 1){ //empirical
             messageCode = Message.Code.CHOSEN_CARD;
             body = BodyFactory.toCard(chosenCards[0]);
         }
