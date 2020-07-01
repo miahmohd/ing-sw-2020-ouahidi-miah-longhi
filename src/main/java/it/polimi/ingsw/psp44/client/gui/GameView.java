@@ -1,7 +1,5 @@
 package it.polimi.ingsw.psp44.client.gui;
 
-import it.polimi.ingsw.psp44.client.IGameView;
-import it.polimi.ingsw.psp44.client.VirtualServer;
 import it.polimi.ingsw.psp44.client.gui.custom.BoardPane;
 import it.polimi.ingsw.psp44.client.gui.custom.PlayerAndCard;
 import it.polimi.ingsw.psp44.client.gui.custom.PlayerAndCardListViewCell;
@@ -14,9 +12,6 @@ import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.util.Position;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,19 +25,14 @@ import java.util.*;
 
 import static java.util.stream.Collectors.groupingBy;
 
-public class GameView implements IGameView, Initializable {
+public class GameView extends it.polimi.ingsw.psp44.client.GameView implements Initializable {
 
     private final int DIMENSION = 5;
     private final String[] colors = {"BLUE", "GREY", "WHITE"};
 
-    private VirtualServer virtualServer;
-
-
-    private GameProperty property;
-
+    private final GameProperty property;
     private final List<Position> workerPositions;
     private Map<Position, List<Action>> actionsPerPosition;
-    private final String playerNickname;
 
     @FXML private BoardPane board;
     @FXML private Button playersButton;
@@ -132,23 +122,6 @@ public class GameView implements IGameView, Initializable {
                 infoString = String.format("%s's turn",activePlayerNickname);
             this.property.infoProperty().set(infoString);
         });
-    }
-    @Override
-    public void setServer(VirtualServer virtual) {
-        this.virtualServer = virtual;
-
-        virtualServer.cleanMessageHandlers();
-
-        virtualServer.addMessageHandler(Message.Code.START_TURN, this::start);
-        virtualServer.addMessageHandler(Message.Code.END_TURN, this::end);
-        virtualServer.addMessageHandler(Message.Code.CHOOSE_WORKER, this::chooseWorkerFrom);
-        virtualServer.addMessageHandler(Message.Code.UPDATE, this::update);
-        virtualServer.addMessageHandler(Message.Code.CHOOSE_ACTION, this::chooseActionFrom);
-        virtualServer.addMessageHandler(Message.Code.WON, this::won);
-        virtualServer.addMessageHandler(Message.Code.LOST, this::lost);
-        virtualServer.addMessageHandler(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION, this::chooseWorkersInitialPositionFrom);
-        virtualServer.addMessageHandler(Message.Code.UPDATE, this::update);
-        virtualServer.addMessageHandler(Message.Code.ACTIVE_TURN, this::activeTurn);
     }
 
     @Override

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.psp44.client.cli;
 
-import it.polimi.ingsw.psp44.client.ILobbyView;
-import it.polimi.ingsw.psp44.client.VirtualServer;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
@@ -9,14 +7,10 @@ import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LobbyView implements ILobbyView {
+public class LobbyView extends it.polimi.ingsw.psp44.client.LobbyView {
 
     private final Console console;
-    private VirtualServer virtualServer;
-
-    private String playerNickname;
     private final Map<String, Message.Code> gameOptions;
-
 
     public LobbyView(Console console) {
         this.console = console;
@@ -35,7 +29,6 @@ public class LobbyView implements ILobbyView {
         Message.Code messageCode;
 
         console.clear();
-
         printHeaders(joinOrNew.getHeader());
 
         int numberOfPlayers;
@@ -74,16 +67,6 @@ public class LobbyView implements ILobbyView {
         console.writeLine("game joined now wait and don't do anything, please");
         changeView();
     }
-
-    @Override
-    public void setServer(VirtualServer virtual) {
-        this.virtualServer = virtual;
-
-        virtualServer.addMessageHandler(Message.Code.NEW_OR_JOIN, this::newJoin);
-        virtualServer.addMessageHandler(Message.Code.GAME_CREATED, this::gameCreated);
-        virtualServer.addMessageHandler(Message.Code.GAME_JOINED, this::gameJoined);
-    }
-
 
     private void printHeaders(Map<MessageHeader, String> header) {
         if (header == null)

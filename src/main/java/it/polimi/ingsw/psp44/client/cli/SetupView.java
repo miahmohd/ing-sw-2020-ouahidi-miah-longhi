@@ -1,7 +1,5 @@
 package it.polimi.ingsw.psp44.client.cli;
 
-import it.polimi.ingsw.psp44.client.ISetupView;
-import it.polimi.ingsw.psp44.client.VirtualServer;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
 import it.polimi.ingsw.psp44.network.message.Message;
@@ -10,13 +8,10 @@ import it.polimi.ingsw.psp44.util.Card;
 
 import java.util.*;
 
-public class SetupView implements ISetupView {
+public class SetupView extends it.polimi.ingsw.psp44.client.SetupView {
 
-    private Console console;
-    private VirtualServer virtualServer;
-
-    private String playerNickname;
-    private Board board;
+    private final Console console;
+    private final Board board;
 
     public SetupView(String playerNickname, Console console){
         this(playerNickname, console, new Board());
@@ -103,18 +98,6 @@ public class SetupView implements ISetupView {
     public void end(Message end) {
         console.clear();
         console.writeLine("turn end just stop");
-    }
-    @Override
-    public void setServer(VirtualServer virtual) {
-        this.virtualServer = virtual;
-
-        virtualServer.cleanMessageHandlers();
-
-        virtualServer.addMessageHandler(Message.Code.ALL_PLAYER_CARDS, this::allPlayerCards);
-        virtualServer.addMessageHandler(Message.Code.START_TURN, this::start);
-        virtualServer.addMessageHandler(Message.Code.CHOOSE_CARD, this::chooseCardFrom);
-        virtualServer.addMessageHandler(Message.Code.CHOOSE_CARDS, this::chooseCardsFrom);
-        virtualServer.addMessageHandler(Message.Code.END_TURN, this::end);
     }
 
     private void displayCard(Card card) {

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.psp44.client.gui;
 
-import it.polimi.ingsw.psp44.client.ILobbyView;
-import it.polimi.ingsw.psp44.client.VirtualServer;
 import it.polimi.ingsw.psp44.client.gui.properties.LobbyProperty;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.message.Message;
@@ -18,11 +16,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 
-public class LobbyView implements ILobbyView, Initializable {
-
-
-    private VirtualServer virtualServer;
-    private LobbyProperty property;
+public class LobbyView extends it.polimi.ingsw.psp44.client.LobbyView implements Initializable {
+    private final LobbyProperty property;
 
     @FXML private Label infoLabel;
     @FXML private Button joinGameButton;
@@ -53,15 +48,6 @@ public class LobbyView implements ILobbyView, Initializable {
         Platform.runLater(()->
                 property.setInfoText("game joined, wait for the others"));
         changeView();
-    }
-
-    @Override
-    public void setServer(VirtualServer virtual) {
-        this.virtualServer = virtual;
-
-        this.virtualServer.addMessageHandler(Message.Code.NEW_OR_JOIN, this::newJoin);
-        this.virtualServer.addMessageHandler(Message.Code.GAME_CREATED, this::gameCreated);
-        this.virtualServer.addMessageHandler(Message.Code.GAME_JOINED, this::gameJoined);
     }
 
     @Override
