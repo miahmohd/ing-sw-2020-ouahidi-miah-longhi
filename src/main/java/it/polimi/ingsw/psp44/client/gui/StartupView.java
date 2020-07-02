@@ -1,6 +1,6 @@
 package it.polimi.ingsw.psp44.client.gui;
 
-import it.polimi.ingsw.psp44.client.View;
+import it.polimi.ingsw.psp44.client.AbstractView;
 import it.polimi.ingsw.psp44.client.VirtualServer;
 import it.polimi.ingsw.psp44.network.IConnection;
 import it.polimi.ingsw.psp44.network.SocketConnection;
@@ -21,7 +21,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class StartupView extends View implements Initializable {
+public class StartupView extends AbstractView implements Initializable {
 
     private static final String DEFAULT_HOSTNAME = R.getAppProperties().get(ConfigCodes.HOSTNAME);
     private static final int DEFAULT_PORT = Integer.parseInt(R.getAppProperties().get(ConfigCodes.PORT));
@@ -55,7 +55,7 @@ public class StartupView extends View implements Initializable {
         try {
             Socket socket = new Socket(hostname, port);
             IConnection socketConnection = new SocketConnection(socket);
-            View view = new LobbyView();
+            AbstractView view = new LobbyView();
             this.virtualServer = new VirtualServer(socketConnection);
             this.virtualServer.startPingTask();
 

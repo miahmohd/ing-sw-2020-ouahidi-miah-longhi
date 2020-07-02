@@ -2,12 +2,8 @@ package it.polimi.ingsw.psp44.client;
 
 import it.polimi.ingsw.psp44.network.message.Message;
 
-public abstract class GameView extends View {
-    /**
-     * Callback to what to do when a chooseWorkersInitialPosition message is received
-     *
-     * @param workers message
-     */
+public abstract class AbstractGameView extends AbstractView {
+
     public abstract void chooseWorkersInitialPositionFrom(Message workers);
 
     /**

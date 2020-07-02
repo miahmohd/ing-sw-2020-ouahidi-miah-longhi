@@ -2,7 +2,7 @@ package it.polimi.ingsw.psp44.client;
 
 import it.polimi.ingsw.psp44.network.message.Message;
 
-public abstract class SetupView extends View {
+public abstract class AbstractSetupView extends AbstractView {
 
     /**
      * Callback to what to do when a chooseCards message is received

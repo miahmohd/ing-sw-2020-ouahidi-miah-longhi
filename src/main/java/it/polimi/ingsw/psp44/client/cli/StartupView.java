@@ -1,6 +1,6 @@
 package it.polimi.ingsw.psp44.client.cli;
 
-import it.polimi.ingsw.psp44.client.View;
+import it.polimi.ingsw.psp44.client.AbstractView;
 import it.polimi.ingsw.psp44.client.VirtualServer;
 import it.polimi.ingsw.psp44.network.IConnection;
 import it.polimi.ingsw.psp44.network.SocketConnection;
@@ -54,7 +54,7 @@ public class StartupView {
         try {
 
             IConnection socketConnection = new SocketConnection(socket);
-            View view = new LobbyView(console);
+            AbstractView view = new LobbyView(console);
             virtualServer = new VirtualServer(socketConnection);
             virtualServer.startPingTask();
 

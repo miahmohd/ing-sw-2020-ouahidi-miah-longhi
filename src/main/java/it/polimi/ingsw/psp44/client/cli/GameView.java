@@ -1,5 +1,6 @@
 package it.polimi.ingsw.psp44.client.cli;
 
+import it.polimi.ingsw.psp44.client.AbstractGameView;
 import it.polimi.ingsw.psp44.network.communication.Action;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.communication.Cell;
@@ -11,7 +12,7 @@ import java.util.*;
 
 import static java.util.stream.Collectors.groupingBy;
 
-public class GameView extends it.polimi.ingsw.psp44.client.GameView {
+public class GameView extends AbstractGameView {
     private final Console console;
     private final Board board;
 
