@@ -15,10 +15,12 @@ import java.util.ResourceBundle;
 public class InfoView extends View implements Initializable {
 
 
-    private String infoMessage;
+    private final String infoMessage;
 
-    @FXML private Text textInfo;
-    @FXML private Button btnClose;
+    @FXML
+    private Text textInfo;
+    @FXML
+    private Button btnClose;
 
     public InfoView(String infoMessage) {
         this.infoMessage = infoMessage;

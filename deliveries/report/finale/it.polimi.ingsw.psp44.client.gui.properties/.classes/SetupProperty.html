@@ -1,0 +1,198 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SetupProperty</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.psp44.client.gui.properties</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SetupProperty (it.polimi.ingsw.psp44.client.gui.properties)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SetupProperty</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 29)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.client.gui.properties;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.psp44.util.Card;
+<i>4</i>&nbsp;import javafx.beans.property.SimpleBooleanProperty;
+<i>5</i>&nbsp;import javafx.beans.property.SimpleListProperty;
+<i>6</i>&nbsp;import javafx.beans.property.SimpleStringProperty;
+<i>7</i>&nbsp;import javafx.collections.ObservableList;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;/**
+<i>10</i>&nbsp; * Setup Property containing properties to bind to SetupView
+<i>11</i>&nbsp; */
+<i>12</i>&nbsp;public class SetupProperty {
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    private final SimpleListProperty&lt;Card&gt; chooseCards;
+<i>15</i>&nbsp;    private final SimpleListProperty&lt;Card&gt; chosenCards;
+<i>16</i>&nbsp;    private final SimpleBooleanProperty isStartGame;
+<i>17</i>&nbsp;    private final SimpleBooleanProperty isNotStartGame;
+<i>18</i>&nbsp;    private final SimpleBooleanProperty isGameStarted;
+<i>19</i>&nbsp;    private final SimpleStringProperty startText;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    private int maxChosenCardsSize;
+<i>22</i>&nbsp;
+<b class="nc"><i>23</i>&nbsp;    public SetupProperty(boolean isStartGame, ObservableList chooseCardsProperty, ObservableList chosenCardsProperty, String startText) {</b>
+<b class="nc"><i>24</i>&nbsp;        this.isStartGame = new SimpleBooleanProperty(isStartGame);</b>
+<b class="nc"><i>25</i>&nbsp;        this.isNotStartGame = new SimpleBooleanProperty(!isStartGame);</b>
+<b class="nc"><i>26</i>&nbsp;        this.startText = new SimpleStringProperty(startText);</b>
+<i>27</i>&nbsp;
+<b class="nc"><i>28</i>&nbsp;        this.chooseCards = new SimpleListProperty&lt;&gt;(chooseCardsProperty);</b>
+<b class="nc"><i>29</i>&nbsp;        this.chosenCards = new SimpleListProperty&lt;&gt;(chosenCardsProperty);</b>
+<i>30</i>&nbsp;
+<b class="nc"><i>31</i>&nbsp;        this.isGameStarted = new SimpleBooleanProperty(false);</b>
+<i>32</i>&nbsp;    }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    /**
+<i>35</i>&nbsp;     * Moves selectedCard from the choose Cards Property to chosen Cards Property
+<i>36</i>&nbsp;     * @param selectedCard card to move
+<i>37</i>&nbsp;     */
+<i>38</i>&nbsp;    public void moveCardFromChooseToChosen(Card selectedCard) {
+<b class="nc"><i>39</i>&nbsp;        chooseCards.remove(selectedCard);</b>
+<b class="nc"><i>40</i>&nbsp;        chosenCards.add(selectedCard);</b>
+<b class="nc"><i>41</i>&nbsp;        updateStatus();</b>
+<i>42</i>&nbsp;    }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    /**
+<i>45</i>&nbsp;     * Moves selectedCard from the chosen Cards Property to choose Cards Property
+<i>46</i>&nbsp;     * @param selectedCard card to move
+<i>47</i>&nbsp;     */
+<i>48</i>&nbsp;    public void moveCardFromChosenToChoose(Card selectedCard) {
+<b class="nc"><i>49</i>&nbsp;        chosenCards.remove(selectedCard);</b>
+<b class="nc"><i>50</i>&nbsp;        chooseCards.add(selectedCard);</b>
+<b class="nc"><i>51</i>&nbsp;        updateStatus();</b>
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    /**
+<i>55</i>&nbsp;     * Adds cards to choose Cards Property
+<i>56</i>&nbsp;     * @param cards to be added
+<i>57</i>&nbsp;     */
+<i>58</i>&nbsp;    public void addCards(Card[] cards) {
+<b class="nc"><i>59</i>&nbsp;        chooseCards.addAll(cards);</b>
+<i>60</i>&nbsp;    }
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    public SimpleListProperty&lt;Card&gt; chooseCardsProperty() {
+<b class="nc"><i>63</i>&nbsp;        return chooseCards;</b>
+<i>64</i>&nbsp;    }
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    public SimpleListProperty&lt;Card&gt; chosenCardsProperty() {
+<b class="nc"><i>67</i>&nbsp;        return chosenCards;</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    public SimpleBooleanProperty isStartGameProperty() {
+<b class="nc"><i>71</i>&nbsp;        return isStartGame;</b>
+<i>72</i>&nbsp;    }
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    public SimpleBooleanProperty isNotStartGameProperty() {
+<b class="nc"><i>75</i>&nbsp;        return isNotStartGame;</b>
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;    public SimpleStringProperty startTextProperty() {
+<b class="nc"><i>79</i>&nbsp;        return startText;</b>
+<i>80</i>&nbsp;    }
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;    public void setStartText(String startText) {
+<b class="nc"><i>83</i>&nbsp;        this.startText.set(startText);</b>
+<i>84</i>&nbsp;    }
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;    public void setMaxChosenCardsSize(int maxChosenCardsSize) {
+<b class="nc"><i>87</i>&nbsp;        this.maxChosenCardsSize = maxChosenCardsSize;</b>
+<i>88</i>&nbsp;    }
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;    private boolean isChosenCardsAtMaxSize(){
+<b class="nc"><i>91</i>&nbsp;        return chosenCards.size() == maxChosenCardsSize;</b>
+<i>92</i>&nbsp;    }
+<i>93</i>&nbsp;
+<i>94</i>&nbsp;    private void updateStatus() {
+<b class="nc"><i>95</i>&nbsp;        isStartGame.set(isChosenCardsAtMaxSize());</b>
+<b class="nc"><i>96</i>&nbsp;        isNotStartGame.set(!isChosenCardsAtMaxSize());</b>
+<i>97</i>&nbsp;    }
+<i>98</i>&nbsp;
+<i>99</i>&nbsp;    public Card[] getChosenCards() {
+<b class="nc"><i>100</i>&nbsp;        return chosenCards.toArray(Card[]::new);</b>
+<i>101</i>&nbsp;    }
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;    /**
+<i>104</i>&nbsp;     * Set all boolean properties to true
+<i>105</i>&nbsp;     */
+<i>106</i>&nbsp;    public void disableAll() {
+<b class="nc"><i>107</i>&nbsp;        isStartGame.set(true);</b>
+<b class="nc"><i>108</i>&nbsp;        isNotStartGame.set(true);</b>
+<b class="nc"><i>109</i>&nbsp;        isGameStarted.set(true);</b>
+<i>110</i>&nbsp;    }
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;    public SimpleBooleanProperty isGameStartedProperty() {
+<b class="nc"><i>113</i>&nbsp;        return this.isGameStarted;</b>
+<i>114</i>&nbsp;    }
+<i>115</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 21:45</div>
+</div>
+</body>
+</html>

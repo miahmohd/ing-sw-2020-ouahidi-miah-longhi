@@ -1,0 +1,137 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: FemaleDomeBuildState</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.psp44.server.controller.states</a> ]
+</div>
+
+<h1>Coverage Summary for Class: FemaleDomeBuildState (it.polimi.ingsw.psp44.server.controller.states)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FemaleDomeBuildState</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (18/ 18)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server.controller.states;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
+<i>4</i>&nbsp;import it.polimi.ingsw.psp44.server.model.Board;
+<i>5</i>&nbsp;import it.polimi.ingsw.psp44.server.model.Worker;
+<i>6</i>&nbsp;import it.polimi.ingsw.psp44.server.model.actions.Action;
+<i>7</i>&nbsp;import it.polimi.ingsw.psp44.server.model.actions.DomeBuild;
+<i>8</i>&nbsp;import it.polimi.ingsw.psp44.util.Position;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import java.util.ArrayList;
+<i>11</i>&nbsp;import java.util.HashSet;
+<i>12</i>&nbsp;import java.util.List;
+<i>13</i>&nbsp;import java.util.Set;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;/**
+<i>16</i>&nbsp; * this state allows to compute all the the build actions that the worker can do adding build dome action at every level
+<i>17</i>&nbsp; */
+<b class="fc"><i>18</i>&nbsp;public class FemaleDomeBuildState extends SimpleBuildState {</b>
+<i>19</i>&nbsp;    /**
+<i>20</i>&nbsp;     * Compute the available actions that the player can perform
+<i>21</i>&nbsp;     *
+<i>22</i>&nbsp;     * @param board          representation of the playing field
+<i>23</i>&nbsp;     * @param selectedWorker worker selected from the player
+<i>24</i>&nbsp;     * @param moveFilter     filter to apply to move actions
+<i>25</i>&nbsp;     * @param buildFilter    filter to apply to build actions
+<i>26</i>&nbsp;     * @return list of available actions
+<i>27</i>&nbsp;     */
+<i>28</i>&nbsp;    @Override
+<i>29</i>&nbsp;    public List&lt;Action&gt; getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
+<i>30</i>&nbsp;        List&lt;Action&gt; availableAction;
+<i>31</i>&nbsp;        List&lt;Action&gt; availableDomeAction;
+<i>32</i>&nbsp;        List&lt;Position&gt; availablePosition;
+<b class="fc"><i>33</i>&nbsp;        availableDomeAction = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>34</i>&nbsp;        availableAction = super.getAvailableActions(board, selectedWorker, moveFilter, buildFilter);</b>
+<b class="fc"><i>35</i>&nbsp;        if(board.getWorker(selectedWorker).getSex()== Worker.Sex.FEMALE) {</b>
+<b class="fc"><i>36</i>&nbsp;            for (Action action : availableAction) {</b>
+<b class="fc"><i>37</i>&nbsp;                if (!board.isFinalLevel(action.getTargetPosition()))</b>
+<b class="fc"><i>38</i>&nbsp;                    availableDomeAction.add(new DomeBuild(action.getTargetPosition()));</b>
+<b class="fc"><i>39</i>&nbsp;            }</b>
+<b class="fc"><i>40</i>&nbsp;            availableAction.addAll(availableDomeAction);</b>
+<i>41</i>&nbsp;        }else {
+<b class="fc"><i>42</i>&nbsp;            selectedWorker=board.getPlayerWorkersPositions(board.getWorker(selectedWorker).getPlayerNickname())</b>
+<b class="fc"><i>43</i>&nbsp;                    .stream().filter(worker-&gt;board.getWorker(worker).getSex()== Worker.Sex.FEMALE).findFirst().get();</b>
+<b class="fc"><i>44</i>&nbsp;            availablePosition=board.getNeighbouringPositions(selectedWorker);</b>
+<b class="fc"><i>45</i>&nbsp;            buildFilter.filter(selectedWorker,availablePosition,board);</b>
+<b class="fc"><i>46</i>&nbsp;            for (Position p:availablePosition ){</b>
+<b class="fc"><i>47</i>&nbsp;                if (!availableAction.stream().anyMatch(action -&gt; action.getTargetPosition().equals(p))||!board.isFinalLevel(p))</b>
+<b class="fc"><i>48</i>&nbsp;                    availableAction.add(new DomeBuild(p));</b>
+<b class="fc"><i>49</i>&nbsp;            }</b>
+<i>50</i>&nbsp;        }
+<b class="fc"><i>51</i>&nbsp;        return availableAction;</b>
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;}
+<i>54</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 21:45</div>
+</div>
+</body>
+</html>

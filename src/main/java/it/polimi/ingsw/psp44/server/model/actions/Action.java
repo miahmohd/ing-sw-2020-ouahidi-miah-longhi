@@ -13,7 +13,7 @@ public abstract class Action {
 
     protected Position targetPosition;
     protected Position sourcePosition;
-    private String description;
+    private final String description;
 
     protected Action(Position target, String description) {
         this(null, target, description);

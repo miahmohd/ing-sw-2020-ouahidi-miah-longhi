@@ -55,15 +55,6 @@ public class Space {
     }
 
     /**
-     * Add a specific worker to the space
-     *
-     * @param worker the worker to add at this space, <code>null</code> to remove the worker
-     */
-    public void setWorker(Worker worker) {
-        this.worker = worker;
-    }
-
-    /**
      * checks if the building in this space is complate
      *
      * @return <code>true</code> if there are 3 block and the dome, <code>false</code> otherwise
@@ -97,6 +88,15 @@ public class Space {
      */
     public boolean isWorker() {
         return this.worker != null;
+    }
+
+    /**
+     * Add a specific worker to the space
+     *
+     * @param worker the worker to add at this space, <code>null</code> to remove the worker
+     */
+    public void setWorker(Worker worker) {
+        this.worker = worker;
     }
 
     /**

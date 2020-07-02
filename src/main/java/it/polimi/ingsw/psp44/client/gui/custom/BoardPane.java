@@ -19,11 +19,10 @@ import java.util.Map;
 
 public class BoardPane extends GridPane {
     private final SimpleIntegerProperty dimension;
-
-    private CellPane[][] cells;
     private final Map<String, String> playerColors;
+    private CellPane[][] cells;
 
-    public BoardPane(){
+    public BoardPane() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/custom/BoardPane.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -38,16 +37,16 @@ public class BoardPane extends GridPane {
         }
     }
 
+    public int getDimension() {
+        return this.dimension.get();
+    }
+
     public void setDimension(int dimension) {
         this.dimension.set(dimension);
         init();
     }
 
-    public int getDimension() {
-        return this.dimension.get();
-    }
-
-    public IntegerProperty dimensionProperty(){
+    public IntegerProperty dimensionProperty() {
         return this.dimension;
     }
 
@@ -59,8 +58,8 @@ public class BoardPane extends GridPane {
     private void initBoard() {
         cells = new CellPane[dimension.get()][dimension.get()];
 
-        for(int row = 0; row < this.dimension.get(); row++){
-            for(int column = 0; column < this.dimension.get(); column++){
+        for (int row = 0; row < this.dimension.get(); row++) {
+            for (int column = 0; column < this.dimension.get(); column++) {
                 cells[row][column] = new CellPane();
                 this.add(cells[row][column], column, row);
             }
@@ -71,7 +70,7 @@ public class BoardPane extends GridPane {
         ColumnConstraints columnConstraint = this.getColumnConstraints().stream().findAny().orElse(new ColumnConstraints());
         RowConstraints rowConstraint = this.getRowConstraints().stream().findAny().orElse(new RowConstraints());
 
-        for(int i = 1; i < this.dimension.get(); i++){
+        for (int i = 1; i < this.dimension.get(); i++) {
             this.getRowConstraints().add(rowConstraint);
             this.getColumnConstraints().add(columnConstraint);
         }
@@ -79,14 +78,15 @@ public class BoardPane extends GridPane {
 
     /**
      * Binds an action to a specific collection of positions on BoardPane
+     *
      * @param positionsToChooseFrom positions to activate
-     * @param sendWorkers action to attach to the positions
+     * @param sendWorkers           action to attach to the positions
      */
     public void setActionIn(Collection<Position> positionsToChooseFrom, EventHandler<MouseEvent> sendWorkers) {
         Position currentPosition;
         boolean isContained;
-        for(int row = 0; row < this.dimension.get(); row++){
-            for(int column = 0; column < this.dimension.get(); column++){
+        for (int row = 0; row < this.dimension.get(); row++) {
+            for (int column = 0; column < this.dimension.get(); column++) {
                 currentPosition = new Position(row, column);
                 isContained = positionsToChooseFrom.contains(currentPosition);
 
@@ -98,7 +98,8 @@ public class BoardPane extends GridPane {
 
     /**
      * Disable the specified cell at row and column
-     * @param row of cell
+     *
+     * @param row    of cell
      * @param column of cell
      */
     public void disableCell(int row, int column) {
@@ -107,6 +108,7 @@ public class BoardPane extends GridPane {
 
     /**
      * Updates the specified cells
+     *
      * @param cellsToUpdate cells to update
      */
     public void update(Cell[] cellsToUpdate) {
@@ -116,10 +118,11 @@ public class BoardPane extends GridPane {
 
     /**
      * Sets players, cards and their colors to be displayed on Board
+     *
      * @param playersAndCards list of players and cards
      */
-    public void setPlayerColors(ObservableList<PlayerAndCard> playersAndCards){
-        for(PlayerAndCard playerAndCard : playersAndCards) {
+    public void setPlayerColors(ObservableList<PlayerAndCard> playersAndCards) {
+        for (PlayerAndCard playerAndCard : playersAndCards) {
             this.playerColors.put(playerAndCard.getPlayerNickname(), playerAndCard.getColor());
         }
     }
@@ -128,8 +131,8 @@ public class BoardPane extends GridPane {
      * Disable all cells
      */
     public void disableAllCells() {
-        for(int row = 0; row < this.dimension.get(); row++){
-            for(int column = 0; column < this.dimension.get(); column++)
+        for (int row = 0; row < this.dimension.get(); row++) {
+            for (int column = 0; column < this.dimension.get(); column++)
                 this.disableCell(row, column);
         }
     }

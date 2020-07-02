@@ -37,11 +37,16 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView implements I
     private final List<Position> workerPositions;
     private Map<Position, List<Action>> actionsPerPosition;
 
-    @FXML private BoardPane board;
-    @FXML private Button playersButton;
-    @FXML private ListView<PlayerAndCard> playersList;
-    @FXML private Button endTurnButton;
-    @FXML private Label infoLabel;
+    @FXML
+    private BoardPane board;
+    @FXML
+    private Button playersButton;
+    @FXML
+    private ListView<PlayerAndCard> playersList;
+    @FXML
+    private Button endTurnButton;
+    @FXML
+    private Label infoLabel;
 
     public GameView(String playerNickname, BodyTemplates.PlayerCard[] playersAndCards) {
         this.property = new GameProperty(true, FXCollections.observableArrayList(), "");

@@ -23,7 +23,7 @@ public class FilterOpponentMoveUp extends FilterMoveUp {
      */
     @Override
     public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard) {
-        if (active )
+        if (active)
             super.filter(startingPosition, positionsToFilter, gameBoard);
     }
 

@@ -39,7 +39,12 @@ public class VirtualServer extends Virtual implements Runnable {
         });
     }
 
-
+    /**
+     * Adds a callback to handlers at the specified code
+     *
+     * @param code  Message code
+     * @param route The callback to be added
+     */
     public void addMessageHandler(Message.Code code, IMessageHandlerFunction route) {
         synchronized (lock) {
             this.router.put(code, route);
@@ -47,10 +52,19 @@ public class VirtualServer extends Virtual implements Runnable {
         }
     }
 
+    /**
+     * Adds a callback to error handlers at the specified code
+     *
+     * @param code  Message Error code
+     * @param route The callback to be added
+     */
     public void addErrorHandler(Message.Code code, Runnable route) {
         this.errorRouter.put(code, route);
     }
 
+    /**
+     * Cleans all handlers
+     */
     public void cleanMessageHandlers() {
         this.router.clear();
     }
@@ -118,7 +132,7 @@ public class VirtualServer extends Virtual implements Runnable {
         this.executor.execute(() -> router.get(code).accept(message));
     }
 
-    private void routeErrorMessage(Message message){
+    private void routeErrorMessage(Message message) {
         Message.Code code = message.getCode();
         if (this.errorRouter.containsKey(code))
             this.errorRouter.get(code).run();

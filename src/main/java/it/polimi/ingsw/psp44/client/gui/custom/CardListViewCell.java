@@ -1,12 +1,12 @@
 package it.polimi.ingsw.psp44.client.gui.custom;
 
 import it.polimi.ingsw.psp44.util.Card;
-import it.polimi.ingsw.psp44.util.R;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
@@ -14,11 +14,16 @@ import java.io.IOException;
  * ListView Card template
  */
 public class CardListViewCell extends ListCell<Card> {
-    @FXML private Label title;
-    @FXML private Label subtitle;
-    @FXML private Label description;
-    @FXML private Pane godImage;
-    @FXML private HBox root;
+    @FXML
+    private Label title;
+    @FXML
+    private Label subtitle;
+    @FXML
+    private Label description;
+    @FXML
+    private Pane godImage;
+    @FXML
+    private HBox root;
 
     private FXMLLoader mLLoader;
 
@@ -26,7 +31,7 @@ public class CardListViewCell extends ListCell<Card> {
     protected void updateItem(Card card, boolean empty) {
         super.updateItem(card, empty);
 
-        if(empty || card == null) {
+        if (empty || card == null) {
             setText(null);
             setGraphic(null);
         } else {
@@ -54,5 +59,5 @@ public class CardListViewCell extends ListCell<Card> {
         }
     }
 
-    
+
 }

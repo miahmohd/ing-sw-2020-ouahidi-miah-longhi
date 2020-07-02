@@ -89,12 +89,12 @@ public class Transition {
      */
     public boolean checkCondition(Action lastAction) {
 
-        if (condition == Condition.MOVE){
-            return lastAction.isMovement()&&(!(lastAction instanceof ForceBackwardsMovement));
+        if (condition == Condition.MOVE) {
+            return lastAction.isMovement() && (!(lastAction instanceof ForceBackwardsMovement));
         }
-        if(condition==Condition.BUILD)
+        if (condition == Condition.BUILD)
             return lastAction.isBuild();
-        if(condition==Condition.FORCE_OPONENTS_WORKER)
+        if (condition == Condition.FORCE_OPONENTS_WORKER)
             return lastAction instanceof ForceBackwardsMovement;
         return false;
     }

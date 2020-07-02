@@ -32,7 +32,10 @@ public class Graphics {
         /**
          * brown
          */
-        OPPONENT_2("\u001B[38;5;15m"), /** white*/
+        OPPONENT_2("\u001B[38;5;15m"),
+        /**
+         * white
+         */
 
 
         POSITION_HIGHLIGHT("\u001B[48;5;20m");
@@ -94,22 +97,6 @@ public class Graphics {
 
     public enum Behaviour implements AnsiElement {
 
-        /**
-         * Up: \u001b[{n}A
-         * Down: \u001b[{n}B
-         * Right: \u001b[{n}C
-         * Left: \u001b[{n}D
-         */
-
-        /**
-         * Moves by 50 to the right
-         */
-        MOVE_RIGHT("\u001b[50C"),
-        /**
-         * Resets cursor
-         */
-        MOVE_LEFT("\u001b[1000D"),
-        MOVE_UP("\u001b[1000A"),
         NEW_LINE("\n"),
         CLEAR("\033[H\033[2J");
 

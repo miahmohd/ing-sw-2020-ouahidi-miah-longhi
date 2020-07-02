@@ -21,13 +21,13 @@ public class GameProperty {
 
     private final SimpleIntegerProperty playersAndColorsMaxHeight;
 
-    public GameProperty(boolean isTurnEndable, ObservableList playerAndCards, String info){
+    public GameProperty(boolean isTurnEndable, ObservableList playerAndCards, String info) {
         this.playersAndCards = new SimpleListProperty<>(playerAndCards);
         this.isTurnEndable = new SimpleBooleanProperty(isTurnEndable);
         this.info = new SimpleStringProperty(info);
         this.playersAndColorsMaxHeight = new SimpleIntegerProperty();
 
-        this.playersAndCards.addListener((InvalidationListener) (listener) -> playersAndColorsMaxHeight.set(playerAndCards.size()*HEIGHT + OFFSET));
+        this.playersAndCards.addListener((InvalidationListener) (listener) -> playersAndColorsMaxHeight.set(playerAndCards.size() * HEIGHT + OFFSET));
     }
 
     public SimpleBooleanProperty isTurnEndableProperty() {

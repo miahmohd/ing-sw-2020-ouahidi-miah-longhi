@@ -1,0 +1,235 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GameModel</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.psp44.server.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GameModel (it.polimi.ingsw.psp44.server.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (44/ 44)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.psp44.network.communication.BodyFactory;
+<i>4</i>&nbsp;import it.polimi.ingsw.psp44.network.message.Message;
+<i>5</i>&nbsp;import it.polimi.ingsw.psp44.server.model.actions.Action;
+<i>6</i>&nbsp;import it.polimi.ingsw.psp44.util.IObservable;
+<i>7</i>&nbsp;import it.polimi.ingsw.psp44.util.Position;
+<i>8</i>&nbsp;import it.polimi.ingsw.psp44.util.R;
+<i>9</i>&nbsp;import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
+<i>10</i>&nbsp;import it.polimi.ingsw.psp44.util.exception.PlayerException;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import java.util.LinkedList;
+<i>13</i>&nbsp;import java.util.List;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;public class GameModel extends IObservable&lt;Message&gt; {
+<i>17</i>&nbsp;    private final Board gameBoard;
+<i>18</i>&nbsp;    private final LinkedList&lt;Player&gt; players;
+<i>19</i>&nbsp;    private int turnNumber;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;
+<b class="fc"><i>22</i>&nbsp;    public GameModel(Board gameBoard, LinkedList&lt;Player&gt; players, int turnNumber) {</b>
+<b class="fc"><i>23</i>&nbsp;        this.gameBoard = gameBoard;</b>
+<b class="fc"><i>24</i>&nbsp;        this.players = players;</b>
+<b class="fc"><i>25</i>&nbsp;        this.turnNumber = turnNumber;</b>
+<b class="fc"><i>26</i>&nbsp;    }</b>
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    public GameModel() {
+<b class="fc"><i>29</i>&nbsp;        this(new Board(), new LinkedList&lt;&gt;(), 0);</b>
+<b class="fc"><i>30</i>&nbsp;    }</b>
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    /**
+<i>34</i>&nbsp;     * Execute the action and applay the changes to the board.
+<i>35</i>&nbsp;     *
+<i>36</i>&nbsp;     * @param action object representing a change to the board.
+<i>37</i>&nbsp;     */
+<i>38</i>&nbsp;    public void doAction(Action action) {
+<b class="fc"><i>39</i>&nbsp;        action.execute(this.gameBoard);</b>
+<b class="fc"><i>40</i>&nbsp;        Message toSend = new Message(Message.Code.UPDATE, BodyFactory.toCells(action.getModifiedPositions(), this.getBoard()));</b>
+<b class="fc"><i>41</i>&nbsp;        this.notifyObservers(toSend);</b>
+<b class="fc"><i>42</i>&nbsp;    }</b>
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    /**
+<i>45</i>&nbsp;     * Adds a player to the list of players in the game
+<i>46</i>&nbsp;     *
+<i>47</i>&nbsp;     * @param player the player to add
+<i>48</i>&nbsp;     * @throws IllegalArgumentException if player is null
+<i>49</i>&nbsp;     * @throws PlayerException          if player is already in the game
+<i>50</i>&nbsp;     */
+<i>51</i>&nbsp;    public void addPlayer(Player player) {
+<b class="fc"><i>52</i>&nbsp;        if (player == null)</b>
+<b class="fc"><i>53</i>&nbsp;            throw new IllegalArgumentException(R.getAppProperties().get(ErrorCodes.NULL_PLAYER));</b>
+<b class="fc"><i>54</i>&nbsp;        if (players.contains(player))</b>
+<b class="fc"><i>55</i>&nbsp;            throw new PlayerException(R.getAppProperties().get(ErrorCodes.PLAYER_IN_GAME));</b>
+<b class="fc"><i>56</i>&nbsp;        this.players.addLast(player);</b>
+<i>57</i>&nbsp;
+<b class="fc"><i>58</i>&nbsp;    }</b>
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    /**
+<i>61</i>&nbsp;     * Removes the player and its associated workers from the game
+<i>62</i>&nbsp;     *
+<i>63</i>&nbsp;     * @param player is the player i want to remove
+<i>64</i>&nbsp;     * @throws IllegalArgumentException if player is null
+<i>65</i>&nbsp;     * @throws PlayerException          if a player is not in the game
+<i>66</i>&nbsp;     */
+<i>67</i>&nbsp;    public void removePlayer(String player) {
+<b class="fc"><i>68</i>&nbsp;        if (player == null)</b>
+<b class="fc"><i>69</i>&nbsp;            throw new IllegalArgumentException(R.getAppProperties().get(ErrorCodes.NULL_PLAYER));</b>
+<b class="fc"><i>70</i>&nbsp;        if (players.stream().noneMatch(p -&gt; p.getNickname().equals(player)))</b>
+<b class="fc"><i>71</i>&nbsp;            throw new PlayerException(R.getAppProperties().get(ErrorCodes.PLAYER_NOT_IN_GAME));</b>
+<i>72</i>&nbsp;
+<b class="fc"><i>73</i>&nbsp;        List&lt;Position&gt; playerWorkers = gameBoard.getPlayerWorkersPositions(player);</b>
+<i>74</i>&nbsp;
+<b class="fc"><i>75</i>&nbsp;        for (Position position : playerWorkers)</b>
+<b class="fc"><i>76</i>&nbsp;            gameBoard.setWorker(position, null);</b>
+<i>77</i>&nbsp;
+<b class="fc"><i>78</i>&nbsp;        this.players.removeIf(p -&gt; p.getNickname().equals(player));</b>
+<i>79</i>&nbsp;
+<b class="fc"><i>80</i>&nbsp;        Message toSend = new Message(Message.Code.UPDATE, BodyFactory.toCells(playerWorkers, this.gameBoard));</b>
+<b class="fc"><i>81</i>&nbsp;        this.notifyObservers(toSend);</b>
+<b class="fc"><i>82</i>&nbsp;    }</b>
+<i>83</i>&nbsp;
+<i>84</i>&nbsp;    /**
+<i>85</i>&nbsp;     * Changes the state of the game model by alterating the current player
+<i>86</i>&nbsp;     *
+<i>87</i>&nbsp;     * @throws IllegalStateException if there are no players in the game
+<i>88</i>&nbsp;     */
+<i>89</i>&nbsp;    public void nextTurn() {
+<b class="fc"><i>90</i>&nbsp;        if (players.isEmpty())</b>
+<b class="fc"><i>91</i>&nbsp;            throw new IllegalStateException(R.getAppProperties().get(ErrorCodes.NO_PLAYERS_IN_GAME));</b>
+<i>92</i>&nbsp;
+<b class="fc"><i>93</i>&nbsp;        Player currentPlayer = players.removeFirst();</b>
+<b class="fc"><i>94</i>&nbsp;        players.addLast(currentPlayer);</b>
+<b class="fc"><i>95</i>&nbsp;        this.turnNumber++;</b>
+<b class="fc"><i>96</i>&nbsp;    }</b>
+<i>97</i>&nbsp;
+<i>98</i>&nbsp;    /**
+<i>99</i>&nbsp;     * @return nickname of the current player
+<i>100</i>&nbsp;     * @throws IllegalStateException if there are no players in the game
+<i>101</i>&nbsp;     */
+<i>102</i>&nbsp;    public String getCurrentPlayerNickname() {
+<b class="fc"><i>103</i>&nbsp;        if (players.isEmpty())</b>
+<b class="fc"><i>104</i>&nbsp;            throw new IllegalStateException(R.getAppProperties().get(ErrorCodes.NO_PLAYERS_IN_GAME));</b>
+<b class="fc"><i>105</i>&nbsp;        Player currentPlayer = players.getFirst();</b>
+<b class="fc"><i>106</i>&nbsp;        return currentPlayer.getNickname();</b>
+<i>107</i>&nbsp;    }
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;    /**
+<i>110</i>&nbsp;     * ATTENTION: CAUTION is advised about any changes made to the board
+<i>111</i>&nbsp;     *
+<i>112</i>&nbsp;     * @return board reference.
+<i>113</i>&nbsp;     */
+<i>114</i>&nbsp;    public Board getBoard() {
+<b class="fc"><i>115</i>&nbsp;        return gameBoard;</b>
+<i>116</i>&nbsp;    }
+<i>117</i>&nbsp;
+<i>118</i>&nbsp;    /**
+<i>119</i>&nbsp;     * @return number of players
+<i>120</i>&nbsp;     */
+<i>121</i>&nbsp;    public int getNumberOfPlayer() {
+<b class="fc"><i>122</i>&nbsp;        return this.players.size();</b>
+<i>123</i>&nbsp;    }
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;    /**
+<i>126</i>&nbsp;     * A full round is when all players have the seme number of turns.
+<i>127</i>&nbsp;     *
+<i>128</i>&nbsp;     * @return true if there has been a full round, false otherwise
+<i>129</i>&nbsp;     */
+<i>130</i>&nbsp;    public boolean isFullRound() {
+<b class="fc"><i>131</i>&nbsp;        return this.turnNumber % this.players.size() == 0;</b>
+<i>132</i>&nbsp;    }
+<i>133</i>&nbsp;
+<i>134</i>&nbsp;    /**
+<i>135</i>&nbsp;     * return the worker selected for this turn
+<i>136</i>&nbsp;     *
+<i>137</i>&nbsp;     * @return selected worker position
+<i>138</i>&nbsp;     */
+<i>139</i>&nbsp;    public Position getWorker() {
+<b class="fc"><i>140</i>&nbsp;        return gameBoard.getSelectedWorker();</b>
+<i>141</i>&nbsp;    }
+<i>142</i>&nbsp;
+<i>143</i>&nbsp;    /**
+<i>144</i>&nbsp;     * Change position of the selected worker in this turn
+<i>145</i>&nbsp;     *
+<i>146</i>&nbsp;     * @param selectedWorkerPosition
+<i>147</i>&nbsp;     */
+<i>148</i>&nbsp;    public void setWorker(Position selectedWorkerPosition) {
+<b class="fc"><i>149</i>&nbsp;        gameBoard.setSelectedWorker(selectedWorkerPosition);</b>
+<b class="fc"><i>150</i>&nbsp;    }</b>
+<i>151</i>&nbsp;
+<i>152</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 21:45</div>
+</div>
+</body>
+</html>

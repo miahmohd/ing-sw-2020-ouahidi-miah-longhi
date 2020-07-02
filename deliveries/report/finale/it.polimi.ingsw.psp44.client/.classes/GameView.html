@@ -1,0 +1,152 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GameView</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.psp44.client</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GameView (it.polimi.ingsw.psp44.client)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameView</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.client;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.psp44.network.message.Message;
+<i>4</i>&nbsp;
+<b class="nc"><i>5</i>&nbsp;public abstract class GameView extends View {</b>
+<i>6</i>&nbsp;    /**
+<i>7</i>&nbsp;     * Callback to what to do when a chooseWorkersInitialPosition message is received
+<i>8</i>&nbsp;     * @param workers message
+<i>9</i>&nbsp;     */
+<i>10</i>&nbsp;    public abstract void chooseWorkersInitialPositionFrom(Message workers);
+<i>11</i>&nbsp;    /**
+<i>12</i>&nbsp;     * Callback to what to do when a chooseWorker message is received
+<i>13</i>&nbsp;     * @param workers message
+<i>14</i>&nbsp;     */
+<i>15</i>&nbsp;    public abstract void chooseWorkerFrom(Message workers);
+<i>16</i>&nbsp;    /**
+<i>17</i>&nbsp;     * Callback to what to do when a chooseAction message is received
+<i>18</i>&nbsp;     * @param actions message
+<i>19</i>&nbsp;     */
+<i>20</i>&nbsp;    public abstract void chooseActionFrom(Message actions);
+<i>21</i>&nbsp;    /**
+<i>22</i>&nbsp;     * Callback to what to do when a start message is received
+<i>23</i>&nbsp;     * @param start message
+<i>24</i>&nbsp;     */
+<i>25</i>&nbsp;    public abstract void start(Message start);
+<i>26</i>&nbsp;    /**
+<i>27</i>&nbsp;     * Callback to what to do when a gameCreated message is received
+<i>28</i>&nbsp;     * @param end message
+<i>29</i>&nbsp;     */
+<i>30</i>&nbsp;    public abstract void end(Message end);
+<i>31</i>&nbsp;    /**
+<i>32</i>&nbsp;     * Callback to what to do when a lost message is received
+<i>33</i>&nbsp;     * @param lost message
+<i>34</i>&nbsp;     */
+<i>35</i>&nbsp;    public abstract void lost(Message lost);
+<i>36</i>&nbsp;    /**
+<i>37</i>&nbsp;     * Callback to what to do when a won message is received
+<i>38</i>&nbsp;     * @param won message
+<i>39</i>&nbsp;     */
+<i>40</i>&nbsp;    public abstract void won(Message won);
+<i>41</i>&nbsp;    /**
+<i>42</i>&nbsp;     * Callback to what to do when a update message is received
+<i>43</i>&nbsp;     * @param update message
+<i>44</i>&nbsp;     */
+<i>45</i>&nbsp;    public abstract void update(Message update);
+<i>46</i>&nbsp;    /**
+<i>47</i>&nbsp;     * Callback to what to do when a activePlayer message is received
+<i>48</i>&nbsp;     * @param activePlayer message
+<i>49</i>&nbsp;     */
+<i>50</i>&nbsp;    public abstract void activeTurn(Message activePlayer);
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    @Override
+<i>53</i>&nbsp;    public void setServer(VirtualServer virtualServer) {
+<b class="nc"><i>54</i>&nbsp;        this.virtualServer = virtualServer;</b>
+<i>55</i>&nbsp;
+<b class="nc"><i>56</i>&nbsp;        virtualServer.cleanMessageHandlers();</b>
+<i>57</i>&nbsp;
+<b class="nc"><i>58</i>&nbsp;        virtualServer.addMessageHandler(Message.Code.START_TURN, this::start);</b>
+<b class="nc"><i>59</i>&nbsp;        virtualServer.addMessageHandler(Message.Code.END_TURN, this::end);</b>
+<b class="nc"><i>60</i>&nbsp;        virtualServer.addMessageHandler(Message.Code.CHOOSE_WORKER, this::chooseWorkerFrom);</b>
+<b class="nc"><i>61</i>&nbsp;        virtualServer.addMessageHandler(Message.Code.UPDATE, this::update);</b>
+<b class="nc"><i>62</i>&nbsp;        virtualServer.addMessageHandler(Message.Code.CHOOSE_ACTION, this::chooseActionFrom);</b>
+<b class="nc"><i>63</i>&nbsp;        virtualServer.addMessageHandler(Message.Code.WON, this::won);</b>
+<b class="nc"><i>64</i>&nbsp;        virtualServer.addMessageHandler(Message.Code.LOST, this::lost);</b>
+<b class="nc"><i>65</i>&nbsp;        virtualServer.addMessageHandler(Message.Code.CHOOSE_WORKERS_INITIAL_POSITION, this::chooseWorkersInitialPositionFrom);</b>
+<b class="nc"><i>66</i>&nbsp;        virtualServer.addMessageHandler(Message.Code.UPDATE, this::update);</b>
+<b class="nc"><i>67</i>&nbsp;        virtualServer.addMessageHandler(Message.Code.ACTIVE_TURN, this::activeTurn);</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 21:45</div>
+</div>
+</body>
+</html>

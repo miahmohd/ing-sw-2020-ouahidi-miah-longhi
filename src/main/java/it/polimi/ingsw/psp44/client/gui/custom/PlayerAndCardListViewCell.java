@@ -15,10 +15,14 @@ import java.io.IOException;
  */
 public class PlayerAndCardListViewCell extends ListCell<PlayerAndCard> {
 
-    @FXML private Label playerNickname;
-    @FXML private Pane workerPane;
-    @FXML private Pane godPane;
-    @FXML private HBox root;
+    @FXML
+    private Label playerNickname;
+    @FXML
+    private Pane workerPane;
+    @FXML
+    private Pane godPane;
+    @FXML
+    private HBox root;
 
 
     private FXMLLoader mLLoader;
@@ -27,7 +31,7 @@ public class PlayerAndCardListViewCell extends ListCell<PlayerAndCard> {
     protected void updateItem(PlayerAndCard playerCard, boolean empty) {
         super.updateItem(playerCard, empty);
 
-        if(empty || playerCard == null) {
+        if (empty || playerCard == null) {
             setText(null);
             setGraphic(null);
         } else {
@@ -47,7 +51,7 @@ public class PlayerAndCardListViewCell extends ListCell<PlayerAndCard> {
             String image = getClass().getResource(String.format("/gui/assets/images/gods/%d.png", playerCard.getCardId())).toExternalForm();
             godPane.setStyle("-fx-background-image: url('" + image + "'); ");
 
-            image =  R.getAssetPathProperties().get("WORKERFEMALE"+playerCard.getColor());
+            image = R.getAssetPathProperties().get("WORKERFEMALE" + playerCard.getColor());
             workerPane.setStyle("-fx-background-image: url('" + image + "'); ");
 
             setText(null);

@@ -4,7 +4,6 @@ import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.server.model.actions.ForceBackwardsMovement;
-import it.polimi.ingsw.psp44.server.model.actions.SwapMovement;
 import it.polimi.ingsw.psp44.util.Position;
 
 import java.util.ArrayList;
@@ -26,15 +25,15 @@ public class ForceBackwardsMoveState extends SimpleMoveState {
      */
     @Override
     public List<Action> getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
-        List<Action> availableActions =new ArrayList<>();
-        List<Position> targetPositions=board.getNeighbouringPositions(selectedWorker);
-        for(Position targetPosition:targetPositions){
-            if(board.isWorker(targetPosition)&&
-                    (!board.getWorker(targetPosition).getPlayerNickname().equals(board.getWorker(selectedWorker).getPlayerNickname()))){
-                int[] delta={-targetPosition.getRow()+selectedWorker.getRow(),-targetPosition.getColumn()+selectedWorker.getColumn()};
-                Position forcedPosition=new Position(selectedWorker.getRow()+delta[0],selectedWorker.getColumn()+delta[1]);
-                if (board.isPositionInBounds(forcedPosition)&&(!board.isDome(forcedPosition))&&(!board.isWorker(forcedPosition)))
-                  availableActions.add(new ForceBackwardsMovement(selectedWorker,targetPosition,forcedPosition));
+        List<Action> availableActions = new ArrayList<>();
+        List<Position> targetPositions = board.getNeighbouringPositions(selectedWorker);
+        for (Position targetPosition : targetPositions) {
+            if (board.isWorker(targetPosition) &&
+                    (!board.getWorker(targetPosition).getPlayerNickname().equals(board.getWorker(selectedWorker).getPlayerNickname()))) {
+                int[] delta = {-targetPosition.getRow() + selectedWorker.getRow(), -targetPosition.getColumn() + selectedWorker.getColumn()};
+                Position forcedPosition = new Position(selectedWorker.getRow() + delta[0], selectedWorker.getColumn() + delta[1]);
+                if (board.isPositionInBounds(forcedPosition) && (!board.isDome(forcedPosition)) && (!board.isWorker(forcedPosition)))
+                    availableActions.add(new ForceBackwardsMovement(selectedWorker, targetPosition, forcedPosition));
             }
         }
         return availableActions;

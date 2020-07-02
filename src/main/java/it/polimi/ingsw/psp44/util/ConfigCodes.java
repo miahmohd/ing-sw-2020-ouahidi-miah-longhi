@@ -7,5 +7,6 @@ public final class ConfigCodes {
     public static final String TIMEOUT = "TIMEOUT";
 
 
-    private ConfigCodes(){}
+    private ConfigCodes() {
+    }
 }

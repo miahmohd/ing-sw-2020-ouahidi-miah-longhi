@@ -65,9 +65,9 @@ public class BodyTemplates {
     }
 
     /**
-     *  Template for ALL_PLAYER_CARDS message
+     * Template for ALL_PLAYER_CARDS message
      */
-    public static class PlayerCard{
+    public static class PlayerCard {
         private String playerNickname;
         private Card card;
 

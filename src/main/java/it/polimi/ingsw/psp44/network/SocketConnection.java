@@ -36,7 +36,7 @@ public class SocketConnection implements IConnection {
         this.writer.println(msg);
     }
 
-    public void close(){
+    public void close() {
         try {
             this.socket.close();
         } catch (IOException e) {

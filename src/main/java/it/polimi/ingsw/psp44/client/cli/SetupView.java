@@ -6,14 +6,16 @@ import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import it.polimi.ingsw.psp44.util.Card;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SetupView extends it.polimi.ingsw.psp44.client.SetupView {
 
     private final Console console;
     private final Board board;
 
-    public SetupView(String playerNickname, Console console){
+    public SetupView(String playerNickname, Console console) {
         this(playerNickname, console, new Board());
     }
 
@@ -78,9 +80,9 @@ public class SetupView extends it.polimi.ingsw.psp44.client.SetupView {
         playerCards = BodyFactory.fromPlayerCards(players.getBody());
         opponentNamesAndCards = new HashMap<>();
 
-        for (BodyTemplates.PlayerCard playerCard : playerCards){
-            if(!playerCard.getPlayerNickname().equals(this.playerNickname))
-                opponentNamesAndCards.put(playerCard.getPlayerNickname() ,playerCard.getCard().getTitle());
+        for (BodyTemplates.PlayerCard playerCard : playerCards) {
+            if (!playerCard.getPlayerNickname().equals(this.playerNickname))
+                opponentNamesAndCards.put(playerCard.getPlayerNickname(), playerCard.getCard().getTitle());
             else
                 myCard = playerCard.getCard().getTitle();
         }
@@ -89,11 +91,13 @@ public class SetupView extends it.polimi.ingsw.psp44.client.SetupView {
 
         changeView();
     }
+
     @Override
     public void start(Message start) {
         console.clear();
         console.writeLine("it's your turn boy");
     }
+
     @Override
     public void end(Message end) {
         console.clear();
@@ -119,24 +123,26 @@ public class SetupView extends it.polimi.ingsw.psp44.client.SetupView {
                     card -> card.getId() == chosenCardId)
                     .findFirst()
                     .orElse(null);
-            chosenCard=cardAlreadyChosen(chosenCard,chosenCards);
+            chosenCard = cardAlreadyChosen(chosenCard, chosenCards);
             if (chosenCard == null)
                 console.writeLine("not a valid id, gimmie a correct one ");
 
         } while (chosenCard == null);
         return chosenCard;
     }
-    private Card getChosenCard(Card[] cards){
-     return getChosenCard(cards,new Card[0]);
+
+    private Card getChosenCard(Card[] cards) {
+        return getChosenCard(cards, new Card[0]);
     }
 
-    private Card cardAlreadyChosen(Card chosenCard, Card[] chosenCards){
-        if(chosenCard==null)
+    private Card cardAlreadyChosen(Card chosenCard, Card[] chosenCards) {
+        if (chosenCard == null)
             return null;
-        if(Arrays.stream(chosenCards).noneMatch((card)->{
-            if(card==null) return false;
-            return card.getId()==chosenCard.getId();}
-            ))
+        if (Arrays.stream(chosenCards).noneMatch((card) -> {
+                    if (card == null) return false;
+                    return card.getId() == chosenCard.getId();
+                }
+        ))
             return chosenCard;
         return null;
     }

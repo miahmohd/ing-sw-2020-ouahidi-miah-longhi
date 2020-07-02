@@ -1,12 +1,8 @@
 package it.polimi.ingsw.psp44.util.property;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 public class AssetPathProperties extends Property {
-    private static AssetPathProperties instance;
     private static final String propertyPath = "/assets.properties";
-
+    private static AssetPathProperties instance;
     //TODO: set assetDirectory
     private final String assetDirectory = "/gui/assets/";
 
@@ -27,7 +23,7 @@ public class AssetPathProperties extends Property {
     @Override
     public String get(String code) {
         String assetName = super.get(code);
-        return getClass().getResource(assetDirectory+assetName).toExternalForm();
+        return getClass().getResource(assetDirectory + assetName).toExternalForm();
     }
 
 }

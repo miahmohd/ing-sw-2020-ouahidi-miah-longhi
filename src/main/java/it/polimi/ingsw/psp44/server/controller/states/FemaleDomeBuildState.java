@@ -8,9 +8,7 @@ import it.polimi.ingsw.psp44.server.model.actions.DomeBuild;
 import it.polimi.ingsw.psp44.util.Position;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * this state allows to compute all the the build actions that the worker can do adding build dome action at every level
@@ -32,19 +30,19 @@ public class FemaleDomeBuildState extends SimpleBuildState {
         List<Position> availablePosition;
         availableDomeAction = new ArrayList<>();
         availableAction = super.getAvailableActions(board, selectedWorker, moveFilter, buildFilter);
-        if(board.getWorker(selectedWorker).getSex()== Worker.Sex.FEMALE) {
+        if (board.getWorker(selectedWorker).getSex() == Worker.Sex.FEMALE) {
             for (Action action : availableAction) {
                 if (!board.isFinalLevel(action.getTargetPosition()))
                     availableDomeAction.add(new DomeBuild(action.getTargetPosition()));
             }
             availableAction.addAll(availableDomeAction);
-        }else {
-            selectedWorker=board.getPlayerWorkersPositions(board.getWorker(selectedWorker).getPlayerNickname())
-                    .stream().filter(worker->board.getWorker(worker).getSex()== Worker.Sex.FEMALE).findFirst().get();
-            availablePosition=board.getNeighbouringPositions(selectedWorker);
-            buildFilter.filter(selectedWorker,availablePosition,board);
-            for (Position p:availablePosition ){
-                if (!availableAction.stream().anyMatch(action -> action.getTargetPosition().equals(p))||!board.isFinalLevel(p))
+        } else {
+            selectedWorker = board.getPlayerWorkersPositions(board.getWorker(selectedWorker).getPlayerNickname())
+                    .stream().filter(worker -> board.getWorker(worker).getSex() == Worker.Sex.FEMALE).findFirst().get();
+            availablePosition = board.getNeighbouringPositions(selectedWorker);
+            buildFilter.filter(selectedWorker, availablePosition, board);
+            for (Position p : availablePosition) {
+                if (!availableAction.stream().anyMatch(action -> action.getTargetPosition().equals(p)) || !board.isFinalLevel(p))
                     availableAction.add(new DomeBuild(p));
             }
         }

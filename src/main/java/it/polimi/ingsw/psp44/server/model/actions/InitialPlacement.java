@@ -12,7 +12,7 @@ import java.util.List;
 
 public class InitialPlacement extends Movement {
 
-    private Worker worker;
+    private final Worker worker;
 
     /**
      * Create the initial placement for the worker.

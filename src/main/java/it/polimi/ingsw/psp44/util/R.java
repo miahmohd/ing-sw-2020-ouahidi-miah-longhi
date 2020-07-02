@@ -15,7 +15,8 @@ import java.io.Reader;
  */
 public final class R {
 
-    private R(){}
+    private R() {
+    }
 
     /**
      * @param index the index of the god

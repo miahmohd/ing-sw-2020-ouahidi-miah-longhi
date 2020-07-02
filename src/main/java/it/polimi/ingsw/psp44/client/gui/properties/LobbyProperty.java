@@ -20,7 +20,7 @@ public class LobbyProperty {
     private final String newGameOptionPromptText;
     private final String joinGameOptionPromptText;
 
-    public LobbyProperty(boolean newGame, String newGameOptionPromptText, String joinGameOptionPromptText, String gameOptionText, String nicknameText){
+    public LobbyProperty(boolean newGame, String newGameOptionPromptText, String joinGameOptionPromptText, String gameOptionText, String nicknameText) {
         this.newGameOptionPromptText = newGameOptionPromptText;
         this.joinGameOptionPromptText = joinGameOptionPromptText;
 
@@ -80,14 +80,14 @@ public class LobbyProperty {
     /**
      * Flips the join game and new game properties
      */
-    public void flipGameOptions(){
+    public void flipGameOptions() {
         this.joinGame.set(!this.joinGame.get());
         this.newGame.set(!this.newGame.get());
         setGameOptionPromptText();
     }
 
-    private void setGameOptionPromptText(){
-        if(this.newGameProperty().get()){
+    private void setGameOptionPromptText() {
+        if (this.newGameProperty().get()) {
             this.optionPromptText.set(newGameOptionPromptText);
         } else {
             this.optionPromptText.set(joinGameOptionPromptText);

@@ -10,8 +10,8 @@ import it.polimi.ingsw.psp44.server.model.Worker;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
 import it.polimi.ingsw.psp44.server.model.actions.InitialPlacement;
 import it.polimi.ingsw.psp44.server.view.VirtualView;
-import it.polimi.ingsw.psp44.util.Promise;
 import it.polimi.ingsw.psp44.util.Position;
+import it.polimi.ingsw.psp44.util.Promise;
 import it.polimi.ingsw.psp44.util.R;
 import it.polimi.ingsw.psp44.util.exception.ErrorCodes;
 import it.polimi.ingsw.psp44.util.exception.ProtocolException;
@@ -69,7 +69,7 @@ public class Controller extends Promise {
      */
     public void appliesOpponentsMoveFilter(Filter filter, Action lastAction) {
         players.values().stream()
-                .filter(cardController-> cardController != currentPlayer)
+                .filter(cardController -> cardController != currentPlayer)
                 .forEach(cardController -> cardController.addMoveFilter(filter, lastAction, model.getBoard()));
     }
 

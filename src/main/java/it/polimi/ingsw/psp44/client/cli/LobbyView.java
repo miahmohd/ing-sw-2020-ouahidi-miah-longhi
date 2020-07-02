@@ -51,7 +51,7 @@ public class LobbyView extends it.polimi.ingsw.psp44.client.LobbyView {
     }
 
     @Override
-    public void gameCreated(Message gameCreated){
+    public void gameCreated(Message gameCreated) {
         console.writeLine(String.format("game created with id %s", gameCreated.getBody()));
         console.writeLine("game created now wait and don't do anything, please");
         changeView();
@@ -75,12 +75,12 @@ public class LobbyView extends it.polimi.ingsw.psp44.client.LobbyView {
             console.writeLine(header.get(MessageHeader.ERROR_DESCRIPTION));
     }
 
-    private void changeView(){
+    private void changeView() {
         SetupView setupView = new SetupView(this.playerNickname, this.console);
         setupView.setServer(this.virtualServer);
     }
 
-    private Message.Code getMessageOptionCode(){
+    private Message.Code getMessageOptionCode() {
         String chosenOption;
         do {
             console.writeLine("What you want to do? New Game or Join Game? N/J ");

@@ -8,7 +8,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class App {
-    private static int DEFAULT_PORT = Integer.parseInt(R.getAppProperties().get(ConfigCodes.PORT));
+    private static final int DEFAULT_PORT = Integer.parseInt(R.getAppProperties().get(ConfigCodes.PORT));
 
     public static void main(String[] args) {
         int port = DEFAULT_PORT;

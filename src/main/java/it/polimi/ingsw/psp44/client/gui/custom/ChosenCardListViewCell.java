@@ -14,9 +14,12 @@ import java.io.IOException;
  * ListView Chosen Card template
  */
 public class ChosenCardListViewCell extends ListCell<Card> {
-    @FXML private Label title;
-    @FXML private Pane godImage;
-    @FXML private StackPane root;
+    @FXML
+    private Label title;
+    @FXML
+    private Pane godImage;
+    @FXML
+    private StackPane root;
 
     private FXMLLoader mLLoader;
 
@@ -24,7 +27,7 @@ public class ChosenCardListViewCell extends ListCell<Card> {
     protected void updateItem(Card card, boolean empty) {
         super.updateItem(card, empty);
 
-        if(empty || card == null) {
+        if (empty || card == null) {
             setText(null);
             setGraphic(null);
         } else {

@@ -307,6 +307,7 @@ public class Board {
 
     /**
      * Check if there aren't block built at the specified position
+     *
      * @param p the position to check
      * @return <code>true</code> if there aren't block, <code>false</code> otherwise
      */

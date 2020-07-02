@@ -1,0 +1,126 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ForceBackwardsMoveState</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.psp44.server.controller.states</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ForceBackwardsMoveState (it.polimi.ingsw.psp44.server.controller.states)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ForceBackwardsMoveState</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/ 12)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.server.controller.states;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
+<i>4</i>&nbsp;import it.polimi.ingsw.psp44.server.model.Board;
+<i>5</i>&nbsp;import it.polimi.ingsw.psp44.server.model.actions.Action;
+<i>6</i>&nbsp;import it.polimi.ingsw.psp44.server.model.actions.ForceBackwardsMovement;
+<i>7</i>&nbsp;import it.polimi.ingsw.psp44.server.model.actions.SwapMovement;
+<i>8</i>&nbsp;import it.polimi.ingsw.psp44.util.Position;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import java.util.ArrayList;
+<i>11</i>&nbsp;import java.util.List;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;/**
+<i>14</i>&nbsp; * this state allows to compute all the the movements that the worker adding move action to opponents worker&#39;s position
+<i>15</i>&nbsp; */
+<b class="fc"><i>16</i>&nbsp;public class ForceBackwardsMoveState extends SimpleMoveState {</b>
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    /**
+<i>19</i>&nbsp;     * Compute the available actions that the player can perform
+<i>20</i>&nbsp;     *
+<i>21</i>&nbsp;     * @param board          representation of the playing field
+<i>22</i>&nbsp;     * @param selectedWorker worker selected from the player
+<i>23</i>&nbsp;     * @param moveFilter     filter to apply to move actions
+<i>24</i>&nbsp;     * @param buildFilter    filter to apply to build actions
+<i>25</i>&nbsp;     * @return list of available actions
+<i>26</i>&nbsp;     */
+<i>27</i>&nbsp;    @Override
+<i>28</i>&nbsp;    public List&lt;Action&gt; getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
+<b class="fc"><i>29</i>&nbsp;        List&lt;Action&gt; availableActions =new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>30</i>&nbsp;        List&lt;Position&gt; targetPositions=board.getNeighbouringPositions(selectedWorker);</b>
+<b class="fc"><i>31</i>&nbsp;        for(Position targetPosition:targetPositions){</b>
+<b class="fc"><i>32</i>&nbsp;            if(board.isWorker(targetPosition)&amp;&amp;</b>
+<b class="fc"><i>33</i>&nbsp;                    (!board.getWorker(targetPosition).getPlayerNickname().equals(board.getWorker(selectedWorker).getPlayerNickname()))){</b>
+<b class="fc"><i>34</i>&nbsp;                int[] delta={-targetPosition.getRow()+selectedWorker.getRow(),-targetPosition.getColumn()+selectedWorker.getColumn()};</b>
+<b class="fc"><i>35</i>&nbsp;                Position forcedPosition=new Position(selectedWorker.getRow()+delta[0],selectedWorker.getColumn()+delta[1]);</b>
+<b class="fc"><i>36</i>&nbsp;                if (board.isPositionInBounds(forcedPosition)&amp;&amp;(!board.isDome(forcedPosition))&amp;&amp;(!board.isWorker(forcedPosition)))</b>
+<b class="fc"><i>37</i>&nbsp;                  availableActions.add(new ForceBackwardsMovement(selectedWorker,targetPosition,forcedPosition));</b>
+<i>38</i>&nbsp;            }
+<b class="fc"><i>39</i>&nbsp;        }</b>
+<b class="fc"><i>40</i>&nbsp;        return availableActions;</b>
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    }
+<i>43</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 21:45</div>
+</div>
+</body>
+</html>

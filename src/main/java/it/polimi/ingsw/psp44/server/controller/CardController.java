@@ -21,9 +21,6 @@ import java.util.List;
  */
 public class CardController {
 
-    private Card card;
-
-    private Controller context;
     /**
      * A list of the possible states transitions for the card
      */
@@ -32,14 +29,16 @@ public class CardController {
      * A list of victory condition for the card
      */
     private final List<VictoryCondition> victoryConditionsList;
+    private final Card card;
+    private Controller context;
     /**
      * filters to apply when computing build actions
      */
-    private FilterCollection buildFilter;
+    private final FilterCollection buildFilter;
     /**
      * filters to apply when computing move actions
      */
-    private FilterCollection moveFilter;
+    private final FilterCollection moveFilter;
     /**
      * The current state of the player turn
      */

@@ -15,14 +15,14 @@ public class ViewScene extends Application {
     private static Stage stage = null;
     private static boolean isLaunched = false;
 
-    public static void setViewAndShow(String title, String viewPath, View controller){
-        if(!isLaunched) {
+    public static void setViewAndShow(String title, String viewPath, View controller) {
+        if (!isLaunched) {
             new Thread(() -> launch(ViewScene.class)).start();
         }
 
         FXMLLoader loader = new FXMLLoader(ViewScene.class.getResource(viewPath));
 
-        if(controller != null)
+        if (controller != null)
             loader.setController(controller);
 
         Parent view;

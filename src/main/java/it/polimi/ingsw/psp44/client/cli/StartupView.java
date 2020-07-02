@@ -18,9 +18,8 @@ public class StartupView {
 
     private static final String DEFAULT_HOSTNAME = R.getAppProperties().get(ConfigCodes.HOSTNAME);
     private static final int DEFAULT_PORT = Integer.parseInt(R.getAppProperties().get(ConfigCodes.PORT));
-
-    private VirtualServer virtualServer;
     private final Console console;
+    private VirtualServer virtualServer;
 
     public StartupView() {
         this.console = new Console();

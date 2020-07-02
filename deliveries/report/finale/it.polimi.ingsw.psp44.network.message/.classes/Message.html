@@ -1,0 +1,226 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Message</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.psp44.network.message</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Message (it.polimi.ingsw.psp44.network.message)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Message</td>
+<td class="coverageStat">
+  <span class="percent">
+    81.8%
+  </span>
+  <span class="absValue">
+    (9/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (20/ 24)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Message$Code</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (29/ 29)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    84.6%
+  </span>
+  <span class="absValue">
+    (11/ 13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92.5%
+  </span>
+  <span class="absValue">
+    (49/ 53)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.network.message;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.util.EnumMap;
+<i>4</i>&nbsp;import java.util.HashMap;
+<i>5</i>&nbsp;import java.util.Map;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; * Class based on w3 specification of HTTP @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html
+<i>9</i>&nbsp; */
+<i>10</i>&nbsp;public class Message {
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;    /**
+<i>13</i>&nbsp;     * Code of message
+<i>14</i>&nbsp;     */
+<i>15</i>&nbsp;    private Code code;
+<i>16</i>&nbsp;    /**
+<i>17</i>&nbsp;     * Additional information about the message
+<i>18</i>&nbsp;     */
+<i>19</i>&nbsp;    private Map&lt;MessageHeader, String&gt; headers;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * Body of the message
+<i>22</i>&nbsp;     */
+<i>23</i>&nbsp;    private String body;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    /**
+<i>26</i>&nbsp;     * Needed for Gson serialization-deserialization
+<i>27</i>&nbsp;     * see https://github.com/google/gson/blob/master/UserGuide.md#writing-an-instance-creator
+<i>28</i>&nbsp;     */
+<b class="fc"><i>29</i>&nbsp;    private Message() {</b>
+<b class="fc"><i>30</i>&nbsp;    }</b>
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    public Message(Code code) {
+<b class="fc"><i>33</i>&nbsp;        this(code, &quot;&quot;);</b>
+<b class="fc"><i>34</i>&nbsp;    }</b>
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    public Message(Code code, Map&lt;MessageHeader, String&gt; headers) {
+<b class="nc"><i>37</i>&nbsp;        this(code, headers, &quot;&quot;);</b>
+<b class="nc"><i>38</i>&nbsp;    }</b>
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    public Message(Code code, String body) {
+<b class="fc"><i>41</i>&nbsp;        this(code, null, body);</b>
+<b class="fc"><i>42</i>&nbsp;    }</b>
+<i>43</i>&nbsp;
+<b class="fc"><i>44</i>&nbsp;    public Message(Code code, Map&lt;MessageHeader, String&gt; headers, String body) {</b>
+<b class="fc"><i>45</i>&nbsp;        this.code = code;</b>
+<b class="fc"><i>46</i>&nbsp;        if(headers==null)</b>
+<b class="fc"><i>47</i>&nbsp;            this.headers=new EnumMap&lt;&gt;(MessageHeader.class);</b>
+<i>48</i>&nbsp;        else
+<b class="fc"><i>49</i>&nbsp;            this.headers = headers;</b>
+<b class="fc"><i>50</i>&nbsp;        this.body = body;</b>
+<b class="fc"><i>51</i>&nbsp;    }</b>
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    public Code getCode() {
+<b class="fc"><i>54</i>&nbsp;        return code;</b>
+<i>55</i>&nbsp;    }
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    public Map&lt;MessageHeader, String&gt; getHeader() {
+<b class="fc"><i>58</i>&nbsp;        return this.headers;</b>
+<i>59</i>&nbsp;    }
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;    public String getBody() {
+<b class="fc"><i>62</i>&nbsp;        return body;</b>
+<i>63</i>&nbsp;    }
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    public void setBody(String body) {
+<b class="fc"><i>66</i>&nbsp;        this.body = body;</b>
+<b class="fc"><i>67</i>&nbsp;    }</b>
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;    public void addHeader(MessageHeader header, String value) {
+<b class="fc"><i>70</i>&nbsp;        headers.put(header, value);</b>
+<b class="fc"><i>71</i>&nbsp;    }</b>
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;    public void removeHeader(MessageHeader header) {
+<b class="nc"><i>74</i>&nbsp;        headers.remove(header);</b>
+<b class="nc"><i>75</i>&nbsp;    }</b>
+<i>76</i>&nbsp;
+<b class="fc"><i>77</i>&nbsp;    public enum Code {</b>
+<b class="fc"><i>78</i>&nbsp;        NEW_OR_JOIN,</b>
+<b class="fc"><i>79</i>&nbsp;        GAME_CREATED,</b>
+<b class="fc"><i>80</i>&nbsp;        GAME_JOINED,</b>
+<i>81</i>&nbsp;
+<b class="fc"><i>82</i>&nbsp;        NEW_GAME,</b>
+<b class="fc"><i>83</i>&nbsp;        JOIN_GAME,</b>
+<i>84</i>&nbsp;
+<b class="fc"><i>85</i>&nbsp;        CHOOSE_CARDS,</b>
+<b class="fc"><i>86</i>&nbsp;        CHOSEN_CARDS,</b>
+<i>87</i>&nbsp;
+<b class="fc"><i>88</i>&nbsp;        CHOOSE_CARD,</b>
+<b class="fc"><i>89</i>&nbsp;        CHOSEN_CARD,</b>
+<i>90</i>&nbsp;
+<b class="fc"><i>91</i>&nbsp;        CHOOSE_WORKERS_INITIAL_POSITION,</b>
+<b class="fc"><i>92</i>&nbsp;        CHOSEN_WORKERS_INITIAL_POSITION,</b>
+<i>93</i>&nbsp;
+<b class="fc"><i>94</i>&nbsp;        ALL_PLAYER_NICKNAMES,</b>
+<b class="fc"><i>95</i>&nbsp;        ALL_PLAYER_CARDS,</b>
+<i>96</i>&nbsp;
+<b class="fc"><i>97</i>&nbsp;        START_TURN,</b>
+<b class="fc"><i>98</i>&nbsp;        END_TURN,</b>
+<i>99</i>&nbsp;
+<b class="fc"><i>100</i>&nbsp;        CHOOSE_WORKER,</b>
+<b class="fc"><i>101</i>&nbsp;        CHOOSE_ACTION,</b>
+<b class="fc"><i>102</i>&nbsp;        CHOSEN_WORKER,</b>
+<b class="fc"><i>103</i>&nbsp;        CHOSEN_ACTION,</b>
+<b class="fc"><i>104</i>&nbsp;        UPDATE,</b>
+<b class="fc"><i>105</i>&nbsp;        WON,</b>
+<b class="fc"><i>106</i>&nbsp;        LOST,</b>
+<i>107</i>&nbsp;
+<b class="fc"><i>108</i>&nbsp;        ACTIVE_TURN,</b>
+<i>109</i>&nbsp;
+<b class="fc"><i>110</i>&nbsp;        PING,</b>
+<b class="fc"><i>111</i>&nbsp;        CLIENT_DISCONNECTED,</b>
+<b class="fc"><i>112</i>&nbsp;        LOBBY_DISCONNECTED,</b>
+<b class="fc"><i>113</i>&nbsp;        NETWORK_ERROR,</b>
+<b class="fc"><i>114</i>&nbsp;        DISCONNECTED</b>
+<i>115</i>&nbsp;
+<i>116</i>&nbsp;    }
+<i>117</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 21:45</div>
+</div>
+</body>
+</html>

@@ -6,30 +6,35 @@ public abstract class SetupView extends View {
 
     /**
      * Callback to what to do when a chooseCards message is received
+     *
      * @param cards message
      */
     public abstract void chooseCardsFrom(Message cards);
 
     /**
      * Callback to what to do when a chooseCard message is received
+     *
      * @param cards message
      */
     public abstract void chooseCardFrom(Message cards);
 
     /**
      * Callback to what to do when a allPlayerCards message is received
+     *
      * @param players message
      */
     public abstract void allPlayerCards(Message players);
 
     /**
      * Callback to what to do when a start message is received
+     *
      * @param start message
      */
     public abstract void start(Message start);
 
     /**
      * Callback to what to do when an end message is received
+     *
      * @param end message
      */
     public abstract void end(Message end);

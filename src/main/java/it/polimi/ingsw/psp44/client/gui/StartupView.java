@@ -26,11 +26,16 @@ public class StartupView extends View implements Initializable {
     private static final String DEFAULT_HOSTNAME = R.getAppProperties().get(ConfigCodes.HOSTNAME);
     private static final int DEFAULT_PORT = Integer.parseInt(R.getAppProperties().get(ConfigCodes.PORT));
 
-    @FXML private Label infoLabel;
-    @FXML private Button connectButton;
-    @FXML private TextField ipField;
-    @FXML private TextField portField;
-    @FXML private VBox container;
+    @FXML
+    private Label infoLabel;
+    @FXML
+    private Button connectButton;
+    @FXML
+    private TextField ipField;
+    @FXML
+    private TextField portField;
+    @FXML
+    private VBox container;
 
     public void start() {
         ViewScene.setViewAndShow("Santorini", "/gui/startup.fxml", this);
@@ -39,7 +44,7 @@ public class StartupView extends View implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         connectButton.setOnAction(this::startGame);
-        Platform.runLater( () -> container.requestFocus() );
+        Platform.runLater(() -> container.requestFocus());
 
     }
 

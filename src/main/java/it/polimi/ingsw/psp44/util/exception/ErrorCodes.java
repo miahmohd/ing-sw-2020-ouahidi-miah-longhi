@@ -29,7 +29,7 @@ public final class ErrorCodes {
     public static final String UNAVAILABLE_GAME = "UNAVAILABLE_GAME";
     public static final String ILLEGAL_GAME_PARAMS = "ILLEGAL_GAME_PARAMS";
 
-    public static final String ILLEGAL_WORKER_INITIAL_POSITION="ILLEGAL_WORKER_INITIAL_POSITION";
+    public static final String ILLEGAL_WORKER_INITIAL_POSITION = "ILLEGAL_WORKER_INITIAL_POSITION";
 
     private ErrorCodes() {
     }

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.psp44.network.message;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -43,8 +42,8 @@ public class Message {
 
     public Message(Code code, Map<MessageHeader, String> headers, String body) {
         this.code = code;
-        if(headers==null)
-            this.headers=new EnumMap<>(MessageHeader.class);
+        if (headers == null)
+            this.headers = new EnumMap<>(MessageHeader.class);
         else
             this.headers = headers;
         this.body = body;

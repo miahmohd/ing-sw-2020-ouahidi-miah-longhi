@@ -33,6 +33,7 @@ public class SetupProperty {
 
     /**
      * Moves selectedCard from the choose Cards Property to chosen Cards Property
+     *
      * @param selectedCard card to move
      */
     public void moveCardFromChooseToChosen(Card selectedCard) {
@@ -43,6 +44,7 @@ public class SetupProperty {
 
     /**
      * Moves selectedCard from the chosen Cards Property to choose Cards Property
+     *
      * @param selectedCard card to move
      */
     public void moveCardFromChosenToChoose(Card selectedCard) {
@@ -53,6 +55,7 @@ public class SetupProperty {
 
     /**
      * Adds cards to choose Cards Property
+     *
      * @param cards to be added
      */
     public void addCards(Card[] cards) {
@@ -87,7 +90,7 @@ public class SetupProperty {
         this.maxChosenCardsSize = maxChosenCardsSize;
     }
 
-    private boolean isChosenCardsAtMaxSize(){
+    private boolean isChosenCardsAtMaxSize() {
         return chosenCards.size() == maxChosenCardsSize;
     }
 

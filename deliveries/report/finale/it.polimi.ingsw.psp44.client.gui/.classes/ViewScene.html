@@ -1,0 +1,161 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ViewScene</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.psp44.client.gui</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ViewScene (it.polimi.ingsw.psp44.client.gui)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ViewScene</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 35)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.client.gui;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.psp44.client.View;
+<i>4</i>&nbsp;import javafx.application.Application;
+<i>5</i>&nbsp;import javafx.application.Platform;
+<i>6</i>&nbsp;import javafx.fxml.FXMLLoader;
+<i>7</i>&nbsp;import javafx.scene.Parent;
+<i>8</i>&nbsp;import javafx.scene.Scene;
+<i>9</i>&nbsp;import javafx.stage.Stage;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import java.io.IOException;
+<i>12</i>&nbsp;
+<b class="nc"><i>13</i>&nbsp;public class ViewScene extends Application {</b>
+<i>14</i>&nbsp;
+<b class="nc"><i>15</i>&nbsp;    private static Stage stage = null;</b>
+<b class="nc"><i>16</i>&nbsp;    private static boolean isLaunched = false;</b>
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    public static void setViewAndShow(String title, String viewPath, View controller){
+<b class="nc"><i>19</i>&nbsp;        if(!isLaunched) {</b>
+<b class="nc"><i>20</i>&nbsp;            new Thread(() -&gt; launch(ViewScene.class)).start();</b>
+<i>21</i>&nbsp;        }
+<i>22</i>&nbsp;
+<b class="nc"><i>23</i>&nbsp;        FXMLLoader loader = new FXMLLoader(ViewScene.class.getResource(viewPath));</b>
+<i>24</i>&nbsp;
+<b class="nc"><i>25</i>&nbsp;        if(controller != null)</b>
+<b class="nc"><i>26</i>&nbsp;            loader.setController(controller);</b>
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;        Parent view;
+<i>29</i>&nbsp;        try {
+<b class="nc"><i>30</i>&nbsp;            view = loader.load();</b>
+<b class="nc"><i>31</i>&nbsp;        } catch (IOException e) {</b>
+<i>32</i>&nbsp;            return;
+<b class="nc"><i>33</i>&nbsp;        }</b>
+<b class="nc"><i>34</i>&nbsp;        Scene scene = new Scene(view);</b>
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;        //https://stackoverflow.com/questions/17850191/why-am-i-getting-java-lang-illegalstateexception-not-on-fx-application-thread
+<b class="nc"><i>37</i>&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>38</i>&nbsp;            stage.setTitle(title);</b>
+<b class="nc"><i>39</i>&nbsp;            stage.setScene(scene);</b>
+<b class="nc"><i>40</i>&nbsp;            stage.show();</b>
+<i>41</i>&nbsp;        });
+<i>42</i>&nbsp;
+<b class="nc"><i>43</i>&nbsp;        isLaunched = true;</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    public static void showNewWindow(String title, String viewPath, View controller) {
+<i>47</i>&nbsp;        Parent root;
+<i>48</i>&nbsp;        try {
+<b class="nc"><i>49</i>&nbsp;            FXMLLoader loader = new FXMLLoader(ViewScene.class.getResource(viewPath));</b>
+<b class="nc"><i>50</i>&nbsp;            loader.setController(controller);</b>
+<b class="nc"><i>51</i>&nbsp;            root = loader.load();</b>
+<b class="nc"><i>52</i>&nbsp;            Stage newStage = new Stage();</b>
+<b class="nc"><i>53</i>&nbsp;            newStage.setTitle(title);</b>
+<b class="nc"><i>54</i>&nbsp;            newStage.setScene(new Scene(root));</b>
+<b class="nc"><i>55</i>&nbsp;            newStage.setX(stage.getX() + stage.getWidth() / 3);</b>
+<b class="nc"><i>56</i>&nbsp;            newStage.setY(stage.getY() + stage.getWidth() / 3);</b>
+<b class="nc"><i>57</i>&nbsp;            newStage.show();</b>
+<b class="nc"><i>58</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>59</i>&nbsp;            e.printStackTrace();</b>
+<b class="nc"><i>60</i>&nbsp;        }</b>
+<i>61</i>&nbsp;    }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    /**
+<i>65</i>&nbsp;     * https://stackoverflow.com/questions/30814258/javafx-pass-parameters-while-instantiating-controller-class
+<i>66</i>&nbsp;     */
+<i>67</i>&nbsp;    @Override
+<i>68</i>&nbsp;    public void start(Stage primaryStage) {
+<b class="nc"><i>69</i>&nbsp;        stage = primaryStage;</b>
+<b class="nc"><i>70</i>&nbsp;        isLaunched = false;</b>
+<b class="nc"><i>71</i>&nbsp;        stage.setOnCloseRequest((windowEvent -&gt; {</b>
+<b class="nc"><i>72</i>&nbsp;            Platform.exit();</b>
+<b class="nc"><i>73</i>&nbsp;            System.exit(0);</b>
+<i>74</i>&nbsp;        }));
+<b class="nc"><i>75</i>&nbsp;        stage.setResizable(false);</b>
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 21:45</div>
+</div>
+</body>
+</html>

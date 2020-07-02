@@ -1,14 +1,12 @@
 package it.polimi.ingsw.psp44.client.cli;
 
 import it.polimi.ingsw.psp44.client.cli.Graphics.Color;
-import it.polimi.ingsw.psp44.network.communication.Action;
 import it.polimi.ingsw.psp44.network.communication.Cell;
 import it.polimi.ingsw.psp44.server.model.Worker;
 import it.polimi.ingsw.psp44.util.Position;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Board {
@@ -18,7 +16,7 @@ public class Board {
     private final Cell[][] cells;
     private final Map<String, Graphics.Color> playerColors;
     private final Map<Integer, Graphics.Color> levelColors;
-    private final Map <String, String> playerCards;
+    private final Map<String, String> playerCards;
 
 
     public Board() {
@@ -32,8 +30,9 @@ public class Board {
 
     /**
      * Sets the color and card for each player
-     * @param myPlayer player's nickname
-     * @param myCard player's card
+     *
+     * @param myPlayer              player's nickname
+     * @param myCard                player's card
      * @param opponentNamesAndCards opponents nicknames and their respective cards
      */
     public void setPlayersAndCards(String myPlayer, String myCard, Map<String, String> opponentNamesAndCards) {
@@ -83,6 +82,7 @@ public class Board {
 
     /**
      * Method that generates the string board representation.
+     *
      * @return String formatted according to Graphics specification standard
      */
     public String getBoard() {
@@ -103,6 +103,7 @@ public class Board {
 
     /**
      * Highlights positions specified by the parameter
+     *
      * @param positionsToHighlight positions to Highlight
      * @return a formatted representation of the board according to Graphics specs
      */
@@ -135,6 +136,7 @@ public class Board {
     /**
      * Gets the legend of the board
      * for each level the associated color
+     *
      * @return string representation of legend
      */
     public String getLegend() {

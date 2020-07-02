@@ -18,7 +18,7 @@ public class FilterPerimetralPosition extends DynamicFilter {
     @Override
     public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard) {
         if (active)
-            positionsToFilter.removeIf(p -> p.getColumn()==0||p.getColumn()==4 || p.getRow()==0 || p.getRow()==4);
+            positionsToFilter.removeIf(p -> p.getColumn() == 0 || p.getColumn() == 4 || p.getRow() == 0 || p.getRow() == 4);
         active = false;
     }
 }

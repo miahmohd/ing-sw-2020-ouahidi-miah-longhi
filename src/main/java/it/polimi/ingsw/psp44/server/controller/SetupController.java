@@ -142,7 +142,6 @@ public class SetupController extends Promise {
     }
 
 
-
     /**
      * @return the number of players currently registered.
      */

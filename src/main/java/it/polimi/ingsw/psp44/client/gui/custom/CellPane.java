@@ -23,16 +23,19 @@ public class CellPane extends StackPane implements Initializable {
     private final String BACKGROUND_COLOR_STYLE = "-fx-background-color: %s;";
     private final String OPACITY_STYLE = "-fx-opacity: %s";
     private final String HIGHLIGHT_COLOR = "#3773C9";
-
-    @FXML private Pane layer1;
-    @FXML private Pane layer2;
-    @FXML private Pane layer3;
-    @FXML private Pane layer4;
-    @FXML private StackPane root;
-
     private final Map<Integer, Pane> layers;
+    @FXML
+    private Pane layer1;
+    @FXML
+    private Pane layer2;
+    @FXML
+    private Pane layer3;
+    @FXML
+    private Pane layer4;
+    @FXML
+    private StackPane root;
 
-    public CellPane(){
+    public CellPane() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gui/custom/CellPane.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -48,7 +51,8 @@ public class CellPane extends StackPane implements Initializable {
 
     /**
      * Formats the cell
-     * @param cell info
+     *
+     * @param cell         info
      * @param playerColors player colors
      */
     public void setCell(Cell cell, Map<String, String> playerColors) {
@@ -60,15 +64,15 @@ public class CellPane extends StackPane implements Initializable {
     private void setPlayerAndDome(Cell cell, Map<String, String> playerColors) {
         String block = null;
         Pane targetLayer;
-        if(!cell.isEmpty())
-            block = R.getAssetPathProperties().get(WORKER_PREFIX+cell.getSex()+playerColors.get(cell.getPlayerNickname()));
-        if(cell.isDome())
+        if (!cell.isEmpty())
+            block = R.getAssetPathProperties().get(WORKER_PREFIX + cell.getSex() + playerColors.get(cell.getPlayerNickname()));
+        if (cell.isDome())
             block = R.getAssetPathProperties().get(DOME);
 
-        if(cell.getLevel() == 0)
+        if (cell.getLevel() == 0)
             targetLayer = layers.get(2); //Layer 2 is just for beauty
         else
-            targetLayer = layers.get(cell.getLevel()+1);
+            targetLayer = layers.get(cell.getLevel() + 1);
 
         targetLayer.setStyle(String.format(BACKGROUND_IMAGE_STYLE, block));
     }
@@ -76,14 +80,14 @@ public class CellPane extends StackPane implements Initializable {
     private void setLayers(Cell cell) {
         String building;
 
-        for(int level= 1; level <= cell.getLevel(); level++){
-            building = R.getAssetPathProperties().get(BUILDING_PREFIX+level);
+        for (int level = 1; level <= cell.getLevel(); level++) {
+            building = R.getAssetPathProperties().get(BUILDING_PREFIX + level);
             layers.get(level).setStyle(String.format(BACKGROUND_IMAGE_STYLE, building));
         }
     }
 
     private void cleanLayers() {
-        for(Pane layer : layers.values()){
+        for (Pane layer : layers.values()) {
             layer.setStyle(String.format(BACKGROUND_IMAGE_STYLE, null));
         }
     }
@@ -91,11 +95,10 @@ public class CellPane extends StackPane implements Initializable {
     private void highlight() {
         String color;
         String opacity;
-        if(this.disableProperty().get()){
+        if (this.disableProperty().get()) {
             color = null;
             opacity = "100%";
-        }
-        else{
+        } else {
             color = HIGHLIGHT_COLOR;
             opacity = "50%";
         }
@@ -109,7 +112,7 @@ public class CellPane extends StackPane implements Initializable {
         root.disableProperty().addListener(disable -> highlight());
     }
 
-    private void initLayers(){
+    private void initLayers() {
         layers.put(1, this.layer1);
         layers.put(2, this.layer2);
         layers.put(3, this.layer3);

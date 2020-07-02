@@ -17,7 +17,7 @@ public class Lobby extends Promise {
     private final int maxPlayers;
     private final int id;
     private final SetupController setupController;
-    private List<VirtualView> playersInWaiting;
+    private final List<VirtualView> playersInWaiting;
 
 
     public Lobby(int maxPlayers) {

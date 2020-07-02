@@ -1,0 +1,141 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Action</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.psp44.network.communication</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Action (it.polimi.ingsw.psp44.network.communication)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Action</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    37.5%
+  </span>
+  <span class="absValue">
+    (3/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (10/ 15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.psp44.network.communication;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.psp44.util.Position;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * A descriptive class rappresenting it.polimi.ingsw.psp44.server.model.actions.Action for transmission
+<i>7</i>&nbsp; */
+<i>8</i>&nbsp;public class Action {
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;    private Position target;
+<i>12</i>&nbsp;    private boolean build;
+<i>13</i>&nbsp;    private boolean move;
+<i>14</i>&nbsp;    private int id;
+<i>15</i>&nbsp;    private String description;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    /**
+<i>18</i>&nbsp;     * Needed for Gson serialization-deserialization
+<i>19</i>&nbsp;     * see https://github.com/google/gson/blob/master/UserGuide.md#writing-an-instance-creator
+<i>20</i>&nbsp;     */
+<b class="fc"><i>21</i>&nbsp;    private Action() {</b>
+<i>22</i>&nbsp;
+<b class="fc"><i>23</i>&nbsp;    }</b>
+<i>24</i>&nbsp;
+<b class="fc"><i>25</i>&nbsp;    public Action(int id, String description, Position target, boolean build, boolean move) {</b>
+<b class="fc"><i>26</i>&nbsp;        this.id = id;</b>
+<b class="fc"><i>27</i>&nbsp;        this.description = description;</b>
+<b class="fc"><i>28</i>&nbsp;        this.target = target;</b>
+<b class="fc"><i>29</i>&nbsp;        this.build = build;</b>
+<b class="fc"><i>30</i>&nbsp;        this.move = move;</b>
+<b class="fc"><i>31</i>&nbsp;    }</b>
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    public int getId() {
+<b class="fc"><i>34</i>&nbsp;        return id;</b>
+<i>35</i>&nbsp;    }
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    public String getDescription() {
+<b class="nc"><i>38</i>&nbsp;        return description;</b>
+<i>39</i>&nbsp;    }
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    public Position getTarget() {
+<b class="nc"><i>42</i>&nbsp;        return target;</b>
+<i>43</i>&nbsp;    }
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    public boolean isBuild() {
+<b class="nc"><i>46</i>&nbsp;        return build;</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    public boolean isMove() {
+<b class="nc"><i>50</i>&nbsp;        return move;</b>
+<i>51</i>&nbsp;    }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    @Override
+<i>54</i>&nbsp;    public String toString() {
+<b class="nc"><i>55</i>&nbsp;        return this.description;</b>
+<i>56</i>&nbsp;    }
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-02 21:45</div>
+</div>
+</body>
+</html>

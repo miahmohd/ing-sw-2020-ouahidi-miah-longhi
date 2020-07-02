@@ -64,7 +64,7 @@ public class Cell {
         return target;
     }
 
-    public Sex getSex(){
+    public Sex getSex() {
         return this.sex;
     }
 

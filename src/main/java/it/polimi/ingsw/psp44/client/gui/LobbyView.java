@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -19,12 +20,18 @@ import java.util.ResourceBundle;
 public class LobbyView extends it.polimi.ingsw.psp44.client.LobbyView implements Initializable {
     private final LobbyProperty property;
 
-    @FXML private Label infoLabel;
-    @FXML private Button joinGameButton;
-    @FXML private Button newGameButton;
-    @FXML private Button startButton;
-    @FXML private TextField nicknameField;
-    @FXML private TextField gameOptionField;
+    @FXML
+    private Label infoLabel;
+    @FXML
+    private Button joinGameButton;
+    @FXML
+    private Button newGameButton;
+    @FXML
+    private Button startButton;
+    @FXML
+    private TextField nicknameField;
+    @FXML
+    private TextField gameOptionField;
 
     public LobbyView() {
         this.property = new LobbyProperty(true, "Number Of Players", "Game Id", "", "");
@@ -38,22 +45,22 @@ public class LobbyView extends it.polimi.ingsw.psp44.client.LobbyView implements
 
     @Override
     public void gameCreated(Message gameCreated) {
-        Platform.runLater(()->
+        Platform.runLater(() ->
                 property.setInfoText(String.format("game created with id %s, now wait for the other players", gameCreated.getBody())));
         changeView();
     }
 
     @Override
     public void gameJoined(Message gameJoined) {
-        Platform.runLater(()->
+        Platform.runLater(() ->
                 property.setInfoText("game joined, wait for the others"));
         changeView();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        newGameButton.setOnAction((ae)-> property.flipGameOptions());
-        joinGameButton.setOnAction((ae)-> property.flipGameOptions());
+        newGameButton.setOnAction((ae) -> property.flipGameOptions());
+        joinGameButton.setOnAction((ae) -> property.flipGameOptions());
         startButton.setOnAction(this::startGame);
 
         newGameButton.disableProperty().bindBidirectional(property.newGameProperty());
@@ -67,7 +74,7 @@ public class LobbyView extends it.polimi.ingsw.psp44.client.LobbyView implements
         infoLabel.textProperty().bindBidirectional(property.infoTextProperty());
     }
 
-    public void startGame(ActionEvent actionEvent){
+    public void startGame(ActionEvent actionEvent) {
         String body;
         Message message;
         Message.Code messageCode;
@@ -76,16 +83,15 @@ public class LobbyView extends it.polimi.ingsw.psp44.client.LobbyView implements
 
         try {
             gameOption = Integer.parseInt(property.getOptionText());
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             property.setInfoText("Provide a number please");
             return;
         }
 
-        if (property.isNewGame()){
+        if (property.isNewGame()) {
             messageCode = Message.Code.NEW_GAME;
             body = BodyFactory.toNewGame(property.getNicknameText(), gameOption);
-        }
-        else{
+        } else {
             messageCode = Message.Code.JOIN_GAME;
             body = BodyFactory.toJoinGame(property.getNicknameText(), gameOption);
         }
@@ -99,7 +105,7 @@ public class LobbyView extends it.polimi.ingsw.psp44.client.LobbyView implements
     }
 
     private void readHeaders(Map<MessageHeader, String> header) {
-        if(header == null) return;
+        if (header == null) return;
 
         if (header.containsKey(MessageHeader.ERROR_DESCRIPTION))
             Platform.runLater(() -> property.setInfoText(header.get(MessageHeader.ERROR_DESCRIPTION)));

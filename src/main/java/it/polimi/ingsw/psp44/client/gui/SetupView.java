@@ -19,15 +19,18 @@ import javafx.scene.control.ListView;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SetupView extends it.polimi.ingsw.psp44.client.SetupView implements Initializable{
+public class SetupView extends it.polimi.ingsw.psp44.client.SetupView implements Initializable {
     private final SetupProperty property;
 
-    @FXML private ListView<Card> cardList;
-    @FXML private ListView<Card> chosenCards;
-    @FXML private Button startButton;
+    @FXML
+    private ListView<Card> cardList;
+    @FXML
+    private ListView<Card> chosenCards;
+    @FXML
+    private Button startButton;
 
 
-    public SetupView(String playerNickname){
+    public SetupView(String playerNickname) {
         this.playerNickname = playerNickname;
         this.property = new SetupProperty(false, FXCollections.observableArrayList(), FXCollections.observableArrayList(), "Play");
     }
@@ -101,17 +104,16 @@ public class SetupView extends it.polimi.ingsw.psp44.client.SetupView implements
         });
     }
 
-    private void startGame(ActionEvent actionEvent){
+    private void startGame(ActionEvent actionEvent) {
         String body;
         Message message;
         Message.Code messageCode;
 
         Card[] chosenCards = this.property.getChosenCards();
-        if(chosenCards.length == 1){ //empirical
+        if (chosenCards.length == 1) { //empirical
             messageCode = Message.Code.CHOSEN_CARD;
             body = BodyFactory.toCard(chosenCards[0]);
-        }
-        else {
+        } else {
             messageCode = Message.Code.CHOSEN_CARDS;
             body = BodyFactory.toCards(chosenCards);
         }

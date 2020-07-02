@@ -11,26 +11,27 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ForceBackwardsMovement extends Movement {
-    private Position forcedPosition;
+    private final Position forcedPosition;
 
     /**
      * Create a movement that force a
      * neighboring opponent Worker
      * to the space directly on the other side of your
      * Worker
+     *
      * @param sourcePosition position of first worker
      * @param targetPosition position of the opponents worker
      */
     public ForceBackwardsMovement(Position sourcePosition, Position targetPosition, Position forcedPosition) {
         super(sourcePosition, targetPosition, R.getAppProperties().get(ModelCodes.FORCE_BACKWARDS_MOVEMENT_DESCRIPTION));
-        this.forcedPosition= forcedPosition;
+        this.forcedPosition = forcedPosition;
     }
 
     @Override
     public void execute(Board board) {
 
         Worker targetWorker = board.getWorker(this.targetPosition);
-        board.setWorker(this.targetPosition,null);
+        board.setWorker(this.targetPosition, null);
         board.setWorker(this.forcedPosition, targetWorker);
     }
 
