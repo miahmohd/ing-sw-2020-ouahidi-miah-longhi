@@ -30,6 +30,7 @@ public class StartupView extends View implements Initializable {
     @FXML private Button connectButton;
     @FXML private TextField ipField;
     @FXML private TextField portField;
+    @FXML private VBox container;
 
     public void start() {
         ViewScene.setViewAndShow("Santorini", "/gui/startup.fxml", this);

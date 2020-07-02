@@ -160,6 +160,12 @@ public class Console {
         }
 
         System.out.println(message);
+        resetPointer();
+    }
+
+    private void resetPointer() {
+        String message = goToSection(INTERACTION_SECTION_INITIAL_POSITION, currentInteractionRowOffset, currentInteractionColumnOffset) + "";
+        System.out.print(message);
     }
 
 }
