@@ -21,13 +21,17 @@ public class VirtualServer extends Virtual implements Runnable {
      */
     private final ExecutorService executor;
     private final Map<Message.Code, IMessageHandlerFunction> router;
+    private final Map<Message.Code, Runnable> errorRouter;
     private final Object _lock;
     private boolean errorFlag = true;
 
     public VirtualServer(IConnection<String> connection) {
         super(connection);
         this.router = new ConcurrentHashMap<>();
+        errorRouter = new ConcurrentHashMap<>();
+
         this._lock = new Object();
+
         this.executor = Executors.newFixedThreadPool(2, r -> {
             Thread t = new Thread(r);
             t.setDaemon(true);
@@ -41,6 +45,10 @@ public class VirtualServer extends Virtual implements Runnable {
             this.router.put(code, route);
             _lock.notifyAll();
         }
+    }
+
+    public void addErrorHandler(Message.Code code, Runnable route) {
+        this.errorRouter.put(code, route);
     }
 
     public void cleanMessageHandlers() {
@@ -68,14 +76,16 @@ public class VirtualServer extends Virtual implements Runnable {
             }
 
             if (this.errorFlag) {
-//                route error message to the view
-                System.out.println("errore network dopo ciclo");
+                this.routeErrorMessage(new Message(Message.Code.DISCONNECTED));
             }
 
-        } catch (SocketException | SocketTimeoutException e) {
+        } catch (SocketException e) {
             if (this.errorFlag) {
-//                this.routeMessage(new Message(Message.Code.NETWORK_ERROR));
-                System.out.println("errore network");
+                this.routeErrorMessage(new Message(Message.Code.DISCONNECTED));
+            }
+        } catch (SocketTimeoutException e) {
+            if (this.errorFlag) {
+                this.routeErrorMessage(new Message(Message.Code.NETWORK_ERROR));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -105,6 +115,12 @@ public class VirtualServer extends Virtual implements Runnable {
         }
 
         this.executor.execute(() -> router.get(code).accept(message));
+    }
+
+    private void routeErrorMessage(Message message){
+        Message.Code code = message.getCode();
+        if (this.errorRouter.containsKey(code))
+            this.errorRouter.get(code).run();
     }
 
 }

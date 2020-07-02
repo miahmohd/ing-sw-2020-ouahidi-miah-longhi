@@ -70,7 +70,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>it.polimi.ingsw.psp44.client.ClientApp</mainClass>
+                                    <mainClass>it.polimi.ingsw.psp44.client.Cli</mainClass>
                                 </manifest>
                             </archive>
                             <finalName>cli</finalName>
@@ -82,7 +82,7 @@
                         </goals>
                     </execution>
 
-<!--                    Create cli jar-->
+<!--                    Create gui jar-->
                     <execution>
                         <id>make-gui</id>
                         <configuration>
@@ -92,7 +92,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>it.polimi.ingsw.psp44.client.ClientApp</mainClass>
+                                    <mainClass>it.polimi.ingsw.psp44.client.Gui</mainClass>
                                 </manifest>
                             </archive>
                             <finalName>gui</finalName>

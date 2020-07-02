@@ -16,7 +16,10 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
@@ -34,11 +37,16 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView implements I
     private final List<Position> workerPositions;
     private Map<Position, List<Action>> actionsPerPosition;
 
-    @FXML private BoardPane board;
-    @FXML private Button playersButton;
-    @FXML private ListView<PlayerAndCard> playersList;
-    @FXML private Button endTurnButton;
-    @FXML private Label infoLabel;
+    @FXML
+    private BoardPane board;
+    @FXML
+    private Button playersButton;
+    @FXML
+    private ListView<PlayerAndCard> playersList;
+    @FXML
+    private Button endTurnButton;
+    @FXML
+    private Label infoLabel;
 
     public GameView(String playerNickname, BodyTemplates.PlayerCard[] playersAndCards) {
         this.property = new GameProperty(true, FXCollections.observableArrayList(), "");
@@ -55,7 +63,7 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView implements I
         );
         board.setActionIn(positionsToChooseFrom, this::sendWorkers);
         Platform.runLater(() -> {
-                property.infoProperty().set("choose first female and then male worker");
+            property.infoProperty().set("choose first female and then male worker");
         });
     }
 
@@ -81,6 +89,7 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView implements I
 
         this.property.isTurnEndableProperty().set(!Boolean.parseBoolean(headers.get(MessageHeader.IS_TURN_ENDABLE)));
     }
+
     @Override
     public void start(Message start) {
         board.disableProperty().set(false);
@@ -94,16 +103,20 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView implements I
 
     @Override
     public void lost(Message lost) {
-        //TODO: NON FUNZIA
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "You won, congratulations");
-        alert.showAndWait();
+        Platform.runLater(() -> {
+            InfoView infoView = new InfoView("You lost!");
+            infoView.setServer(this.virtualServer);
+            ViewScene.showNewWindow("Santorini", "/gui/info.fxml", infoView);
+        });
     }
 
     @Override
     public void won(Message won) {
-        //TODO: NON FUNZIA
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "You lost, looser");
-        alert.showAndWait();
+        Platform.runLater(() -> {
+            InfoView infoView = new InfoView("You won!");
+            infoView.setServer(this.virtualServer);
+            ViewScene.showNewWindow("Santorini", "/gui/info.fxml", infoView);
+        });
     }
 
     @Override
@@ -111,18 +124,20 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView implements I
         Cell[] cellsToUpdate = BodyFactory.fromCells(update.getBody());
         board.update(cellsToUpdate);
     }
+
     @Override
     public void activeTurn(Message activePlayer) {
         String activePlayerNickname = activePlayer.getBody();
         Platform.runLater(() -> {
             String infoString;
-            if(playerNickname.equals(activePlayerNickname))
+            if (playerNickname.equals(activePlayerNickname))
                 infoString = "It's Your Turn";
             else
-                infoString = String.format("%s's turn",activePlayerNickname);
+                infoString = String.format("%s's turn", activePlayerNickname);
             this.property.infoProperty().set(infoString);
         });
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -135,7 +150,7 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView implements I
         endTurnButton.disableProperty().bindBidirectional(this.property.isTurnEndableProperty());
         endTurnButton.setOnMouseClicked(this::sendNoAction);
 
-        playersButton.hoverProperty().addListener((invalidationListener)-> {
+        playersButton.hoverProperty().addListener((invalidationListener) -> {
             playersList.visibleProperty().set(playersButton.isHover());
             playersList.managedProperty().set(playersButton.isHover());
         });
@@ -151,13 +166,13 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView implements I
         this.virtualServer.sendMessage(new Message(Message.Code.CHOSEN_ACTION, headersToSend, null));
     }
 
-    private void sendAction(MouseEvent actionEvent){
+    private void sendAction(MouseEvent actionEvent) {
         Position actionPosition = getEventPosition(actionEvent);
         List<Action> actions = this.actionsPerPosition.get(actionPosition);
         Action chosenAction = actions.stream().findFirst().orElse(null);
 
         this.property.isTurnEndableProperty().set(true);
-        if(actions.size() > 1) {
+        if (actions.size() > 1) {
             ChoiceDialog<Action> chooseActionDialog = new ChoiceDialog<>(chosenAction, actions);
             chooseActionDialog.setTitle("Choose Action");
             chooseActionDialog.setHeaderText("Choose Action Boyyy");
@@ -171,18 +186,18 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView implements I
         );
     }
 
-    private void sendWorker(MouseEvent actionEvent){
+    private void sendWorker(MouseEvent actionEvent) {
         Position actionPosition = getEventPosition(actionEvent);
         virtualServer.sendMessage(new Message(Message.Code.CHOSEN_WORKER,
-                    BodyFactory.toPosition(actionPosition)));
+                BodyFactory.toPosition(actionPosition)));
     }
 
-    private void sendWorkers(MouseEvent actionEvent){
+    private void sendWorkers(MouseEvent actionEvent) {
         Position actionPosition = getEventPosition(actionEvent);
         workerPositions.add(actionPosition);
         board.disableCell(actionPosition.getRow(), actionPosition.getColumn());
 
-        if(isComplete(workerPositions)) {
+        if (isComplete(workerPositions)) {
             virtualServer.sendMessage(new Message(Message.Code.CHOSEN_WORKERS_INITIAL_POSITION,
                     BodyFactory.toPositions(workerPositions.toArray(Position[]::new))));
             Platform.runLater(() -> this.property.infoProperty().set(""));
@@ -191,7 +206,7 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView implements I
 
     private void initColors(BodyTemplates.PlayerCard[] playersAndCards) {
         int i = 0;
-        for(BodyTemplates.PlayerCard playerAndCard : playersAndCards){
+        for (BodyTemplates.PlayerCard playerAndCard : playersAndCards) {
             this.property.playersAndCardsProperty().add(new PlayerAndCard(playerAndCard, colors[i]));
             i++;
         }
@@ -202,7 +217,7 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView implements I
     }
 
     private Position getEventPosition(MouseEvent actionEvent) {
-        Node node = (Node)actionEvent.getSource();
+        Node node = (Node) actionEvent.getSource();
 
         int row = GridPane.getColumnIndex(node);
         int column = GridPane.getRowIndex(node);

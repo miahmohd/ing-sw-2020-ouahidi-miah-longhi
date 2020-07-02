@@ -1,5 +1,6 @@
 package it.polimi.ingsw.psp44.client.gui;
 
+import it.polimi.ingsw.psp44.client.View;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -9,18 +10,20 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class View extends Application {
+public class ViewScene extends Application {
 
     private static Stage stage = null;
     private static boolean isLaunched = false;
 
-    public static void setViewAndShow(String title, String viewPath, it.polimi.ingsw.psp44.client.View controller){
+    public static void setViewAndShow(String title, String viewPath, View controller){
         if(!isLaunched) {
-            new Thread(() -> launch(View.class)).start();
+            new Thread(() -> launch(ViewScene.class)).start();
         }
 
-        FXMLLoader loader = new FXMLLoader(View.class.getResource(viewPath));
-        loader.setController(controller);
+        FXMLLoader loader = new FXMLLoader(ViewScene.class.getResource(viewPath));
+
+        if(controller != null)
+            loader.setController(controller);
 
         Parent view;
         try {
@@ -40,17 +43,36 @@ public class View extends Application {
         isLaunched = true;
     }
 
+    public static void showNewWindow(String title, String viewPath, View controller) {
+        Parent root;
+        try {
+            FXMLLoader loader = new FXMLLoader(ViewScene.class.getResource(viewPath));
+            loader.setController(controller);
+            root = loader.load();
+            Stage newStage = new Stage();
+            newStage.setTitle(title);
+            newStage.setScene(new Scene(root));
+            newStage.setX(stage.getX() + stage.getWidth() / 3);
+            newStage.setY(stage.getY() + stage.getWidth() / 3);
+            newStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     /**
      * https://stackoverflow.com/questions/30814258/javafx-pass-parameters-while-instantiating-controller-class
      */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         stage = primaryStage;
         isLaunched = false;
         stage.setOnCloseRequest((windowEvent -> {
             Platform.exit();
             System.exit(0);
         }));
+        stage.setResizable(false);
     }
 
 }
