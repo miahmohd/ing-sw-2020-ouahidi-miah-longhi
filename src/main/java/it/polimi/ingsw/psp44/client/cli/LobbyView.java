@@ -1,5 +1,6 @@
 package it.polimi.ingsw.psp44.client.cli;
 
+import it.polimi.ingsw.psp44.client.AbstractLobbyView;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.message.Message;
 import it.polimi.ingsw.psp44.network.message.MessageHeader;
@@ -7,7 +8,7 @@ import it.polimi.ingsw.psp44.network.message.MessageHeader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LobbyView extends it.polimi.ingsw.psp44.client.LobbyView {
+public class LobbyView extends AbstractLobbyView {
 
     private final Console console;
     private final Map<String, Message.Code> gameOptions;

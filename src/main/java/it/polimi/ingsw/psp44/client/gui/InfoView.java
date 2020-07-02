@@ -1,7 +1,7 @@
 package it.polimi.ingsw.psp44.client.gui;
 
 
-import it.polimi.ingsw.psp44.client.View;
+import it.polimi.ingsw.psp44.client.AbstractView;
 import it.polimi.ingsw.psp44.client.VirtualServer;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -12,7 +12,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class InfoView extends View implements Initializable {
+public class InfoView extends AbstractView implements Initializable {
 
 
     private String infoMessage;

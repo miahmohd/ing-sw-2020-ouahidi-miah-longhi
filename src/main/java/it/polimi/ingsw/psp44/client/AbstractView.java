@@ -1,10 +1,10 @@
 package it.polimi.ingsw.psp44.client;
 
 
-public abstract class View {
+public abstract class AbstractView {
 
     /**
-     * View's user
+     * AbstractView's user
      */
     protected String playerNickname;
 

@@ -2,7 +2,7 @@ package it.polimi.ingsw.psp44.client;
 
 import it.polimi.ingsw.psp44.network.message.Message;
 
-public abstract class LobbyView extends View {
+public abstract class AbstractLobbyView extends AbstractView {
 
     public abstract void newJoin(Message joinOrNew);
 

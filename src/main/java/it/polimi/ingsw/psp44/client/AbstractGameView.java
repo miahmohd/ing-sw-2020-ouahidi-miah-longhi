@@ -2,7 +2,7 @@ package it.polimi.ingsw.psp44.client;
 
 import it.polimi.ingsw.psp44.network.message.Message;
 
-public abstract class GameView extends View {
+public abstract class AbstractGameView extends AbstractView {
 
     public abstract void chooseWorkersInitialPositionFrom(Message workers);
 

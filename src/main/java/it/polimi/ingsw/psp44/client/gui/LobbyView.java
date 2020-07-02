@@ -1,5 +1,6 @@
 package it.polimi.ingsw.psp44.client.gui;
 
+import it.polimi.ingsw.psp44.client.AbstractLobbyView;
 import it.polimi.ingsw.psp44.client.gui.properties.LobbyProperty;
 import it.polimi.ingsw.psp44.network.communication.BodyFactory;
 import it.polimi.ingsw.psp44.network.message.Message;
@@ -16,7 +17,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 
-public class LobbyView extends it.polimi.ingsw.psp44.client.LobbyView implements Initializable {
+public class LobbyView extends AbstractLobbyView implements Initializable {
     private final LobbyProperty property;
 
     @FXML private Label infoLabel;
@@ -33,7 +34,7 @@ public class LobbyView extends it.polimi.ingsw.psp44.client.LobbyView implements
     @Override
     public void newJoin(Message joinOrNew) {
         readHeaders(joinOrNew.getHeader());
-        ViewScene.setViewAndShow("Lobby View", "/gui/lobby.fxml", this);
+        ViewScene.setViewAndShow("Lobby AbstractView", "/gui/lobby.fxml", this);
     }
 
     @Override

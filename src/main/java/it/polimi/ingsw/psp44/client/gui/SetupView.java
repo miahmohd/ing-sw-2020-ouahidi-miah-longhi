@@ -1,5 +1,6 @@
 package it.polimi.ingsw.psp44.client.gui;
 
+import it.polimi.ingsw.psp44.client.AbstractSetupView;
 import it.polimi.ingsw.psp44.client.gui.custom.CardListViewCell;
 import it.polimi.ingsw.psp44.client.gui.custom.ChosenCardListViewCell;
 import it.polimi.ingsw.psp44.client.gui.properties.SetupProperty;
@@ -19,7 +20,7 @@ import javafx.scene.control.ListView;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SetupView extends it.polimi.ingsw.psp44.client.SetupView implements Initializable{
+public class SetupView extends AbstractSetupView implements Initializable{
     private final SetupProperty property;
 
     @FXML private ListView<Card> cardList;
