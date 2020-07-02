@@ -50,11 +50,11 @@ Button {
     -fx-background-image: url('../images/btn_green.png');
 }
 
-.joinGameButton:hover, .newGameButton:hover {
+.joinGameButton:pressed, .newGameButton:pressed {
     -fx-background-image: url('../images/btn_blue_pressed.png');
 }
 
-.startButton:hover{
+.startButton:pressed{
     -fx-background-image: url('../images/btn_green_pressed.png');
 }
 
