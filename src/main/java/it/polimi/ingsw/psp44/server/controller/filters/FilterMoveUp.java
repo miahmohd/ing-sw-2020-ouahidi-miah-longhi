@@ -18,7 +18,7 @@ public class FilterMoveUp extends DynamicFilter {
     @Override
     public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard) {
         if (active)
-            positionsToFilter.removeIf((p) -> gameBoard.getLevel(p) - gameBoard.getLevel(startingPosition) > 0);
-        active = false||this.external;
+            positionsToFilter.removeIf(p -> gameBoard.getLevel(p) - gameBoard.getLevel(startingPosition) > 0);
+        active = this.external;
     }
 }

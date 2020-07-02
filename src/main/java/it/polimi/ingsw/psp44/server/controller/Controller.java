@@ -58,8 +58,8 @@ public class Controller extends Promise {
      */
     public void appliesOpponentsBuildFilter(Filter filter, Action lastAction) {
         players.values().stream()
-                .filter((cardController) -> cardController != currentPlayer)
-                .forEach((cardController) -> cardController.addBuildFilter(filter, lastAction, model.getBoard()));
+                .filter(cardController -> cardController != currentPlayer)
+                .forEach(cardController -> cardController.addBuildFilter(filter, lastAction, model.getBoard()));
     }
 
     /**
@@ -69,8 +69,8 @@ public class Controller extends Promise {
      */
     public void appliesOpponentsMoveFilter(Filter filter, Action lastAction) {
         players.values().stream()
-                .filter((cardController) -> cardController != currentPlayer)
-                .forEach((cardController) -> cardController.addMoveFilter(filter, lastAction, model.getBoard()));
+                .filter(cardController-> cardController != currentPlayer)
+                .forEach(cardController -> cardController.addMoveFilter(filter, lastAction, model.getBoard()));
     }
 
 
@@ -194,7 +194,7 @@ public class Controller extends Promise {
     /**
      * end the turn and change the player
      */
-    private void end(Boolean nextStatus) {
+    private void end(boolean nextStatus) {
         if (nextStatus)
             currentPlayer.nextState(null, model.getBoard());
         currentPlayerView.sendMessage(new Message(Message.Code.END_TURN));
@@ -219,11 +219,7 @@ public class Controller extends Promise {
 
         this.model.nextTurn();
 
-        if (model.getNumberOfPlayer() == 2) {
-            nextTurn(false);
-        } else {
-            nextTurn(true);
-        }
+        nextTurn(model.getNumberOfPlayer() != 2);
 
     }
 
@@ -279,7 +275,7 @@ public class Controller extends Promise {
     private void workers() {
         List<Position> workers = model.getBoard().getPlayerWorkersPositions(model.getCurrentPlayerNickname());
         List<Position> activeWorkers = new ArrayList<>();
-        workers.stream().filter((worker) -> !currentPlayer.getAvailableAction(model.getBoard(), worker).isEmpty())
+        workers.stream().filter(worker -> !currentPlayer.getAvailableAction(model.getBoard(), worker).isEmpty())
                 .forEach(activeWorkers::add);
         Position[] workersArray = activeWorkers.toArray(Position[]::new);
 

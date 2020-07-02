@@ -53,7 +53,7 @@ public class CardController {
             FilterCollection moveFilter, Card card) {
         this.card = card;
         this.context = null;
-        this.currentState = transitionsList.stream().filter((t) -> t.getNextState().isInitialState()).findFirst().get().getNextState();
+        transitionsList.stream().filter(t -> t.getNextState().isInitialState()).findFirst().ifPresent(t -> this.currentState = t.getNextState());
         this.transitionsList = transitionsList;
         this.victoryConditionsList = victoryConditionsList;
         this.buildFilter = buildFilter;
@@ -77,8 +77,7 @@ public class CardController {
      * @return a list with the available actions
      */
     public List<Action> getAvailableAction(Board board, Position selectedWorker) {
-        List<Action> availableActions = currentState.getAvailableActions(board, selectedWorker, moveFilter, buildFilter);
-        return availableActions;
+        return currentState.getAvailableActions(board, selectedWorker, moveFilter, buildFilter);
     }
 
     /**
@@ -107,7 +106,7 @@ public class CardController {
      */
     public boolean nextState(Action lastAction, Board board) {
         Transition activeTransition = transitionsList.stream()
-                .filter((t) -> currentState.equals(t.getCurrentState())
+                .filter(t -> currentState.equals(t.getCurrentState())
                         && (t.isUnconditional() || t.checkCondition(lastAction)))
                 .findFirst()
                 .orElse(null);
@@ -124,8 +123,8 @@ public class CardController {
      */
     public boolean checkVictory(Action lastAction, Board board) {
         return victoryConditionsList.stream()
-                .filter((condition) -> lastAction.isBuild() == condition.isAfterBuild())
-                .anyMatch((condition) -> condition.check(lastAction, board));
+                .filter(condition -> lastAction.isBuild() == condition.isAfterBuild())
+                .anyMatch(condition -> condition.check(lastAction, board));
     }
 
     /**
@@ -142,14 +141,14 @@ public class CardController {
 
         currentState = transition.getNextState();
         if (lastAction != null) {
-            transition.getBuildFilter().forEach((filter) -> {
+            transition.getBuildFilter().forEach(filter -> {
                 if (filter.isExternal())
                     context.appliesOpponentsBuildFilter(filter, lastAction);
                 else
                     buildFilter.update(filter, lastAction, board);
             });
 
-            transition.getMoveFilter().forEach((filter) -> {
+            transition.getMoveFilter().forEach(filter -> {
                 if (filter.isExternal())
                     context.appliesOpponentsMoveFilter(filter, lastAction);
                 else

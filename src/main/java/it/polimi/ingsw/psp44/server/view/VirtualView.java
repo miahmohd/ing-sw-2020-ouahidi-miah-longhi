@@ -106,7 +106,6 @@ public class VirtualView extends Virtual implements Runnable, IObserver<Message>
 
     @Override
     public void sendMessage(Message message) {
-        System.out.println(this + ":\t\t" + message.getCode());
         super.sendMessage(message);
         lastSend = message;
     }
@@ -127,7 +126,6 @@ public class VirtualView extends Virtual implements Runnable, IObserver<Message>
         if (message.getCode() == Message.Code.PING)
             return;
 
-        System.out.println(view + ":\t\t" + message.getCode());
 
         IMessageHandlerFunction handlerFunction = this.handlers.get(message.getCode());
         if (handlerFunction == null)

@@ -20,6 +20,10 @@ import java.util.List;
 
 public class CardFactory {
 
+
+    private CardFactory() {
+    }
+
     /**
      * Factory method for card controller object
      *
@@ -27,7 +31,7 @@ public class CardFactory {
      * @return the card controller of the selected god
      */
     public static CardController getController(Card chosen) {
-        return buildCardController(chosen,R.getCard(chosen.getId()));
+        return buildCardController(chosen, R.getCard(chosen.getId()));
     }
 
     /**
@@ -36,7 +40,7 @@ public class CardFactory {
      * @return the default card controller
      */
     public static CardController getDefaultController() {
-        return buildCardController(new Card(0, "", "", ""),R.getCard());
+        return buildCardController(new Card(0, "", "", ""), R.getCard());
     }
 
     /**
