@@ -11,18 +11,24 @@ import it.polimi.ingsw.psp44.util.R;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * Startup View
+ */
 public class StartupView {
 
     private static final String DEFAULT_HOSTNAME = R.getAppProperties().get(ConfigCodes.HOSTNAME);
     private static final int DEFAULT_PORT = Integer.parseInt(R.getAppProperties().get(ConfigCodes.PORT));
 
     private VirtualServer virtualServer;
-    private Console console;
+    private final Console console;
 
     public StartupView() {
         this.console = new Console();
     }
 
+    /**
+     * Starts the application
+     */
     public void start() {
         boolean connected = false;
         Socket socket = null;

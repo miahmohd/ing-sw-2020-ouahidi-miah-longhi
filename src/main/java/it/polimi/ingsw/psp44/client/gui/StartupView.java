@@ -25,14 +25,10 @@ public class StartupView extends View implements Initializable {
     private static final String DEFAULT_HOSTNAME = R.getAppProperties().get(ConfigCodes.HOSTNAME);
     private static final int DEFAULT_PORT = Integer.parseInt(R.getAppProperties().get(ConfigCodes.PORT));
 
-    @FXML
-    private Label infoLabel;
-    @FXML
-    private Button connectButton;
-    @FXML
-    private TextField ipField;
-    @FXML
-    private TextField portField;
+    @FXML private Label infoLabel;
+    @FXML private Button connectButton;
+    @FXML private TextField ipField;
+    @FXML private TextField portField;
 
     public void start() {
         ViewScene.setViewAndShow("Santorini", "/gui/startup.fxml", this);

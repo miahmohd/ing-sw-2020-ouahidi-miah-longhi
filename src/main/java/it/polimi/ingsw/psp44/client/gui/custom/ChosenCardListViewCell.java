@@ -10,13 +10,13 @@ import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
+/**
+ * ListView Chosen Card template
+ */
 public class ChosenCardListViewCell extends ListCell<Card> {
-    @FXML
-    private Label title;
-    @FXML
-    private Pane godImage;
-    @FXML
-    private StackPane root;
+    @FXML private Label title;
+    @FXML private Pane godImage;
+    @FXML private StackPane root;
 
     private FXMLLoader mLLoader;
 

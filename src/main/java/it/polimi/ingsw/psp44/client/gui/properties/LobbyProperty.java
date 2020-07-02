@@ -6,17 +6,19 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+/**
+ * Lobby Property containing properties to bind to LobbyView
+ */
 public class LobbyProperty {
-    private StringProperty infoText;
+    private final StringProperty infoText;
+    private final BooleanProperty newGame;
+    private final BooleanProperty joinGame;
+    private final StringProperty optionText;
+    private final StringProperty optionPromptText;
+    private final StringProperty nicknameText;
 
-    private BooleanProperty newGame;
-    private BooleanProperty joinGame;
-    private StringProperty optionText;
-    private StringProperty optionPromptText;
-    private StringProperty nicknameText;
-
-    private String newGameOptionPromptText;
-    private String joinGameOptionPromptText;
+    private final String newGameOptionPromptText;
+    private final String joinGameOptionPromptText;
 
     public LobbyProperty(boolean newGame, String newGameOptionPromptText, String joinGameOptionPromptText, String gameOptionText, String nicknameText){
         this.newGameOptionPromptText = newGameOptionPromptText;
@@ -75,6 +77,9 @@ public class LobbyProperty {
         return nicknameText.get();
     }
 
+    /**
+     * Flips the join game and new game properties
+     */
     public void flipGameOptions(){
         this.joinGame.set(!this.joinGame.get());
         this.newGame.set(!this.newGame.get());

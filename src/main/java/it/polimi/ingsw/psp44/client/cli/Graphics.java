@@ -1,7 +1,7 @@
 package it.polimi.ingsw.psp44.client.cli;
 
 /**
- * garafics based on ANSI standard @see
+ * graphics based on ANSI standard @see
  * https://stackoverflow.com/questions/4842424/list-of-ansi-color-escape-sequences
  * https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
  */
@@ -20,10 +20,6 @@ public class Graphics {
         GROUND_LEVEL("\u001B[48;5;48m"), FIRST_LEVEL("\u001B[48;5;255m"), SECOND_LEVEL("\u001B[48;5;250m"),
         THIRD_LEVEL("\u001B[48;5;245m"),
 
-        /**
-         * Up: \u001b[{n}A Down: \u001b[{n}B Right: \u001b[{n}C Left: \u001b[{n}D
-         */
-
         DOME("\u001B[38;5;4m"),
         /**
          * dark blue
@@ -39,21 +35,6 @@ public class Graphics {
         OPPONENT_2("\u001B[38;5;15m"), /** white*/
 
 
-        /**
-         * TODO: add colors
-         */
-        MOVE_HIGHLIGHT("\u001B[48;5;200m"),
-        /**
-         * white
-         */
-        BUILD_HIGHLIGHT("\u001B[48;5;160m"),
-        /**
-         * white
-         */
-        BOTH_HIGHLIGHT("\u001B[48;5;30m"),
-        /**
-         * white
-         */
         POSITION_HIGHLIGHT("\u001B[48;5;20m");
 
         static final String RESET = "\u001B[0m";
@@ -83,8 +64,8 @@ public class Graphics {
         /**
          * Pawn looks better
          */
-        MALE_WORKER("\u2659 "),
-        FEMALE_WORKER("\u2659 "),
+        MALE_WORKER("\u2654 "),
+        FEMALE_WORKER("\u2655 "),
 
 
         DOME("\uD835\uDEF7 "),

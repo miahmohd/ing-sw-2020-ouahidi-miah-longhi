@@ -18,10 +18,6 @@ public class LobbyView extends it.polimi.ingsw.psp44.client.LobbyView {
         initGameOptions();
     }
 
-    public LobbyView() {
-        this(new Console());
-    }
-
     @Override
     public void newJoin(Message joinOrNew) {
         String body;

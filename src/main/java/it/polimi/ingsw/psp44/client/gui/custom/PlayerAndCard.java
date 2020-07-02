@@ -2,6 +2,9 @@ package it.polimi.ingsw.psp44.client.gui.custom;
 
 import it.polimi.ingsw.psp44.network.communication.BodyTemplates;
 
+/**
+ * Player And card class binds a playercard to a color
+ */
 public class PlayerAndCard {
 
     private BodyTemplates.PlayerCard playerCard;

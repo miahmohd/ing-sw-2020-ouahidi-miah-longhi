@@ -10,6 +10,9 @@ import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
+/**
+ * ListView PlayerCard template
+ */
 public class PlayerAndCardListViewCell extends ListCell<PlayerAndCard> {
 
     @FXML private Label playerNickname;

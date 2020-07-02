@@ -2,7 +2,6 @@ package it.polimi.ingsw.psp44.server.model;
 
 import it.polimi.ingsw.psp44.util.Position;
 import it.polimi.ingsw.psp44.util.exception.ConstructionException;
-import it.polimi.ingsw.psp44.util.property.CLIProperties;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,7 +51,6 @@ public class BoardTest {
                     boardTest.buildDome(p);
                     boardTest.buildUp(p);
                 });
-        CLIProperties.getInstance().get("");
         assertThrows(ConstructionException.class,
                 () -> boardTest.buildUp(level3));
 

@@ -10,6 +10,9 @@ import javafx.scene.layout.*;
 
 import java.io.IOException;
 
+/**
+ * ListView Card template
+ */
 public class CardListViewCell extends ListCell<Card> {
     @FXML private Label title;
     @FXML private Label subtitle;

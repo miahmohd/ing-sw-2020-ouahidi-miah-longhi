@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import it.polimi.ingsw.psp44.util.property.AppProperties;
 import it.polimi.ingsw.psp44.util.property.AssetPathProperties;
-import it.polimi.ingsw.psp44.util.property.CLIProperties;
 import it.polimi.ingsw.psp44.util.property.Property;
 
 import java.io.InputStream;
@@ -22,8 +21,7 @@ public final class R {
     public static JsonObject getCard(int index) {
         InputStream resourceAsStream = R.class.getResourceAsStream("/gods/" + index + ".json");
         Reader reader = new InputStreamReader(resourceAsStream);
-        JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
-        return jsonObject;
+        return JsonParser.parseReader(reader).getAsJsonObject();
     }
 
     /**
@@ -39,8 +37,7 @@ public final class R {
     public static Card[] getCards() {
         InputStream resourceAsStream = R.class.getResourceAsStream("/cards.json");
         Reader reader = new InputStreamReader(resourceAsStream);
-        Card[] cards = JsonConvert.getInstance().fromJson(reader, Card[].class);
-        return cards;
+        return JsonConvert.getInstance().fromJson(reader, Card[].class);
     }
 
     /**
@@ -51,13 +48,8 @@ public final class R {
     }
 
     /**
-     * @return the instance of the CLIProperties containing properties used in the CLI client.
+     * @return the instance of the AssetPathProperty containing Asset Paths used in Gui application.
      */
-    public static Property getCLIProperties() {
-        return CLIProperties.getInstance();
-    }
-
-
     public static Property getAssetPathProperties() {
         return AssetPathProperties.getInstance();
     }

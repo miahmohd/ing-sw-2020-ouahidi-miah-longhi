@@ -37,16 +37,11 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView implements I
     private final List<Position> workerPositions;
     private Map<Position, List<Action>> actionsPerPosition;
 
-    @FXML
-    private BoardPane board;
-    @FXML
-    private Button playersButton;
-    @FXML
-    private ListView<PlayerAndCard> playersList;
-    @FXML
-    private Button endTurnButton;
-    @FXML
-    private Label infoLabel;
+    @FXML private BoardPane board;
+    @FXML private Button playersButton;
+    @FXML private ListView<PlayerAndCard> playersList;
+    @FXML private Button endTurnButton;
+    @FXML private Label infoLabel;
 
     public GameView(String playerNickname, BodyTemplates.PlayerCard[] playersAndCards) {
         this.property = new GameProperty(true, FXCollections.observableArrayList(), "");
@@ -219,8 +214,8 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView implements I
     private Position getEventPosition(MouseEvent actionEvent) {
         Node node = (Node) actionEvent.getSource();
 
-        int row = GridPane.getColumnIndex(node);
-        int column = GridPane.getRowIndex(node);
+        int row = GridPane.getRowIndex(node);
+        int column = GridPane.getColumnIndex(node);
         return new Position(row, column);
     }
 }

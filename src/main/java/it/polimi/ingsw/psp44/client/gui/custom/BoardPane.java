@@ -62,7 +62,7 @@ public class BoardPane extends GridPane {
         for(int row = 0; row < this.dimension.get(); row++){
             for(int column = 0; column < this.dimension.get(); column++){
                 cells[row][column] = new CellPane();
-                this.add(cells[row][column], row, column);
+                this.add(cells[row][column], column, row);
             }
         }
     }
@@ -77,6 +77,11 @@ public class BoardPane extends GridPane {
         }
     }
 
+    /**
+     * Binds an action to a specific collection of positions on BoardPane
+     * @param positionsToChooseFrom positions to activate
+     * @param sendWorkers action to attach to the positions
+     */
     public void setActionIn(Collection<Position> positionsToChooseFrom, EventHandler<MouseEvent> sendWorkers) {
         Position currentPosition;
         boolean isContained;
@@ -91,26 +96,41 @@ public class BoardPane extends GridPane {
         }
     }
 
+    /**
+     * Disable the specified cell at row and column
+     * @param row of cell
+     * @param column of cell
+     */
     public void disableCell(int row, int column) {
         cells[row][column].disableProperty().set(true);
     }
 
+    /**
+     * Updates the specified cells
+     * @param cellsToUpdate cells to update
+     */
     public void update(Cell[] cellsToUpdate) {
         for (Cell cell : cellsToUpdate)
             cells[cell.getPosition().getRow()][cell.getPosition().getColumn()].setCell(cell, this.playerColors);
     }
 
+    /**
+     * Sets players, cards and their colors to be displayed on Board
+     * @param playersAndCards list of players and cards
+     */
     public void setPlayerColors(ObservableList<PlayerAndCard> playersAndCards){
         for(PlayerAndCard playerAndCard : playersAndCards) {
             this.playerColors.put(playerAndCard.getPlayerNickname(), playerAndCard.getColor());
         }
     }
 
+    /**
+     * Disable all cells
+     */
     public void disableAllCells() {
         for(int row = 0; row < this.dimension.get(); row++){
             for(int column = 0; column < this.dimension.get(); column++)
                 this.disableCell(row, column);
-
         }
     }
 }

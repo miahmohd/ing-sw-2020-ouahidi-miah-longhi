@@ -8,15 +8,18 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 
+/**
+ * Game Property containing properties to bind to GameView
+ */
 public class GameProperty {
     private final int HEIGHT = 125;
-    private final int OFFSET = 10;
+    private final int OFFSET = 15;
 
-    private SimpleBooleanProperty isTurnEndable;
-    private SimpleListProperty<PlayerAndCard> playersAndCards;
-    private SimpleStringProperty info;
+    private final SimpleBooleanProperty isTurnEndable;
+    private final SimpleListProperty<PlayerAndCard> playersAndCards;
+    private final SimpleStringProperty info;
 
-    private SimpleIntegerProperty playersAndColorsMaxHeight;
+    private final SimpleIntegerProperty playersAndColorsMaxHeight;
 
     public GameProperty(boolean isTurnEndable, ObservableList playerAndCards, String info){
         this.playersAndCards = new SimpleListProperty<>(playerAndCards);

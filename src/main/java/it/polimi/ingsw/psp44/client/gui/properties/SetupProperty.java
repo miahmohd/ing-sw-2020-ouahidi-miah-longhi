@@ -6,14 +6,17 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 
+/**
+ * Setup Property containing properties to bind to SetupView
+ */
 public class SetupProperty {
 
-    private SimpleListProperty<Card> chooseCards;
-    private SimpleListProperty<Card> chosenCards;
-    private SimpleBooleanProperty isStartGame;
-    private SimpleBooleanProperty isNotStartGame;
-    private SimpleBooleanProperty isGameStarted;
-    private SimpleStringProperty startText;
+    private final SimpleListProperty<Card> chooseCards;
+    private final SimpleListProperty<Card> chosenCards;
+    private final SimpleBooleanProperty isStartGame;
+    private final SimpleBooleanProperty isNotStartGame;
+    private final SimpleBooleanProperty isGameStarted;
+    private final SimpleStringProperty startText;
 
     private int maxChosenCardsSize;
 
@@ -28,20 +31,32 @@ public class SetupProperty {
         this.isGameStarted = new SimpleBooleanProperty(false);
     }
 
+    /**
+     * Moves selectedCard from the choose Cards Property to chosen Cards Property
+     * @param selectedCard card to move
+     */
     public void moveCardFromChooseToChosen(Card selectedCard) {
         chooseCards.remove(selectedCard);
         chosenCards.add(selectedCard);
         updateStatus();
     }
 
+    /**
+     * Moves selectedCard from the chosen Cards Property to choose Cards Property
+     * @param selectedCard card to move
+     */
     public void moveCardFromChosenToChoose(Card selectedCard) {
         chosenCards.remove(selectedCard);
         chooseCards.add(selectedCard);
         updateStatus();
     }
 
-    public void addCards(Card[] fromCards) {
-        chooseCards.addAll(fromCards);
+    /**
+     * Adds cards to choose Cards Property
+     * @param cards to be added
+     */
+    public void addCards(Card[] cards) {
+        chooseCards.addAll(cards);
     }
 
     public SimpleListProperty<Card> chooseCardsProperty() {
@@ -85,6 +100,9 @@ public class SetupProperty {
         return chosenCards.toArray(Card[]::new);
     }
 
+    /**
+     * Set all boolean properties to true
+     */
     public void disableAll() {
         isStartGame.set(true);
         isNotStartGame.set(true);

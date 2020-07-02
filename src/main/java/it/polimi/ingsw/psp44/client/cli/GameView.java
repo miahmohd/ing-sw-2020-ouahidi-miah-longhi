@@ -73,7 +73,6 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView {
         message = new Message(Message.Code.CHOSEN_WORKER, body);
 
         virtualServer.sendMessage(message);
-
     }
 
     @Override
@@ -93,7 +92,7 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView {
         actionsPerPosition = actionList.stream().collect(groupingBy(Action::getTarget));
 
         console.printOnBoardSection(
-                this.board.highlightActions(actionsPerPosition)
+                this.board.highlightPositions(actionsPerPosition.keySet())
         );
 
         headers = actions.getHeader();
@@ -117,7 +116,6 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView {
     public void start(Message start) {
         console.clear();
         console.printOnBoardSection(board.getBoard());
-        console.printOnPlayersSection(board.getPlayers());
         console.writeLine("it's your turn boy");
     }
 
@@ -144,15 +142,22 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView {
     public void update(Message update) {
         Cell[] cellsToUpdate = BodyFactory.fromCells(update.getBody());
         this.board.update(cellsToUpdate);
-
         console.printOnBoardSection(this.board.getBoard());
     }
 
     @Override
     public void activeTurn(Message activePlayer) {
-        console.printOnTurnSection(String.format("%s's turn", activePlayer.getBody()));
+        String currentPlayer = activePlayer.getBody();
+        String print;
+        if (currentPlayer.equals(this.playerNickname))
+            print = "It's your turn";
+        else
+            print = String.format("%s's turn", currentPlayer);
+        console.printOnTurnSection(print);
+        console.printOnBoardSection(this.board.getBoard());
+        console.printOnPlayersSection(this.board.getPlayers());
+        console.printOnLegendSection(this.board.getLegend());
     }
-
 
     private Action getAction(Map<Position, List<Action>> actionsPerPosition, boolean isTurnEndable) {
         if (isTurnEndable) {
@@ -200,9 +205,7 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView {
             } while (chosenAction == null);
 
         }
-
         return chosenAction;
-
     }
 
     private Position getCorrectPosition(List<Position> correctPositions) {
@@ -213,7 +216,7 @@ public class GameView extends it.polimi.ingsw.psp44.client.GameView {
         do {
             position = console.readPosition();
             if (!correctPositions.contains(position))
-                console.writeLine("Not a Position ");
+                console.writeLine("Not a correct Position ");
             else
                 isCorrect = true;
         } while (!isCorrect);

@@ -46,6 +46,11 @@ public class CellPane extends StackPane implements Initializable {
         }
     }
 
+    /**
+     * Formats the cell
+     * @param cell info
+     * @param playerColors player colors
+     */
     public void setCell(Cell cell, Map<String, String> playerColors) {
         cleanLayers();
         setLayers(cell);

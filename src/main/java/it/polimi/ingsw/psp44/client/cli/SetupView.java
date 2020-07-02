@@ -101,9 +101,7 @@ public class SetupView extends it.polimi.ingsw.psp44.client.SetupView {
     }
 
     private void displayCard(Card card) {
-        console.writeLine(card.getId());
-        console.writeLine(card.getTitle());
-        console.writeLine(Graphics.Element.EMPTY);
+        console.writeLine(String.format("%d. %s", card.getId(), card.getTitle()));
     }
 
     private void changeView() {

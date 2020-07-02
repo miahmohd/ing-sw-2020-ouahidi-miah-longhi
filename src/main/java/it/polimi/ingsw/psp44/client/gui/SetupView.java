@@ -23,8 +23,8 @@ public class SetupView extends it.polimi.ingsw.psp44.client.SetupView implements
     private final SetupProperty property;
 
     @FXML private ListView<Card> cardList;
-    @FXML public ListView<Card> chosenCards;
-    @FXML public Button startButton;
+    @FXML private ListView<Card> chosenCards;
+    @FXML private Button startButton;
 
 
     public SetupView(String playerNickname){

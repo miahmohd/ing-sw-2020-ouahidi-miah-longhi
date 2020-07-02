@@ -32,6 +32,6 @@ Button{
     -fx-text-fill: #eeeeee;
 }
 
-Button:pressed{
+Button:hover{
   -fx-background-image: url('../images/btn_blue_pressed.png');
 }

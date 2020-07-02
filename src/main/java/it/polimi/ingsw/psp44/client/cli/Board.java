@@ -3,8 +3,10 @@ package it.polimi.ingsw.psp44.client.cli;
 import it.polimi.ingsw.psp44.client.cli.Graphics.Color;
 import it.polimi.ingsw.psp44.network.communication.Action;
 import it.polimi.ingsw.psp44.network.communication.Cell;
+import it.polimi.ingsw.psp44.server.model.Worker;
 import it.polimi.ingsw.psp44.util.Position;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +30,12 @@ public class Board {
         initLevelColors();
     }
 
+    /**
+     * Sets the color and card for each player
+     * @param myPlayer player's nickname
+     * @param myCard player's card
+     * @param opponentNamesAndCards opponents nicknames and their respective cards
+     */
     public void setPlayersAndCards(String myPlayer, String myCard, Map<String, String> opponentNamesAndCards) {
         Color[] opponentColors = {Color.OPPONENT_1, Color.OPPONENT_2};
         int count = 0;
@@ -42,6 +50,9 @@ public class Board {
         }
     }
 
+    /**
+     * @return a formatted string of players and their respective cards
+     */
     public String getPlayers() {
         StringBuilder players = new StringBuilder();
         for (String player : this.playerColors.keySet()) {
@@ -53,44 +64,6 @@ public class Board {
         }
         players.append(Color.RESET);
         return players.toString();
-    }
-
-    /**
-     * @param actionsPerPosition
-     * @return String formatted according to Graphics specification standard
-     */
-    public String highlightActions(Map<Position, List<Action>> actionsPerPosition) {
-        Position currentPosition;
-        Cell currentCell;
-        List<Action> currentActionList;
-
-        StringBuffer sb = new StringBuffer();
-
-        for (int row = 0; row < DIMENSION; row++) {
-            for (int column = 0; column < DIMENSION; column++) {
-                currentPosition = new Position(row, column);
-                currentCell = cells[row][column];
-
-                if (actionsPerPosition.keySet().contains(currentPosition)) {
-
-                    currentActionList = actionsPerPosition.get(currentPosition);
-
-                    if (currentActionList.size() > 1)
-                        sb.append(Color.BOTH_HIGHLIGHT);
-                    else if (currentActionList.get(0).isBuild())
-                        sb.append(Color.BUILD_HIGHLIGHT);
-                    else
-                        sb.append(Color.MOVE_HIGHLIGHT);
-
-                } else {
-                    sb.append(this.levelColors.get(currentCell.getLevel()));
-                }
-                sb.append(getStringFromCell(currentCell));
-            }
-            sb.append(Graphics.Behaviour.NEW_LINE);
-        }
-        sb.append(Color.RESET);
-        return sb.toString();
     }
 
     /**
@@ -110,12 +83,11 @@ public class Board {
 
     /**
      * Method that generates the string board representation.
-     *
      * @return String formatted according to Graphics specification standard
      */
     public String getBoard() {
         Cell currentCell;
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int row = 0; row < DIMENSION; row++) {
             for (int column = 0; column < DIMENSION; column++) {
                 currentCell = cells[row][column];
@@ -129,11 +101,16 @@ public class Board {
         return sb.toString();
     }
 
-    public String highlightPositions(List<Position> positionsToHighlight) {
+    /**
+     * Highlights positions specified by the parameter
+     * @param positionsToHighlight positions to Highlight
+     * @return a formatted representation of the board according to Graphics specs
+     */
+    public String highlightPositions(Collection<Position> positionsToHighlight) {
         Cell currentCell;
         Position currentPosition;
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         for (int row = 0; row < DIMENSION; row++) {
             for (int column = 0; column < DIMENSION; column++) {
@@ -152,6 +129,25 @@ public class Board {
         }
         sb.append(Color.RESET);
 
+        return sb.toString();
+    }
+
+    /**
+     * Gets the legend of the board
+     * for each level the associated color
+     * @return string representation of legend
+     */
+    public String getLegend() {
+        String LEVEL_PREFIX = "level";
+        StringBuilder sb = new StringBuilder();
+
+        for (int level : this.levelColors.keySet()) {
+            sb.append(this.levelColors.get(level));
+            sb.append(LEVEL_PREFIX);
+            sb.append(level);
+            sb.append(Graphics.Behaviour.NEW_LINE);
+        }
+        sb.append(Color.RESET);
         return sb.toString();
     }
 
@@ -181,7 +177,10 @@ public class Board {
                 cellBuffer.append(Graphics.Element.EMPTY);
         } else {
             cellBuffer.append(playerColors.get(cell.getPlayerNickname()));
-            cellBuffer.append(Graphics.Element.MALE_WORKER);
+            if (cell.getSex() == Worker.Sex.MALE)
+                cellBuffer.append(Graphics.Element.MALE_WORKER);
+            else
+                cellBuffer.append(Graphics.Element.FEMALE_WORKER);
         }
 
         return cellBuffer;
