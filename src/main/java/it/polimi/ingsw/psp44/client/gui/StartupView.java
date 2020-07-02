@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -24,7 +25,8 @@ public class StartupView extends View implements Initializable {
 
     private static final String DEFAULT_HOSTNAME = R.getAppProperties().get(ConfigCodes.HOSTNAME);
     private static final int DEFAULT_PORT = Integer.parseInt(R.getAppProperties().get(ConfigCodes.PORT));
-
+    @FXML
+    private VBox container;
     @FXML
     private Label infoLabel;
     @FXML
@@ -41,6 +43,8 @@ public class StartupView extends View implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         connectButton.setOnAction(this::startGame);
+        Platform.runLater( () -> container.requestFocus() );
+
     }
 
     private void startGame(ActionEvent actionEvent) {
