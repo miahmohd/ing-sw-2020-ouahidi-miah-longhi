@@ -14,7 +14,8 @@ public class FilterUnmovedMyWorkers extends Filter {
         String myNickname = myWorker.getPlayerNickname();
         List<Position> myWorkerPositions = gameBoard.getPlayerWorkersPositions(myNickname);
         positionsToFilter.removeAll(myWorkerPositions);
-        positionsToFilter.add(startingPosition);
+        if(!gameBoard.isFinalLevel(startingPosition))
+            positionsToFilter.add(startingPosition);
     }
 
 }
