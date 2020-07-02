@@ -30,7 +30,7 @@ public class VirtualView extends Virtual implements Runnable, IObserver<Message>
     private Message lastSend;
     private boolean errorFlag = true;
 
-    public VirtualView(IConnection<String> connection) {
+    public VirtualView(IConnection connection) {
         super(connection);
         this.lobbyID = -1;
         this.handlers = Collections.synchronizedMap(new EnumMap<>(Message.Code.class));
@@ -44,7 +44,7 @@ public class VirtualView extends Virtual implements Runnable, IObserver<Message>
         this.lobbyID = lobbyID;
     }
 
-    public void setClosable(){
+    public void setClosable() {
         this.errorFlag = false;
     }
 
@@ -126,7 +126,6 @@ public class VirtualView extends Virtual implements Runnable, IObserver<Message>
         if (message.getCode() == Message.Code.PING)
             return;
 
-        System.out.println(view+":\t\t" + message.getCode() );
 
         IMessageHandlerFunction handlerFunction = this.handlers.get(message.getCode());
         if (handlerFunction == null)

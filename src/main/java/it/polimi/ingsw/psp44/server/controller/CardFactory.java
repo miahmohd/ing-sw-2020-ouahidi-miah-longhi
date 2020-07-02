@@ -20,6 +20,10 @@ import java.util.List;
 
 public class CardFactory {
 
+
+    private CardFactory() {
+    }
+
     /**
      * Factory method for card controller object
      *
@@ -27,7 +31,7 @@ public class CardFactory {
      * @return the card controller of the selected god
      */
     public static CardController getController(Card chosen) {
-        return buildCardController(chosen,R.getCard(chosen.getId()));
+        return buildCardController(chosen, R.getCard(chosen.getId()));
     }
 
     /**
@@ -36,7 +40,7 @@ public class CardFactory {
      * @return the default card controller
      */
     public static CardController getDefaultController() {
-        return buildCardController(new Card(0, "", "", ""),R.getCard());
+        return buildCardController(new Card(0, "", "", ""), R.getCard());
     }
 
     /**
@@ -68,15 +72,7 @@ public class CardFactory {
                 condition = getCondition(transition.getAsJsonPrimitive("condition"));
                 dynamicBuildFilters = getFilterAsList(transition.getAsJsonArray("build-filters"));
                 dynamicMoveFilter = getFilterAsList(transition.getAsJsonArray("move-filters"));
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
                 e.printStackTrace();
             }
 
@@ -88,15 +84,7 @@ public class CardFactory {
         jsonCard.getAsJsonArray("win-conditions").iterator().forEachRemaining(wc -> {
             try {
                 victoryConditionList.add((VictoryCondition) Class.forName(wc.getAsString()).getConstructor().newInstance());
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });
@@ -105,15 +93,7 @@ public class CardFactory {
         jsonCard.getAsJsonArray("build-filters").iterator().forEachRemaining(bf -> {
             try {
                 buildFilter.add((Filter) Class.forName(bf.getAsString()).getConstructor().newInstance());
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });
@@ -122,15 +102,7 @@ public class CardFactory {
         jsonCard.getAsJsonArray("move-filters").iterator().forEachRemaining(bf -> {
             try {
                 moveFilter.add((Filter) Class.forName(bf.getAsString()).getConstructor().newInstance());
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });

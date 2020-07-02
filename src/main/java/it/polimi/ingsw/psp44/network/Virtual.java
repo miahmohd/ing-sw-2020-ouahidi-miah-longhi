@@ -22,17 +22,16 @@ public class Virtual {
         return t;
     });
 
-    protected IConnection<String> connection;
+    protected IConnection connection;
     private ScheduledFuture<?> scheduledFuture;
 
 
     /**
-     * Create a generic instance of Virtual tha communicate with th given connection.
-     * Also start a scheduled task tha repeatedly send PING
+     * Create a generic instance of Virtual tha communicate with the given connection.
      *
      * @param connection the connection to use for sending messages
      */
-    public Virtual(IConnection<String> connection) {
+    public Virtual(IConnection connection) {
         this.connection = connection;
     }
 
@@ -56,9 +55,7 @@ public class Virtual {
     }
 
     /**
-     * Starts a task that sends a PING message to the client repeatedly after TIMEOUT / 2 seconds.
-     * The client is reachable if the server receives a PING message response.
-     * If after TIMEOUT second the server did not receive a PING response, the socket throws a SocketTimeoutException.
+     * Starts a task that sends a PING message to the client repeatedly.
      */
     public void startPingTask() {
         int delay = TIMEOUT / 2;

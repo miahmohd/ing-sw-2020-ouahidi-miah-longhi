@@ -12,7 +12,7 @@ import java.net.Socket;
 /**
  * Represents a communication channel with the client.
  */
-public class SocketConnection implements IConnection<String> {
+public class SocketConnection implements IConnection {
 
     private static final int TIMEOUT = Integer.parseInt(R.getAppProperties().get(ConfigCodes.TIMEOUT));
 

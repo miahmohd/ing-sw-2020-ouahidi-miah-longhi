@@ -40,7 +40,7 @@ public class FemaleDomeBuildState extends SimpleBuildState {
             availableAction.addAll(availableDomeAction);
         }else {
             selectedWorker=board.getPlayerWorkersPositions(board.getWorker(selectedWorker).getPlayerNickname())
-                    .stream().filter((worker)->board.getWorker(worker).getSex()== Worker.Sex.FEMALE).findFirst().get();
+                    .stream().filter(worker->board.getWorker(worker).getSex()== Worker.Sex.FEMALE).findFirst().get();
             availablePosition=board.getNeighbouringPositions(selectedWorker);
             buildFilter.filter(selectedWorker,availablePosition,board);
             for (Position p:availablePosition ){

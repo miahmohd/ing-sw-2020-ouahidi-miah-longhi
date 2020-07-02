@@ -2,6 +2,9 @@ package it.polimi.ingsw.psp44.network.communication;
 
 import it.polimi.ingsw.psp44.util.Position;
 
+/**
+ * A descriptive class rappresenting it.polimi.ingsw.psp44.server.model.actions.Action for transmission
+ */
 public class Action {
 
 

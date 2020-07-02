@@ -5,6 +5,9 @@ import it.polimi.ingsw.psp44.server.model.Worker.Sex;
 import it.polimi.ingsw.psp44.util.Position;
 
 
+/**
+ * A class representing a position in the game board, used to communicate diffs over the network.
+ */
 public class Cell {
 
     /**

@@ -50,7 +50,8 @@ public class PushMoveState extends SimpleMoveState {
      * @return
      */
     private Position positionToTest(Position source, Position target) {
-        int deltaR, deltaC;
+        int deltaR;
+        int deltaC;
         deltaR = target.getRow() - source.getRow();
         deltaC = target.getColumn() - source.getColumn();
         return new Position(target.getRow() + deltaR, target.getColumn() + deltaC);

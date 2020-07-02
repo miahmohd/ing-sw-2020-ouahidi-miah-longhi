@@ -11,10 +11,6 @@ import static org.junit.Assert.assertTrue;
 public class InitialPlacementTest {
 
     @Test
-    public void execute() {
-    }
-
-    @Test
     public void getModifiedPositions() {
         Board boardTest = new Board();
         Worker w00 = new Worker("ply0", Worker.Sex.MALE);

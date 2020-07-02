@@ -4,7 +4,7 @@ import it.polimi.ingsw.psp44.network.IConnection;
 
 import java.io.*;
 
-public class FileConnection implements IConnection<String> {
+public class FileConnection implements IConnection {
 
     private PrintWriter writer;
     private BufferedReader reader;
