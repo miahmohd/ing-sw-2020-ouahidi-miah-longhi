@@ -22,15 +22,15 @@ public class VirtualServer extends Virtual implements Runnable {
     private final ExecutorService executor;
     private final Map<Message.Code, IMessageHandlerFunction> router;
     private final Map<Message.Code, Runnable> errorRouter;
-    private final Object _lock;
+    private final Object lock;
     private boolean errorFlag = true;
 
-    public VirtualServer(IConnection<String> connection) {
+    public VirtualServer(IConnection connection) {
         super(connection);
         this.router = new ConcurrentHashMap<>();
         errorRouter = new ConcurrentHashMap<>();
 
-        this._lock = new Object();
+        this.lock = new Object();
 
         this.executor = Executors.newFixedThreadPool(2, r -> {
             Thread t = new Thread(r);
@@ -41,9 +41,9 @@ public class VirtualServer extends Virtual implements Runnable {
 
 
     public void addMessageHandler(Message.Code code, IMessageHandlerFunction route) {
-        synchronized (_lock) {
+        synchronized (lock) {
             this.router.put(code, route);
-            _lock.notifyAll();
+            lock.notifyAll();
         }
     }
 
@@ -104,12 +104,13 @@ public class VirtualServer extends Virtual implements Runnable {
 //        Can close without errors if won or lost.
         this.errorFlag = code != Message.Code.WON && code != Message.Code.LOST;
 
-        synchronized (_lock) {
+        synchronized (lock) {
             while (!this.router.containsKey(code)) {
                 try {
-                    _lock.wait();
+                    lock.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    Thread.currentThread().interrupt();
                 }
             }
         }

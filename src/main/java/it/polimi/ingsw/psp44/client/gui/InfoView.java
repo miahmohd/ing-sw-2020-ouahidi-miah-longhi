@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 
 public class InfoView extends View implements Initializable {
 
-    private VirtualServer virtualServer;
+
     private String infoMessage;
 
     @FXML

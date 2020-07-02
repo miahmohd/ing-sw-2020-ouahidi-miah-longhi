@@ -49,7 +49,7 @@ public class StartupView extends View implements Initializable {
 
         try {
             Socket socket = new Socket(hostname, port);
-            IConnection<String> socketConnection = new SocketConnection(socket);
+            IConnection socketConnection = new SocketConnection(socket);
             View view = new LobbyView();
             this.virtualServer = new VirtualServer(socketConnection);
             this.virtualServer.startPingTask();

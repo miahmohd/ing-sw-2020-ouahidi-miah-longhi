@@ -11,16 +11,16 @@ import it.polimi.ingsw.psp44.util.Position;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A class grouping a set of function for converting Objects to String suitable for transmission and viceversa.
+ */
 public class BodyFactory {
 
 
-    /**
-     * Convert a list of modified positions to Cell, suitable for transmission
-     *
-     * @param positions the list of Position to convert
-     * @param board     the board where the change happened
-     * @return a json string representing a list of Cell
-     */
+    private BodyFactory() {
+    }
+
+
     public static String toCells(List<Position> positions, Board board) {
         Cell[] cells = new Cell[positions.size()];
         int i = 0;
@@ -135,7 +135,7 @@ public class BodyFactory {
     public static String toPlayerCards(Map<String, CardController> playerAndCard) {
         BodyTemplates.PlayerCard[] playerCards = new BodyTemplates.PlayerCard[playerAndCard.size()];
         int counter = 0;
-        for (String player : playerAndCard.keySet()){
+        for (String player : playerAndCard.keySet()) {
             playerCards[counter] = new BodyTemplates.PlayerCard(player, playerAndCard.get(player).getCard());
             counter++;
         }
