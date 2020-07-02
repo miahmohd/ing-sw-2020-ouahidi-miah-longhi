@@ -11,6 +11,7 @@ public class Promise {
     private final List<Runnable> callbacks = new ArrayList<>();
 
     public Promise() {
+//        Empty promise
     }
 
     public Promise then(Runnable cb) {

@@ -3,7 +3,6 @@ package it.polimi.ingsw.psp44.server.controller.states;
 import it.polimi.ingsw.psp44.server.controller.filters.FilterCollection;
 import it.polimi.ingsw.psp44.server.model.Board;
 import it.polimi.ingsw.psp44.server.model.actions.Action;
-import it.polimi.ingsw.psp44.server.model.actions.DomeBuild;
 import it.polimi.ingsw.psp44.server.model.actions.SimpleBuild;
 import it.polimi.ingsw.psp44.util.Position;
 
@@ -27,9 +26,9 @@ public class SimpleUnbuildState extends State {
     @Override
     public List<Action> getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
         List<Action> availableActions = new ArrayList<>();
-        Position unmovedWorker=board.getPlayerWorkersPositions(board.getWorker(selectedWorker).getPlayerNickname())
-                .stream().filter((pos)->!pos.equals(selectedWorker)).findFirst().orElse(null);
-        if(unmovedWorker!=null) {
+        Position unmovedWorker = board.getPlayerWorkersPositions(board.getWorker(selectedWorker).getPlayerNickname())
+                .stream().filter(pos -> !pos.equals(selectedWorker)).findFirst().orElse(null);
+        if (unmovedWorker != null) {
             List<Position> builds = board.getNeighbouringPositions(unmovedWorker);
             buildFilter.filter(selectedWorker, builds, board);
             for (Position p : builds) {

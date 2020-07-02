@@ -5,7 +5,7 @@ import java.io.IOException;
 /**
  * Interface for the communication between the user (of the class) and a remote host.
  */
-public interface IConnection<T> {
+public interface IConnection {
 
 
     /**
@@ -13,13 +13,13 @@ public interface IConnection<T> {
      *
      * @return the message just read
      */
-    T readLine() throws IOException;
+    String readLine() throws IOException;
 
 
     /**
      * Writes the message into the chosen connection
      */
-    void writeLine(T message);
+    void writeLine(String message);
 
     /**
      * Closes the connection

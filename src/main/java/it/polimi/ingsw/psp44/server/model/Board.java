@@ -241,7 +241,6 @@ public class Board {
      */
     public List<Position> getUnoccupiedPosition() {
         List<Position> unoccupiedPositions = new ArrayList<>();
-        Position unoccupiedPosition;
         for (int r = 0; r < DIMENSION; r++) {
             for (int c = 0; c < DIMENSION; c++) {
                 if (field[r][c].isUnoccupied())
@@ -258,17 +257,17 @@ public class Board {
      */
     public List<Position> getPlayerWorkersPositions(String nickname) {
         List<Position> playerWorkerPositions = new ArrayList<>();
-        Worker selectedWorker;
-        Position selectedPosition;
+        Worker worker;
+        Position position;
         for (int row = 0; row < DIMENSION; row++) {
             for (int column = 0; column < DIMENSION; column++) {
-                selectedPosition = new Position(row, column);
+                position = new Position(row, column);
                 try {
-                    selectedWorker = this.getWorker(selectedPosition);
-                    if (selectedWorker != null && nickname.equals(selectedWorker.getPlayerNickname()))
-                        playerWorkerPositions.add(selectedPosition);
-                } catch (ConstructionException e) {
-                    continue;
+                    worker = this.getWorker(position);
+                    if (worker != null && nickname.equals(worker.getPlayerNickname()))
+                        playerWorkerPositions.add(position);
+                } catch (ConstructionException ignore) {
+
                 }
             }
         }

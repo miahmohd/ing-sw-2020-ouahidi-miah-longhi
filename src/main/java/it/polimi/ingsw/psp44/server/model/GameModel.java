@@ -75,7 +75,7 @@ public class GameModel extends IObservable<Message> {
         for (Position position : playerWorkers)
             gameBoard.setWorker(position, null);
 
-        this.players.removeIf((p) -> p.getNickname().equals(player));
+        this.players.removeIf(p -> p.getNickname().equals(player));
 
         Message toSend = new Message(Message.Code.UPDATE, BodyFactory.toCells(playerWorkers, this.gameBoard));
         this.notifyObservers(toSend);

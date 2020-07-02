@@ -8,6 +8,7 @@ public class IObservable<T> {
     private final List<IObserver<T>> observers = new ArrayList<>();
 
     public IObservable() {
+//        Empty Observable
     }
 
     public void addObserver(IObserver<T> observer) {

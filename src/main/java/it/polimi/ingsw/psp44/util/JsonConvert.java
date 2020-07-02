@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 
 import java.io.Reader;
 
+/**
+ * Utility class used for converting Json to Java objects, and viceversa
+ */
 public final class JsonConvert {
 
     private static JsonConvert instance;

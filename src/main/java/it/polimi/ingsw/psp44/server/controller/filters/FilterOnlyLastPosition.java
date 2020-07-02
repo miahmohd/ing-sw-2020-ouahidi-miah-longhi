@@ -18,7 +18,7 @@ public class FilterOnlyLastPosition extends DynamicFilter {
     @Override
     public void filter(Position startingPosition, List<Position> positionsToFilter, Board gameBoard) {
         if (active)
-            positionsToFilter.removeIf((p) -> !(p.equals(lastAction.getTargetPosition())));
+            positionsToFilter.removeIf(p -> !(p.equals(lastAction.getTargetPosition())));
         active = false;
     }
 }

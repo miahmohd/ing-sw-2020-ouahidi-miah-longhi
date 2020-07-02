@@ -8,23 +8,11 @@ import it.polimi.ingsw.psp44.util.Position;
 import java.util.List;
 
 /**
- * this state allows to compute all the the build actions that the worker can do, even no build
+ * this state allows to compute all the the build actions that the worker can do, even no build.
+ * it disambiguates gods that can build a second time.
  */
 public class SecondBuildState extends SimpleBuildState {
 
 
-    /**
-     * Compute the available actions that the player can perform
-     *
-     * @param board          representation of the playing field
-     * @param selectedWorker worker selected from the player
-     * @param moveFilter     filter to apply to move actions
-     * @param buildFilter    filter to apply to build actions
-     * @return list of available actions
-     */
-    @Override
-    public List<Action> getAvailableActions(Board board, Position selectedWorker, FilterCollection moveFilter, FilterCollection buildFilter) {
-        return super.getAvailableActions(board, selectedWorker, moveFilter, buildFilter);
-    }
 }
 

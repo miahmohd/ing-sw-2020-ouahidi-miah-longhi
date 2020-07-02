@@ -14,6 +14,9 @@ import java.io.Reader;
  * Class used for managing resources. R stands for Resources
  */
 public final class R {
+
+    private R(){}
+
     /**
      * @param index the index of the god
      * @return a json object with the specified card controller's elements

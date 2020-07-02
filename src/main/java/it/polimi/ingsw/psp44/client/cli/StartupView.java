@@ -54,7 +54,7 @@ public class StartupView {
 
         try {
 
-            IConnection<String> socketConnection = new SocketConnection(socket);
+            IConnection socketConnection = new SocketConnection(socket);
             View view = new LobbyView(console);
             virtualServer = new VirtualServer(socketConnection);
             virtualServer.startPingTask();

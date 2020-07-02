@@ -14,8 +14,8 @@ import java.util.ResourceBundle;
 
 public class InfoView extends View implements Initializable {
 
-    private VirtualServer virtualServer;
-    private final String infoMessage;
+
+    private String infoMessage;
 
     @FXML private Text textInfo;
     @FXML private Button btnClose;

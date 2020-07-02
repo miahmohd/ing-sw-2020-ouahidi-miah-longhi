@@ -2,10 +2,14 @@ package it.polimi.ingsw.psp44.network.communication;
 
 import it.polimi.ingsw.psp44.util.Card;
 
+
+/**
+ * Group of classes that represents additional formats for bodies in Message.
+ */
 public class BodyTemplates {
 
     /**
-     * Template for NewGame message
+     * Template for NEW_GAME message
      */
     public static class NewGame {
         private String playerNickname;
@@ -32,6 +36,9 @@ public class BodyTemplates {
         }
     }
 
+    /**
+     * Template for JOIN_GAME message
+     */
     public static class JoinGame {
         private String playerNickname;
         private int gameId;
@@ -57,6 +64,9 @@ public class BodyTemplates {
         }
     }
 
+    /**
+     *  Template for ALL_PLAYER_CARDS message
+     */
     public static class PlayerCard{
         private String playerNickname;
         private Card card;

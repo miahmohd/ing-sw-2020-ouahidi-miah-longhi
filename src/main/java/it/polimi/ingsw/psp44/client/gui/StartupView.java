@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -37,6 +38,8 @@ public class StartupView extends View implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         connectButton.setOnAction(this::startGame);
+        Platform.runLater( () -> container.requestFocus() );
+
     }
 
     private void startGame(ActionEvent actionEvent) {
@@ -45,7 +48,7 @@ public class StartupView extends View implements Initializable {
 
         try {
             Socket socket = new Socket(hostname, port);
-            IConnection<String> socketConnection = new SocketConnection(socket);
+            IConnection socketConnection = new SocketConnection(socket);
             View view = new LobbyView();
             this.virtualServer = new VirtualServer(socketConnection);
             this.virtualServer.startPingTask();

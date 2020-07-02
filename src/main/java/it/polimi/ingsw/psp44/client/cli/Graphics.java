@@ -68,7 +68,7 @@ public class Graphics {
         FEMALE_WORKER("\u2655 "),
 
 
-        DOME("\uD835\uDEF7 "),
+        DOME("\u0398 "),
         EMPTY("  "),
 
         SEPARATOR(" : ");
