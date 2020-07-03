@@ -7,56 +7,8 @@ on:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
-  win:
-    runs-on: windows-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up JDK 1.11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.11
-          java-package: jdk+fx
-
-      - name: Build with Maven
-        run: mvn -B package
-
-      - name: Create zip
-        run: Compress-Archive -LiteralPath .\deliveries\jars\ -DestinationPath santorini-win.zip
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: santorini-win
-          path: ./santorini-win.zip
-
-  mac:
-    runs-on: macos-latest
-    needs: win
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up JDK 1.11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.11
-          java-package: jdk+fx
-
-      - name: Build with Maven
-        run: mvn -B package
-
-      - name: Create zip
-        run: zip -j -r santorini-mac.zip deliveries/jars/
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: santorini-mac
-          path: ./santorini-mac.zip
-
-
   linux:
     runs-on: ubuntu-latest
-    needs: mac
     steps:
       - uses: actions/checkout@v2
         
@@ -70,7 +22,7 @@ jobs:
         run: mvn -B package
 
       - name: Create zip
-        run: zip -j -r santorini-linux.zip deliveries/jars/
+        run: zip -j -r santorini.zip deliveries/jars/
 
       - name: Create Release
         id: create_release
@@ -83,14 +35,6 @@ jobs:
           draft: false
           prerelease: false
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: santorini-win
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: santorini-mac
-
       - name: Upload Release Asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
@@ -98,29 +42,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ./santorini-linux.zip
-          asset_name: santorini-linux.zip
+          asset_path: ./santorini.zip
+          asset_name: santorini.zip
           asset_content_type: application/zip
 
-      - name: Upload Release Asset
-        id: upload-release-asset-win
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ./santorini-win.zip
-          asset_name: santorini-win.zip
-          asset_content_type: application/zip
-
-
-      - name: Upload Release Asset
-        id: upload-release-asset-win
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ./santorini-mac.zip
-          asset_name: santorini-mac.zip
-          asset_content_type: application/zip
