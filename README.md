@@ -19,7 +19,7 @@ Prerequisites:
 - Maven 3 (suggested Maven 3.6)
 
 The latest version of the game can be downloaded from the release page of this repository.  
-In order to play download the file `santorini.zip` and extract it in a directory, inside you should find 3 jars.
+In order to play download the file `santorini.zip`, extract it in a directory, inside you should find 3 jars.
 
 First start the server:
 ```shell script
@@ -41,4 +41,11 @@ Clone the repository and run:
 $ mvn clean package
 ```
 you'll find the built jars inside the folder `deliveries/jars`.
+
+### How to play
+After connecting to the server, one player needs to create a new game indicating how many players will be participating.  
+In order to join a game you'll need to know use the game id, which was communicated to the player that created the game.  
+
+
+
 
