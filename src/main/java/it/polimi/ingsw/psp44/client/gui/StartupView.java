@@ -49,10 +49,13 @@ public class StartupView extends AbstractView implements Initializable {
     }
 
     private void startGame(ActionEvent actionEvent) {
-        int port = portField.getText().isEmpty() ? DEFAULT_PORT : Integer.parseInt(portField.getText());
-        String hostname = ipField.getText().isEmpty() ? DEFAULT_HOSTNAME : ipField.getText();
-
+        int port;
+        String hostname = "";
         try {
+            port = portField.getText().isEmpty() ? DEFAULT_PORT : Integer.parseInt(portField.getText());
+            hostname = ipField.getText().isEmpty() ? DEFAULT_HOSTNAME : ipField.getText();
+
+
             Socket socket = new Socket(hostname, port);
             IConnection socketConnection = new SocketConnection(socket);
             AbstractView view = new LobbyView();
@@ -69,6 +72,8 @@ public class StartupView extends AbstractView implements Initializable {
 
         } catch (IOException e) {
             infoLabel.setText("ERROR: connection refused to " + hostname);
+        } catch (NumberFormatException e) {
+            infoLabel.setText("ERROR: incorrect port format");
         }
 
     }

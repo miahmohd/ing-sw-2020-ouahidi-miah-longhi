@@ -47,14 +47,20 @@ public class LobbyView extends AbstractLobbyView implements Initializable {
     @Override
     public void gameCreated(Message gameCreated) {
         Platform.runLater(() ->
-                property.setInfoText(String.format("game created with id %s, now wait for the other players", gameCreated.getBody())));
+        {
+            property.setInfoText(String.format("game created with id %s, now wait for the other players", gameCreated.getBody()));
+            startButton.setDisable(true);
+        });
         changeView();
     }
 
     @Override
     public void gameJoined(Message gameJoined) {
         Platform.runLater(() ->
-                property.setInfoText("game joined, wait for the others"));
+        {
+            property.setInfoText("game joined, wait for the others");
+            startButton.setDisable(true);
+        });
         changeView();
     }
 
