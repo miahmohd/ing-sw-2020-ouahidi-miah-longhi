@@ -9,6 +9,7 @@ import it.polimi.ingsw.psp44.util.ConfigCodes;
 import it.polimi.ingsw.psp44.util.R;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
@@ -45,8 +46,8 @@ public class StartupView {
                 int port = s.isEmpty() ? DEFAULT_PORT : Integer.parseInt(s);
 
                 try {
-                    socket = new Socket(host, port);
-                    connected = true;
+                    socket = new Socket();
+                    socket.connect(new InetSocketAddress(host, port), 3000);
                 } catch (IOException e) {
                     console.clear();
                     console.writeLine("Connection refused, try again.");

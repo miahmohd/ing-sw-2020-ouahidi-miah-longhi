@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -56,7 +57,10 @@ public class StartupView extends AbstractView implements Initializable {
             hostname = ipField.getText().isEmpty() ? DEFAULT_HOSTNAME : ipField.getText();
 
 
-            Socket socket = new Socket(hostname, port);
+//            Socket socket = new Socket(hostname, port);
+            Socket socket = new Socket();
+            socket.connect(new InetSocketAddress(hostname, port), 3000);
+
             IConnection socketConnection = new SocketConnection(socket);
             AbstractView view = new LobbyView();
             this.virtualServer = new VirtualServer(socketConnection);
