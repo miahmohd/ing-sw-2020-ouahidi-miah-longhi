@@ -48,6 +48,7 @@ public class StartupView {
                 try {
                     socket = new Socket();
                     socket.connect(new InetSocketAddress(host, port), 3000);
+                    connected = true;
                 } catch (IOException e) {
                     console.clear();
                     console.writeLine("Connection refused, try again.");
