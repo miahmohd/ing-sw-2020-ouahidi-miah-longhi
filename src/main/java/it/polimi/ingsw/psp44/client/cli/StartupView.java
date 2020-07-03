@@ -41,13 +41,19 @@ public class StartupView {
 
             console.writeLine("Server port (empty for 8080): ");
             String s = console.readLine();
-            int port = s.isEmpty() ? DEFAULT_PORT : Integer.parseInt(s);
-
             try {
-                socket = new Socket(host, port);
-                connected = true;
-            } catch (IOException e) {
-                console.writeLine("Connection refused, try again.");
+                int port = s.isEmpty() ? DEFAULT_PORT : Integer.parseInt(s);
+
+                try {
+                    socket = new Socket(host, port);
+                    connected = true;
+                } catch (IOException e) {
+                    console.clear();
+                    console.writeLine("Connection refused, try again.");
+                }
+            } catch (NumberFormatException e) {
+                console.clear();
+                console.writeLine("Incorrect port format, try again.");
             }
         } while (!connected);
 
