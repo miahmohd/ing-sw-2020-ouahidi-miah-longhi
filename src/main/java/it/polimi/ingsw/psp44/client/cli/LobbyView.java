@@ -69,9 +69,6 @@ public class LobbyView extends AbstractLobbyView {
         if (header == null)
             return;
 
-        if (header.containsKey(MessageHeader.ERROR))
-            console.writeLine(header.get(MessageHeader.ERROR));
-
         if (header.containsKey(MessageHeader.ERROR_DESCRIPTION))
             console.writeLine(header.get(MessageHeader.ERROR_DESCRIPTION));
     }

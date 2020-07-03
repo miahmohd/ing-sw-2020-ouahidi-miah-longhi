@@ -88,7 +88,10 @@ public class Board {
     public String getBoard() {
         Cell currentCell;
         StringBuilder sb = new StringBuilder();
+        sb.append(getColumnIndicator());
         for (int row = 0; row < DIMENSION; row++) {
+            sb.append(Color.RESET);
+            sb.append(row);
             for (int column = 0; column < DIMENSION; column++) {
                 currentCell = cells[row][column];
                 sb.append(this.levelColors.get(currentCell.getLevel()));
@@ -98,6 +101,17 @@ public class Board {
         }
         sb.append(Color.RESET);
 
+        return sb.toString();
+    }
+
+    private String getColumnIndicator() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" ");
+        for (int column = 0; column < DIMENSION; column++){
+            sb.append(column);
+            sb.append(" ");
+        }
+        sb.append(Graphics.Behaviour.NEW_LINE);
         return sb.toString();
     }
 
@@ -112,8 +126,10 @@ public class Board {
         Position currentPosition;
 
         StringBuilder sb = new StringBuilder();
-
+        sb.append(getColumnIndicator());
         for (int row = 0; row < DIMENSION; row++) {
+            sb.append(Color.RESET);
+            sb.append(row);
             for (int column = 0; column < DIMENSION; column++) {
                 currentPosition = new Position(row, column);
                 currentCell = cells[row][column];

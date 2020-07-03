@@ -12,8 +12,8 @@
 
 HBox {
     -fx-min-height: 600;
-    -fx-min-width: 600;
-    -fx-max-width: 900;
+    -fx-min-width: 625;
+    -fx-max-width: 925;
     -fx-padding: 0;
 }
 
@@ -31,8 +31,8 @@ VBox {
 
 .cardList {
     -fx-min-height: inherit;
-    -fx-min-width: 600;
-    -fx-max-width: 600;
+    -fx-min-width: 625;
+    -fx-max-width: 625;
     -fx-padding: 0;
 }
 
@@ -60,6 +60,6 @@ VBox {
     -fx-background-image: url('../images/btn_blue.png');
 }
 
-#startButton:pressed {
+#startButton:hover {
     -fx-background-image: url('../images/btn_blue_pressed.png');
 }

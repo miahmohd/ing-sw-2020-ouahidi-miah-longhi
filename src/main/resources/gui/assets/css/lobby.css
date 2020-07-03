@@ -12,7 +12,7 @@
 
 VBox {
     -fx-padding: 75;
-    -fx-min-height: 550px;
+    -fx-min-height: 525px;
     -fx-min-width: 625px;
     -fx-background-image: url('../images/Santorini.png');
     -fx-background-size: auto;
@@ -50,11 +50,11 @@ Button {
     -fx-background-image: url('../images/btn_green.png');
 }
 
-.joinGameButton:pressed, .newGameButton:pressed {
+.joinGameButton:hover, .newGameButton:hover {
     -fx-background-image: url('../images/btn_blue_pressed.png');
 }
 
-.startButton:pressed{
+.startButton:hover{
     -fx-background-image: url('../images/btn_green_pressed.png');
 }
 

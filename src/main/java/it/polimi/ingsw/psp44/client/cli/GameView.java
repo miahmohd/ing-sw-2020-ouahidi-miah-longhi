@@ -115,9 +115,7 @@ public class GameView extends AbstractGameView {
 
     @Override
     public void start(Message start) {
-        console.clear();
-        console.printOnBoardSection(board.getBoard());
-        console.writeLine("it's your turn boy");
+        console.writeLine("it's you turn boyyy");
     }
 
     @Override
@@ -154,6 +152,7 @@ public class GameView extends AbstractGameView {
             print = "It's your turn";
         else
             print = String.format("%s's turn", currentPlayer);
+        console.clear();
         console.printOnTurnSection(print);
         console.printOnBoardSection(this.board.getBoard());
         console.printOnPlayersSection(this.board.getPlayers());

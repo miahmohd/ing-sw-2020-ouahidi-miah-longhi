@@ -24,15 +24,15 @@ public class Graphics {
         /**
          * dark blue
          */
-        MY_PLAYER("\u001B[38;5;33m"),
+        MY_PLAYER("\u001b[36m"),
         /**
          * light blue
          */
-        OPPONENT_1("\u001B[38;5;94m"),
+        OPPONENT_1("\u001b[31m"),
         /**
          * brown
          */
-        OPPONENT_2("\u001B[38;5;15m"),
+        OPPONENT_2("\u001b[35m"),
         /**
          * white
          */

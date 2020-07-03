@@ -58,7 +58,7 @@ BorderPane {
     -fx-background-image: url('../images/btn_blue.png');
 }
 
-#endTurnButton:pressed {
+#endTurnButton:hover {
     -fx-background-image: url('../images/btn_blue_pressed.png');
 }
 

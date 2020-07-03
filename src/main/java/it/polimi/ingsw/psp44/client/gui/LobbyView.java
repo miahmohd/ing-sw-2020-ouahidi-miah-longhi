@@ -41,7 +41,7 @@ public class LobbyView extends AbstractLobbyView implements Initializable {
     @Override
     public void newJoin(Message joinOrNew) {
         readHeaders(joinOrNew.getHeader());
-        ViewScene.setViewAndShow("Lobby AbstractView", "/gui/lobby.fxml", this);
+        ViewScene.setViewAndShow("Lobby", "/gui/lobby.fxml", this);
     }
 
     @Override

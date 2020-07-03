@@ -11,9 +11,9 @@ import java.util.Scanner;
 public class Console {
     private static final char ESC = 0x1B;
     private static final Position BOARD_SECTION_INITIAL_POSITION = new Position(3, 50);
-    private static final Position LEGEND_SECTION_INITIAL_POSITION = new Position(3, 65);
-    private static final Position PLAYERS_SECTION_INITIAL_POSITION = new Position(9, 50);
-    private static final Position TURN_SECTION_INITIAL_POSITION = new Position(12, 50);
+    private static final Position LEGEND_SECTION_INITIAL_POSITION = new Position(4, 65);
+    private static final Position PLAYERS_SECTION_INITIAL_POSITION = new Position(10, 50);
+    private static final Position TURN_SECTION_INITIAL_POSITION = new Position(14, 50);
     private static final Position INTERACTION_SECTION_INITIAL_POSITION = new Position(1, 0);
 
     private final Scanner input;
