@@ -1,4 +1,4 @@
-# Polimi 2020 - Software engineering project
+# Polimi 2020 - Software Engineering project
 
 ## Group members
 - Miah Mohd Ehtesham
