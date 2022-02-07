@@ -92,7 +92,7 @@ public class GameModel extends IObservable<Message> {
 
         Player currentPlayer = players.removeFirst();
         players.addLast(currentPlayer);
-        this.turnNumber++;
+       /*  this.turnNumber++; */
     }
 
     /**
